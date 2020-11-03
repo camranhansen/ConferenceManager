@@ -33,4 +33,11 @@ public class MessageController {
         String[] to = userManager.getAllAtt();
         messageManager.sendMessage(from, message, to);
     }
+
+
+    public void orgSendToAllSpeakers(String from, String message){
+        String[] speakers = userManager.getAllSpeakers();
+        messageManager.sendMessage(from, message, speakers);
+    }
+
 }
