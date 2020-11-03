@@ -1,5 +1,6 @@
 package Messaging;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -19,7 +20,7 @@ public class MessageController {
         messageManager.sendMessage(from, message, to);
     }
 
-    public void writeToAttendees(String from, String message, int... events) {
+    public void writeToEvents(String from, String message, int... events) {
         ArrayList<String> recipientsSum = new ArrayList<>();
         for (int i = 0; i < events.length; i++) {
             recipientsSum.addAll(Arrays.asList(eventManager.viewParticipantsByEvent(events[i])));
@@ -28,4 +29,8 @@ public class MessageController {
         messageManager.sendMessage(from, message, recipientsSum.toArray(recipients));
     }
 
+    public void orgSendToAllAtt(String from, String message){
+        String[] to = userManager.getAllAtt();
+        messageManager.sendMessage(from, message, to);
+    }
 }
