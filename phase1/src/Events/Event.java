@@ -3,12 +3,12 @@ import java.time.Instant;
 
 
 public class Event {
-    private String speakername;
-    private Instant time;
-    private String eventname;
-    private String[] participants;
-    private String room;
-    private String title;
+    public String speakername;
+    public Instant time;
+    public String eventname;
+    public String[] participants;
+    public String room;
+    public String title;
     public int capacity;
     public int id;
     public static int count = 0;
