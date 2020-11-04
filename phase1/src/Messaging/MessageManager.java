@@ -30,4 +30,8 @@ public class MessageManager {
         }
         return inboxes.get(user);
     }
+
+    public List<Message> retrieveUserInboxFor(String user, String from){
+        return retrieveUserInbox(user).get(from);
+    }
 }
