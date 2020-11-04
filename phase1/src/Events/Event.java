@@ -22,6 +22,7 @@ public class Event {
         this.title=title;
         this.capacity=capacity;
         this.id= Event.count;
+        Event.count += 1;
     }
 
     public String getSpeakername(){
