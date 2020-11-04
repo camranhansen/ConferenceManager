@@ -39,16 +39,19 @@ public class MessageTest {
         assertEquals("att1", m1.getRecipients()[0]);
     }
 
+    @Test(timeout = 50)
     public void testMessageSender() {
         Message message = new Message("Genie", new String[]{"Aladdin"}, "Mr. Aladdin sir, what will your pleasure be?");
         assertEquals("Check sender.", "Genie", message.getSender());
     }
 
+    @Test(timeout = 50)
     public void testMessageReceiver() {
         Message message = new Message("Genie", new String[]{"Aladdin"}, "Mr. Aladdin sir, what will your pleasure be?");
         assertArrayEquals("Check receiver.", new String[]{"Aladdin"}, message.getRecipients());
     }
 
+    @Test(timeout = 50)
     public void testMessageContent() {
         Message message = new Message("Genie", new String[]{"Aladdin"}, "Mr. Aladdin sir, what will your pleasure be?");
         assertEquals("Check message content.", "Mr. Aladdin sir, what will your pleasure be?", message.getContent());
