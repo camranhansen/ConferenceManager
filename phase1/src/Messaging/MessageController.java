@@ -3,6 +3,8 @@ package Messaging;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class MessageController {
     //Potentially move eventmanager and usermanager to menu?
@@ -18,6 +20,10 @@ public class MessageController {
 
     public void writeMessage(String from, String to, String message) {
         messageManager.sendMessage(from, message, to);
+    }
+
+    public HashMap<String, List<Message>> viewSentMessage(String username){
+        return messageManager.retrieveUserInbox(username);
     }
 
     public void writeToEvents(String from, String message, int... events) {
