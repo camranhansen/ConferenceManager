@@ -3,6 +3,8 @@ package Events;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.lang.String;
+
 
 public class EventManger {
     private HashMap<int, Event> events;
@@ -33,7 +35,7 @@ public class EventManger {
         for (Event value : events.values()){
             if (value.eventName == eventName){
                 result = value;
-            };
+            }
         }
         return result;
     }
@@ -43,12 +45,13 @@ public class EventManger {
         boolean noConflict = true;
         Event newEvent = new Event(name, eventTime, eventName, participants, room, title, capacity);
         for (Event value : events.values()){
-            if ((value.eventTime == newEvent.eventTime) && (value.room == newEvent.room)){
+            if ((value.eventTime == newEvent.eventTime) && (value.room == newEvent.room)) {
                 noConflict = false;
+                break;
             }
         }
 
-        if (noConflict == false){
+        if (!noConflict){
             System.out.println("Cannot creat this event because it conflicts with an existing event.");
         }else{
             this.events.put(newEvent.id, newEvent);
