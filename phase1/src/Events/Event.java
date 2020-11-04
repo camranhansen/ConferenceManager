@@ -4,58 +4,58 @@ import java.util.ArrayList;
 
 
 public class Event {
-    public String Speakername;
-    public Instant Time;
-    public String Eventname;
-    public ArrayList<String> Participants;
-    public String Room;
-    public String Title;
-    public int Capacity;
-    public int Id;
-    public static int Count = 0;
+    public String speakerName;
+    public Instant time;
+    public String eventName;
+    public ArrayList<String> participants;
+    public String room;
+    public String title;
+    public int capacity;
+    public int id;
+    public static int count = 0;
 
-    public Event(String name, Instant eventtime, String eventname, ArrayList<String> participants, String room, String title, int capacity ){
-        this.Speakername=name;
-        this.Time=eventtime;
-        this.Eventname=eventname;
-        this.Participants=participants;
-        this.Room=room;
-        this.Title=title;
-        this.Capacity=capacity;
-        this.Id= Event.Count;
+    public Event(String name, Instant eventTime, String eventName, ArrayList<String> participants, String room, String title, int capacity ){
+        this.speakerName = name;
+        this.time = eventTime;
+        this.eventname = eventName;
+        this.participants = participants;
+        this.room = room;
+        this.title = title;
+        this.capacity = capacity;
+        this.id = Event.count;
         Event.Count += 1;
     }
 
     public String getSpeakername(){
-        return this.Speakername;
+        return this.speakerName;
     }
 
-    public Instant geteventTime(){
-        return this.Time;
+    public Instant getEventTime(){
+        return this.time;
     }
 
-    public String getEventname(){
-        return this.Eventname;
+    public String getEventName(){
+        return this.eventName;
     }
 
     public ArrayList<String> getParticipants(){
-        return this.Participants;
+        return this.participants;
     }
 
     public String getRoom(){
-        return this.Room;
+        return this.room;
     }
 
     public String getTitle(){
-        return this.Title;
+        return this.title;
     }
 
     public int getCapacity(){
-        return this.Capacity;
+        return this.capacity;
     }
 
     public int getId(){
-        return this.Id;
+        return this.id;
     }
 
 
