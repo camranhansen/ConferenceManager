@@ -1,60 +1,61 @@
 package Events;
 import java.time.Instant;
+import java.util.ArrayList;
 
 
 public class Event {
-    public String speakername;
-    public Instant time;
-    public String eventname;
-    public String[] participants;
-    public String room;
-    public String title;
-    public int capacity;
-    public int id;
-    public static int count = 0;
+    public String Speakername;
+    public Instant Time;
+    public String Eventname;
+    public ArrayList<String> Participants;
+    public String Room;
+    public String Title;
+    public int Capacity;
+    public int Id;
+    public static int Count = 0;
 
-    public Event(String name, Instant eventtime, String eventname, String[] participants, String room, String title, int capacity ){
-        this.speakername=name;
-        this.time=eventtime;
-        this.eventname=eventname;
-        this.participants=participants;
-        this.room=room;
-        this.title=title;
-        this.capacity=capacity;
-        this.id= Event.count;
-        Event.count += 1;
+    public Event(String name, Instant eventtime, String eventname, ArrayList<String> participants, String room, String title, int capacity ){
+        this.Speakername=name;
+        this.Time=eventtime;
+        this.Eventname=eventname;
+        this.Participants=participants;
+        this.Room=room;
+        this.Title=title;
+        this.Capacity=capacity;
+        this.Id= Event.Count;
+        Event.Count += 1;
     }
 
     public String getSpeakername(){
-        return this.speakername;
+        return this.Speakername;
     }
 
     public Instant geteventTime(){
-        return this.time;
+        return this.Time;
     }
 
     public String getEventname(){
-        return this.eventname;
+        return this.Eventname;
     }
 
-    public String[] getParticipants(){
-        return this.participants;
+    public ArrayList<String> getParticipants(){
+        return this.Participants;
     }
 
     public String getRoom(){
-        return this.room;
+        return this.Room;
     }
 
     public String getTitle(){
-        return this.title;
+        return this.Title;
     }
 
     public int getCapacity(){
-        return this.capacity;
+        return this.Capacity;
     }
 
     public int getId(){
-        return this.id;
+        return this.Id;
     }
 
 
