@@ -1,0 +1,9 @@
+package Users;
+
+public enum Permission {
+    MESSAGE_ALL_ATTENDEES,
+    MESSAGE_EVENT_ATTENDEES,
+    MESSAGE_SINGLE_ATTENDEE,
+    EVENT_CREATE,
+    EVENT_DELETE
+}
