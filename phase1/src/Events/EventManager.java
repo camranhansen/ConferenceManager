@@ -19,15 +19,15 @@ public class EventManger {
             //InputStream buffer = new BufferedInputStream(file);
             //ObjectInput input = new ObjectInputStream(buffer);
 
-            //events = (Hashmap<int, Event>) input.readObject();
+            //events = (Hashmap<int, Event.java>) input.readObject();
             //input.close();
         //} catch (IOException ex) {
             //logger.log(Level.SEVERE, "Cannot read from input.", ex);
         //}
     //}
 
-    public ArrayList<Event> getEventsList() {
-        ArrayList<Event> eventsList = new ArrayList<Event>;
+    public List<Event> getEventsList() {
+        List<Event> eventsList = new List<Event>;
         for (int key : events.keySet()) {
             eventsList.add(events.get(key));
         }
@@ -44,27 +44,28 @@ public class EventManger {
         return result;
     }
 
-    public boolean createEvent(String name, Instant eventTime, String eventName, ArrayList<String> participants,
+    public void createEvent(String name, Instant eventTime, String eventName, List<String> participants,
                                String room, String title, int capacity){
-        boolean noConflict = true;
+        //TODO: Validate events.
+        //boolean noConflict = true;
         Event newEvent = new Event(name, eventName, participants, room, title, capacity);
-        for (Event value : events.values()){
-            if ((value.eventTime == newEvent.eventTime) && (value.room == newEvent.room)) {
-                noConflict = false;
-                break;
-            }
-        }
+//        for (Event.java value : events.values()){
+//            if ((value.eventTime == newEvent.eventTime) && (value.room == newEvent.room)) {
+//                noConflict = false;
+//                break;
+//            }
+//        }
 
-        if (!noConflict){
-            System.out.println("Cannot creat this event because it conflicts with an existing event.");
-        }else{
-            this.events.put(newEvent.id, newEvent);
-        }
-
+//        if (!noConflict){
+//            System.out.println("Cannot creat this event because it conflicts with an existing event.");
+//        }else{
+//            this.events.put(newEvent.id, newEvent);
+//        }
+        this.events.put(newEvent.id, newEvent);
         return noConflict;
     }
 
-    public ArrayList<String> getParticipants(int eventID){
+    public List<String> getParticipants(int eventID){
         return events.get(eventID).getParticipants();
     }
 

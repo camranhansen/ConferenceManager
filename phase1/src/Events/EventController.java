@@ -17,15 +17,14 @@ public class EventController{
         return eventManager.getEventsList();
     }
 
-    public ArrayList<Event> checkMyEvents(String userName){
-        ArrayList<Event> myEvents = new ArrayList<Event>;
-       if (userManager.userExist(userName)){
+    public List<Event> checkMyEvents(String userName){
+        //TODO: Validate userName.
+        List<Event> myEvents = new ArrayList<Event>;
            for (int id : eventManager.events.keySet()){
                if (eventManager.getParticipants(id).contains(userName)){
                    myEvents.add(eventManager.events.get(id))
                }
            }
-       }
        return myEvents;
     }
 
