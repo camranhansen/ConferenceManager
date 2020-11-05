@@ -62,7 +62,7 @@ public class EventManager {
 //            this.events.put(newEvent.id, newEvent);
 //        }
         this.events.put(newEvent.id, newEvent);
-        return noConflict;
+
     }
 
     public List<String> getParticipants(int eventID){
@@ -71,7 +71,7 @@ public class EventManager {
 
     public boolean enrollUser(int eventID, String Username){
         List<String> result = this.getParticipants(eventID);
-        boolean check = this.checkCapacity(result); // To be fixed
+        boolean check = this.checkCapacity(result, events.get(eventID).capacity); // To be fixed
         if(check==true){
             events.get(eventID).participants.add(Username);
             return true;
@@ -96,6 +96,7 @@ public class EventManager {
             }
             return avaliableEvents;
         }
+        return avaliableEvents;
     }
 
     public void addEventToHash(Event event) { // Temporary method for testing purposes only
