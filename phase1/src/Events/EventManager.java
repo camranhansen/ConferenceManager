@@ -38,7 +38,7 @@ public class EventManager {
     public Event getEventByName(String eventName){
         Event result = new Event();
         for (Event value : events.values()){
-            if (value.eventName == eventName){
+            if (value.eventName.equals(eventName)){
                 result = value;
             }
         }
@@ -49,7 +49,7 @@ public class EventManager {
                                String room, String title, int capacity){
         //TODO: Validate events.
         //boolean noConflict = true;
-        Event newEvent = new Event(name, eventName, participants, room, title, capacity);
+        Event newEvent = new Event(name, eventTime, eventName, participants, room, title, capacity);
 //        for (Event.java value : events.values()){
 //            if ((value.eventTime == newEvent.eventTime) && (value.room == newEvent.room)) {
 //                noConflict = false;
@@ -72,7 +72,7 @@ public class EventManager {
 
     public boolean enrolluser(int eventID, String Username){
         List<String> result = this.getParticipants(eventID);
-        boolean check = this.checkCapacity(result);
+        boolean check = this.checkCapacity(result); // To be fixed
         if(check==true){
             events.get(eventID).participants.add(Username);
             return true;
@@ -104,7 +104,11 @@ public class EventManager {
     }
 
     public boolean checkCapacity(List<String> participants, int maxCapacity){
-        return participants.size() <= maxCapacity;
+        return participants.size() < maxCapacity;
+    }
+
+    public HashMap<Integer, Event> getEventsHash() { // Getter required as events variable is private
+        return events;
     }
 
     //TODO: Make Exceptions for this

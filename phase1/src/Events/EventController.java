@@ -1,4 +1,8 @@
 package Events;
+
+import Users.User;
+import Users.UserManager;
+
 import java.util.ArrayList;
 //import java.util.Arrays;
 import java.util.HashMap;
@@ -19,10 +23,10 @@ public class EventController{
 
     public List<Event> checkMyEvents(String userName){
         //TODO: Validate userName.
-        List<Event> myEvents = new ArrayList<Event>;
-           for (int id : eventManager.events.keySet()){
+        List<Event> myEvents = new ArrayList<>();
+           for (int id : eventManager.getEventsHash().keySet()){
                if (eventManager.getParticipants(id).contains(userName)){
-                   myEvents.add(eventManager.events.get(id))
+                   myEvents.add(eventManager.getEventsHash().get(id));
                }
            }
        return myEvents;
