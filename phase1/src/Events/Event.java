@@ -17,13 +17,13 @@ public class Event {
     public Event(String name, Instant eventTime, String eventName, ArrayList<String> participants, String room, String title, int capacity ){
         this.speakerName = name;
         this.time = eventTime;
-        this.eventname = eventName;
+        this.eventName = eventName;
         this.participants = participants;
         this.room = room;
         this.title = title;
         this.capacity = capacity;
         this.id = Event.count;
-        Event.Count += 1;
+        Event.count += 1;
     }
 
     public String getSpeakername(){
