@@ -33,11 +33,11 @@ public class EventController{
     }
 
     public void enroll(int eventid, String username){
-        this.eventManager.enrolluser(eventid, username);
+        this.eventManager.enrollUser(eventid, username);
     }
 
     public void drop(int eventid, String username){
-        this.eventManager.dropuser(eventid, username);
+        this.eventManager.dropUser(eventid, username);
     }
 
 }
