@@ -1,7 +1,7 @@
 package Events;
 import java.time.Instant;
 import java.util.ArrayList;
-
+import java.util.List;
 
 public class Event {
     public String speakerName;
@@ -38,7 +38,7 @@ public class Event {
         return this.eventName;
     }
 
-    public ArrayList<String> getParticipants(){
+    public List<String> getParticipants(){
         return this.participants;
     }
 

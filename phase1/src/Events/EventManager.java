@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.lang.String;
+import java.util.List;
 
 
 public class EventManger {
@@ -27,7 +28,7 @@ public class EventManger {
     //}
 
     public List<Event> getEventsList() {
-        List<Event> eventsList = new List<Event>;
+        List<Event> eventsList = new ArrayList<Event>;
         for (int key : events.keySet()) {
             eventsList.add(events.get(key));
         }
@@ -35,10 +36,11 @@ public class EventManger {
     }
 
     public Event getEventByName(String eventName){
-        Event result = new Event;
+        Event result = null;
         for (Event value : events.values()){
-            if (value.eventName == eventName){
+            if (value.eventName.equals(eventName)){
                 result = value;
+                break;
             }
         }
         return result;
@@ -62,7 +64,7 @@ public class EventManger {
 //            this.events.put(newEvent.id, newEvent);
 //        }
         this.events.put(newEvent.id, newEvent);
-        return noConflict;
+        //return noConflict;
     }
 
     public List<String> getParticipants(int eventID){
@@ -71,7 +73,7 @@ public class EventManger {
 
     public boolean enrolluser(int eventID, String Username){
         //TODO: validate event capacity
-        ArrayList<String> reuslt = this.getParticipants(eventID);
+        List<String> result = this.getParticipants(eventID);
         //boolean check = this.checkCapacity( result);
         if(check==true){
             events.get(eventID).participants.add(Username);
