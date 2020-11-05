@@ -34,7 +34,7 @@ public class UserManager {
         return this.users.get(username).getPermissions();
     }
 
-    public void changePermission(String username, List<Permission> permissions){
+    public void setPermission(String username, List<Permission> permissions){
         //TODO: Validate username
         this.users.get(username).setPermissions(permissions);
     }
@@ -55,7 +55,7 @@ public class UserManager {
         return this.users.get(username).getPassword();
     }
 
-    public void changePassword(String username, String password){
+    public void setPassword(String username, String password){
         //TODO: Validate username and password
         this.users.get(username).setPassword(password);
     }

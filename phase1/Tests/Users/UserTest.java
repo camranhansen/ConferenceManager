@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-
+//TODO: make the contents of these tests less repetitive by creating a helper function
 public class UserTest {
 
     @Test
@@ -103,5 +103,12 @@ public class UserTest {
         assertTrue(u1.hasPermission(Permission.MESSAGE_SINGLE_ATTENDEE));
         assertTrue(u1.hasPermission(Permission.MESSAGE_ALL_ATTENDEES));
         assertFalse(u1.hasPermission(Permission.EVENT_DELETE));
+    }
+
+    @Test
+    public void permissionValue(){
+        assertEquals(Permission.valueOf("MESSAGE_ALL_ATTENDEES"),Permission.MESSAGE_ALL_ATTENDEES);
+
+
     }
 }
