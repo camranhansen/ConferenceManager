@@ -7,10 +7,10 @@ import java.lang.String;
 import java.util.ArrayList;
 
 
-public class EventManager {
+public class EventManger {
     private HashMap<Integer, Event> events;
 
-    public EventManager(){
+    public EventManger(){
         HashMap<Integer, Event> events = new HashMap<>();
     }
 
@@ -36,9 +36,9 @@ public class EventManager {
     }
 
     public Event getEventByName(String eventName){
-        Event result = new Event();
+        Event result = new Event;
         for (Event value : events.values()){
-            if (value.eventName.equals(eventName)){
+            if (value.eventName == eventName){
                 result = value;
             }
         }
@@ -49,7 +49,7 @@ public class EventManager {
                                String room, String title, int capacity){
         //TODO: Validate events.
         //boolean noConflict = true;
-        Event newEvent = new Event(name, eventTime, eventName, participants, room, title, capacity);
+        Event newEvent = new Event(name, eventName, participants, room, capacity);
 //        for (Event.java value : events.values()){
 //            if ((value.eventTime == newEvent.eventTime) && (value.room == newEvent.room)) {
 //                noConflict = false;
@@ -70,9 +70,9 @@ public class EventManager {
         return events.get(eventID).getParticipants();
     }
 
-    public boolean enrolluser(int eventID, String Username){
+    public boolean enrollUser(int eventID, String Username){
         List<String> result = this.getParticipants(eventID);
-        boolean check = this.checkCapacity(result); // To be fixed
+        boolean check = this.checkCapacity(result);
         if(check==true){
             events.get(eventID).participants.add(Username);
             return true;
@@ -80,12 +80,12 @@ public class EventManager {
         return false;
     }
 
-    public boolean dropuser(int eventID, String Username){
+    public boolean dropUser(int eventID, String Username){
         events.get(eventID).participants.remove(Username);
         return true;
     }
 
-    public Event getinfo(int eventID){
+    public Event getInfo(int eventID){
         return events.get(eventID);
     }
 
@@ -99,29 +99,14 @@ public class EventManager {
         }
     }
 
-    public void addEventToHash(Event event) { // Temporary method for testing purposes only
-        events.put(event.getId(), event);
+    public boolean checkCapacity(List<String> participants){
+
     }
 
-    public boolean checkCapacity(List<String> participants, int maxCapacity){
-        return participants.size() < maxCapacity;
+    private boolean checkConflict(){
+
     }
 
-    public HashMap<Integer, Event> getEventsHash() { // Getter required as events variable is private
-        return events;
-    }
-
-    //TODO: Make Exceptions for this
-    public boolean checkConflict(Event event){ // Made public for test purposes
-        boolean flag = false;
-        for(Event values : events.values()) {
-            if ((values.getEventTime() == event.getEventTime()) && (values.getRoom().equals(event.getRoom()) || values.getSpeakername().equals(event.getSpeakername()))) {
-                flag = true;
-                break;
-            }
-        }
-        return flag;
-    }
 }
 
 

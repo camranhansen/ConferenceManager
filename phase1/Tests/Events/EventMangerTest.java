@@ -12,7 +12,7 @@ class EventMangerTest {
     @org.junit.jupiter.api.Test
     void getEventsList() {
         List<String> arr = new ArrayList<>();
-        Event e1 = new Event("Bob Smithers", "Test Event", arr, "Meeting Room 1", "Title", 2);
+        Event e1 = new Event("Bob Smithers", "Test Event", arr, "Meeting Room 1",  2);
         EventManager event = new EventManager();
         event.addEventToHash(e1);
         List<Event> events = new ArrayList<>();
@@ -23,9 +23,9 @@ class EventMangerTest {
     @org.junit.jupiter.api.Test
     void getEventByName() {
         List<String> arr = new ArrayList<>();
-        Event e1 = new Event("Bob Smithers", "Test Event", arr, "Meeting Room 1", "Title", 2);
-        Event e2 = new Event("Rob Willis", "Test Event 2", arr, "Meeting Room 2", "Title1", 2);
-        Event e3 = new Event("Jane Doe", "Test Event 3", arr, "Meeting Room 3", "Title2", 2);
+        Event e1 = new Event("Bob Smithers", "Test Event", arr, "Meeting Room 1",  2);
+        Event e2 = new Event("Rob Willis", "Test Event 2", arr, "Meeting Room 2",  2);
+        Event e3 = new Event("Jane Doe", "Test Event 3", arr, "Meeting Room 3",  2);
         EventManager event = new EventManager();
         event.addEventToHash(e1);
         event.addEventToHash(e2);
@@ -50,24 +50,37 @@ class EventMangerTest {
         arr1.add("Daniel Tan");
         arr1.add("Cameron Blom");
         EventManager event = new EventManager();
-        Event e1 = new Event("Bob Smithers", "Test Event", arr, "Meeting Room 1", "Title", 2);
+        Event e1 = new Event("Bob Smithers", "Test Event", arr, "Meeting Room 1",  2);
         assertEquals(event.getParticipants(e1.getId()), arr1);
     }
 
     @org.junit.jupiter.api.Test
-    void enrolluser() {
+    void enrollUser() {
+        String name = "Micheal";
+        List<String> arr = new ArrayList<>();
+        Event e1 = new Event("Bob Smithers", "Test Event", arr, "Meeting Room 1",  2);
+        EventManager event = new EventManager();
+        event.enrollsuer(e1.id, name);
+        assertTrue(e1.participants.size(),1);
     }
 
     @org.junit.jupiter.api.Test
-    void dropuser() {
+    void dropUser() {
+        String name = "Micheal";
+        EventManager event = new EventManager();
+        List<String> arr = new ArrayList<>();
+        arr.add("Micheal");
+        Event e1 = new Event("Bob Smithers", "Test Event", arr, "Meeting Room 1",  2);
+        event.dropuser(e1.id, name);
+        assertTrue(e1.participants.size(), 0);
     }
 
     @org.junit.jupiter.api.Test
-    void getinfo() {
+    void getInfo() {
     }
 
     @org.junit.jupiter.api.Test
-    void getavaliableevent() {
+    void getAvaliableevent() {
     }
 
     @org.junit.jupiter.api.Test
@@ -83,8 +96,8 @@ class EventMangerTest {
         List<String> arr = new ArrayList<>();
         EventManager event = new EventManager();
         Instant time = Instant.now();
-        event.createEvent("Bob Smithers", time,"Test Event", arr, "Meeting Room 1", "Title", 2);
-        event.createEvent("Bob Smithers", time,"Test Event2", arr, "Meeting Room 2", "Title", 2);
+        event.createEvent("Bob Smithers", time,"Test Event", arr, "Meeting Room 1", 2);
+        event.createEvent("Bob Smithers", time,"Test Event2", arr, "Meeting Room 2", 2);
         Event e1 = event.getEventByName("Test Event");
         assertTrue(event.checkConflict(e1));
     }
