@@ -1,20 +1,20 @@
 package Events;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
+
 
 public class Event {
     public String speakerName;
     public Instant time;
     public String eventName;
-    public ArrayList<String> participants;
+    public List<String> participants;
     public String room;
     public String title;
     public int capacity;
     public int id;
     public static int count = 0;
 
-    public Event(String name, String eventName, ArrayList<String> participants, String room, String title, int capacity ){
+    public Event(String name, String eventName, List<String> participants, String room, String title, int capacity ){
         this.speakerName = name;
         this.time = Instant.now();
         this.eventName = eventName;

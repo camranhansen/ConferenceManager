@@ -22,10 +22,18 @@ public class EventController{
         List<Event> myEvents = new ArrayList<Event>;
            for (int id : eventManager.events.keySet()){
                if (eventManager.getParticipants(id).contains(userName)){
-                   myEvents.add(eventManager.events.get(id));
+                   myEvents.add(eventManager.events.get(id))
                }
            }
        return myEvents;
+    }
+
+    public void enroll(){
+
+    }
+
+    public void enroll(){
+
     }
 
 }

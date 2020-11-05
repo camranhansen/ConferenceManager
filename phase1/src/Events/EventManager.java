@@ -2,9 +2,9 @@ package Events;
 
 import java.time.Instant;
 import java.util.HashMap;
-import java.util.ArrayList;
-import java.lang.String;
 import java.util.List;
+import java.lang.String;
+import java.util.ArrayList;
 
 
 public class EventManger {
@@ -28,7 +28,7 @@ public class EventManger {
     //}
 
     public List<Event> getEventsList() {
-        List<Event> eventsList = new ArrayList<Event>;
+        List<Event> eventsList = new ArrayList<>();
         for (int key : events.keySet()) {
             eventsList.add(events.get(key));
         }
@@ -36,11 +36,10 @@ public class EventManger {
     }
 
     public Event getEventByName(String eventName){
-        Event result = null;
+        Event result = new Event;
         for (Event value : events.values()){
-            if (value.eventName.equals(eventName)){
+            if (value.eventName == eventName){
                 result = value;
-                break;
             }
         }
         return result;
@@ -64,7 +63,7 @@ public class EventManger {
 //            this.events.put(newEvent.id, newEvent);
 //        }
         this.events.put(newEvent.id, newEvent);
-        //return noConflict;
+        return noConflict;
     }
 
     public List<String> getParticipants(int eventID){
@@ -72,28 +71,35 @@ public class EventManger {
     }
 
     public boolean enrolluser(int eventID, String Username){
-        //TODO: validate event capacity
         List<String> result = this.getParticipants(eventID);
-        //boolean check = this.checkCapacity( result);
+        boolean check = this.checkCapacity(result);
         if(check==true){
             events.get(eventID).participants.add(Username);
+            return true;
         }
+        return false;
     }
 
     public boolean dropuser(int eventID, String Username){
-
-
+        events.get(eventID).participants.remove(Username);
+        return true;
     }
 
-    public Event getinfo(){
-
+    public Event getinfo(int eventID){
+        return events.get(eventID);
     }
 
-    public int getavaliableevent(){
-
+    public List<Event> getavaliableevent(String username){
+        List<Event> avaliableEvents = new ArrayList<>();
+        for(int i=0; i<events.size(); i++){
+            if(events.get(i).participants.contains(username)){
+                avaliableEvents.add(events.get(i));
+            }
+            return avaliableEvents;
+        }
     }
 
-    public boolean checkCapacity(){
+    public boolean checkCapacity(List<String> participants){
 
     }
 
