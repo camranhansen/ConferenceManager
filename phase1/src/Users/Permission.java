@@ -8,24 +8,17 @@ public enum Permission {
     // action refers to the specific action granted permission to do.
     //Message
     //Note that message permissions also grant ability to view messages in the scope.
-    MESSAGE_ALL_ATTENDEES("message_all_attendees"),
-    MESSAGE_EVENT_ATTENDEES("message_event_attendees"),
-    MESSAGE_SINGLE_ATTENDEE("message_single_attendees"),
+    MESSAGE_ALL_ATTENDEES,
+    MESSAGE_EVENT_ATTENDEES,
+    MESSAGE_SINGLE_ATTENDEE,
     //Event
-    EVENT_CREATE("event_create"),
-    EVENT_DELETE("event_delete"),
-    EVENT_EDIT("event_edit"),
+    EVENT_CREATE,
+    EVENT_DELETE,
+    EVENT_EDIT,
     //User
-    USER_ALL_EDIT_PERMISSION("user_change_permission"),
-    USER_SELF_EDIT_PASSWORD("user_self_edit_password"),
-    USER_ALL_EDIT_PASSWORD("user_all_edit_password"),
-    USER_CREATE("user_create"),
-    USER_DELETE("user_delete");
-    //
-
-
-    String identifier;
-    Permission(String id){
-        identifier = id;
-    }
+    USER_ALL_EDIT_PERMISSION,
+    USER_SELF_EDIT_PASSWORD,
+    USER_ALL_EDIT_PASSWORD,
+    USER_CREATE,
+    USER_DELETE
 }
