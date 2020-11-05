@@ -7,20 +7,24 @@ import java.lang.String;
 
 
 public class EventManger {
-    private HashMap<int, Event> events;
+    private HashMap<Integer, Event> events;
 
-    public void readFromFile(String path) throws ClassNotFoundException {
-        try {
-            InputStream file = new FileInputStream(path);
-            InputStream buffer = new BufferedInputStream(file);
-            ObjectInput input = new ObjectInputStream(buffer);
-
-            events = (Hashmap<int, Event>) input.readObject();
-            input.close();
-        } catch (IOException ex) {
-            logger.log(Level.SEVERE, "Cannot read from input.", ex);
-        }
+    public EventManger(){
+        HashMap<Integer, Event> events = new HashMap<>();
     }
+
+    //public void readFromFile(String path) throws ClassNotFoundException {
+        //try {
+            //InputStream file = new FileInputStream(path);
+            //InputStream buffer = new BufferedInputStream(file);
+            //ObjectInput input = new ObjectInputStream(buffer);
+
+            //events = (Hashmap<int, Event>) input.readObject();
+            //input.close();
+        //} catch (IOException ex) {
+            //logger.log(Level.SEVERE, "Cannot read from input.", ex);
+        //}
+    //}
 
     public ArrayList<Event> getEventsList() {
         ArrayList<Event> eventsList = new ArrayList<Event>;
@@ -62,6 +66,18 @@ public class EventManger {
 
     public ArrayList<String> getParticipants(int eventID){
         return events.get(eventID).getParticipants();
+    }
+
+    public boolean enrolluser(int eventID, String Username){
+        //TODO: validate event capacity
+        ArrayList<String> reuslt = this.getParticipants(eventID);
+        boolean check = this.checkCapacity( result);
+
+    }
+
+    public boolean dropuser(int eventID, String Username){
+
+
     }
 
 }
