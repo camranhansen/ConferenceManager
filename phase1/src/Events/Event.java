@@ -13,6 +13,9 @@ public class Event {
     public int id;
     public static int count = 0;
 
+    public Event(){
+
+    }
     public Event(String name, String eventName, List<String> participants, String room, int capacity ){
         this.speakerName = name;
         this.time = Instant.now();

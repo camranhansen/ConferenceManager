@@ -36,10 +36,10 @@ public class EventManger {
     }
 
     public Event getEventByName(String eventName){
-        Event result = new Event;
+        //TODO: Validate events
         for (Event value : events.values()){
             if (value.eventName == eventName){
-                result = value;
+                Event result = value;
             }
         }
         return result;
@@ -63,7 +63,6 @@ public class EventManger {
 //            this.events.put(newEvent.id, newEvent);
 //        }
         this.events.put(newEvent.id, newEvent);
-        return noConflict;
     }
 
     public List<String> getParticipants(int eventID){
@@ -97,14 +96,15 @@ public class EventManger {
             }
             return avaliableEvents;
         }
+        return avaliableEvents;
     }
 
     public boolean checkCapacity(List<String> participants){
-
+        return true;
     }
 
     private boolean checkConflict(){
-
+        return true;
     }
 
 }
