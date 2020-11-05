@@ -14,9 +14,9 @@ public class Event {
     public int id;
     public static int count = 0;
 
-    public Event(String name, Instant eventTime, String eventName, ArrayList<String> participants, String room, String title, int capacity ){
+    public Event(String name, String eventName, ArrayList<String> participants, String room, String title, int capacity ){
         this.speakerName = name;
-        this.time = eventTime;
+        this.time = Instant.now();
         this.eventName = eventName;
         this.participants = participants;
         this.room = room;

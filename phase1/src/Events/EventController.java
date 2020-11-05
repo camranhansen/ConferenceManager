@@ -29,4 +29,12 @@ public class EventController{
        return myEvents;
     }
 
+    public void enroll(){
+
+    }
+
+    public void enroll(){
+
+    }
+
 }

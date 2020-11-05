@@ -27,4 +27,16 @@ class EventMangerTest {
     @org.junit.jupiter.api.Test
     void dropuser() {
     }
+
+    @org.junit.jupiter.api.Test
+    void getinfo() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void getavaliableevent() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void checkCapacity() {
+    }
 }

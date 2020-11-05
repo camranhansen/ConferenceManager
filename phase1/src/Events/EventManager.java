@@ -47,7 +47,7 @@ public class EventManger {
     public boolean createEvent(String name, Instant eventTime, String eventName, ArrayList<String> participants,
                                String room, String title, int capacity){
         boolean noConflict = true;
-        Event newEvent = new Event(name, eventTime, eventName, participants, room, title, capacity);
+        Event newEvent = new Event(name, eventName, participants, room, title, capacity);
         for (Event value : events.values()){
             if ((value.eventTime == newEvent.eventTime) && (value.room == newEvent.room)) {
                 noConflict = false;
@@ -71,12 +71,30 @@ public class EventManger {
     public boolean enrolluser(int eventID, String Username){
         //TODO: validate event capacity
         ArrayList<String> reuslt = this.getParticipants(eventID);
-        boolean check = this.checkCapacity( result);
-
+        //boolean check = this.checkCapacity( result);
+        if(check==true){
+            events.get(eventID).participants.add(Username);
+        }
     }
 
     public boolean dropuser(int eventID, String Username){
 
+
+    }
+
+    public Event getinfo(){
+
+    }
+
+    public int getavaliableevent(){
+
+    }
+
+    public boolean checkCapacity(){
+
+    }
+
+    private boolean checkConflict(){
 
     }
 
