@@ -7,10 +7,10 @@ import java.lang.String;
 import java.util.ArrayList;
 
 
-public class EventManger {
+public class EventManager {
     private HashMap<Integer, Event> events;
 
-    public EventManger(){
+    public EventManager(){
         HashMap<Integer, Event> events = new HashMap<>();
     }
 
@@ -36,7 +36,7 @@ public class EventManger {
     }
 
     public Event getEventByName(String eventName){
-        Event result = new Event;
+        Event result = new Event();
         for (Event value : events.values()){
             if (value.eventName == eventName){
                 result = value;
@@ -99,14 +99,25 @@ public class EventManger {
         }
     }
 
-    public boolean checkCapacity(List<String> participants){
-
+    public void addEventToHash(Event event) { // Temporary method for testing purposes only
+        events.put(event.getId(), event);
     }
 
-    private boolean checkConflict(){
-
+    public boolean checkCapacity(List<String> participants, int maxCapacity){
+        return participants.size() <= maxCapacity;
     }
 
+    //TODO: Make Exceptions for this
+    public boolean checkConflict(Event event){ // Made public for test purposes
+        boolean flag = false;
+        for(Event values : events.values()) {
+            if ((values.getEventTime() == event.getEventTime()) && (values.getRoom().equals(event.getRoom()) || values.getSpeakername().equals(event.getSpeakername()))) {
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
 }
 
 
