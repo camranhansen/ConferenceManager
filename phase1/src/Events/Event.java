@@ -9,19 +9,19 @@ public class Event {
     public String eventName;
     public List<String> participants;
     public String room;
-    public String title;
     public int capacity;
     public int id;
     public static int count = 0;
 
-    public Event() {}
-    public Event(String name, Instant time, String eventName, List<String> participants, String room, String title, int capacity ){
+    public Event(){
+
+    }
+    public Event(String name, String eventName, List<String> participants, String room, int capacity ){
         this.speakerName = name;
-        this.time = time;
+        this.time = Instant.now();
         this.eventName = eventName;
         this.participants = participants;
         this.room = room;
-        this.title = title;
         this.capacity = capacity;
         this.id = Event.count;
         Event.count += 1;
@@ -45,10 +45,6 @@ public class Event {
 
     public String getRoom(){
         return this.room;
-    }
-
-    public String getTitle(){
-        return this.title;
     }
 
     public int getCapacity(){
