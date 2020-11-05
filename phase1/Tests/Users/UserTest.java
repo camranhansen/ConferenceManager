@@ -54,15 +54,6 @@ public class UserTest {
     }
 
     @Test
-    public void setUsername() {
-        List<Permission> permissions = new ArrayList<>();
-        permissions.add(Permission.MESSAGE_SINGLE_ATTENDEE);
-        User u1 = new User("bob", "123", permissions);
-        u1.setUsername("bobby");
-        assertEquals(u1.getUsername(), "bobby");
-    }
-
-    @Test
     public void setPassword() {
         List<Permission> permissions = new ArrayList<>();
         permissions.add(Permission.MESSAGE_SINGLE_ATTENDEE);
