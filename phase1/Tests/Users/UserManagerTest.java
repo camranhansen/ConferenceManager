@@ -42,7 +42,7 @@ public class UserManagerTest {
         List<Permission> newpermissions = new ArrayList<>();
         newpermissions.add(Permission.MESSAGE_SINGLE_ATTENDEE);
         newpermissions.add(Permission.USER_ALL_EDIT_PERMISSION);
-        um.createUser("timmy","asdf1234",newpermissions);
+            um.createUser("timmy","asdf1234",newpermissions);
         assertTrue(um.userExists("timmy"));
 
     }
