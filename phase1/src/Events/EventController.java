@@ -28,12 +28,12 @@ public class EventController{
        return myEvents;
     }
 
-    public void enroll(){
-
+    public void enroll(int eventid, String username){
+        this.eventManager.enrolluser(eventid, username);
     }
 
-    public void enroll(){
-
+    public void drop(int eventid, String username){
+        this.eventManager.dropuser(eventid, username);
     }
 
 }
