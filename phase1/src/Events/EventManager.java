@@ -7,10 +7,10 @@ import java.lang.String;
 import java.util.ArrayList;
 
 
-public class EventManger {
+public class EventManager {
     private HashMap<Integer, Event> events;
 
-    public EventManger(){
+    public EventManager(){
         HashMap<Integer, Event> events = new HashMap<>();
     }
 
@@ -37,10 +37,9 @@ public class EventManger {
 
     public Event getEventByName(String eventName){
         //TODO: Validate events
+        Event result = new Event();
         for (Event value : events.values()){
-            if (value.eventName == eventName){
-                Event result = value;
-            }
+            if (value.eventName.equals(eventName)) result = value;
         }
         return result;
     }
