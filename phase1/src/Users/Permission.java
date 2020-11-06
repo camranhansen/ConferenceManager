@@ -6,8 +6,7 @@ public enum Permission {
     // where entity refers to the entity being accessed,
     // scope refers to whether the individual can access entities outside of their own (optional)
     // action refers to the specific action granted permission to do.
-    //Message
-    //Note that message permissions also grant ability to view messages in the scope.
+    //Messages
     MESSAGE_ALL_ATTENDEES,
     MESSAGE_EVENT_ATTENDEES,
     MESSAGE_SINGLE_ATTENDEE,
@@ -18,7 +17,14 @@ public enum Permission {
     //User
     USER_ALL_EDIT_PERMISSION,
     USER_SELF_EDIT_PASSWORD,
-    USER_ALL_EDIT_PASSWORD,
+    USER_OTHER_EDIT_PASSWORD,
     USER_CREATE,
-    USER_DELETE
+    USER_CREATE_SPEAKER_ACCOUNT,
+    USER_DELETE,
+    //Viewing
+    VIEW_HOSTING_EVENTS,
+    VIEW_ATTENDING_EVENTS,
+    VIEW_SELF_CHAT_HISTORY,
+    VIEW_OTHER_CHAT_HISTORY,
+
 }

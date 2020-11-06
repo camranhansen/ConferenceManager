@@ -62,12 +62,31 @@ public class UserManagerTest {
         UserManager um = createUserManager();
         List<Permission> permissionsToAdd = new ArrayList<>();
         permissionsToAdd.add(Permission.MESSAGE_SINGLE_ATTENDEE);
-        permissionsToAdd.add(Permission.USER_ALL_EDIT_PASSWORD);
+        permissionsToAdd.add(Permission.USER_OTHER_EDIT_PASSWORD);
         permissionsToAdd.add(Permission.USER_CREATE);
 
         assertNotEquals(um.getPermissions("bob"),permissionsToAdd);
         um.setPermission("bob",permissionsToAdd);
         assertEquals(um.getPermissions("bob"), permissionsToAdd);
+    }
+
+    @org.junit.Test
+    public void getUserByPermissionTemplate() {
+        UserManager um = createUserManager();
+        List<Permission> permissionsToAdd = new ArrayList<>();
+        permissionsToAdd.add(Permission.USER_SELF_EDIT_PASSWORD);
+        permissionsToAdd.add(Permission.MESSAGE_SINGLE_ATTENDEE);
+        permissionsToAdd.add(Permission.VIEW_ATTENDING_EVENTS);
+        permissionsToAdd.add(Permission.VIEW_SELF_CHAT_HISTORY);
+
+
+        assertTrue(um.getUserByPermissionTemplate(Template.ATTENDEE).isEmpty());
+
+
+        um.createUser("joe","imjoe",permissionsToAdd);
+        assertFalse(um.getUserByPermissionTemplate(Template.ATTENDEE).isEmpty());
+        assertTrue(um.getUserByPermissionTemplate(Template.ATTENDEE).contains("joe"));
+
     }
 
     @org.junit.Test
@@ -88,6 +107,7 @@ public class UserManagerTest {
         assertFalse(um.getPermissions("bob").contains(Permission.MESSAGE_SINGLE_ATTENDEE));
 
     }
+
 
     @org.junit.Test
     public void setPassword() {

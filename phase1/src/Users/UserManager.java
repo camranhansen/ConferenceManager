@@ -1,5 +1,7 @@
 package Users;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -22,6 +24,8 @@ public class UserManager {
         User u = new User(username, password, permissions);
         this.users.put(username, u);
     }
+
+    //TODO: create user by template
 
     public void removeUser(String username){
         //TODO: Validate username
@@ -47,6 +51,17 @@ public class UserManager {
     public void removePermission(String username, Permission permission){
         //TODO: Validate username
         this.users.get(username).removePermission(permission);
+    }
+
+    public List<String> getUserByPermissionTemplate(Template template){
+        List<String> fullFillingUsers = new ArrayList<>();
+
+        for (User user : this.users.values()) {
+            if(user.getPermissions().containsAll(template.getPermissions())){
+                fullFillingUsers.add(user.getUsername());
+            }
+        }
+        return fullFillingUsers;
     }
 
     //Password Methods
