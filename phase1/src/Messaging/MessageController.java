@@ -1,6 +1,7 @@
 package Messaging;
 
 import Events.EventManager;
+import Users.Template;
 import Users.UserManager;
 
 import java.lang.reflect.Array;
@@ -38,10 +39,17 @@ public class MessageController {
         messageManager.sendMessage(from, message, recipientsSum.toArray(recipients));
     }
 
-    //public void orgSendToAllAtt(String from, String message){
-      //  String[] to = userManager.getAllAtt(); //TODO: Give us a list of people that are "attendees".
-      //  messageManager.sendMessage(from, message, to);
-   // }
+    public void orgSendToAllAtt(String from, String message){
+        messageManager.sendMessage(from,
+                message,
+                getStringArray(userManager.getUserByPermissionTemplate(Template.ATTENDEE)));
+    }
+
+    private String[] getStringArray(List<String> list) {
+        String[] res = new String[list.size()];
+        list.toArray(res);
+        return res;
+    }
 
     //public void orgSendToAllSpeakers(String from, String message){
        // String[] speakers = userManager.getAllSpeakers(); //TODO: Give us a list of "speakers".
