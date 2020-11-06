@@ -51,10 +51,10 @@ public class MessageController {
         return res;
     }
 
-    //public void orgSendToAllSpeakers(String from, String message){
-       // String[] speakers = userManager.getAllSpeakers(); //TODO: Give us a list of "speakers".
-       // messageManager.sendMessage(from, message, speakers);
-    //}
+    public void orgSendToAllSpeakers(String from, String message){
+        messageManager.sendMessage(from, message,
+                getStringArray(userManager.getUserByPermissionTemplate(Template.SPEAKER)));
+    }
 
     //TODO: Encapsulation of viewing messages.
 }
