@@ -7,12 +7,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EventMangerTest {
+class EventManagerTest {
 
     @org.junit.jupiter.api.Test
     void getEventsList() {
         List<String> arr = new ArrayList<>();
-        Event e1 = new Event("Bob Smithers", "Test Event", arr, "Meeting Room 1",  2);
+        Instant time = Instant.now();
+        Event e1 = new Event("Bob Smithers", time, "Test Event", arr, "Meeting Room 1",  2);
         EventManager event = new EventManager();
         event.addEventToHash(e1);
         List<Event> events = new ArrayList<>();
@@ -23,9 +24,10 @@ class EventMangerTest {
     @org.junit.jupiter.api.Test
     void getEventByName() {
         List<String> arr = new ArrayList<>();
-        Event e1 = new Event("Bob Smithers", "Test Event", arr, "Meeting Room 1",  2);
-        Event e2 = new Event("Rob Willis", "Test Event 2", arr, "Meeting Room 2",  2);
-        Event e3 = new Event("Jane Doe", "Test Event 3", arr, "Meeting Room 3",  2);
+        Instant time = Instant.now();
+        Event e1 = new Event("Bob Smithers", time, "Test Event", arr, "Meeting Room 1",  2);
+        Event e2 = new Event("Rob Willis", time, "Test Event 2", arr, "Meeting Room 2",  2);
+        Event e3 = new Event("Jane Doe", time, "Test Event 3", arr, "Meeting Room 3",  2);
         EventManager event = new EventManager();
         event.addEventToHash(e1);
         event.addEventToHash(e2);
@@ -37,7 +39,7 @@ class EventMangerTest {
         List<String> arr = new ArrayList<>();
         EventManager event = new EventManager();
         Instant time = Instant.now();
-        event.createEvent("Bob Smithers", time,"Test Event", arr, "Meeting Room 1", "Title", 2);
+        event.createEvent("Bob Smithers", time,"Test Event", arr, "Meeting Room 1",  2);
         assertTrue(event.getEventsList().size() > 0);
     }
 
@@ -50,7 +52,8 @@ class EventMangerTest {
         arr1.add("Daniel Tan");
         arr1.add("Cameron Blom");
         EventManager event = new EventManager();
-        Event e1 = new Event("Bob Smithers", "Test Event", arr, "Meeting Room 1",  2);
+        Instant time = Instant.now();
+        Event e1 = new Event("Bob Smithers", time, "Test Event", arr, "Meeting Room 1",  2);
         assertEquals(event.getParticipants(e1.getId()), arr1);
     }
 
@@ -58,10 +61,11 @@ class EventMangerTest {
     void enrollUser() {
         String name = "Micheal";
         List<String> arr = new ArrayList<>();
-        Event e1 = new Event("Bob Smithers", "Test Event", arr, "Meeting Room 1",  2);
+        Instant time = Instant.now();
+        Event e1 = new Event("Bob Smithers", time,"Test Event", arr, "Meeting Room 1",  2);
         EventManager event = new EventManager();
-        event.enrollsuer(e1.id, name);
-        assertTrue(e1.participants.size(),1);
+        event.enrollUser(e1.id, name);
+        assertEquals(e1.participants.size(),1);
     }
 
     @org.junit.jupiter.api.Test
@@ -70,9 +74,10 @@ class EventMangerTest {
         EventManager event = new EventManager();
         List<String> arr = new ArrayList<>();
         arr.add("Micheal");
-        Event e1 = new Event("Bob Smithers", "Test Event", arr, "Meeting Room 1",  2);
-        event.dropuser(e1.id, name);
-        assertTrue(e1.participants.size(), 0);
+        Instant time = Instant.now();
+        Event e1 = new Event("Bob Smithers", time, "Test Event", arr, "Meeting Room 1",  2);
+        event.dropUser(e1.id, name);
+        assertEquals(e1.participants.size(), 0);
     }
 
     @org.junit.jupiter.api.Test

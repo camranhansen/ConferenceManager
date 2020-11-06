@@ -7,10 +7,10 @@ import java.lang.String;
 import java.util.ArrayList;
 
 
-public class EventManger {
+public class EventManager {
     private HashMap<Integer, Event> events;
 
-    public EventManger(){
+    public EventManager(){
         HashMap<Integer, Event> events = new HashMap<>();
     }
 
@@ -37,19 +37,18 @@ public class EventManger {
 
     public Event getEventByName(String eventName){
         //TODO: Validate events
+        Event result = new Event();
         for (Event value : events.values()){
-            if (value.eventName == eventName){
-                Event result = value;
-            }
+            if (value.eventName.equals(eventName)) result = value;
         }
         return result;
     }
 
     public void createEvent(String name, Instant eventTime, String eventName, List<String> participants,
-                               String room, String title, int capacity){
+                               String room, int capacity){
         //TODO: Validate events.
         //boolean noConflict = true;
-        Event newEvent = new Event(name, eventName, participants, room, capacity);
+        Event newEvent = new Event(name, eventTime, eventName, participants, room, capacity);
 //        for (Event.java value : events.values()){
 //            if ((value.eventTime == newEvent.eventTime) && (value.room == newEvent.room)) {
 //                noConflict = false;
@@ -58,11 +57,12 @@ public class EventManger {
 //        }
 
 //        if (!noConflict){
-//            System.out.println("Cannot creat this event because it conflicts with an existing event.");
+//            System.out.println("Cannot create this event because it conflicts with an existing event.");
 //        }else{
 //            this.events.put(newEvent.id, newEvent);
 //        }
         this.events.put(newEvent.id, newEvent);
+
     }
 
     public List<String> getParticipants(int eventID){
@@ -71,7 +71,7 @@ public class EventManger {
 
     public boolean enrollUser(int eventID, String Username){
         List<String> result = this.getParticipants(eventID);
-        boolean check = this.checkCapacity(result);
+        boolean check = this.checkCapacity(result, events.get(eventID).capacity); // To be fixed
         if(check==true){
             events.get(eventID).participants.add(Username);
             return true;
@@ -99,14 +99,29 @@ public class EventManger {
         return avaliableEvents;
     }
 
-    public boolean checkCapacity(List<String> participants){
-        return true;
+    public void addEventToHash(Event event) { // Temporary method for testing purposes only
+        events.put(event.getId(), event);
     }
 
-    private boolean checkConflict(){
-        return true;
+    public boolean checkCapacity(List<String> participants, int maxCapacity){
+        return participants.size() < maxCapacity;
     }
 
+    public HashMap<Integer, Event> getEventsHash() { // Getter required as events variable is private
+        return events;
+    }
+
+    //TODO: Make Exceptions for this
+    public boolean checkConflict(Event event){ // Made public for test purposes
+        boolean flag = false;
+        for(Event values : events.values()) {
+            if ((values.getEventTime() == event.getEventTime()) && (values.getRoom().equals(event.getRoom()) || values.getSpeakername().equals(event.getSpeakername()))) {
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
 }
 
 

@@ -16,9 +16,9 @@ public class Event {
     public Event(){
 
     }
-    public Event(String name, String eventName, List<String> participants, String room, int capacity ){
+    public Event(String name, Instant time, String eventName, List<String> participants, String room, int capacity ){
         this.speakerName = name;
-        this.time = Instant.now();
+        this.time = time;
         this.eventName = eventName;
         this.participants = participants;
         this.room = room;

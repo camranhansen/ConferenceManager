@@ -30,4 +30,6 @@ public class Message {
     public String[] getRecipients() {
         return recipients;
     }
+
+    //TODO: Talk about encapsulation.
 }
