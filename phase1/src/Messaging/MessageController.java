@@ -1,6 +1,7 @@
 package Messaging;
 
 import Events.EventManager;
+import Users.LoginPresenter;
 import Users.Template;
 import Users.UserManager;
 
@@ -15,11 +16,13 @@ public class MessageController {
     private MessageManager messageManager;
     private UserManager userManager;
     private EventManager eventManager;
+    private MessagePresenter messagePresenter;
 
     public MessageController(MessageManager messageManager, UserManager userManager, EventManager eventManager) {
         this.messageManager = messageManager;
         this.userManager = userManager;
         this.eventManager = eventManager;
+        this.messagePresenter = new MessagePresenter();
     }
 
     public void writeMessage(String from, String to, String message) {
@@ -29,6 +32,7 @@ public class MessageController {
     public HashMap<String, List<Message>> viewSentMessage(String username){
         return messageManager.retrieveUserInbox(username);
     }
+
 
     public void writeToEvents(String from, String message, int... events) {
         ArrayList<String> recipientsSum = new ArrayList<>();
@@ -57,4 +61,6 @@ public class MessageController {
     }
 
     //TODO: Encapsulation of viewing messages.
+
+
 }

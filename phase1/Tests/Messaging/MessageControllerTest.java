@@ -12,6 +12,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class MessageControllerTest {
+
     @Test
     public void testWriteMessage(){
         MessageManager mm = new MessageManager();
