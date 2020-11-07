@@ -1,6 +1,5 @@
 package Users;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,8 +31,8 @@ public enum Template {
     ADMIN(new Permission[] {
             Permission.USER_ALL_EDIT_PERMISSION,
             Permission.USER_OTHER_EDIT_PASSWORD,
-            Permission.USER_CREATE,
-            Permission.USER_DELETE,
+            Permission.USER_CREATE_ACCOUNT,
+            Permission.USER_DELETE_ACCOUNT,
             Permission.USER_SELF_EDIT_PASSWORD,
             Permission.USER_CREATE_SPEAKER_ACCOUNT,
 

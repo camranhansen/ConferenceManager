@@ -63,7 +63,7 @@ public class UserManagerTest {
         List<Permission> permissionsToAdd = new ArrayList<>();
         permissionsToAdd.add(Permission.MESSAGE_SINGLE_ATTENDEE);
         permissionsToAdd.add(Permission.USER_OTHER_EDIT_PASSWORD);
-        permissionsToAdd.add(Permission.USER_CREATE);
+        permissionsToAdd.add(Permission.USER_CREATE_ACCOUNT);
 
         assertNotEquals(um.getPermissions("bob"),permissionsToAdd);
         um.setPermission("bob",permissionsToAdd);
@@ -92,9 +92,9 @@ public class UserManagerTest {
     @org.junit.Test
     public void addPermission() {
         UserManager um = createUserManager();
-        assertFalse(um.getPermissions("bob").contains(Permission.USER_DELETE));
-        um.addPermission("bob",Permission.USER_DELETE);
-        assertTrue(um.getPermissions("bob").contains(Permission.USER_DELETE));
+        assertFalse(um.getPermissions("bob").contains(Permission.USER_DELETE_ACCOUNT));
+        um.addPermission("bob",Permission.USER_DELETE_ACCOUNT);
+        assertTrue(um.getPermissions("bob").contains(Permission.USER_DELETE_ACCOUNT));
 
     }
 

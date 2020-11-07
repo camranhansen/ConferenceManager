@@ -7,6 +7,6 @@ public class LoginPresenter {
     }
 
     public void promptPassword(){
-        System.out.println("Please enter your password");
+        System.out.println("Please enter your password:");
     }
 }

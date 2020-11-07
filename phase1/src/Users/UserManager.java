@@ -74,4 +74,8 @@ public class UserManager {
         //TODO: Validate username and password
         this.users.get(username).setPassword(password);
     }
+
+    //TODO:Search for users with specific permission levels(?)
+    // Get a list of users by permission template (i.e list of usernames
+    // that are attendees/speakers)
 }
