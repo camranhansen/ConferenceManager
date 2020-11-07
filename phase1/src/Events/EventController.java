@@ -64,7 +64,7 @@ public class EventController{
         }else{return null;}
     }
 
-    public List<Event> getViewMyList(){
+    public List<Event> getViewMyListInput(){
         Scanner userInput = new Scanner(System.in);
         this.eventPresenter.viewMyList();
         String username = userInput.nextLine();
