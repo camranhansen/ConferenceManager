@@ -1,20 +1,22 @@
 package Events;
 
-import Users.User;
-import Users.UserManager;
+//import Messaging.MessagePresenter;
+//import Users.User;
+//import Users.UserManager;
 
 import java.util.ArrayList;
 //import java.util.Arrays;
-import java.util.HashMap;
+//import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 public class EventController{
-    private UserManager userManager;
     private EventManager eventManager;
+    private EventPresenter eventPresenter;
 
-    public EventController(UserManager userManager, EventManager eventManager) {
-        this.userManager = userManager;
+    public EventController(EventManager eventManager) {
         this.eventManager = eventManager;
+        this.eventPresenter = new EventPresenter();
     }
 
     public List<Event> viewAllEvents(){
@@ -32,12 +34,48 @@ public class EventController{
        return myEvents;
     }
 
-    public void enroll(int eventid, String username){
-        this.eventManager.enrollUser(eventid, username);
+    public void enroll(int eventId, String username){
+        this.eventManager.enrollUser(eventId, username);
     }
 
-    public void drop(int eventid, String username){
-        this.eventManager.dropUser(eventid, username);
+    public void drop(int eventId, String username){
+        this.eventManager.dropUser(eventId, username);
     }
+
+    public String getEnrollEventInput(){
+        Scanner userInput = new Scanner(System.in);
+        this.eventPresenter.enrollEvent();
+        return userInput.nextLine();
+    }
+
+    public String getDropEventInput(){
+        Scanner userInput = new Scanner(System.in);
+        this.eventPresenter.dropEvent();
+        return userInput.nextLine();
+    }
+
+    public List<Event> getViewEventListInput(){
+        Scanner userInput = new Scanner(System.in);
+        this.eventPresenter.viewEventList();
+        String answer = userInput.nextLine();
+
+        if (answer.equals("Yes")){
+            return this.viewAllEvents();
+        }else{return null;}
+    }
+
+    public List<Event> getViewMyList(){
+        Scanner userInput = new Scanner(System.in);
+        this.eventPresenter.viewMyList();
+        String username = userInput.nextLine();
+        return this.checkMyEvents(username);
+    }
+
+//    public List<Event> getViewSpeakerList(){
+//        Scanner userInput = new Scanner(System.in);
+//        this.eventPresenter.viewSpeakerList();
+//        String username = userInput.nextLine();
+//        return this.checkMyEvents(username);
+//    }
 
 }

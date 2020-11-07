@@ -14,10 +14,10 @@ public class EventPresenter {
     }
 
     public void viewMyList(){
-        System.out.println("Check mine events: Yes/No ");
+        System.out.println("Enter the username to see events you enroll:");
     }
 
     public void viewSpeakerList(){
-        System.out.println("Check events that I am register as speaker: Yes/No");
+        System.out.println("Check events that I am registered as speaker: Yes/No");
     }
 }
