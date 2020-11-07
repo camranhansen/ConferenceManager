@@ -39,7 +39,7 @@ public class EventManager {
         //TODO: Validate events
         Event result = new Event();
         for (Event value : events.values()){
-            if (value.eventName.equals(eventName)) result = value;
+            if (value.getEventName().equals(eventName)) result = value;
         }
         return result;
     }
@@ -61,7 +61,7 @@ public class EventManager {
 //        }else{
 //            this.events.put(newEvent.id, newEvent);
 //        }
-        this.events.put(newEvent.id, newEvent);
+        this.events.put(newEvent.getId(), newEvent);
 
     }
 
@@ -71,32 +71,32 @@ public class EventManager {
 
     public boolean enrollUser(int eventID, String Username){
         List<String> result = this.getParticipants(eventID);
-        boolean check = this.checkCapacity(result, events.get(eventID).capacity); // To be fixed
+        boolean check = this.checkCapacity(result, events.get(eventID).getCapacity()); // To be fixed
         if(check==true){
-            events.get(eventID).participants.add(Username);
+            events.get(eventID).getParticipants().add(Username);
             return true;
         }
         return false;
     }
 
     public boolean dropUser(int eventID, String Username){
-        events.get(eventID).participants.remove(Username);
+        events.get(eventID).getParticipants().remove(Username);
         return true;
     }
 
     public Event getInfo(int eventID){
+        //TODO: DISCUSS LATER
         return events.get(eventID);
     }
 
-    public List<Event> getavaliableevent(String username){
-        List<Event> avaliableEvents = new ArrayList<>();
+    public List<Event> getAvailableEvent(String username){
+        List<Event> availableEvents = new ArrayList<>();
         for(int i=0; i<events.size(); i++){
-            if(events.get(i).participants.contains(username)){
-                avaliableEvents.add(events.get(i));
+            if(events.get(i).getParticipants().contains(username)){
+                availableEvents.add(events.get(i));
             }
-            return avaliableEvents;
         }
-        return avaliableEvents;
+        return availableEvents;
     }
 
     public void addEventToHash(Event event) { // Temporary method for testing purposes only

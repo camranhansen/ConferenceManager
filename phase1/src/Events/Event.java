@@ -4,14 +4,14 @@ import java.util.List;
 
 
 public class Event {
-    public String speakerName;
-    public Instant time;
-    public String eventName;
-    public List<String> participants;
-    public String room;
-    public int capacity;
-    public int id;
-    public static int count = 0;
+    private String speakerName;
+    private Instant time;
+    private String eventName;
+    private List<String> participants;
+    private String room;
+    private int capacity;
+    private int id;
+    private static int count = 0;
 
     public Event(){
 
@@ -23,12 +23,15 @@ public class Event {
         this.participants = participants;
         this.room = room;
         this.capacity = capacity;
-        this.id = Event.count;
         Event.count += 1;
     }
 
     public String getSpeakername(){
         return this.speakerName;
+    }
+
+    public void setEventid(){
+        this.id = Event.count;
     }
 
     public Instant getEventTime(){
