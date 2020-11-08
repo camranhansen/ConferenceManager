@@ -1,6 +1,8 @@
 package Messaging;
 
 import Events.EventManager;
+import Users.Template;
+import Users.User;
 import Users.UserManager;
 import org.junit.Test;
 
@@ -76,4 +78,67 @@ public class MessageControllerTest {
 
 
   //  }
+  public HashMap<String, User> generateUserHash(){
+      User u1 = new User("u1", "pass1", Template.ATTENDEE.getPermissions());
+      User u2= new User("u2", "pass2", Template.ATTENDEE.getPermissions());
+      HashMap<String, User> users = new HashMap<>();
+      users.put(u1.getUsername(), u1);
+      users.put(u2.getUsername(), u2);
+      return users;
+  }
+
+    @Test(timeout = 50)
+    public void controllerConstructTest(){
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+    }
+
+    @Test(timeout = 50)
+    public void writeMessageTest(){
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+        messageController.writeMessage("u1", "u2", "hello");
+    }
+
+    @Test(timeout = 50)
+    public void viewAllTest(){
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+        messageController.writeMessage("u1", "u2", "hello");
+        messageController.viewSentMessage("u2");
+        System.out.println( messageController.viewSentMessage("u2").toString());
+        //TODO: in view methods add getContent... or string of some sort to display
+    }
+
+    @Test(timeout = 50)
+    public void viewFromTest(){
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+        messageController.writeMessage("u1", "u2", "hello");
+        messageController.viewMessageSentFrom("u2", "u1");
+        System.out.println( messageController.viewMessageSentFrom("u2", "u1").get(0).getContent());
+    }
+
+    @Test(timeout = 50)
+    public void sendToAllAttTest(){
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+        messageController.orgSendToAllAtt("org1", "events rock");
+        System.out.println(messageController.viewMessageSentFrom("u1", "org1").get(0).getContent());
+    }
 }
