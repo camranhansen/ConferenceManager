@@ -42,20 +42,21 @@ public class EventController{
         this.eventManager.dropUser(eventId, username);
     }
 
-    public String getEnrollEventInput(){
-        Scanner userInput = new Scanner(System.in);
+    public Scanner getUserInput() {
+        return new Scanner(System.in);
+    }
+
+    public String getEnrollEventInput(Scanner userInput){
         this.eventPresenter.enrollEvent();
         return userInput.nextLine();
     }
 
-    public String getDropEventInput(){
-        Scanner userInput = new Scanner(System.in);
+    public String getDropEventInput(Scanner userInput){
         this.eventPresenter.dropEvent();
         return userInput.nextLine();
     }
 
-    public List<Event> getViewEventListInput(){
-        Scanner userInput = new Scanner(System.in);
+    public List<Event> getViewEventListInput(Scanner userInput){
         this.eventPresenter.viewEventList();
         String answer = userInput.nextLine();
 
@@ -64,8 +65,7 @@ public class EventController{
         }else{return null;}
     }
 
-    public List<Event> getViewMyListInput(){
-        Scanner userInput = new Scanner(System.in);
+    public List<Event> getViewMyListInput(Scanner userInput){
         this.eventPresenter.viewMyList();
         String username = userInput.nextLine();
         return this.checkMyEvents(username);
