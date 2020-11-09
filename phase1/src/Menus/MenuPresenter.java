@@ -22,7 +22,7 @@ public class MenuPresenter {
     }
 
 
-    public void presentCategories(List<Permission> permissions) {
+    public List<String> presentCategories(List<Permission> permissions) {
         String prompt = "Which category would you like to see?";
         List<String> categories = new ArrayList<>();
         for (Permission p: permissions) {
@@ -33,8 +33,10 @@ public class MenuPresenter {
         for (String c: categories) {
             options += categories.indexOf(c)+ ": " + c + "\n";
         }
+
         System.out.println(prompt);
         System.out.println(options);
+        return categories;
     }
 
 

@@ -9,11 +9,11 @@ public class UserManagerTest {
 
     public UserManager createUserManager(){
         List<Permission> permissions = new ArrayList<>();
-        permissions.add(Permission.MESSAGE_SINGLE_ATTENDEE);
+        permissions.add(Permission.MESSAGE_SINGLE_USER);
         User u1 = new User("bob", "123", permissions);
 
         List<Permission> permissions2 = new ArrayList<>();
-        permissions2.add(Permission.MESSAGE_SINGLE_ATTENDEE);
+        permissions2.add(Permission.MESSAGE_SINGLE_USER);
         permissions2.add(Permission.USER_ALL_EDIT_PERMISSION);
         User u2 = new User("louis", "asdf", permissions2);
 
@@ -40,7 +40,7 @@ public class UserManagerTest {
         UserManager um = createUserManager();
 
         List<Permission> newpermissions = new ArrayList<>();
-        newpermissions.add(Permission.MESSAGE_SINGLE_ATTENDEE);
+        newpermissions.add(Permission.MESSAGE_SINGLE_USER);
         newpermissions.add(Permission.USER_ALL_EDIT_PERMISSION);
             um.createUser("timmy","asdf1234",newpermissions);
         assertTrue(um.userExists("timmy"));
@@ -61,7 +61,7 @@ public class UserManagerTest {
     public void setPermission() {
         UserManager um = createUserManager();
         List<Permission> permissionsToAdd = new ArrayList<>();
-        permissionsToAdd.add(Permission.MESSAGE_SINGLE_ATTENDEE);
+        permissionsToAdd.add(Permission.MESSAGE_SINGLE_USER);
         permissionsToAdd.add(Permission.USER_OTHER_EDIT_PASSWORD);
         permissionsToAdd.add(Permission.USER_CREATE_ACCOUNT);
 
@@ -75,9 +75,9 @@ public class UserManagerTest {
         UserManager um = createUserManager();
         List<Permission> permissionsToAdd = new ArrayList<>();
         permissionsToAdd.add(Permission.USER_SELF_EDIT_PASSWORD);
-        permissionsToAdd.add(Permission.MESSAGE_SINGLE_ATTENDEE);
-        permissionsToAdd.add(Permission.VIEW_ATTENDING_EVENTS);
-        permissionsToAdd.add(Permission.VIEW_SELF_CHAT_HISTORY);
+        permissionsToAdd.add(Permission.MESSAGE_SINGLE_USER);
+        permissionsToAdd.add(Permission.VIEW_ALL_EVENTS);
+        permissionsToAdd.add(Permission.VIEW_SELF_MESSAGES);
 
 
         assertTrue(um.getUserByPermissionTemplate(Template.ATTENDEE).isEmpty());
@@ -102,9 +102,9 @@ public class UserManagerTest {
     @org.junit.Test
     public void removePermission() {
         UserManager um = createUserManager();
-        assertTrue(um.getPermissions("bob").contains(Permission.MESSAGE_SINGLE_ATTENDEE));
-        um.removePermission("bob", Permission.MESSAGE_SINGLE_ATTENDEE);
-        assertFalse(um.getPermissions("bob").contains(Permission.MESSAGE_SINGLE_ATTENDEE));
+        assertTrue(um.getPermissions("bob").contains(Permission.MESSAGE_SINGLE_USER));
+        um.removePermission("bob", Permission.MESSAGE_SINGLE_USER);
+        assertFalse(um.getPermissions("bob").contains(Permission.MESSAGE_SINGLE_USER));
 
     }
 

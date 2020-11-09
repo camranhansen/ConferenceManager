@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import Users.LoginController;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -17,11 +16,11 @@ public class LoginControllerTest {
     //UserManagerTest
     public UserManager createUserManager(){
         List<Permission> permissions = new ArrayList<>();
-        permissions.add(Permission.MESSAGE_SINGLE_ATTENDEE);
+        permissions.add(Permission.MESSAGE_SINGLE_USER);
         User u1 = new User("bob", "123", permissions);
 
         List<Permission> permissions2 = new ArrayList<>();
-        permissions2.add(Permission.MESSAGE_SINGLE_ATTENDEE);
+        permissions2.add(Permission.MESSAGE_SINGLE_USER);
         permissions2.add(Permission.USER_ALL_EDIT_PERMISSION);
         User u2 = new User("louis", "asdf", permissions2);
 

@@ -1,7 +1,13 @@
 package Menus;
 
+import Users.Permission;
+
 public interface SubController {
 
     //TODO: Implement in Messaging, Events and Registration(when required) controllers.
-    void parseText(String text);
+    //You are "invoking" the permission
+    void performSelectedAction(String username, Permission permissionSelected);
 }
+
+
+
