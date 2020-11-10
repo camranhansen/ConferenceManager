@@ -1,6 +1,7 @@
 package Messaging;
 
 import Events.EventManager;
+import Menus.SubController;
 import Users.Permission;
 import Users.Template;
 import Users.UserManager;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class MessageController {
+public class MessageController implements SubController {
     //Potentially move eventmanager and usermanager to menu?
     private MessageManager messageManager;
     private UserManager userManager;
@@ -27,17 +28,17 @@ public class MessageController {
         this.messageScanner = new Scanner(System.in);
     }
 
-    public void permission(Permission permission, String username) {
-        if (permission == Permission.MESSAGE_ALL_USERS){
+    public void performSelectedAction(String username, Permission permissionSelected) {
+        if (permissionSelected == Permission.MESSAGE_ALL_USERS){
             orgSendToAll(username);
         }
-        else if (permission == Permission.MESSAGE_SINGLE_USER){
+        else if (permissionSelected == Permission.MESSAGE_SINGLE_USER){
             writeMessage(username);
         }
-        else if (permission == Permission.MESSAGE_EVENT_USERS){
+        else if (permissionSelected == Permission.MESSAGE_EVENT_USERS){
             messageEvents(username);
         }
-        else if (permission == Permission.VIEW_SELF_MESSAGES){
+        else if (permissionSelected == Permission.VIEW_SELF_MESSAGES){
             viewMessage(username);
         }
     }
