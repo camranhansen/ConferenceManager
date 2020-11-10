@@ -64,8 +64,8 @@ class EventManagerTest {
         Instant time = Instant.now();
         Event e1 = new Event("Bob Smithers", time,"Test Event", arr, "Meeting Room 1",  2);
         EventManager event = new EventManager();
-        event.enrollUser(e1.id, name);
-        assertEquals(e1.participants.size(),1);
+        event.enrollUser(e1.getId(), name);
+        assertEquals(e1.getParticipants().size(),1);
     }
 
     @org.junit.jupiter.api.Test
@@ -76,8 +76,8 @@ class EventManagerTest {
         arr.add("Micheal");
         Instant time = Instant.now();
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr, "Meeting Room 1",  2);
-        event.dropUser(e1.id, name);
-        assertEquals(e1.participants.size(), 0);
+        event.dropUser(e1.getId(), name);
+        assertEquals(e1.getParticipants().size(), 0);
     }
 
     @org.junit.jupiter.api.Test

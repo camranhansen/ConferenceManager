@@ -23,6 +23,7 @@ public class Event {
         this.participants = participants;
         this.room = room;
         this.capacity = capacity;
+        setEventid();
         Event.count += 1;
     }
 
