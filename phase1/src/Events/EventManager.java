@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 
 public class EventManager {
-    private HashMap<Integer, Event> events;
+    public HashMap<Integer, Event> events;
 
     public EventManager(){
         HashMap<Integer, Event> events = new HashMap<>();
@@ -44,6 +44,17 @@ public class EventManager {
         return result;
     }
 
+    public List<Event> getEventBySpeakerName(String userName){
+        //TODO: Validate events
+        List<Event> aList = new ArrayList<>();
+        for (Event value : events.values()){
+            if (value.getSpeakername().equals(userName)){
+                aList.add(value);
+            }
+        }
+        return aList;
+    }
+
     public void createEvent(String name, Instant eventTime, String eventName, List<String> participants,
                                String room, int capacity){
         //TODO: Validate events.
@@ -65,6 +76,10 @@ public class EventManager {
 
     }
 
+    public void deleteEvent(int eventId){
+        this.events.remove(eventId);
+    }
+
     public List<String> getParticipants(int eventID){
         return events.get(eventID).getParticipants();
     }
@@ -72,7 +87,7 @@ public class EventManager {
     public boolean enrollUser(int eventID, String Username){
         List<String> result = this.getParticipants(eventID);
         boolean check = this.checkCapacity(result, events.get(eventID).getCapacity()); // To be fixed
-        if(check==true){
+        if(check){
             events.get(eventID).getParticipants().add(Username);
             return true;
         }
@@ -133,6 +148,23 @@ public class EventManager {
         Integer[] eventIds = new Integer[spkEvents.size()];
         eventIds = spkEvents.toArray(eventIds);
         return eventIds;
+    }
+
+    public void editTime(int eventId, Instant time){
+        this.events.get(eventId).setTime(time);
+    }
+
+    public void editSpekaername(int eventId, String name){
+        this.events.get(eventId).setSpeakerName(name);
+    }
+    public void editEventname(int eventId, String name){
+        this.events.get(eventId).setEventName(name);
+    }
+    public void editRoom(int eventId, String name){
+        this.events.get(eventId).setRoom(name);
+    }
+    public void editCapacity(int eventId, int capacity){
+        this.events.get(eventId).setCapacity(capacity);
     }
 }
 
