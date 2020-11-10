@@ -51,7 +51,7 @@ public class Event {
         this.capacity = capacity;
     }
 
-    public String getSpeakername(){
+    public String getSpeakerName(){
         return this.speakerName;
     }
 

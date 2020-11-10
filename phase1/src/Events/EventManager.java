@@ -48,7 +48,7 @@ public class EventManager {
         //TODO: Validate events
         List<Event> aList = new ArrayList<>();
         for (Event value : events.values()){
-            if (value.getSpeakername().equals(userName)){
+            if (value.getSpeakerName().equals(userName)){
                 aList.add(value);
             }
         }
@@ -130,7 +130,7 @@ public class EventManager {
     public boolean checkConflict(Event event){ // Made public for test purposes
         boolean flag = false;
         for(Event values : events.values()) {
-            if ((values.getEventTime() == event.getEventTime()) && (values.getRoom().equals(event.getRoom()) || values.getSpeakername().equals(event.getSpeakername()))) {
+            if ((values.getEventTime() == event.getEventTime()) && (values.getRoom().equals(event.getRoom()) || values.getSpeakerName().equals(event.getSpeakerName()))) {
                 flag = true;
                 break;
             }
@@ -141,7 +141,7 @@ public class EventManager {
     public Integer[] getSpkEvents(String username){
         ArrayList<Integer> spkEvents = new ArrayList<>();
         for(Event event:getEventsList()){
-            if(event.getSpeakername().equals(username)){
+            if(event.getSpeakerName().equals(username)){
                 spkEvents.add(event.getId());
             }
         }

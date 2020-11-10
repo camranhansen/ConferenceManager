@@ -1,12 +1,12 @@
 package Events;
 
-import Messaging.MessagePresenter;
+//import Messaging.MessagePresenter;
 //import Users.User;
 //import Users.UserManager;
 
 import Menus.SubController;
 import Users.Permission;
-import Users.Template;
+//import Users.Template;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -49,19 +49,6 @@ public class EventController implements SubController {
         this.eventManager.dropUser(eventId, username);
     }
 
-
-    public List<Event> getViewEventListInput(Scanner userInput){
-        this.eventPresenter.viewEventList();
-        String answer = userInput.nextLine();
-
-        if (answer.equals("Yes")){
-            return this.viewAllEvents();
-        }
-        else {
-            return null;
-        }
-    }
-
     public List<Event> viewAvailableEvent(String username){
         return this.eventManager.getAvailableEvent(username);
     }
@@ -71,7 +58,7 @@ public class EventController implements SubController {
     }
 
     public void enrollSelf(String username){
-        this.eventPresenter.enrollOrdrop();
+        this.eventPresenter.enrollOrDrop();
         int choice = eventScanner.nextInt();
         this.eventPresenter.enterId();
         int id = eventScanner.nextInt();
@@ -87,33 +74,56 @@ public class EventController implements SubController {
         this.eventManager.deleteEvent(eventId);
     }
 
-    //public void editTime(int eventId){
-        //this.eventPresenter.enterTime();
-        //Instant time = eventScanner.next();
-        //this.eventManager.editTime(eventId, time);
-    //}
+    //TODO: Change time from string to instant
+//    public Instant getTimeInput(){
+//        this.eventPresenter.enterTime();
+//        return eventScanner.nextLine();
+//    }
 
-    public void editSpekaername(int eventId){
+    public String getSpeakerNameInput(){
         this.eventPresenter.enterSpeakerName();
-        String name = eventScanner.nextLine();
+        return eventScanner.nextLine();
+    }
+
+    public String getEventNameInput(){
+        this.eventPresenter.enterEventName();
+        return eventScanner.nextLine();
+    }
+
+    public String getRoomInput(){
+        this.eventPresenter.enterRoom();
+        return eventScanner.nextLine();
+    }
+
+    public int getCapacityInput(){
+        this.eventPresenter.enterCapacity();
+        return eventScanner.nextInt();
+    }
+
+    //TODO: Change time from string to instant
+//    public void editTime(int eventId){
+//        this.eventPresenter.enterTime();
+//        Instant time = this.getTimeInput();
+//        this.eventManager.editTime(eventId, time);
+//    }
+
+    public void editSpeakerName(int eventId){
+        String name = this.getSpeakerNameInput();
         this.eventManager.editSpekaername(eventId, name);
     }
 
-    public void editEventname(int eventId){
-        this.eventPresenter.enterEventName();
-        String name = eventScanner.nextLine();
+    public void editEventName(int eventId){
+        String name = this.getEventNameInput();
         this.eventManager.editEventname(eventId, name);
     }
 
     public void editRoom(int eventId){
-        this.eventPresenter.enterRoom();
-        String name = eventScanner.nextLine();
+        String name = this.getRoomInput();
         this.eventManager.editRoom(eventId, name);
     }
 
     public void editCapacity(int eventId){
-        this.eventPresenter.enterCapacity();
-        int capacity = eventScanner.nextInt();
+        int capacity = this.getCapacityInput();
         this.eventManager.editCapacity(eventId, capacity);
     }
 
@@ -122,13 +132,20 @@ public class EventController implements SubController {
             enrollSelf(username);
         }
         else if(permissionSelected == Permission.EVENT_OTHER_ENROLL){
+            this.eventPresenter.enterUsername();
             String name = eventScanner.nextLine();
             enrollSelf(name);
         }
-        //else if(permissionSelected == Permission.EVENT_CREATE){
-            //this.eventScanner.enterInfo();
-            //addEvent();
-       // }
+        //TODO: Change time from string to instant
+//        else if(permissionSelected == Permission.EVENT_CREATE){
+//            String speakerName = getSpeakerNameInput();
+//            Instant time = getTimeInput()
+//            String eventName = getEventNameInput();
+//            List<String> participants = new ArrayList<>();
+//            String roomName = getRoomInput();
+//            int capacity = getCapacityInput();
+//            addEvent(speakerName, time, eventName, participants, roomName, capacity);
+//        }
         else if(permissionSelected == Permission.EVENT_DELETE){
             this.eventPresenter.enterId();
             int id = eventScanner.nextInt();
@@ -143,10 +160,10 @@ public class EventController implements SubController {
                 //editTime(id);
             }
             else if(typeofChanges == 2){
-                editSpekaername(id);
+                editSpeakerName(id);
             }
             else if(typeofChanges == 3){
-                editEventname(id);
+                editEventName(id);
             }
             else if(typeofChanges == 4){
                 editRoom(id);
