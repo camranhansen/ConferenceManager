@@ -59,16 +59,17 @@ public class MessageControllerTest {
 
 
     }
-    //@Test
-    //public void writeToEvents(){
+    @Test
+    public void writeToEvents(){
         //MessageManager mm = new MessageManager();
         //EventManager em = new EventManager();
         //UserManager um = new UserManager(new HashMap<>());
         //MessageController mc = new MessageController(mm, um, em);
         //List<String> participants = new ArrayList<>();
+        //Instant time = Instant.now();
         //participants.add("user1");
         //participants.add("user2");
-        //em.createEvent("speaker1", Instant.now(), "event1", participants, "room1", 6);
+        //em.createEvent("speaker1", time, "event1", participants, "room1", 3);
         //mc.writeToEvents("speaker1", "announcement", 0);
         //HashMap<String, List<Message>> hashmap1 = mc.viewSentMessage("user1");
         //HashMap<String, List<Message>> hashmap2 = mc.viewSentMessage("user2");
@@ -77,7 +78,7 @@ public class MessageControllerTest {
         //assertEquals(hashmap2.get("speaker1").get(0).getContent(), "announcement");
 
 
-  //  }
+    }
   public HashMap<String, User> generateUserHash(){
       User u1 = new User("u1", "pass1", Template.ATTENDEE.getPermissions());
       User u2= new User("u2", "pass2", Template.ATTENDEE.getPermissions());
@@ -127,8 +128,8 @@ public class MessageControllerTest {
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
         messageController.writeMessage("u1", "u2", "hello");
-        messageController.viewMessageSentFrom("u2", "u1");
-        System.out.println( messageController.viewMessageSentFrom("u2", "u1").get(0).getContent());
+        messageController.viewMessageFrom("u2", "u1");
+        System.out.println( messageController.viewMessageFrom("u2", "u1").get(0).getContent());
     }
 
     @Test(timeout = 50)
@@ -139,6 +140,6 @@ public class MessageControllerTest {
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
         messageController.orgSendToAllAtt("org1", "events rock");
-        System.out.println(messageController.viewMessageSentFrom("u1", "org1").get(0).getContent());
+        System.out.println(messageController.viewMessageFrom("u1", "org1").get(0).getContent());
     }
 }
