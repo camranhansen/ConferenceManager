@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+//TODO: add toString
+
 public class MessageManager {
     private HashMap<String, HashMap<String, List<Message>>> inboxes;
 

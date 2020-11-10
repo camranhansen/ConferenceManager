@@ -2,20 +2,8 @@ package Messaging;
 
 public class MessagePresenter {
 
-    public void viewOrSend(){
-        System.out.println("to view messages: enter 'view'.\nto send a message: enter 'send'.");
-    }
-
     public void viewAllOrFromOne(){
-        System.out.println("to view whole inbox: enter 'all'.\nto view from one username: enter 'from'.");
-    }
-
-    public void viewFromOneUsername(){
-        System.out.println("enter sender username:");
-    }
-
-    public void sendToOne(){
-        System.out.println("Would you like to send to one? enter: 'yes' or 'no'");
+        System.out.println("to view whole inbox: enter '1'.\nto view from one username: enter '2''.");
     }
 
     public void enterUsername(){
@@ -26,15 +14,15 @@ public class MessagePresenter {
         System.out.println("enter text:");
     }
 
-    public void sendToAllAttendees(){
-        System.out.println("would you like to send to all attendees? enter: 'yes' or 'no'");
-    }
-
-    public void sendToAllSpeakers(){
-        System.out.println("would you like to send to all speakers? enter: 'yes' or 'no'");
+    public void sendToAll(){
+        System.out.println("to send to all attendees: enter '1'\nto send to all speakers: enter '2'");
     }
 
     public void sendToEvents(){
-        System.out.println("would you like to send to all your events? enter: 'yes' or 'no'");
+        System.out.println("to send to all your events: enter '1'\nto send to one event: enter '2'");
+    }
+
+    public void sendToOneEvent(){
+        System.out.println("enter event id:");
     }
 }

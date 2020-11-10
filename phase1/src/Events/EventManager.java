@@ -122,6 +122,18 @@ public class EventManager {
         }
         return flag;
     }
+
+    public Integer[] getSpkEvents(String username){
+        ArrayList<Integer> spkEvents = new ArrayList<>();
+        for(Event event:getEventsList()){
+            if(event.getSpeakername().equals(username)){
+                spkEvents.add(event.getId());
+            }
+        }
+        Integer[] eventIds = new Integer[spkEvents.size()];
+        eventIds = spkEvents.toArray(eventIds);
+        return eventIds;
+    }
 }
 
 
