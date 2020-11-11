@@ -32,13 +32,7 @@ public class EventController implements SubController {
 
     public List<Event> checkMyEvents(String userName){
         //TODO: Validate userName.
-        List<Event> myEvents = new ArrayList<>();
-           for (int id : eventManager.getEventsHash().keySet()){
-               if (eventManager.getParticipants(id).contains(userName)){
-                   myEvents.add(eventManager.getEventsHash().get(id));
-               }
-           }
-       return myEvents;
+        return eventManager.getUserEvents(userName);
     }
 
     public void enroll(int eventId, String username){
@@ -50,7 +44,7 @@ public class EventController implements SubController {
     }
 
     public List<Event> viewAvailableEvent(String username){
-        return this.eventManager.getAvailableEvent(username);
+        return this.eventManager.getAvailableEvents(username);
     }
 
     public void addEvent(String name, Instant time, String eventName, List<String> participants, String room, int capacity){
@@ -109,12 +103,12 @@ public class EventController implements SubController {
 
     public void editSpeakerName(int eventId){
         String name = this.getSpeakerNameInput();
-        this.eventManager.editSpekaername(eventId, name);
+        this.eventManager.editSpeakerName(eventId, name);
     }
 
     public void editEventName(int eventId){
         String name = this.getEventNameInput();
-        this.eventManager.editEventname(eventId, name);
+        this.eventManager.editEventName(eventId, name);
     }
 
     public void editRoom(int eventId){
