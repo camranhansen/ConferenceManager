@@ -1,10 +1,15 @@
 package Events;
 
-import Users.User;
-import Users.UserManager;
+// import Users.User;
+// import Users.UserManager;
+
+import Menus.SubController;
+import Users.Permission;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+// import java.util.HashMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -76,68 +81,100 @@ class EventControllerTest {
     }
 
     @org.junit.jupiter.api.Test
-    void getEnrollEventInput() {
+    void viewAvailableEvents() {
         EventManager eventManager = new EventManager();
         EventController control = new EventController(eventManager);
-        Scanner input = new Scanner("Clean Architecture");
-        String answer = control.getEnrollEventInput(input);
-        assertEquals(answer, "Clean Architecture");
-    }
-
-    @org.junit.jupiter.api.Test
-    void getDropEventInput() {
-        EventManager eventManager = new EventManager();
-        EventController control = new EventController(eventManager);
-        Scanner input = new Scanner("Clean Architecture");
-        String answer = control.getEnrollEventInput(input);
-        assertEquals(answer, "Clean Architecture");
-    }
-
-    @org.junit.jupiter.api.Test
-    void getViewEventListInputYes() {
-        EventManager eventManager = new EventManager();
-        EventController control = new EventController(eventManager);
-        List<String> arr = new ArrayList<>();
         Instant time = Instant.now();
-        eventManager.createEvent("Bob Smithers", time, "Test Event", arr, "Meeting Room 1", 2);
-        eventManager.createEvent("Rob Willis", time, "Test Event 2", arr, "Meeting Room 2", 2);
-        eventManager.createEvent("Jane Doe", time, "Test Event 3", arr, "Meeting Room 3", 2);
-        Event e1 = eventManager.getEventByName("Test Event");
-        Event e2 = eventManager.getEventByName("Test Event 2");
-        Event e3 = eventManager.getEventByName("Test Event 3");
+        Instant time2 = time.plus(1, ChronoUnit.HOURS);
+        List<String> arr1 = new ArrayList<>();
+        List<String> arr2 = new ArrayList<>();
+        List<String> arr3 = new ArrayList<>();
+        arr3.add("Micheal");
+        Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
+        Event e2 = new Event("Janet Haws", time, "Test Event 2", arr2, "Meeting Room 2",  2);
+        Event e3 = new Event("Roger", time2, "Test Event 3", arr3, "Meeting Room 3",  2);
+        eventManager.addEventToHash(e1);
+        eventManager.addEventToHash(e2);
+        eventManager.addEventToHash(e3);
         List<Event> list = new ArrayList<>();
         list.add(e1);
         list.add(e2);
-        list.add(e3);
-        Scanner input = new Scanner("Yes");
-        List<Event> answer = control.getViewEventListInput(input);
-        assertEquals(answer, list);
+        assertEquals(control.viewAvailableEvent("Michael"), list);
     }
 
     @org.junit.jupiter.api.Test
-    void getViewEventListInputNo() {
+    void addEvent() {
         EventManager eventManager = new EventManager();
         EventController control = new EventController(eventManager);
-        Scanner input = new Scanner("No");
-        List<Event> answer = control.getViewEventListInput(input);
-        assertNull(answer);
-    }
-
-    @org.junit.jupiter.api.Test
-    void getViewMyListInput() {
-        EventManager eventManager = new EventManager();
-        EventController control = new EventController(eventManager);
-        List<String> arr1 = new ArrayList<>();
-        List<String> arr2 = new ArrayList<>();
-        arr1.add("Jonathan Doe");
-        arr2.add("Brianne Taylor");
+        String speakerName = "Olivia";
         Instant time = Instant.now();
-        eventManager.createEvent("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1", 2);
-        eventManager.createEvent("Rob Willis", time, "Test Event 2", arr2, "Meeting Room 2", 2);
-        Event e1 = eventManager.getEventByName("Test Event");
-        List<Event> list = new ArrayList<>();
-        list.add(e1);
-        Scanner username = new Scanner("Jonathan Doe");
-        assertEquals(control.getViewMyListInput(username), list);
+        String eventName = "Java Basics";
+        List<String> participants = new ArrayList<>();
+        String room = "Institute of Technology";
+        int capacity = 2;
+        control.addEvent(speakerName, time, eventName, participants, room, capacity);
+        assertTrue(eventManager.events.size() > 0);
     }
+
+    // @org.junit.jupiter.api.Test
+    // void enrollSelf() {
+    // }
+
+    @org.junit.jupiter.api.Test
+    void deleteEvent() {
+        EventManager eventManager = new EventManager();
+        EventController control = new EventController(eventManager);
+        Instant time = Instant.now();
+        List<String> arr1 = new ArrayList<>();
+        Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
+        Event e2 = new Event("Roberto", time, "Test Event 2", arr1, "Meeting Room 2",  2);
+        eventManager.addEventToHash(e1);
+        eventManager.addEventToHash(e2);
+        HashMap<Integer, Event> list = new HashMap<>();
+        list.put(e1.getId(), e1);
+        control.deleteEvent(e2.getId());
+        assertEquals(eventManager.events, list);
+    }
+
+    /*
+    @org.junit.jupiter.api.Test
+    void getSpeakerNameInput() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void getEventNameInput() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void getRoomInput() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void getCapacityInput() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void editSpeakerName() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void editEventName() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void editRoom() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void editCapacity() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void performSelectedActionSelfEnroll() {
+        EventManager eventManager = new EventManager();
+        EventController control = new EventController(eventManager);
+
+    }
+    
+     */
 }
