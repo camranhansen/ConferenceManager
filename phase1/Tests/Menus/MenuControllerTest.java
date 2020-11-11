@@ -26,7 +26,6 @@ public class MenuControllerTest {
         subcontrollers.put("USER",uc);
         MenuController mc = new MenuController("tim",
                 permissions, subcontrollers);
-
         String input = "1\n0";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);

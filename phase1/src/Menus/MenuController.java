@@ -54,6 +54,7 @@ public class MenuController {
         }
     }
 
+
     public Permission selectPermission(List<Permission> permissionsToShow){
 
         this.mp.presentOptions(permissionsToShow);
