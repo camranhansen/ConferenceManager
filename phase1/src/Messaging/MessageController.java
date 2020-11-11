@@ -18,13 +18,16 @@ public class MessageController {
     private MessagePresenter messagePresenter;
     private Scanner messageScanner;
 
-    //TODO: handle incorrect input
     public MessageController(MessageManager messageManager, UserManager userManager, EventManager eventManager) {
+        this(messageManager, userManager, eventManager, new Scanner(System.in));
+    }
+
+    public MessageController(MessageManager messageManager, UserManager userManager, EventManager eventManager, Scanner scanner) {
         this.messageManager = messageManager;
         this.userManager = userManager;
         this.eventManager = eventManager;
         this.messagePresenter = new MessagePresenter();
-        this.messageScanner = new Scanner(System.in);
+        this.messageScanner = scanner;
     }
 
     public void permission(Permission permission, String username) {
@@ -42,16 +45,14 @@ public class MessageController {
         }
     }
 
-    //TODO: change to string
-    public void orgSendToAll(String username){
+    public void orgSendToAll(String username) {
         messagePresenter.sendToAll();
-        int attOrSpk = messageScanner.nextInt();
-        messagePresenter.enterContent();
+        int attOrSpk = getValidInput(2);
         String content = messageScanner.nextLine();
         if (attOrSpk == 1){
             orgSendToAllAtt(username, content);
         }
-        else if (attOrSpk == 2){
+        else if (attOrSpk == 2) {
             orgSendToAllSpeakers(username,content);
         }
     }
@@ -64,10 +65,9 @@ public class MessageController {
         messageManager.sendMessage(from, message, to);
     }
 
-    //TODO: Change to string instead of int
     public void messageEvents(String from){
         messagePresenter.sendToEvents();
-        int allOrOne = messageScanner.nextInt();
+        int allOrOne = getValidInput(2);
         messagePresenter.enterContent();
         String content = messageScanner.nextLine();
         if (allOrOne == 1){
@@ -76,14 +76,14 @@ public class MessageController {
         }
         else if (allOrOne == 2){
             messagePresenter.sendToOneEvent();
-            int eventId = messageScanner.nextInt();
+            int eventId = messageScanner.nextInt(); //TODO: Unhandled potential cause for error.
             writeToEvents(from, content, eventId);
         }
     }
 
     public void viewMessage(String username){
         messagePresenter.viewAllOrFromOne();
-        int allOrOne = messageScanner.nextInt();
+        int allOrOne = getValidInput(2);
         if (allOrOne == 1){
             System.out.println(viewSentMessage(username));
         }
@@ -130,6 +130,18 @@ public class MessageController {
     public void orgSendToAllSpeakers(String from, String message){
         messageManager.sendMessage(from, message,
                 getStringArray(userManager.getUserByPermissionTemplate(Template.SPEAKER)));
+    }
+
+    private int getValidInput(int options) {
+        while (true) {
+            messagePresenter.enterContent();
+            String input = messageScanner.nextLine();
+            if (input.matches("^[0-" + (options + 1) + "]$")) {
+                return Integer.parseInt(input);
+            } else {
+                messagePresenter.errorMessage();
+            }
+        }
     }
 
     //TODO: Encapsulation of viewing messages.

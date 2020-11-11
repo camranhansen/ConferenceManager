@@ -11,7 +11,7 @@ public class MessagePresenter {
     }
 
     public void enterContent(){
-        System.out.println("enter text:");
+        System.out.println("Enter option number, or 0 to return:");
     }
 
     public void sendToAll(){
@@ -24,5 +24,9 @@ public class MessagePresenter {
 
     public void sendToOneEvent(){
         System.out.println("enter event id:");
+    }
+
+    public  void errorMessage() {
+        System.out.println("Please make a selection by typing the options corresponding integer.");
     }
 }
