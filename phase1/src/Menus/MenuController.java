@@ -13,7 +13,6 @@ public class MenuController {
     private String username;
     private List<Permission> permissions;
     private HashMap<String,SubController> subcontrollers;
-    private Scanner userInput;
 
     public MenuController(String username, List<Permission> permissions,
                           HashMap<String, SubController> subcontrollers) {
@@ -21,7 +20,6 @@ public class MenuController {
             this.username = username;
             this.permissions = permissions;
             this.subcontrollers = subcontrollers;
-            this.userInput = new Scanner(System.in);
 
     }
 
@@ -41,7 +39,8 @@ public class MenuController {
         else{
             List<String> possibleCategories = this.mp.presentCategories(permissions);
             //TODO: Don't expect just a number. use IsNumeric to parse whether number input or text
-            int categoryInput = this.userInput.nextInt();
+            Scanner userInput = new Scanner(System.in);
+            int categoryInput = userInput.nextInt();
             String categoryChoice = possibleCategories.get(categoryInput);
             List<Permission> selectedPermissions = new ArrayList<Permission>();
             for (Permission p: permissions) {
@@ -58,9 +57,10 @@ public class MenuController {
     public Permission selectPermission(List<Permission> permissionsToShow){
 
         this.mp.presentOptions(permissionsToShow);
-        int option = this.userInput.nextInt();
+        Scanner userInput = new Scanner(System.in);
+        String option = userInput.nextLine();
         //TODO: Don't expect just a number. use IsNumeric to parse whether number input or text
-        Permission permissionSelected = permissionsToShow.get(option);
+        Permission permissionSelected = permissionsToShow.get(Integer.parseInt(option));
 
         return permissionSelected;
 

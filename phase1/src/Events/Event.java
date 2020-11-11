@@ -23,16 +23,36 @@ public class Event {
         this.participants = participants;
         this.room = room;
         this.capacity = capacity;
-        setEventid();
+        setId();
         Event.count += 1;
     }
-
-    public String getSpeakername(){
-        return this.speakerName;
+    public void setId(){
+        this.id = Event.count;
     }
 
-    public void setEventid(){
-        this.id = Event.count;
+    public void setSpeakerName(String speakerName) {
+        this.speakerName = speakerName;
+    }
+
+    public void setTime(Instant time) {
+        this.time = time;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public String getSpeakerName(){
+        return this.speakerName;
     }
 
     public Instant getEventTime(){
@@ -58,6 +78,5 @@ public class Event {
     public int getId(){
         return this.id;
     }
-
 
 }

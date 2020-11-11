@@ -27,7 +27,7 @@ public enum Permission {
     USER_OTHER_EDIT_PASSWORD("USER"),
     USER_CREATE_ACCOUNT("USER"),
     USER_CREATE_SPEAKER_ACCOUNT("USER"),
-    USER_DELETE_ACCOUNT("USER"),
+    USER_DELETE_ACCOUNT("USER"), //Delete other people's account, or yourself
 
     //Viewing
 
@@ -42,10 +42,10 @@ public enum Permission {
 
     ;
 
-    private final String category; //Use getlabel
+    private final String category; //Use getCategory
 
 
-    private Permission(String category){
+    Permission(String category){
         this.category = category;
     }
 

@@ -1,5 +1,7 @@
 package Events;
 
+import Users.User;
+
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 
 
 public class EventManager {
-    private HashMap<Integer, Event> events;
+    public HashMap<Integer, Event> events;
 
     public EventManager(){
         HashMap<Integer, Event> events = new HashMap<>();
@@ -44,6 +46,17 @@ public class EventManager {
         return result;
     }
 
+    public List<Event> getEventBySpeakerName(String userName){
+        //TODO: Validate events
+        List<Event> aList = new ArrayList<>();
+        for (Event value : events.values()){
+            if (value.getSpeakerName().equals(userName)){
+                aList.add(value);
+            }
+        }
+        return aList;
+    }
+
     public void createEvent(String name, Instant eventTime, String eventName, List<String> participants,
                                String room, int capacity){
         //TODO: Validate events.
@@ -65,6 +78,10 @@ public class EventManager {
 
     }
 
+    public void deleteEvent(int eventId){
+        this.events.remove(eventId);
+    }
+
     public List<String> getParticipants(int eventID){
         return events.get(eventID).getParticipants();
     }
@@ -72,7 +89,7 @@ public class EventManager {
     public boolean enrollUser(int eventID, String Username){
         List<String> result = this.getParticipants(eventID);
         boolean check = this.checkCapacity(result, events.get(eventID).getCapacity()); // To be fixed
-        if(check==true){
+        if(check){
             events.get(eventID).getParticipants().add(Username);
             return true;
         }
@@ -89,10 +106,10 @@ public class EventManager {
         return events.get(eventID);
     }
 
-    public List<Event> getAvailableEvent(String username){
+    public List<Event> getAvailableEvents(String username){
         List<Event> availableEvents = new ArrayList<>();
         for(int i=0; i<events.size(); i++){
-            if(events.get(i).getParticipants().contains(username)){
+            if(!events.get(i).getParticipants().contains(username) && !checkConflictUser(events.get(i), username)){
                 availableEvents.add(events.get(i));
             }
         }
@@ -112,10 +129,10 @@ public class EventManager {
     }
 
     //TODO: Make Exceptions for this
-    public boolean checkConflict(Event event){ // Made public for test purposes
+    private boolean checkConflictEvent(Event event){
         boolean flag = false;
         for(Event values : events.values()) {
-            if ((values.getEventTime() == event.getEventTime()) && (values.getRoom().equals(event.getRoom()) || values.getSpeakername().equals(event.getSpeakername()))) {
+            if ((values.getEventTime() == event.getEventTime()) && (values.getRoom().equals(event.getRoom()) || values.getSpeakerName().equals(event.getSpeakerName()))) {
                 flag = true;
                 break;
             }
@@ -123,16 +140,55 @@ public class EventManager {
         return flag;
     }
 
+    private boolean checkConflictUser(Event event, String username) {
+        boolean flag = false;
+        List<Event> list = getUserEvents(username);
+        for (Event value : list) {
+            if (value.getEventTime().equals(event.getEventTime())) {
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
+
+    public List<Event> getUserEvents(String username) {
+        List<Event> myEvents = new ArrayList<>();
+        for (int id : getEventsHash().keySet()){
+            if (getParticipants(id).contains(username)){
+                myEvents.add(getEventsHash().get(id));
+            }
+        }
+        return myEvents;
+    }
+
     public Integer[] getSpkEvents(String username){
         ArrayList<Integer> spkEvents = new ArrayList<>();
         for(Event event:getEventsList()){
-            if(event.getSpeakername().equals(username)){
+            if(event.getSpeakerName().equals(username)){
                 spkEvents.add(event.getId());
             }
         }
         Integer[] eventIds = new Integer[spkEvents.size()];
         eventIds = spkEvents.toArray(eventIds);
         return eventIds;
+    }
+
+    public void editTime(int eventId, Instant time){
+        this.events.get(eventId).setTime(time);
+    }
+
+    public void editSpeakerName(int eventId, String name){
+        this.events.get(eventId).setSpeakerName(name);
+    }
+    public void editEventName(int eventId, String name){
+        this.events.get(eventId).setEventName(name);
+    }
+    public void editRoom(int eventId, String name){
+        this.events.get(eventId).setRoom(name);
+    }
+    public void editCapacity(int eventId, int capacity){
+        this.events.get(eventId).setCapacity(capacity);
     }
 }
 
