@@ -1,17 +1,22 @@
 package Messaging;
 
+import Events.Event;
 import Events.EventManager;
 import Users.Template;
 import Users.User;
 import Users.UserManager;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class MessageControllerTest {
 
@@ -59,8 +64,8 @@ public class MessageControllerTest {
 
 
     }
-    @Test
-    public void writeToEvents(){
+    //@Test
+    //public void writeToEvents(){
         //MessageManager mm = new MessageManager();
         //EventManager em = new EventManager();
         //UserManager um = new UserManager(new HashMap<>());
@@ -69,16 +74,16 @@ public class MessageControllerTest {
         //Instant time = Instant.now();
         //participants.add("user1");
         //participants.add("user2");
-        //em.createEvent("speaker1", time, "event1", participants, "room1", 3);
-        //mc.writeToEvents("speaker1", "announcement", 0);
+        //Event e1 = new Event("speaker", time, "Test Event", participants, "Meeting Room 1",  3);
+        //em.addEventToHash(e1);
+        //mc.writeToEvents("speaker", "announcement", 0);
         //HashMap<String, List<Message>> hashmap1 = mc.viewSentMessage("user1");
         //HashMap<String, List<Message>> hashmap2 = mc.viewSentMessage("user2");
         //assertEquals(em.getParticipants(0), participants);
-        //assertEquals(hashmap1.get("speaker1").get(0).getContent(), "announcement");
-        //assertEquals(hashmap2.get("speaker1").get(0).getContent(), "announcement");
+        //assertEquals(hashmap1.get("speaker").get(0).getContent(), "announcement");
+        //assertEquals(hashmap2.get("speaker").get(0).getContent(), "announcement");
+    //}
 
-
-    }
   public HashMap<String, User> generateUserHash(){
       User u1 = new User("u1", "pass1", Template.ATTENDEE.getPermissions());
       User u2= new User("u2", "pass2", Template.ATTENDEE.getPermissions());
@@ -129,7 +134,7 @@ public class MessageControllerTest {
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
         messageController.writeMessage("u1", "u2", "hello");
         messageController.viewMessageFrom("u2", "u1");
-        System.out.println( messageController.viewMessageFrom("u2", "u1").get(0).getContent());
+        System.out.println( messageController.viewMessageFrom("u2", "u1").get(0));
     }
 
     @Test(timeout = 50)
@@ -140,6 +145,8 @@ public class MessageControllerTest {
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
         messageController.orgSendToAllAtt("org1", "events rock");
-        System.out.println(messageController.viewMessageFrom("u1", "org1").get(0).getContent());
+        System.out.println(messageController.viewMessageFrom("u1", "org1").get(0));
     }
+
+
 }
