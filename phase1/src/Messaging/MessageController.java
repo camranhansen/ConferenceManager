@@ -103,8 +103,13 @@ public class MessageController implements SubController {
         return messageManager.retrieveUserInbox(to);
     }
 
-    public List<Message> viewMessageFrom(String username, String from) {
-        return messageManager.retrieveUserInboxFor(username, from);
+    public List<String> viewMessageFrom(String username, String from) {
+        List<Message> inbox = messageManager.retrieveUserInboxFor(username, from);
+        List<String> inboxToString = new ArrayList<>();
+        for (Message message: inbox){
+            inboxToString.add(message.getContent());
+        }
+        return inboxToString;
     }
 
     public void writeToEvents(String from, String message, Integer... events) {
