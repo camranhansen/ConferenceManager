@@ -175,6 +175,6 @@ class EventControllerTest {
         EventController control = new EventController(eventManager);
 
     }
-    
+
      */
 }
