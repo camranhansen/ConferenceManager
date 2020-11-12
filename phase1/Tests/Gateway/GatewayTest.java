@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,9 +17,15 @@ import static org.junit.Assert.*;
 public class GatewayTest {
     private Gateway gateway;
 
+    String[][] table = new String[][] {
+            {"Alicia", "Harrison", "Yosi"},
+            {"Gateway", "Test", "File"},
+            {"I\'m", "Very", "Bored"}
+    };
+
     @Before
     public void createGateway(){
-        gateway = new Gateway(3,"./assets/test.csv"){};
+        gateway = new Gateway(3, "assets/test.csv"){};
     }
 
     public ArrayList<String[]> createData(){
@@ -71,15 +78,43 @@ public class GatewayTest {
             e.printStackTrace();
         }
 
-        String[][] table = new String[][] {
-                {"Alicia", "Harrison", "Yosi"},
-                {"Gateway", "Test", "File"},
-                {"I\'m", "Very", "Bored"}};
-
         for (int row = 0; row < table.length; row++) {
             for (int col = 0; col < table[row].length; col++) {
                 assertEquals(table[row][col], g.getValue(row, col));
             }
+        }
+    }
+
+    @Test
+    public void testUpdateRow() {
+        for (int row = 0; row < table.length; row++) {
+            gateway.updateRow(row, table[row]);
+        }
+
+        for (int row = 0; row < table.length; row++) {
+            for (int col = 0; col < table[row].length; col++) {
+                assertEquals(table[row][col], gateway.getValue(row, col));
+            }
+        }
+    }
+
+    @Test
+    public void testUpdateRowExisting() {
+        gateway.updateRow(0, table[0]);
+        gateway.updateRow(1, table[2]);
+        gateway.updateRow(0, table[1]);
+
+        assertArrayEquals(table[1], gateway.getRow(0));
+    }
+
+    @Test
+    public void testGetRow() {
+        for (int row = 0; row < table.length; row++) {
+            gateway.updateRow(row, table[row]);
+        }
+
+        for (int row = 0; row < table.length; row++) {
+            assertArrayEquals(table[row], gateway.getRow(row));
         }
     }
 }
