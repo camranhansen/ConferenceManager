@@ -190,6 +190,7 @@ public class EventManager {
     public void editCapacity(int eventId, int capacity){
         this.events.get(eventId).setCapacity(capacity);
     }
+
 }
 
 
