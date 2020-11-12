@@ -35,6 +35,11 @@ public abstract class Gateway {
         buffer.get(row)[col] = data;
     }
 
+    public void updateRow(int row, String[] data) {
+        if (data.length != colWidth) throw new IllegalArgumentException("Data is not equal to designated amount of columns.");
+        buffer.set(row, data);
+    }
+
     public void flush() throws IOException {
         FileWriter fileWriter = new FileWriter(filePath);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -71,7 +76,7 @@ public abstract class Gateway {
                 if (current == '\"') {
                     openQuote = !openQuote;
                 } else if (!openQuote) {
-                    cell[cellIndex] = line.substring(lastDelimiterIndex, i);
+                    cell[cellIndex] = line.substring(lastDelimiterIndex + 1, i - 1);
                     cellIndex++;
                     lastDelimiterIndex = i + 1;
                 }
