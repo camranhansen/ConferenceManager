@@ -1,34 +1,29 @@
 package Messaging;
 
 import Events.EventManager;
+import Menus.InputPrompter;
+import Menus.Option;
 import Menus.SubController;
 import Users.Permission;
 import Users.Template;
 import Users.UserManager;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 
 public class MessageController implements SubController {
-    //Potentially move eventmanager and usermanager to menu?
     private MessageManager messageManager;
     private UserManager userManager;
     private EventManager eventManager;
     private MessagePresenter messagePresenter;
-    private Scanner messageScanner;
+    private InputPrompter inputPrompter;
 
     public MessageController(MessageManager messageManager, UserManager userManager, EventManager eventManager) {
-        this(messageManager, userManager, eventManager, new Scanner(System.in));
-    }
-
-    public MessageController(MessageManager messageManager, UserManager userManager, EventManager eventManager, Scanner scanner) {
         this.messageManager = messageManager;
         this.userManager = userManager;
         this.eventManager = eventManager;
         this.messagePresenter = new MessagePresenter();
-        this.messageScanner = scanner;
+        this.inputPrompter = new InputPrompter();
     }
 
     public void performSelectedAction(String username, Permission permissionSelected) {
@@ -46,70 +41,88 @@ public class MessageController implements SubController {
         }
     }
 
-    public void orgSendToAll(String username) {
-        messagePresenter.sendToAll();
-        int attOrSpk = getValidInput(2);
-        String content = messageScanner.nextLine();
-        if (attOrSpk == 1){
-            orgSendToAllAtt(username, content);
-        }
-        else if (attOrSpk == 2) {
-            orgSendToAllSpeakers(username,content);
-        }
+    public void orgSendToAll(String username){
+        String content = getContent();
+        Option allAtt = new Option("Send to all attendees"){
+            @Override
+            public void run(){
+                orgSendToAllAtt(username, content);
+            }
+        };
+        Option allSpk = new Option("Send to all speakers") {
+            @Override
+            public void run(){
+                orgSendToAllSpeakers(username, content);
+            }
+        };
+        ArrayList<Option> options = new ArrayList<>();
+        options.add(allAtt);
+        options.add(allSpk);
+        Option choice = inputPrompter.menuOption(options);
+        choice.run();
     }
 
     public void writeMessage(String from) {
-        messagePresenter.enterUsername();
-        String to = messageScanner.nextLine();
-        messagePresenter.enterContent();
-        String message = messageScanner.nextLine();
-        messageManager.sendMessage(from, message, to);
+        String to = inputPrompter.getResponse("Enter username to send to");
+        String content = getContent();
+        messageManager.sendMessage(from, content, to);
     }
 
     public void messageEvents(String from){
-        messagePresenter.sendToEvents();
-        int allOrOne = getValidInput(2);
-        messagePresenter.enterContent();
-        String content = messageScanner.nextLine();
-        if (allOrOne == 1){
-            Integer[] eventIds = eventManager.getSpkEvents(from);
-            writeToEvents(from, content, eventIds);
-        }
-        else if (allOrOne == 2){
-            messagePresenter.sendToOneEvent();
-            int eventId = messageScanner.nextInt(); //TODO: Unhandled potential cause for error.
-            writeToEvents(from, content, eventId);
-        }
+        String content = getContent();
+        //TODO: Move option list creation to helper?
+        Option allEvents = new Option("Send to all your events"){
+            @Override
+            public void run(){
+                writeToEvents(from, content, eventManager.getSpkEvents(from));
+            }
+        };
+        Option oneEvent = new Option("Send to one of your events"){
+            @Override
+            public void run(){
+                String eventId = inputPrompter.getResponse("Enter event id to send to");
+                int id = Integer.parseInt(eventId.trim());
+                writeToEvents(from, content, id);
+            }
+            //TODO: this will have to throw an exception... if a number is not put in or it is not a valid
+            // event id. We can also make each of their events an option that can then be chosen.
+        };
+        ArrayList<Option> options = new ArrayList<>();
+        options.add(allEvents);
+        options.add(oneEvent);
+        Option choice = inputPrompter.menuOption(options);
+        choice.run();
     }
 
     public void viewMessage(String username){
-        messagePresenter.viewAllOrFromOne();
-        int allOrOne = getValidInput(2);
-        if (allOrOne == 1){
-            System.out.println(viewSentMessage(username));
-        }
-        else if (allOrOne == 2){
-            messagePresenter.enterUsername();
-            String otherUser = messageScanner.nextLine();
-            System.out.println(viewMessageFrom(username, otherUser));
-        }
+        Option viewAll = new Option("View all your messages"){
+            @Override
+            public void run(){
+                String messages = viewAllMessages(username);
+                messagePresenter.printMessages(messages);
+            }
+        };
+        Option viewOne = new Option("View messages from one user"){
+            @Override
+            public void run(){
+                String otherUser = inputPrompter.getResponse("Enter other username messages you'd like to see");
+                String messages = viewMessageFrom(username, otherUser);
+                messagePresenter.printMessages(messages);
+            }
+        };
+        ArrayList<Option> options = new ArrayList<>();
+        options.add(viewAll);
+        options.add(viewOne);
+        Option choice = inputPrompter.menuOption(options);
+        choice.run();
     }
 
-    public void writeMessage(String from, String to, String message) {
-        messageManager.sendMessage(from, message, to);
+    public String viewAllMessages(String username){
+        return messageManager.wholeInboxToString(username);
     }
 
-    public HashMap<String, List<Message>> viewSentMessage(String to){
-        return messageManager.retrieveUserInbox(to);
-    }
-
-    public List<String> viewMessageFrom(String username, String from) {
-        List<Message> inbox = messageManager.retrieveUserInboxFor(username, from);
-        List<String> inboxToString = new ArrayList<>();
-        for (Message message: inbox){
-            inboxToString.add(message.getContent());
-        }
-        return inboxToString;
+    public String viewMessageFrom(String username, String from) {
+        return messageManager.singleInboxToString(username, from);
     }
 
     public void writeToEvents(String from, String message, Integer... events) {
@@ -127,28 +140,32 @@ public class MessageController implements SubController {
                 getStringArray(userManager.getUserByPermissionTemplate(Template.ATTENDEE)));
     }
 
+    public void orgSendToAllSpeakers(String from, String message){
+        messageManager.sendMessage(from, message,
+                getStringArray(userManager.getUserByPermissionTemplate(Template.SPEAKER)));
+    }
+
+    private String getContent(){
+        return inputPrompter.getResponse("Enter text");
+    }
+
     private String[] getStringArray(List<String> list) {
         String[] res = new String[list.size()];
         list.toArray(res);
         return res;
     }
 
-    public void orgSendToAllSpeakers(String from, String message){
-        messageManager.sendMessage(from, message,
-                getStringArray(userManager.getUserByPermissionTemplate(Template.SPEAKER)));
-    }
-
-    private int getValidInput(int options) {
-        while (true) {
-            messagePresenter.enterContent();
-            String input = messageScanner.nextLine();
-            if (input.matches("^[0-" + (options + 1) + "]$")) {
-                return Integer.parseInt(input);
-            } else {
-                messagePresenter.errorMessage();
-            }
-        }
-    }
+//    private int getValidInput(int options) {
+//        while (true) {
+//            messagePresenter.enterContent();
+//            String input = messageScanner.nextLine();
+//            if (input.matches("^[0-" + (options + 1) + "]$")) {
+//                return Integer.parseInt(input);
+//            } else {
+//                messagePresenter.errorMessage();
+//            }
+//        }
+//    }
 
     //TODO: Encapsulation of viewing messages.
 
