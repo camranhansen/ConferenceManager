@@ -32,7 +32,7 @@ public abstract class Gateway {
     public void update(int col, int row, String data){
         //Updates the internal buffer
         if (col>colWidth) throw new IllegalArgumentException("Column can not exceed column width in the csv.");
-        if (buffer.size() < row) {
+        if (buffer.size() - 1 < row) {
             for (int i = buffer.size(); i < row + 1; i++) {
                 buffer.add(new String[colWidth]);
             }
