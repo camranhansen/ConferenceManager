@@ -15,18 +15,13 @@ public abstract class Gateway {
         this.filePath = filePath;
     }
 
-    public ArrayList<String[]> getBuffer() {
-        return this.buffer;
+
+    public String getValue(int row, int col) {
+        return buffer.get(row)[col];
     }
 
-//    public void addToListOfData(String[] input) {
-//        if (!this.buffer.contains(input)) {
-//            this.buffer.add(input);
-//        }
-//    }
-
-    public void remove(String[] input){
-        this.buffer.remove(input);
+    public void clearAll() {
+        buffer.clear();
     }
 
     public void update(int col, int row, String data){
