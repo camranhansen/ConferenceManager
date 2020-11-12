@@ -18,10 +18,7 @@ public class UserGatewayTest {
     }
 
     @Test
-    public void testSaveSingleUser() {
-    }
-
-    @Test
     public void testReadFromGateway() {
+
     }
 }

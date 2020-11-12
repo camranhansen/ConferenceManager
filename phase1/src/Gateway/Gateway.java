@@ -52,6 +52,14 @@ public abstract class Gateway {
         return buffer.get(row);
     }
 
+    public int getColWidth(){
+        return colWidth;
+    }
+
+    public int getRowCount(){
+        return buffer.size();
+    }
+
     public void flush() throws IOException {
         FileWriter fileWriter = new FileWriter(filePath);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);

@@ -4,6 +4,7 @@ import Users.User;
 import Users.UserManager;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,10 @@ public class UserGateway extends Gateway{
         this.flush();
     }
 
-    public void readFromGateway(){
-
+    public void readFromGateway(UserManager um) throws IOException {
+        this.readFromFile();
+        for (int i = 0; i < this.getRowCount(); i++) {
+            um.setSingleUserData(this.getRow(i));
+        }
     }
 }
