@@ -65,24 +65,30 @@ public abstract class Gateway {
         File file = new File(filePath);
         FileReader fileReader = new FileReader(filePath);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
-        String line = bufferedReader.readLine();
-        while (line != null) {
+        String line = null;
+        buffer.clear();
+        while ((line = bufferedReader.readLine()) != null) {
             boolean openQuote = false;
             int lastDelimiterIndex = 0;
             int cellIndex = 0;
-            String[] cell = new String[colWidth];
+            String[] cells = new String[colWidth];
             for (int i = 0; i < line.length(); i++) {
                 char current = line.charAt(i);
                 if (current == '\"') {
                     openQuote = !openQuote;
-                } else if (!openQuote) {
-                    cell[cellIndex] = line.substring(lastDelimiterIndex + 1, i - 1);
+                }
+                if (i == line.length() - 1 || (current != '\"' && !openQuote)) {
+                    cells[cellIndex] = line.substring(lastDelimiterIndex, i);
+                    cells[cellIndex] = cells[cellIndex].substring(1);
+                    if (i != line.length() - 1) {
+                        cells[cellIndex] = cells[cellIndex].substring(0, cells[cellIndex].length() - 1);
+                    }
                     cellIndex++;
                     lastDelimiterIndex = i + 1;
                 }
             }
-            buffer.clear();
-            buffer.add(cell);
+
+            buffer.add(cells);
         }
         bufferedReader.close();
         fileReader.close();
