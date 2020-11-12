@@ -16,6 +16,6 @@ public class InputPresenter {
     }
 
     public void printPrompt(String prompt){
-        System.out.println(prompt);
+        System.out.println(prompt+": ");
     }
 }

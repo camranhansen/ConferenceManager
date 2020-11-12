@@ -25,6 +25,7 @@ public class InputPrompter {
         return options.get(userInput);
     }
 
+
     private int userInput(ArrayList<Option> options){
         String userInput =  scanner.nextLine();
         String input = userInput.trim();
@@ -43,7 +44,8 @@ public class InputPrompter {
     }
 
     private void addExitOption(ArrayList<Option> options){
-        Option exit = new Option("exit");
+        Option exit = new Option("Exit");
+        //TODO add the exit function to this option :)
         options.add(0, exit);
     }
 
