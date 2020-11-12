@@ -64,25 +64,25 @@ public class MessageControllerTest {
 
 
     }
-    //@Test
-    //public void writeToEvents(){
-        //MessageManager mm = new MessageManager();
-        //EventManager em = new EventManager();
-        //UserManager um = new UserManager(new HashMap<>());
-        //MessageController mc = new MessageController(mm, um, em);
-        //List<String> participants = new ArrayList<>();
-        //Instant time = Instant.now();
-        //participants.add("user1");
-        //participants.add("user2");
-        //Event e1 = new Event("speaker", time, "Test Event", participants, "Meeting Room 1",  3);
-        //em.addEventToHash(e1);
-        //mc.writeToEvents("speaker", "announcement", 0);
-        //HashMap<String, List<Message>> hashmap1 = mc.viewSentMessage("user1");
-        //HashMap<String, List<Message>> hashmap2 = mc.viewSentMessage("user2");
-        //assertEquals(em.getParticipants(0), participants);
-        //assertEquals(hashmap1.get("speaker").get(0).getContent(), "announcement");
-        //assertEquals(hashmap2.get("speaker").get(0).getContent(), "announcement");
-    //}
+    @Test
+    public void writeToEvents(){
+        MessageManager mm = new MessageManager();
+        EventManager em = new EventManager();
+        UserManager um = new UserManager(new HashMap<>());
+        MessageController mc = new MessageController(mm, um, em);
+        List<String> participants = new ArrayList<>();
+        Instant time = Instant.now();
+        participants.add("user1");
+        participants.add("user2");
+        Event e1 = new Event("speaker", time, "Test Event", participants, "Meeting Room 1",  3);
+        em.addEventToHash(e1);
+        mc.writeToEvents("speaker", "announcement", 0);
+        HashMap<String, List<Message>> hashmap1 = mc.viewSentMessage("user1");
+        HashMap<String, List<Message>> hashmap2 = mc.viewSentMessage("user2");
+        assertEquals(em.getParticipants(0), participants);
+        assertEquals(hashmap1.get("speaker").get(0).getContent(), "announcement");
+        assertEquals(hashmap2.get("speaker").get(0).getContent(), "announcement");
+    }
 
   public HashMap<String, User> generateUserHash(){
       User u1 = new User("u1", "pass1", Template.ATTENDEE.getPermissions());

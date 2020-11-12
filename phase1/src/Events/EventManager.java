@@ -13,7 +13,7 @@ public class EventManager {
     public HashMap<Integer, Event> events;
 
     public EventManager(){
-        HashMap<Integer, Event> events = new HashMap<>();
+        this.events = new HashMap<>();
     }
 
     //public void readFromFile(String path) throws ClassNotFoundException {
