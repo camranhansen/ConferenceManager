@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Gateway {
+public abstract class Gateway {
     private ArrayList<String[]> buffer;
     private int colWidth;
     private String filePath;
@@ -61,21 +61,30 @@ public class Gateway {
         fileWriter.close();
     }
 
-    public void readFromFile(String fileName) {
-        File file = new File(fileName);
-        try {
-            Scanner input = new Scanner(file);
-            while (input.hasNext()) {
-                String string = input.nextLine();
-                String[] a = string.split(",");
-                gateway.addToListOfData(a);
+    public void readFromFile() throws IOException {
+        File file = new File(filePath);
+        FileReader fileReader = new FileReader(filePath);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String line = bufferedReader.readLine();
+        while (line != null) {
+            boolean openQuote = false;
+            int lastDelimiterIndex = 0;
+            int cellIndex = 0;
+            String[] cell = new String[colWidth];
+            for (int i = 0; i < line.length(); i++) {
+                char current = line.charAt(i);
+                if (current == '\"') {
+                    openQuote = !openQuote;
+                } else if (!openQuote) {
+                    cell[cellIndex] = line.substring(lastDelimiterIndex, i);
+                    cellIndex++;
+                    lastDelimiterIndex = i + 1;
+                }
             }
-            input.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            buffer.clear();
+            buffer.add(cell);
         }
+        bufferedReader.close();
+        fileReader.close();
     }
 }
