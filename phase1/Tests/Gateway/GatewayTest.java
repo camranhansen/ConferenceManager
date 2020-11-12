@@ -18,7 +18,7 @@ public class GatewayTest {
 
     @Before
     public void createGateway(){
-        gateway = new Gateway(3,"assets/test.csv"){};
+        gateway = new Gateway(3,"./assets/test.csv"){};
     }
 
     public ArrayList<String[]> createData(){

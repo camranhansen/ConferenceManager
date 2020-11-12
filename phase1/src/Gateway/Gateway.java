@@ -9,7 +9,7 @@ public abstract class Gateway {
     private int colWidth;
     private String filePath;
 
-    public Gateway(int width, String filePath){
+    public Gateway(int width, String filePath) {
         this.buffer = new ArrayList<>();
         this.colWidth = width;
         this.filePath = filePath;
