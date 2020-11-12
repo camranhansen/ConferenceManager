@@ -25,6 +25,10 @@ public class UserManager {
         this.users.put(username, u);
     }
 
+    public ArrayList<User> getUsers(){
+        return new ArrayList<>(users.values());
+    }
+
     //TODO: create user by template
 
     public void removeUser(String username){
@@ -75,7 +79,5 @@ public class UserManager {
         this.users.get(username).setPassword(password);
     }
 
-    //TODO:Search for users with specific permission levels(?)
-    // Get a list of users by permission template (i.e list of usernames
-    // that are attendees/speakers)
+
 }
