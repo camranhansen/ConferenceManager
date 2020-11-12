@@ -35,9 +35,7 @@ public class InputPrompter {
     }
 
     private boolean inputCheck(ArrayList<Option> options, String userInput){
-        //TODO: fix this--double digit case
-        //i don't know how regex works but i think this is right... it works anyway
-        if (!userInput.matches("^[0-" + (options.size() -  1) + "]$")){
+        if (!userInput.matches("^[0-9]*$") || Integer.parseInt(userInput) >= options.size()) {
             inputPresenter.errorMessage();
             return false;
         }
