@@ -1,8 +1,5 @@
 package Users;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 //TODO: Add exceptions for inappropriate usernames, passwords and permissions :)
@@ -24,12 +21,6 @@ public class UserManager {
         User u = new User(username, password, permissions);
         this.users.put(username, u);
     }
-
-    public ArrayList<User> getUsers(){
-        return new ArrayList<>(users.values());
-    }
-
-    //TODO: create user by template
 
     public void removeUser(String username){
         //TODO: Validate username
@@ -79,5 +70,21 @@ public class UserManager {
         this.users.get(username).setPassword(password);
     }
 
+    //Gateway Methods
+    public ArrayList<String[]> getAllUserData(){
+        ArrayList<String[]> userList = new ArrayList<>();
+        for (User u: users.values()) {
+            userList.add(getSingleUserData(u.getUsername()));
+        }
+        return userList;
+    }
 
+    public String[] getSingleUserData(String username){
+        String password = users.get(username).getPassword();
+        String permissions =  Arrays.deepToString(users.get(username).getPermissions().toArray());
+        return new String[]{username, password, permissions};
+    }
+
+    public void setSingleUserData(String[] userdata){
+    }
 }
