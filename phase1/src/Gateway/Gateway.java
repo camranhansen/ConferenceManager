@@ -26,7 +26,8 @@ public abstract class Gateway {
         buffer.clear();
     }
 
-    public void update(int col, int row, String data){
+    public void update(int col, int row, String data) {
+        if (data.contains("\n")) throw new IllegalArgumentException("Line breaks not allowed.");
         //Updates the internal buffer
         if (col > colWidth) throw new IllegalArgumentException("Column can not exceed column width in the csv.");
         if (buffer.size() < row + 1) {
@@ -36,6 +37,7 @@ public abstract class Gateway {
     }
 
     public void updateRow(int row, String[] data) {
+        if (data.toString().contains("\n")) throw new IllegalArgumentException("Line breaks not allowed.");
         if (data.length != colWidth) throw new IllegalArgumentException("Data is not equal to designated amount of columns.");
         if (buffer.size() < row + 1) {
             for (int i = buffer.size(); i < row; i++) {
@@ -50,6 +52,14 @@ public abstract class Gateway {
     public String[] getRow(int row) {
         if (row >= buffer.size()) throw new IndexOutOfBoundsException("Requested row does not exist.");
         return buffer.get(row);
+    }
+
+    public int getColWidth(){
+        return colWidth;
+    }
+
+    public int getRowCount(){
+        return buffer.size();
     }
 
     public void flush() throws IOException {
@@ -95,6 +105,7 @@ public abstract class Gateway {
                     if (i != line.length() - 1) {
                         cells[cellIndex] = cells[cellIndex].substring(0, cells[cellIndex].length() - 1);
                     }
+
                     cellIndex++;
                     lastDelimiterIndex = i + 1;
                 }

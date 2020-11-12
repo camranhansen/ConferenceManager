@@ -70,7 +70,7 @@ public class UserManager {
         this.users.get(username).setPassword(password);
     }
 
-    //Gateway Methods
+    //Save and Set Methods
     public ArrayList<String[]> getAllUserData(){
         ArrayList<String[]> userList = new ArrayList<>();
         for (User u: users.values()) {
@@ -81,10 +81,31 @@ public class UserManager {
 
     public String[] getSingleUserData(String username){
         String password = users.get(username).getPassword();
-        String permissions =  Arrays.deepToString(users.get(username).getPermissions().toArray());
+        String permissions = Arrays.deepToString(users.get(username).
+                getPermissions().toArray()).replace("[","").replace("]", "");
         return new String[]{username, password, permissions};
     }
 
     public void setSingleUserData(String[] userdata){
+        String username = userdata[0];
+        String password = userdata[1];
+        List<Permission> permissions = StringtoPermissions(userdata[3]);
+        if (userExists(username)){
+            users.get(username).setPassword(password);
+            users.get(username).setPermissions(permissions);
+        }
+        else {
+            this.createUser(username, password, permissions);
+        }
     }
+
+    private List<Permission> StringtoPermissions(String permission){
+        String[] strList = permission.split(",");
+        ArrayList<Permission> permissions = new ArrayList<>();
+        for (String s: strList) {
+            permissions.add(Permission.valueOf(s));
+        }
+        return permissions;
+    }
+
 }
