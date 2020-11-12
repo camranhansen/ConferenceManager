@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-//TODO: add toString
+//TODO: add a constructor for inboxes that already exist
 
 public class MessageManager {
     private HashMap<String, HashMap<String, List<Message>>> inboxes;
@@ -35,5 +35,34 @@ public class MessageManager {
 
     public List<Message> retrieveUserInboxFor(String user, String from) {
         return retrieveUserInbox(user).get(from);
+    }
+
+    public String singleInboxToString(String username, String from){
+        HashMap<String, List<Message>> inboxes = retrieveUserInbox(username);
+        if (!inboxes.containsKey(from)){
+            return "You have no messages from this username.";
+        }
+        List<Message> inboxFrom = retrieveUserInboxFor(username, from);
+        StringBuilder inbox = new StringBuilder(from);
+        inbox.append(": ");
+        for (Message message: inboxFrom){
+            inbox.append(message.getContent());
+            inbox.append(", ");
+        }
+        return inbox.toString();
+    }
+
+    public String wholeInboxToString(String username){
+        StringBuilder allMessages = new StringBuilder();
+        HashMap<String, List<Message>> inbox = retrieveUserInbox(username);
+        if (inbox.isEmpty()){
+            return "You have no messages";
+        }
+        String[] from = inbox.keySet().toArray(new String[0]);
+        for (String other:from){
+            allMessages.append(singleInboxToString(username, other));
+            allMessages.append("\n");
+        }
+        return allMessages.toString();
     }
 }
