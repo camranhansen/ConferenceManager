@@ -26,18 +26,23 @@ public abstract class Gateway {
 
     public void update(int col, int row, String data){
         //Updates the internal buffer
-        if (col>colWidth) throw new IllegalArgumentException("Column can not exceed column width in the csv.");
-        if (buffer.size() - 1 < row) {
-            for (int i = buffer.size(); i < row + 1; i++) {
-                buffer.add(new String[colWidth]);
-            }
+        if (col > colWidth) throw new IllegalArgumentException("Column can not exceed column width in the csv.");
+        if (buffer.size() < row + 1) {
+            updateRow(row, new String[colWidth]);
         }
         buffer.get(row)[col] = data;
     }
 
     public void updateRow(int row, String[] data) {
         if (data.length != colWidth) throw new IllegalArgumentException("Data is not equal to designated amount of columns.");
-        buffer.set(row, data);
+        if (buffer.size() < row + 1) {
+            for (int i = buffer.size(); i < row; i++) {
+                buffer.add(new String[colWidth]);
+            }
+            buffer.add(data);
+        } else {
+            buffer.set(row, data);
+        }
     }
 
     public void flush() throws IOException {
