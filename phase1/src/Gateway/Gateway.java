@@ -17,6 +17,8 @@ public abstract class Gateway {
 
 
     public String getValue(int row, int col) {
+        if (row >= buffer.size()) throw new IndexOutOfBoundsException("Requested row does not exist.");
+        if (col >= colWidth) throw new IndexOutOfBoundsException("Requested column does not exist.");
         return buffer.get(row)[col];
     }
 
@@ -43,6 +45,11 @@ public abstract class Gateway {
         } else {
             buffer.set(row, data);
         }
+    }
+
+    public String[] getRow(int row) {
+        if (row >= buffer.size()) throw new IndexOutOfBoundsException("Requested row does not exist.");
+        return buffer.get(row);
     }
 
     public void flush() throws IOException {
