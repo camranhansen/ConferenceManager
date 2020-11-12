@@ -4,9 +4,11 @@ import Users.UserManager;
 import Users.UserManagerTest;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 
 public class GatewayTest {
+    private static String testFilePath = "assets/test.csv";
     private Gateway gateway;
 
     String[][] table = new String[][] {
@@ -25,7 +28,13 @@ public class GatewayTest {
 
     @Before
     public void createGateway(){
-        gateway = new Gateway(3, "assets/test.csv"){};
+        gateway = new Gateway(3, testFilePath){};
+    }
+
+    @AfterClass
+    public static void cleanGeneratedFiles() {
+        File testFile = new File(testFilePath);
+        testFile.delete();
     }
 
     public ArrayList<String[]> createData(){
@@ -67,6 +76,7 @@ public class GatewayTest {
             g.update(2, row, u[2]);
         }
         g.flush();
+
     }
 
     @Test
