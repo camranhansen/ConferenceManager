@@ -14,7 +14,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MessageControllerTest {
 
@@ -180,6 +184,17 @@ public class MessageControllerTest {
         messageController.orgSendToAllSpeakers("u2", "hello");
     }
 
+    @Test
+    public void testSendMessageToAllAtt(){
+        MessageManager mm = new MessageManager();
+        EventManager em = new EventManager();
+        UserManager um = new UserManager(new HashMap<>());
+        MessageController mc = new MessageController(mm, um, em);
+        um.createUser("user", "123", Template.ORGANIZER.getPermissions());
+        mc.orgSendToAllAtt("user", "hello");
+
+    }
+
     @Test(timeout = 50)
     public void viewAllTest() {
         MessageManager messageManager = new MessageManager();
@@ -218,20 +233,27 @@ public class MessageControllerTest {
         users.put(spk2.getUsername(), spk2);
         return users;
     }
+
+
+    @Test
+    public void testWriteMessage(){
+        MessageManager mm = new MessageManager();
+        EventManager em = new EventManager();
+        UserManager um = new UserManager(new HashMap<>());
+        MessageController mc = new MessageController(mm, um, em);
+        um.createUser("user", "123", Template.ATTENDEE.getPermissions());
+        um.createUser("user2", "123", Template.ATTENDEE.getPermissions());
+        String input = "user2\nhello\n";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        mc.writeMessage("user");
+        assertEquals(mm.retrieveUserInboxFor("user2","user").get(0).getContent(), "hello");
+        assertEquals(mm.retrieveUserInboxFor("user2", "user").get(0).getRecipients(), new String[]{"user2"});
+    }
+
 }
 
-    //    @Test
-//    public void testWriteMessage(){
-//        MessageManager mm = new MessageManager();
-//        EventManager em = new EventManager();
-//        UserManager um = new UserManager(new HashMap<>());
-//        MessageController mc = new MessageController(mm, um, em);
-//        mc.writeMessage("sender", "recipient", "message");
-//        assertEquals(mm.retrieveUserInboxFor("recipient", "sender").get(0).getContent(), "message");
-//        assertEquals(mm.retrieveUserInboxFor("recipient", "sender").get(0).getRecipients(), new String[]{"recipient"});
-//        assertEquals(mm.retrieveUserInbox("recipient").get("sender").get(0).getSender(),"sender");
-//
-//    }
+
 
 //    @Test
 //    public void testViewMessage(){
