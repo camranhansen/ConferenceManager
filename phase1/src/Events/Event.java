@@ -10,7 +10,7 @@ public class Event {
     private List<String> participants;
     private String room;
     private int capacity;
-    private int id;
+    private String id;
     private static int count = 0;
 
     public Event(){
@@ -23,29 +23,9 @@ public class Event {
         this.participants = participants;
         this.room = room;
         this.capacity = capacity;
-        setId();
-        Event.count += 1;
-    }
-    public void setId(){
-        this.id = Event.count;
+        this.id = time + room;
     }
 
-    public void setSpeakerName(String speakerName) {
-        this.speakerName = speakerName;
-    }
-
-    public void setTime(Instant time) {
-        this.time = time;
-    }
-
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
-
-
-    public void setRoom(String room) {
-        this.room = room;
-    }
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
@@ -75,7 +55,7 @@ public class Event {
         return this.capacity;
     }
 
-    public int getId(){
+    public String getId(){
         return this.id;
     }
 
