@@ -17,6 +17,11 @@ public class EventPresenter {
         System.out.println("List of events that you are hosting:");
     }
 
+    //TODO: Implement methods in Controller to tell organizer that the event he created is not successful.
+    public void foundConflictEvents(){
+        System.out.println("Cannot create this event because it conflicts with an existing event.");
+    }
+
     /*
     public void enterId(){
         System.out.println("Please enter the event id:");
