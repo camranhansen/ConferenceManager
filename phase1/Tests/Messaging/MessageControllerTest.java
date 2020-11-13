@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -191,7 +192,10 @@ public class MessageControllerTest {
         UserManager um = new UserManager(new HashMap<>());
         MessageController mc = new MessageController(mm, um, em);
         um.createUser("user", "123", Template.ORGANIZER.getPermissions());
+        um.createUser("user2", "123", Template.ATTENDEE.getPermissions());
+        um.createUser("user3", "123", Template.ATTENDEE.getPermissions());
         mc.orgSendToAllAtt("user", "hello");
+        //assertEquals(mm.retrieveUserInboxFor("user1", "user").get(0).getContent(), "hello");
 
     }
 
@@ -237,18 +241,19 @@ public class MessageControllerTest {
 
     @Test
     public void testWriteMessage(){
+        String input = "user2" + System.lineSeparator() + "hello" + System.lineSeparator();
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
         MessageManager mm = new MessageManager();
         EventManager em = new EventManager();
         UserManager um = new UserManager(new HashMap<>());
         MessageController mc = new MessageController(mm, um, em);
         um.createUser("user", "123", Template.ATTENDEE.getPermissions());
         um.createUser("user2", "123", Template.ATTENDEE.getPermissions());
-        String input = "user2\nhello\n";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
         mc.writeMessage("user");
         assertEquals(mm.retrieveUserInboxFor("user2","user").get(0).getContent(), "hello");
-        assertEquals(mm.retrieveUserInboxFor("user2", "user").get(0).getRecipients(), new String[]{"user2"});
+        assertEquals(Arrays.toString(mm.retrieveUserInboxFor("user2", "user").get(0).getRecipients()), "[user2]");
     }
 
 }

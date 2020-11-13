@@ -21,7 +21,8 @@ public class MessageManager {
             HashMap<String, List<Message>> userInbox = retrieveUserInbox(to[i]);
 
             if (!userInbox.containsKey(from)) {
-                userInbox.put(from, new ArrayList<>());
+                ArrayList<Message> message = new ArrayList<>();
+                userInbox.put(from, message);
             }
             List<Message> messagesFrom = userInbox.get(from);
             messagesFrom.add(msg);
@@ -30,7 +31,8 @@ public class MessageManager {
 
     public HashMap<String, List<Message>> retrieveUserInbox(String user) {
         if (!inboxes.containsKey(user)) {
-            inboxes.put(user, new HashMap<>());
+            HashMap<String, List<Message>> hashmap = new HashMap<String, List<Message>>();
+            inboxes.put(user, hashmap);
         }
         return inboxes.get(user);
     }
