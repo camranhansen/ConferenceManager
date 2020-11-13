@@ -4,26 +4,28 @@ package Events;
 //import Users.User;
 //import Users.UserManager;
 
+import Menus.InputPrompter;
+import Menus.Option;
 import Menus.SubController;
 import Users.Permission;
-//import Users.Template;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
+
+//import Users.Template;
 //import java.util.Arrays;
 //import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
 
 public class EventController implements SubController {
     private EventManager eventManager;
     private EventPresenter eventPresenter;
-    private Scanner eventScanner;
+    private InputPrompter inputPrompter;
 
     public EventController(EventManager eventManager) {
         this.eventManager = eventManager;
         this.eventPresenter = new EventPresenter();
-        this.eventScanner = new Scanner(System.in);
+        this.inputPrompter = new InputPrompter();
     }
 
     public List<Event> viewAllEvents(){
@@ -35,12 +37,12 @@ public class EventController implements SubController {
         return eventManager.getUserEvents(userName);
     }
 
-    public void enroll(int eventId, String username){
-        this.eventManager.enrollUser(eventId, username);
+    public void enroll(int eventID, String username){
+        this.eventManager.enrollUser(eventID, username);
     }
 
-    public void drop(int eventId, String username){
-        this.eventManager.dropUser(eventId, username);
+    public void drop(int eventID, String username){
+        this.eventManager.dropUser(eventID, username);
     }
 
     public List<Event> viewAvailableEvent(String username){
@@ -51,21 +53,32 @@ public class EventController implements SubController {
         this.eventManager.createEvent(name, time, eventName, participants, room, capacity);
     }
 
-    public void enrollSelf(String username){
-        this.eventPresenter.enrollOrDrop();
-        int choice = eventScanner.nextInt();
-        this.eventPresenter.enterId();
-        int id = eventScanner.nextInt();
-        if (choice == 1){
-            this.enroll(id, username);
-        }
-        else{
-            this.drop(id, username);
-        }
+    public void enrollSelf(int eventID, String username) {
+
+        Option option1 = new Option("Enroll In Event") {
+            @Override
+            public void run() {
+                enroll(eventID, username);
+            }
+        };
+
+        Option option2 = new Option("Withdraw From Event") {
+            @Override
+            public void run() {
+                drop(eventID, username);
+            }
+        };
+
+        ArrayList<Option> optionList = new ArrayList<>();
+        optionList.add(option1);
+        optionList.add(option2);
+
+        Option choice = inputPrompter.menuOption(optionList);
+        choice.run();
     }
 
-    public void deleteEvent(int eventId){
-        this.eventManager.deleteEvent(eventId);
+    public void deleteEvent(int eventID){
+        this.eventManager.deleteEvent(eventID);
     }
 
     //TODO: Change time from string to instant
@@ -74,61 +87,112 @@ public class EventController implements SubController {
 //        return eventScanner.nextLine();
 //    }
 
-    public String getSpeakerNameInput(){
-        this.eventPresenter.enterSpeakerName();
-        return eventScanner.nextLine();
-    }
-
-    public String getEventNameInput(){
-        this.eventPresenter.enterEventName();
-        return eventScanner.nextLine();
-    }
-
-    public String getRoomInput(){
-        this.eventPresenter.enterRoom();
-        return eventScanner.nextLine();
-    }
-
-    public int getCapacityInput(){
-        this.eventPresenter.enterCapacity();
-        return eventScanner.nextInt();
-    }
-
     //TODO: Change time from string to instant
-//    public void editTime(int eventId){
+//    public void editTime(int eventID){
 //        this.eventPresenter.enterTime();
 //        Instant time = this.getTimeInput();
-//        this.eventManager.editTime(eventId, time);
+//        this.eventManager.editTime(eventID, time);
 //    }
 
-    public void editSpeakerName(int eventId){
-        String name = this.getSpeakerNameInput();
-        this.eventManager.editSpeakerName(eventId, name);
+    public void editEvent(int eventID) {
+        Option option1 = new Option("Change Speaker") {
+            @Override
+            public void run() {
+                String speakerName = inputPrompter.getResponse("Enter the new speaker's name");
+                eventManager.editSpeakerName(eventID, speakerName);
+            }
+        };
+
+        Option option2 = new Option("Change Event Name") {
+            @Override
+            public void run() {
+                String eventName = inputPrompter.getResponse("Enter the new event name");
+                eventManager.editEventName(eventID, eventName);
+            }
+        };
+
+        Option option3 = new Option("Change Event Room") {
+            @Override
+            public void run() {
+                String eventRoom = inputPrompter.getResponse("Enter the new room name");
+                eventManager.editRoom(eventID, eventRoom);
+            }
+        };
+
+        Option option4 = new Option("Change Event Capacity") {
+            @Override
+            public void run() {
+                String eventCapacityStr = inputPrompter.getResponse("Enter the new capacity");
+                int eventCapacity = Integer.parseInt(eventCapacityStr.trim());
+                eventManager.editCapacity(eventID, eventCapacity);
+            }
+        };
+
+        ArrayList<Option> optionList = new ArrayList<>();
+        optionList.add(option1);
+        optionList.add(option2);
+        optionList.add(option3);
+        optionList.add(option4);
+
+        Option choice = inputPrompter.menuOption(optionList);
+        choice.run();
     }
 
-    public void editEventName(int eventId){
-        String name = this.getEventNameInput();
-        this.eventManager.editEventName(eventId, name);
+    public void viewEvents(String username) {
+        Option option1 = new Option("View My Events") {
+            @Override
+            public void run() {
+                eventPresenter.viewMyEvents();
+                List<Event> result = checkMyEvents(username);
+                for (Event event : result) {
+                    System.out.println(event.getEventName());
+                }
+            }
+        };
+
+        Option option2 = new Option("View Events Which I Can Register For") {
+            @Override
+            public void run() {
+                eventPresenter.viewAvailableEvents();
+                List<Event> result = viewAvailableEvent(username);
+                for (Event event : result) {
+                    System.out.println(event.getEventName());
+                }
+            }
+        };
+
+        Option option3 = new Option("View All Events") {
+            @Override
+            public void run() {
+                eventPresenter.viewAllEvents();
+                List<Event> result = viewAllEvents();
+                for (Event event : result) {
+                    System.out.println(event.getEventName());
+                }
+            }
+        };
+
+        ArrayList<Option> optionList = new ArrayList<>();
+        optionList.add(option1);
+        optionList.add(option2);
+        optionList.add(option3);
+
+        Option choice = inputPrompter.menuOption(optionList);
+        choice.run();
     }
 
-    public void editRoom(int eventId){
-        String name = this.getRoomInput();
-        this.eventManager.editRoom(eventId, name);
-    }
 
-    public void editCapacity(int eventId){
-        int capacity = this.getCapacityInput();
-        this.eventManager.editCapacity(eventId, capacity);
-    }
 
     public void performSelectedAction(String username, Permission permissionSelected){
+        String eventIDStr = inputPrompter.getResponse("Enter the ID of the event you wish to interact with");
+        int eventID = Integer.parseInt(eventIDStr.trim());
+
         if (permissionSelected== Permission.EVENT_SELF_ENROLL){
-            enrollSelf(username);
+            enrollSelf(eventID, username);
         }
         else if(permissionSelected == Permission.EVENT_OTHER_ENROLL){
-            this.eventPresenter.enterUsername();
-            String name = eventScanner.nextLine();
-            enrollSelf(name);
+            String name = inputPrompter.getResponse("Enter the username of the user you would like to enroll or withdraw");
+            enrollSelf(eventID, name);
         }
         //TODO: Change time from string to instant
 //        else if(permissionSelected == Permission.EVENT_CREATE){
@@ -141,58 +205,22 @@ public class EventController implements SubController {
 //            addEvent(speakerName, time, eventName, participants, roomName, capacity);
 //        }
         else if(permissionSelected == Permission.EVENT_DELETE){
-            this.eventPresenter.enterId();
-            int id = eventScanner.nextInt();
-            deleteEvent(id);
+            deleteEvent(eventID);
         }
         else if(permissionSelected == Permission.EVENT_EDIT){
-            this.eventPresenter.enterId();
-            int id = eventScanner.nextInt();
-            this.eventPresenter.enterChange();
-            int typeofChanges = eventScanner.nextInt();
-            if(typeofChanges == 1){
-                //editTime(id);
-            }
-            else if(typeofChanges == 2){
-                editSpeakerName(id);
-            }
-            else if(typeofChanges == 3){
-                editEventName(id);
-            }
-            else if(typeofChanges == 4){
-                editRoom(id);
-            }
-            else if(typeofChanges == 5){
-                editCapacity(id);
-            }
+            editEvent(eventID);
         }
         else if(permissionSelected == Permission.VIEW_HOSTING_EVENTS){
-            this.eventPresenter.viewSpeakerList();
-            List<Event> result = this.eventManager.getEventBySpeakerName(username);
-            System.out.println(result);
+            eventPresenter.viewSpeakerList();
+            List<Event> result = eventManager.getEventBySpeakerName(username);
+            for (Event event : result) {
+                System.out.println(event.getEventName());
+            }
         }
         else if(permissionSelected == Permission.VIEW_ALL_EVENTS){
-            this.eventPresenter.viewEvents();
-            int choice = eventScanner.nextInt();
-            if(choice == 1){
-                this.eventPresenter.viewAllEvents();
-                List<Event> result = this.viewAllEvents();
-                System.out.println(result);
-            }
-            else if(choice ==2){
-                this.eventPresenter.viewAvailableEvents();
-                List<Event> result = this.viewAvailableEvent(username);
-                System.out.println(result);
-            }
-            else if(choice ==3){
-                this.eventPresenter.viewMyEvents();
-                List<Event> result = this.checkMyEvents(username);
-                System.out.println(result);
-            }
+            viewEvents(username);
         }
 
     }
-
-
 
 }

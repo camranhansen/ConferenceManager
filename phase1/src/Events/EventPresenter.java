@@ -1,6 +1,23 @@
 package Events;
 
 public class EventPresenter {
+
+    // VIEW_ALL_EVENTS
+    public void viewEvents(){
+        System.out.println("What would you like to check: 1.All events; 2.All available events; 3.My events");
+    }
+    public void viewAllEvents(){System.out.println("List of all events:");}
+
+    public void viewAvailableEvents(){System.out.println("List of available events:");}
+
+    public void viewMyEvents(){System.out.println("List of events that you are enrolled in:");}
+
+    //VIEW_HOSTING_EVENTS
+    public void viewSpeakerList(){
+        System.out.println("List of events that you are hosting:");
+    }
+
+    /*
     public void enterId(){
         System.out.println("Please enter the event id:");
     }
@@ -39,20 +56,6 @@ public class EventPresenter {
         System.out.println("Please enter a number of capacity:");
     }
 
-   // VIEW_ALL_EVENTS
-    public void viewEvents(){
-        System.out.println("What would you like to check: 1.All events; 2.All available events; 3.My events");
-    }
-    public void viewAllEvents(){System.out.println("List of all events:");}
-
-    public void viewAvailableEvents(){System.out.println("List of available events:");}
-
-    public void viewMyEvents(){System.out.println("List of events that you enroll:");}
-
-    //VIEW_HOSTING_EVENTS
-    public void viewSpeakerList(){
-        System.out.println("List of events that you are hosting:");
-    }
-
+     */
 
 }
