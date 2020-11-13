@@ -1,7 +1,10 @@
 package Users;
 
+import Menus.InputPrompter;
+import Menus.Option;
 import Menus.SubController;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -9,10 +12,12 @@ import java.util.Scanner;
 public class UserController implements SubController {
     private UserManager um;
     private UserPresenter up;
+    private InputPrompter prompter;
 
     public UserController(UserManager um){
         this.um = um;
         this.up = new UserPresenter();
+        this.prompter = new InputPrompter();
     }
 
     @Override
@@ -38,44 +43,40 @@ public class UserController implements SubController {
     }
 
     public Template selectTemplate(){
-        Scanner userInput = new Scanner(System.in);
+        ArrayList<Option> optionList = new ArrayList<>();
         List<Template> templates = Arrays.asList(Template.values());
-        this.up.promptTemplate(templates);
-        String option = userInput.nextLine();
-        //TODO: Don't expect just a number. use IsNumeric to parse whether number input or text
-        return templates.get(Integer.parseInt(option));
+        for(Template t: templates){
+            optionList.add(new Option(t.toString(),t));
+            //DPE DESIGN PATTERN HERE. USING OPTION AS
+            // ADAPTOR!!!!
+        }
+
+        Option templateSelected = prompter.menuOption(optionList);
+
+        return templateSelected.getTemplateHeld();
 
     }
 
     public void createAccount(Template template){
-        Scanner userInput = new Scanner(System.in);
-        this.up.promptUsername();
-        String inputUsername = userInput.nextLine();
-        this.up.promptPassword();
-        String inputPassword = userInput.nextLine();
+        String inputUsername = getNewUsername();
+        String inputPassword = prompter.getResponse("Enter password");
+        //TODO determine whether we need to validate passwords
         this.um.createUser(inputUsername, inputPassword, template.getPermissions());
-
     }
 
     public void deleteAccount(){
-        Scanner userInput = new Scanner(System.in);
-        this.up.promptUsername();
-        String inputUsername = userInput.nextLine();
+        String inputUsername = getExistingUsername();
         this.um.removeUser(inputUsername);
 
     }
 
     public void editPassword(String username){
-        Scanner userInput = new Scanner(System.in);
-        this.up.promptPassword();
-        String inputPassword = userInput.nextLine();
+        String inputPassword = prompter.getResponse("Enter the new password");
         this.um.setPassword(username,inputPassword);
     }
 
     public void editOtherPassword(){
-        Scanner userInput = new Scanner(System.in);
-        this.up.promptUsername();
-        String inputUsername = userInput.nextLine();
+        String inputUsername = getExistingUsername();
         this.editPassword(inputUsername);
     }
 
@@ -83,5 +84,22 @@ public class UserController implements SubController {
     //TODO: Implement when actually relevant :)
     }
 
+    public String getNewUsername(){
+        String userName = prompter.getResponse("Enter username");
+
+        while(um.uNameExists(userName)){
+            userName = prompter.getResponse("The username you entered already exists."+System.lineSeparator()+"Please enter a new username");
+        }
+
+        return userName;
+    }
+
+    public String getExistingUsername(){
+        String userName = prompter.getResponse("Enter username");
+        while(!um.uNameExists(userName)){
+            userName = prompter.getResponse("The username you entered does not exist."+System.lineSeparator()+"Please enter a new username");
+        }
+        return userName;
+    }
 
 }

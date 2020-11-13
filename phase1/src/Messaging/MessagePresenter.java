@@ -6,6 +6,18 @@ public class MessagePresenter {
         System.out.println(messages);
     }
 
+    public void noAttInEvent(){
+        System.out.println("there is no one in these events to send to");
+    }
+
+    public void noAttendees(){
+        System.out.println("There are no attendees to send to");
+    }
+
+    public void noSpeakers(){
+        System.out.println("There are no speakers to send to");
+    }
+
 //    public void viewAllOrFromOne(){
 //        System.out.println("to view whole inbox: enter '1'.\nto view from one username: enter '2''.");
 //    }

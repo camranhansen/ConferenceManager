@@ -64,6 +64,9 @@ public class MessageController implements SubController {
 
     public void writeMessage(String from) {
         String to = inputPrompter.getResponse("Enter username to send to");
+        while(! userManager.userExists(to)){
+            to = inputPrompter.getResponse("Enter username to send to");
+        }
         String content = getContent();
         messageManager.sendMessage(from, content, to);
     }
@@ -132,18 +135,28 @@ public class MessageController implements SubController {
             recipientsSum.addAll(eventManager.getParticipants(events.get(i)));
         }
         String[] recipients = new String[recipientsSum.size()];
-        messageManager.sendMessage(from, message, recipientsSum.toArray(recipients));
+        if (!(recipients.length == 0)){
+            messageManager.sendMessage(from, message, recipientsSum.toArray(recipients));
+        }
+        messagePresenter.noAttInEvent();
     }
 
     public void orgSendToAllAtt(String from, String message){
-        messageManager.sendMessage(from,
-                message,
-                getStringArray(userManager.getUserByPermissionTemplate(Template.ATTENDEE)));
+        String[] attendees = getStringArray(userManager.getUserByPermissionTemplate(Template.ATTENDEE));
+        if (!(attendees.length == 0)){
+        messageManager.sendMessage(from, message, attendees);
+        }
+        else{messagePresenter.noAttendees();}
     }
 
     public void orgSendToAllSpeakers(String from, String message){
-        messageManager.sendMessage(from, message,
-                getStringArray(userManager.getUserByPermissionTemplate(Template.SPEAKER)));
+        String[] speakers = getStringArray(userManager.getUserByPermissionTemplate(Template.SPEAKER));
+        if (!(speakers.length == 0)){
+            messageManager.sendMessage(from, message, speakers);
+        }
+        else{
+        messagePresenter.noSpeakers();
+        }
     }
 
     private String getContent(){

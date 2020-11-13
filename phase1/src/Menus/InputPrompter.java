@@ -28,6 +28,7 @@ public class InputPrompter {
 
     private int userInput(ArrayList<Option> options){
         String userInput =  scanner.nextLine();
+
         String input = userInput.trim();
         while (! inputCheck(options, input)) {
             input = String.valueOf(userInput(options));
