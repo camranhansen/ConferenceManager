@@ -3,6 +3,7 @@ package Messaging;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 //TODO: add a constructor for inboxes that already exist
@@ -91,5 +92,10 @@ public class MessageManager {
         List<Message> senderMessage = inbox.get(sender);
         Message curMessage = new Message(sender, row[3].split(", "), row[2]);
         curMessage.setTimeSent(Instant.parse(row[1]));
+    }
+
+    public Iterator<String> getAllUsersWithInboxes() {
+
+        return inboxes.keySet().iterator();
     }
 }

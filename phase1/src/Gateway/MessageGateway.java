@@ -11,12 +11,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class MessageGateway {
+    private static final String directory = "data/user/inboxes/";
     private class UserMessageGateway extends Gateway {
         public UserMessageGateway(String user) {
-            super(4, "data/user/inboxes/" + user + ".csv");
+            super(4,  directory + user + ".csv");
         }
     }
     MessageManager manager;
@@ -41,6 +43,25 @@ public class MessageGateway {
         ArrayList<String[]> data = new ArrayList<>();
         for (int i = 0; i < userGateway.getRowCount(); i++) {
             manager.putMessageFromArray(user, userGateway.getRow(i));
+        }
+    }
+
+    public void saveAllUsers() throws IOException {
+        Iterator<String> iterator = manager.getAllUsersWithInboxes();
+        while (iterator.hasNext()) {
+            saveForUser(iterator.next());
+        }
+    }
+
+    public void readAllUsers() throws IOException {
+        File dataFolder = new File(directory);
+        File[] files = dataFolder.listFiles();
+
+        for (File file : files) {
+            if (file.isFile()) {
+                String name = file.getName();
+                readForUser(name.substring(0, name.lastIndexOf(".csv")));
+            }
         }
     }
 }
