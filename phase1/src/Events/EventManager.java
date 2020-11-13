@@ -2,6 +2,7 @@ package Events;
 
 import Users.User;
 
+import java.lang.reflect.Array;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -197,12 +198,12 @@ public class EventManager {
     public ArrayList<String[]> getAllEventData(){
         ArrayList<String[]> eventList = new ArrayList<>();
         for (Integer id: this.events.keySet()) {
-            eventList.add(getSingleUserData(id));
+            eventList.add(getSingleEventData(id));
         }
         return eventList;
     }
 
-    public String[] getSingleUserData(Integer id) {
+    public String[] getSingleEventData(Integer id) {
         Event event = this.events.get(id);
         String eventId = String.valueOf(id);
         String speakerName = event.getSpeakerName();
@@ -213,6 +214,20 @@ public class EventManager {
         String capacity = String.valueOf(event.getCapacity());
         return new String[]{eventId, speakerName, time, eventName, participants, room, capacity};
     }
-}
+
+    public void setEventData(String[] eventData) {
+        Integer eventId = Integer.valueOf(eventData[0]);
+        String speakerName = eventData[1];
+        Instant time = Instant.parse(eventData[2]);
+        String eventName = eventData[3];
+        String participants = eventData[4];
+        String[] listOfParticipants = participants.split(",");
+        String room = eventData[5];
+        int capacity = Integer.parseInt(eventData[6]);
+        if (!this.events.containsKey(eventId)) {
+            this.createEvent(speakerName, time, eventName, Arrays.asList(listOfParticipants), room, capacity);
+        }
+    }
+    }
 
 
