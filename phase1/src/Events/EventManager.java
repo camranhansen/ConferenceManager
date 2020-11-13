@@ -235,14 +235,18 @@ public class EventManager {
         Instant time = Instant.parse(eventData[2]);
         String eventName = eventData[3];
         String participants = eventData[4];
-        String[] listOfParticipants = participants.split(",");
         String room = eventData[5];
         int capacity = Integer.parseInt(eventData[6]);
-        if (!this.events.containsKey(id)){
+        if (!participants.equals("[]")){
+            String participants1 = participants.substring(1, participants.length()-1);
+            String[] list = participants1.split(",");
+            if (!this.events.containsKey(id)){
+                Event event = new Event(speakerName, time, eventName, Arrays.asList(list), room, capacity);
+                this.events.put(id, event);
+            }
+        }else{
             this.createEvent(speakerName, time, eventName, room, capacity);
         }
-
-
 
     }
 
