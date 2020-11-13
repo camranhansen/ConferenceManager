@@ -86,7 +86,6 @@ public class EventController implements SubController {
         this.eventManager.deleteEvent(eventID);
     }
 
-
     //TODO: Change time from string to instant
 //    public void editTime(int eventID){
 //        this.eventPresenter.enterTime();
