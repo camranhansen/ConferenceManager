@@ -11,8 +11,12 @@ public class EventGateway extends Gateway{
         super(7, "assets/event_data.csv");
     }
 
-    public void readEventsFromGateway() throws IOException {
+    public void readEventsFromGateway(EventManager eventManager) throws IOException {
         this.readFromFile();
+        for (int i=0; i<this.getRowCount(); i++){
+            String[] eventData = this.getRow(i);
+            eventManager.setEventData(eventData);
+        }
 
 
     }

@@ -203,9 +203,9 @@ public class EventManager {
         return eventList;
     }
 
-    public String[] getSingleEventData(Integer id) {
+    public String[] getSingleEventData(String id) {
         Event event = this.events.get(id);
-        String eventId = String.valueOf(id);
+        String eventId = id;
         String speakerName = event.getSpeakerName();
         String time = event.getEventTime().toString();
         String eventName = event.getEventName();
@@ -216,7 +216,7 @@ public class EventManager {
     }
 
     public void setEventData(String[] eventData) {
-        Integer eventId = Integer.valueOf(eventData[0]);
+        String eventId = eventData[0];
         String speakerName = eventData[1];
         Instant time = Instant.parse(eventData[2]);
         String eventName = eventData[3];
