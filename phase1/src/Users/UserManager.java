@@ -92,7 +92,7 @@ public class UserManager {
     public void setSingleUserData(String[] userdata){
         String username = userdata[0];
         String password = userdata[1];
-        List<Permission> permissions = StringToPermissions(userdata[3]);
+        List<Permission> permissions = StringToPermissions(userdata[2]);
         if (userExists(username)){
             users.get(username).setPassword(password);
             users.get(username).setPermissions(permissions);

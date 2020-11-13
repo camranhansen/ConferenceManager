@@ -84,8 +84,9 @@ public class MessageController implements SubController {
             @Override
             public void run(){
                 String eventId = inputPrompter.getResponse("Enter event id to send to");
-                if(!eventManager.getEvents().containsKey(eventId)){
+                while(!eventManager.getEvents().containsKey(eventId)){
                     messagePresenter.noEvent();
+                    eventId = inputPrompter.getResponse("Enter event id to send to");
                 }
                 if(!eventManager.getSpkEvents(from).contains(eventId)){
                     messagePresenter.notSpeakerEvent();
@@ -146,7 +147,7 @@ public class MessageController implements SubController {
         if (!(recipients.length == 0)){
             messageManager.sendMessage(from, message, recipientsSum.toArray(recipients));
         }
-        messagePresenter.noAttInEvent();
+        else{messagePresenter.noAttInEvent();}
     }
 
     public void orgSendToAllAtt(String from, String message){
