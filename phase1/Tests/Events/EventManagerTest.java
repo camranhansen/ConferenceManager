@@ -187,9 +187,8 @@ public class EventManagerTest {
         event.addEventToHash(e2);
         event.addEventToHash(e3);
         List<Event> list = new ArrayList<>();
-        list.add(e2);
         list.add(e1);
-
+        list.add(e2);
         assertEquals(event.getUserEvents("Michael"), list);
     }
 
@@ -223,7 +222,7 @@ public class EventManagerTest {
         event.addEventToHash(e1);
         Instant time2 = time.plus(1, ChronoUnit.HOURS);
         event.editTime(e1.getId(), time2);
-        assertEquals(e1.getEventTime(), time2);
+        assertEquals(event.getEventByName("Test Event").getEventTime(), time2);
     }
 
     @Test
@@ -234,7 +233,7 @@ public class EventManagerTest {
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
         event.addEventToHash(e1);
         event.editSpeakerName(e1.getId(), "Roberto");
-        assertEquals(e1.getSpeakerName(), "Roberto");
+        assertEquals(event.getEventByName("Test Event").getSpeakerName(), "Roberto");
     }
 
     @Test
@@ -245,7 +244,8 @@ public class EventManagerTest {
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
         event.addEventToHash(e1);
         event.editEventName(e1.getId(), "Clean Architecture");
-        assertEquals(e1.getEventName(), "Clean Architecture");
+        System.out.println(event.getEvents().get("Meeting Room 1" + time.toString()));
+        assertEquals("123", "Clean Architecture");
     }
 
     @Test
@@ -256,7 +256,7 @@ public class EventManagerTest {
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
         event.addEventToHash(e1);
         event.editRoom(e1.getId(), "BH 101");
-        assertEquals(e1.getRoom(), "BH 101");
+        assertEquals(event.getEventByName("Test Event").getRoom(), "BH 101");
     }
 
     @Test
@@ -269,7 +269,7 @@ public class EventManagerTest {
         System.out.println(event.getEvents());
         event.editCapacity(e1.getId(), 5);
         System.out.println(event.getEvents());
-        assertEquals(5,e1.getCapacity());
+        assertEquals(5,event.getEventByName("Test Event").getCapacity());
     }
 
 }
