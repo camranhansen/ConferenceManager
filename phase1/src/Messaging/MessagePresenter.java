@@ -18,6 +18,14 @@ public class MessagePresenter {
         System.out.println("There are no speakers to send to");
     }
 
+    public void noEvent(){
+        System.out.println("This event doesn't exist");
+    }
+
+    public void notSpeakerEvent(){
+        System.out.println("This event is not your event");
+    }
+
 //    public void viewAllOrFromOne(){
 //        System.out.println("to view whole inbox: enter '1'.\nto view from one username: enter '2''.");
 //    }

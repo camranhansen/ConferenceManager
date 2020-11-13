@@ -34,5 +34,4 @@ public class Message {
     public void setTimeSent(Instant time){
         this.timeSent = time;
     }
-    //TODO: Talk about encapsulation.
 }
