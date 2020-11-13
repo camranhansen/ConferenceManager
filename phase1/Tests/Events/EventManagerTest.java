@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.time.Instant.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EventManagerTest {
@@ -13,7 +14,7 @@ public class EventManagerTest {
     @Test
     public void getEventsList() {
         List<String> arr = new ArrayList<>();
-        Instant time = Instant.now();
+        Instant time = now();
         Event e1 = new Event("Bob Smithers", time, "Test Event", "Meeting Room 1",  2);
         EventManager event = new EventManager();
         event.addEventToHash(e1);
@@ -25,7 +26,7 @@ public class EventManagerTest {
     @Test
     public void getEventByName() {
         List<String> arr = new ArrayList<>();
-        Instant time = Instant.now();
+        Instant time = now();
         Event e1 = new Event("Bob Smithers", time, "Test Event", "Meeting Room 1",  2);
         Event e2 = new Event("Rob Willis", time, "Test Event 2", "Meeting Room 2",  2);
         Event e3 = new Event("Jane Doe", time, "Test Event 3", "Meeting Room 3",  2);
@@ -39,7 +40,7 @@ public class EventManagerTest {
     @Test
     public void getEventBySpeakerName() {
         EventManager event = new EventManager();
-        Instant time = Instant.now();
+        Instant time = now();
         Instant time2 = time.plus(1, ChronoUnit.HOURS);
         List<String> arr1 = new ArrayList<>();
         Event e1 = new Event("Bob Smithers", time, "Test Event", "Meeting Room 1",  2);
@@ -59,7 +60,7 @@ public class EventManagerTest {
     public void createEvent() {
         List<String> arr = new ArrayList<>();
         EventManager event = new EventManager();
-        Instant time = Instant.now();
+        Instant time = now();
         event.createEvent("Bob Smithers", time,"Test Event", "Meeting Room 1",  2);
         assertTrue(event.getEventsList().size() > 0);
     }
@@ -67,7 +68,7 @@ public class EventManagerTest {
     @Test
     public void deleteEvent() {
         EventManager event = new EventManager();
-        Instant time = Instant.now();
+        Instant time = now();
         List<String> arr1 = new ArrayList<>();
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
         Event e2 = new Event("Roberto", time, "Test Event 2", arr1, "Meeting Room 2",  2);
@@ -88,7 +89,7 @@ public class EventManagerTest {
         arr1.add("Daniel Tan");
         arr1.add("Cameron Blom");
         EventManager event = new EventManager();
-        Instant time = Instant.now();
+        Instant time = now();
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr, "Meeting Room 1",  2);
         event.addEventToHash(e1);
         assertEquals(event.getParticipants(e1.getId()), arr1);
@@ -99,7 +100,7 @@ public class EventManagerTest {
         EventManager event = new EventManager();
         String name = "Micheal";
         List<String> arr = new ArrayList<>();
-        Instant time = Instant.now();
+        Instant time = now();
         Event e1 = new Event("Bob Smithers", time,"Test Event", arr, "Meeting Room 1",  2);
         event.addEventToHash(e1);
         event.enrollUser(e1.getId(), name);
@@ -112,7 +113,7 @@ public class EventManagerTest {
         EventManager event = new EventManager();
         List<String> arr = new ArrayList<>();
         arr.add("Micheal");
-        Instant time = Instant.now();
+        Instant time = now();
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr, "Meeting Room 1",  2);
         event.addEventToHash(e1);
         event.dropUser(e1.getId(), name);
@@ -122,7 +123,7 @@ public class EventManagerTest {
     @Test
     public void getInfo() {
         EventManager event = new EventManager();
-        Instant time = Instant.now();
+        Instant time = now();
         List<String> arr = new ArrayList<>();
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr, "Meeting Room 1",  2);
         event.addEventToHash(e1);
@@ -133,7 +134,7 @@ public class EventManagerTest {
     @Test
     public void getAvailableEvents() {
         EventManager event = new EventManager();
-        Instant time = Instant.now();
+        Instant time = now();
         Instant time2 = time.plus(1, ChronoUnit.HOURS);
         Instant time3 = time.plus(2, ChronoUnit.HOURS);
         List<String> arr1 = new ArrayList<>();
@@ -154,7 +155,7 @@ public class EventManagerTest {
     @Test
     public void addEventToHash() {
         EventManager event = new EventManager();
-        Instant time = Instant.now();
+        Instant time = now();
         List<String> arr1 = new ArrayList<>();
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
         HashMap<String, Event> events = new HashMap<>();
@@ -174,7 +175,7 @@ public class EventManagerTest {
     @Test
     public void getUserEvents() {
         EventManager event = new EventManager();
-        Instant time = Instant.now();
+        Instant time = now();
         Instant time2 = time.plus(1, ChronoUnit.HOURS);
         Instant time3 = time2.plus(1, ChronoUnit.HOURS);
         List<String> arr1 = new ArrayList<>();
@@ -195,7 +196,7 @@ public class EventManagerTest {
     @Test
     public void getSpkEvents() {
         EventManager event = new EventManager();
-        Instant time = Instant.now();
+        Instant time = now();
         Instant time2 = time.plus(1, ChronoUnit.HOURS);
         Instant time3 = time2.plus(1, ChronoUnit.HOURS);
         List<String> arr1 = new ArrayList<>();
@@ -216,11 +217,11 @@ public class EventManagerTest {
     @Test
     public void editTime() {
         EventManager event = new EventManager();
-        Instant time = Instant.now();
+        Instant time = Instant.MAX;
         List<String> arr1 = new ArrayList<>();
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
         event.addEventToHash(e1);
-        Instant time2 = time.plus(1, ChronoUnit.HOURS);
+        Instant time2 = Instant.MAX.minus(1, ChronoUnit.HOURS);
         event.editTime(e1.getId(), time2);
         assertEquals(event.getEventByName("Test Event").getEventTime(), time2);
     }
@@ -228,7 +229,7 @@ public class EventManagerTest {
     @Test
     public void editSpeakerName() {
         EventManager event = new EventManager();
-        Instant time = Instant.now();
+        Instant time = now();
         List<String> arr1 = new ArrayList<>();
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
         event.addEventToHash(e1);
@@ -239,7 +240,7 @@ public class EventManagerTest {
     @Test
     public void editEventName() {
         EventManager event = new EventManager();
-        Instant time = Instant.now();
+        Instant time = now();
         List<String> arr1 = new ArrayList<>();
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
         event.addEventToHash(e1);
@@ -251,7 +252,7 @@ public class EventManagerTest {
     @Test
     public void editRoom() {
         EventManager event = new EventManager();
-        Instant time = Instant.now();
+        Instant time = now();
         List<String> arr1 = new ArrayList<>();
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
         event.addEventToHash(e1);
@@ -262,7 +263,7 @@ public class EventManagerTest {
     @Test
     public void editCapacity() {
         EventManager event = new EventManager();
-        Instant time = Instant.now();
+        Instant time = now();
         List<String> arr1 = new ArrayList<>();
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
         event.addEventToHash(e1);
