@@ -268,12 +268,21 @@ public class EventManager {
     }
 
     public List<String> getAllEventIds(){
-        List<String> aList = new ArrayList<>();
-        aList.addAll(this.events.keySet());
-        return aList;
+        ArrayList<String> allIDS = new ArrayList<>(this.events.keySet());
+        return allIDS;
     }
 
 
+    public String getFormattedEvent(String id){
+        Event e = this.events.get(id);
+        String lineSep = ":" + System.lineSeparator();
+        String formatted = "Event Name: " + e.getEventName() + lineSep +
+                "Event Time: " + e.getEventTime() + lineSep +
+                "Room: " + e.getRoom() + lineSep +
+                "Capacity: " + e.getParticipants().size() + "/" + e.getCapacity() + lineSep;
+
+        return formatted;
+    }
 }
 
 

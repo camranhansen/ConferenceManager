@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 public class EventControllerTest {
 
@@ -23,7 +23,6 @@ public class EventControllerTest {
     public void viewAllEvents() {
         EventManager eventManager = new EventManager();
         EventController control = new EventController(eventManager);
-        List<String> arr = new ArrayList<>();
         Instant time = Instant.now();
         eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1", 2);
         eventManager.createEvent("Rob Willis", time, "Test Event 2", "Meeting Room 2", 2);
@@ -36,6 +35,8 @@ public class EventControllerTest {
         eventList.add(e2);
         eventList.add(e3);
         assertEquals(control.viewAllEvents(), eventList);
+        EventPresenter ep = new EventPresenter();
+
     }
 
     @Test
