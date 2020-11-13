@@ -1,22 +1,42 @@
 package Messaging;
 
-import Events.Event;
 import Events.EventManager;
+import Users.Permission;
 import Users.Template;
 import Users.User;
 import Users.UserManager;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import java.util.ArrayList;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.time.Instant;
 import java.util.HashMap;
-
-
-import static org.junit.Assert.assertEquals;
-
 
 public class MessageControllerTest {
 
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
+    private final PrintStream originalErr = System.err;
+
+    @Before
+    public void setUpStreams() {
+        System.setOut(new PrintStream(outContent));
+        System.setErr(new PrintStream(errContent));
+    }
+
+    @After
+    public void restoreStreams() {
+        System.setOut(originalOut);
+        System.setErr(originalErr);
+    }
+
     @Test(timeout = 50)
-    public void controllerConstructTest(){
+    public void controllerConstructTest() {
         MessageManager messageManager = new MessageManager();
         EventManager eventManager = new EventManager();
         HashMap<String, User> users = generateUserHash();
@@ -24,9 +44,144 @@ public class MessageControllerTest {
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
     }
 
+    @Test(timeout = 50)
+    public void performSelectedMessageAllAttTest() {
+        String input = "hello" + System.lineSeparator() + "1" + System.lineSeparator();
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+        messageController.performSelectedAction("org1", Permission.MESSAGE_ALL_USERS);
+    }
 
     @Test(timeout = 50)
-    public void viewAllTest(){
+    public void performSelectedMessageAllSpkTest() {
+        String input = "hello" + System.lineSeparator() + "2" + System.lineSeparator();
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+        messageController.performSelectedAction("org1", Permission.MESSAGE_ALL_USERS);
+    }
+
+    @Test(timeout = 50)
+    public void performSelectedMessageSingleTest() {
+        String input = "u2" + System.lineSeparator() + "hello" + System.lineSeparator();
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+        messageController.performSelectedAction("u1", Permission.MESSAGE_SINGLE_USER);
+    }
+
+    @Test
+    public void performSelectedMessageAllEventTest() {
+        String input = "hello" + System.lineSeparator() + "1" + System.lineSeparator();
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        Instant time = Instant.now();
+        eventManager.createEvent("spk1", time, "talk1", "23", 2);
+        String eventId = "23" + time;
+        eventManager.enrollUser(eventId, "u2");
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+        messageController.performSelectedAction("spk1", Permission.MESSAGE_EVENT_USERS);
+    }
+
+    @Test
+    public void performSelectedMessageOneEventTest() {
+        Instant time = Instant.now();
+        String eventId = "23" + time;
+        String input = "hello" + System.lineSeparator() + "2" + System.lineSeparator() + eventId + System.lineSeparator();
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        eventManager.createEvent("spk1", time, "talk1", "23", 2);
+        eventManager.enrollUser(eventId, "u2");
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+        messageController.performSelectedAction("spk1", Permission.MESSAGE_EVENT_USERS);
+    }
+
+    @Test(timeout = 50)
+    public void performSelectedViewAllMessagesTest() {
+        String input = "1" + System.lineSeparator();
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+        messageManager.sendMessage("u2", "hi", "u1");
+        messageManager.sendMessage("u2", "how are you?", "u1");
+        messageManager.sendMessage("spk1", "hello", "u1");
+        messageController.performSelectedAction("u1", Permission.VIEW_SELF_MESSAGES);
+    }
+
+    @Test(timeout = 50)
+    public void performSelectedViewFromMessagesTest() {
+        String input = "2" + System.lineSeparator() + "u2" + System.lineSeparator();
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+        messageManager.sendMessage("u2", "hi", "u1");
+        messageManager.sendMessage("u2", "how are you?", "u1");
+        messageManager.sendMessage("spk1", "hello", "u1");
+        messageController.performSelectedAction("u1", Permission.VIEW_SELF_MESSAGES);
+    }
+
+    @Test(timeout = 50)
+    public void writeMessageTest() {
+        String input = "u1" + System.lineSeparator() + "hello" + System.lineSeparator();
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+
+        messageController.writeMessage("u2");
+    }
+
+    @Test(timeout = 50)
+    public void sendMessageTestToAllSpk() {
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+        messageController.orgSendToAllSpeakers("u2", "hello");
+    }
+
+    @Test(timeout = 50)
+    public void viewAllTest() {
         MessageManager messageManager = new MessageManager();
         EventManager eventManager = new EventManager();
         HashMap<String, User> users = generateUserHash();
@@ -37,8 +192,9 @@ public class MessageControllerTest {
         System.out.println(messages);
     }
 
+    //
     @Test(timeout = 50)
-    public void viewFromTest(){
+    public void viewFromTest() {
         MessageManager messageManager = new MessageManager();
         EventManager eventManager = new EventManager();
         HashMap<String, User> users = generateUserHash();
@@ -50,36 +206,19 @@ public class MessageControllerTest {
         System.out.println(messages);
     }
 
-    @Test(timeout = 50)
-    public void sendToAllAttTest(){
-        MessageManager messageManager = new MessageManager();
-        EventManager eventManager = new EventManager();
-        HashMap<String, User> users = generateUserHash();
-        UserManager userManager = new UserManager(users);
-        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
-        messageController.orgSendToAllAtt("org1", "events rock");
-        System.out.println(messageController.viewMessageFrom("u1", "org1"));
-    }
-
-    @Test(timeout = 50)
-    public void sendMessageTestToAllSpk(){
-        MessageManager messageManager = new MessageManager();
-        EventManager eventManager = new EventManager();
-        HashMap<String, User> users = generateUserHash();
-        UserManager userManager = new UserManager(users);
-        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
-        messageController.orgSendToAllSpeakers("u2", "hello");
-    }
-
-    public HashMap<String, User> generateUserHash(){
+    public HashMap<String, User> generateUserHash() {
         User u1 = new User("u1", "pass1", Template.ATTENDEE.getPermissions());
-        User u2= new User("u2", "pass2", Template.ATTENDEE.getPermissions());
+        User u2 = new User("u2", "pass2", Template.ATTENDEE.getPermissions());
+        User spk1 = new User("spk1", "pass1", Template.SPEAKER.getPermissions());
+        User spk2 = new User("spk2", "pass2", Template.SPEAKER.getPermissions());
         HashMap<String, User> users = new HashMap<>();
         users.put(u1.getUsername(), u1);
         users.put(u2.getUsername(), u2);
+        users.put(spk1.getUsername(), spk1);
+        users.put(spk2.getUsername(), spk2);
         return users;
     }
-
+}
 
     //    @Test
 //    public void testWriteMessage(){
@@ -143,4 +282,4 @@ public class MessageControllerTest {
 //        assertEquals(hashmap1.get("speaker").get(0).getContent(), "announcement");
 //        assertEquals(hashmap2.get("speaker").get(0).getContent(), "announcement");
 //    }
-}
+

@@ -64,6 +64,9 @@ public class MessageController implements SubController {
 
     public void writeMessage(String from) {
         String to = inputPrompter.getResponse("Enter username to send to");
+        while(! userManager.userExists(to)){
+            to = inputPrompter.getResponse("Enter username to send to");
+        }
         String content = getContent();
         messageManager.sendMessage(from, content, to);
     }
@@ -81,9 +84,17 @@ public class MessageController implements SubController {
             @Override
             public void run(){
                 String eventId = inputPrompter.getResponse("Enter event id to send to");
-                List<String>aList = new ArrayList<>();
-                aList.add(eventId);
-                writeToEvents(from, content, aList);
+                if(!eventManager.getEvents().containsKey(eventId)){
+                    messagePresenter.noEvent();
+                }
+                if(!eventManager.getSpkEvents(from).contains(eventId)){
+                    messagePresenter.notSpeakerEvent();
+                }
+                else{
+                    List<String>aList = new ArrayList<>();
+                    aList.add(eventId);
+                    writeToEvents(from, content, aList);
+                }
             }
             //TODO: this will have to throw an exception... if a number is not put in or it is not a valid
             // event id. We can also make each of their events an option that can then be chosen.
@@ -132,18 +143,28 @@ public class MessageController implements SubController {
             recipientsSum.addAll(eventManager.getParticipants(events.get(i)));
         }
         String[] recipients = new String[recipientsSum.size()];
-        messageManager.sendMessage(from, message, recipientsSum.toArray(recipients));
+        if (!(recipients.length == 0)){
+            messageManager.sendMessage(from, message, recipientsSum.toArray(recipients));
+        }
+        messagePresenter.noAttInEvent();
     }
 
     public void orgSendToAllAtt(String from, String message){
-        messageManager.sendMessage(from,
-                message,
-                getStringArray(userManager.getUserByPermissionTemplate(Template.ATTENDEE)));
+        String[] attendees = getStringArray(userManager.getUserByPermissionTemplate(Template.ATTENDEE));
+        if (!(attendees.length == 0)){
+        messageManager.sendMessage(from, message, attendees);
+        }
+        else{messagePresenter.noAttendees();}
     }
 
     public void orgSendToAllSpeakers(String from, String message){
-        messageManager.sendMessage(from, message,
-                getStringArray(userManager.getUserByPermissionTemplate(Template.SPEAKER)));
+        String[] speakers = getStringArray(userManager.getUserByPermissionTemplate(Template.SPEAKER));
+        if (!(speakers.length == 0)){
+            messageManager.sendMessage(from, message, speakers);
+        }
+        else{
+        messagePresenter.noSpeakers();
+        }
     }
 
     private String getContent(){
@@ -159,7 +180,7 @@ public class MessageController implements SubController {
 //    private int getValidInput(int options) {
 //        while (true) {
 //            messagePresenter.enterContent();
-//            String input = messageScanner.nextLine();
+//            String input = message    Scanner.nextLine();
 //            if (input.matches("^[0-" + (options + 1) + "]$")) {
 //                return Integer.parseInt(input);
 //            } else {

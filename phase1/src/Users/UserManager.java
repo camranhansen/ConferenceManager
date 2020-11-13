@@ -11,25 +11,25 @@ public class UserManager {
     }
 
     //User Methods
-    //TODO: Use this logic as an example to create exceptions
+
     public boolean userExists(String username){
         return this.users.containsKey(username);
     }
 
     public void createUser(String username, String password, List<Permission> permissions){
-        //TODO: Validate username and password
+
         User u = new User(username, password, permissions);
         this.users.put(username, u);
     }
 
     public void removeUser(String username){
-        //TODO: Validate username
+
         this.users.remove(username);
     }
 
     //Permission Methods
     public List<Permission> getPermissions(String username){
-        //TODO: Validate username
+
         return this.users.get(username).getPermissions();
     }
 
@@ -66,7 +66,6 @@ public class UserManager {
     }
 
     public void setPassword(String username, String password){
-        //TODO: Validate username and password
         this.users.get(username).setPassword(password);
     }
 
@@ -107,5 +106,14 @@ public class UserManager {
         }
         return permissions;
     }
+
+
+    //Validation methods
+    public boolean uNameExists(String uname){
+        return users.containsKey(uname);
+    }
+
+
+
 
 }
