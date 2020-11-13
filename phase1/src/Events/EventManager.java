@@ -197,7 +197,7 @@ public class EventManager {
     //gateway method
     public ArrayList<String[]> getAllEventData(){
         ArrayList<String[]> eventList = new ArrayList<>();
-        for (Integer id: this.events.keySet()) {
+        for (String id: this.events.keySet()) {
             eventList.add(getSingleEventData(id));
         }
         return eventList;
