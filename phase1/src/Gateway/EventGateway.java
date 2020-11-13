@@ -1,6 +1,9 @@
 package Gateway;
 
+import Events.EventManager;
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class EventGateway extends Gateway{
 
@@ -8,14 +11,21 @@ public class EventGateway extends Gateway{
         super(7, "assets/event_data.csv");
     }
 
-    public void readFromGateway() throws IOException {
+    public void readEventsFromGateway() throws IOException {
         this.readFromFile();
 
-    }
-
-    public void saveEvents(){
 
     }
+
+    public void saveEvents(EventManager eventManager) throws IOException {
+        ArrayList<String[]> eventList = eventManager.getAllEventData();
+        for (int i=0; i<eventList.size(); i++){
+            this.updateRow(i, eventList.get(i));
+        }
+        this.flush();
+
+    }
+
 
 
 
