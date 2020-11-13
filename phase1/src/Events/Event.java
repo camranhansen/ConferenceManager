@@ -1,5 +1,6 @@
 package Events;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -11,25 +12,21 @@ public class Event {
     private String room;
     private int capacity;
     private String id;
-    private static int count = 0;
 
     public Event(){
 
     }
-    public Event(String name, Instant time, String eventName, List<String> participants, String room, int capacity ){
+    public Event(String name, Instant time, String eventName, String room, int capacity ){
         this.speakerName = name;
         this.time = time;
         this.eventName = eventName;
-        this.participants = participants;
+        this.participants = new ArrayList<>();
         this.room = room;
         this.capacity = capacity;
         this.id = time + room;
     }
 
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
 
     public String getSpeakerName(){
         return this.speakerName;
