@@ -81,8 +81,9 @@ public class MessageController implements SubController {
             @Override
             public void run(){
                 String eventId = inputPrompter.getResponse("Enter event id to send to");
-                int id = Integer.parseInt(eventId.trim());
-                writeToEvents(from, content, id);
+                List<String>aList = new ArrayList<>();
+                aList.add(eventId);
+                writeToEvents(from, content, aList);
             }
             //TODO: this will have to throw an exception... if a number is not put in or it is not a valid
             // event id. We can also make each of their events an option that can then be chosen.
@@ -125,10 +126,10 @@ public class MessageController implements SubController {
         return messageManager.singleInboxToString(username, from);
     }
 
-    public void writeToEvents(String from, String message, Integer... events) {
+    public void writeToEvents(String from, String message, List<String> events) {
         ArrayList<String> recipientsSum = new ArrayList<>();
-        for (int i = 0; i < events.length; i++) {
-            recipientsSum.addAll(eventManager.getParticipants(events[i]));
+        for (int i = 0; i < events.size(); i++) {
+            recipientsSum.addAll(eventManager.getParticipants(events.get(i)));
         }
         String[] recipients = new String[recipientsSum.size()];
         messageManager.sendMessage(from, message, recipientsSum.toArray(recipients));

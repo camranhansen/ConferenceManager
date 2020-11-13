@@ -11,10 +11,10 @@ public class Event {
     private List<String> participants;
     private String room;
     private int capacity;
+    //TODO UUID
     private String id;
 
     public Event(){
-
     }
     public Event(String speakerName, Instant time, String eventName,List<String> participants, String room, int capacity ){
         this.speakerName = speakerName;
@@ -23,7 +23,7 @@ public class Event {
         this.participants = participants;
         this.room = room;
         this.capacity = capacity;
-        this.id = time + room;
+        this.id = room + time.toString() ;
     }
     public Event(String speakerName, Instant time, String eventName, String room, int capacity ){
         this.speakerName = speakerName;
@@ -32,7 +32,7 @@ public class Event {
         this.participants = new ArrayList<>();
         this.room = room;
         this.capacity = capacity;
-        this.id = time + room;
+        this.id = room + time.toString();
     }
 
 

@@ -28,6 +28,10 @@ public class EventController implements SubController {
         this.inputPrompter = new InputPrompter();
     }
 
+    public void addEvent(String speakerName, Instant time, String eventName, String room, int capacity){
+        this.eventManager.createEvent(speakerName, time, eventName, room, capacity);
+    }
+
     public List<Event> viewAllEvents(){
         return eventManager.getEventsList();
     }
@@ -37,11 +41,11 @@ public class EventController implements SubController {
         return eventManager.getUserEvents(userName);
     }
 
-    public void enroll(int eventID, String username){
+    public void enroll(String eventID, String username){
         this.eventManager.enrollUser(eventID, username);
     }
 
-    public void drop(int eventID, String username){
+    public void drop(String eventID, String username){
         this.eventManager.dropUser(eventID, username);
     }
 
@@ -49,11 +53,11 @@ public class EventController implements SubController {
         return this.eventManager.getAvailableEvents(username);
     }
 
-    public void addEvent(String name, Instant time, String eventName, List<String> participants, String room, int capacity){
-        this.eventManager.createEvent(name, time, eventName, participants, room, capacity);
+    public void createEvent(String name, Instant time, String eventName, List<String> participants, String room, int capacity){
+        this.eventManager.createEvent(name, time, eventName, room, capacity);
     }
 
-    public void enrollSelf(int eventID, String username) {
+    public void enrollSelf(String eventID, String username) {
 
         Option option1 = new Option("Enroll In Event") {
             @Override
@@ -77,7 +81,7 @@ public class EventController implements SubController {
         choice.run();
     }
 
-    public void deleteEvent(int eventID){
+    public void deleteEvent(String eventID){
         this.eventManager.deleteEvent(eventID);
     }
 
@@ -94,7 +98,7 @@ public class EventController implements SubController {
 //        this.eventManager.editTime(eventID, time);
 //    }
 
-    public void editEvent(int eventID) {
+    public void editEvent(String eventID) {
         Option option1 = new Option("Change Speaker") {
             @Override
             public void run() {
@@ -185,14 +189,13 @@ public class EventController implements SubController {
 
     public void performSelectedAction(String username, Permission permissionSelected){
         String eventIDStr = inputPrompter.getResponse("Enter the ID of the event you wish to interact with");
-        int eventID = Integer.parseInt(eventIDStr.trim());
 
         if (permissionSelected== Permission.EVENT_SELF_ENROLL){
-            enrollSelf(eventID, username);
+            enrollSelf(eventIDStr, username);
         }
         else if(permissionSelected == Permission.EVENT_OTHER_ENROLL){
             String name = inputPrompter.getResponse("Enter the username of the user you would like to enroll or withdraw");
-            enrollSelf(eventID, name);
+            enrollSelf(eventIDStr, name);
         }
         //TODO: Change time from string to instant
 //        else if(permissionSelected == Permission.EVENT_CREATE){
@@ -205,10 +208,10 @@ public class EventController implements SubController {
 //            addEvent(speakerName, time, eventName, participants, roomName, capacity);
 //        }
         else if(permissionSelected == Permission.EVENT_DELETE){
-            deleteEvent(eventID);
+            deleteEvent(eventIDStr);
         }
         else if(permissionSelected == Permission.EVENT_EDIT){
-            editEvent(eventID);
+            editEvent(eventIDStr);
         }
         else if(permissionSelected == Permission.VIEW_HOSTING_EVENTS){
             eventPresenter.viewSpeakerList();

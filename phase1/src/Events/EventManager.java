@@ -17,6 +17,10 @@ public class EventManager {
         this.events = new HashMap<>();
     }
 
+    public HashMap getEvents(){
+        return this.events;
+    }
+
     public List<Event> getEventsList() {
         List<Event> eventsList = new ArrayList<>();
         for (String key : events.keySet()) {
@@ -43,22 +47,26 @@ public class EventManager {
         return aList;
     }
 
+    public List<String> getSpkEvents(String userName){
+        List<String> aList = new ArrayList<>();
+        for (Event value: events.values()){
+            if(value.getSpeakerName().equals(userName)){
+                aList.add(value.getId());
+            }
+        }
+        return aList;
+    }
+
     public void createEvent(String speakerName, Instant eventTime, String eventName, String room, int capacity){
         Event newEvent = new Event(speakerName, eventTime, eventName, room, capacity);
-        String newId = newEvent.getEventTime() + newEvent.getRoom();
-        boolean flag = checkConflictEvent(newEvent);
-        if (!flag){
-            this.events.put(newId, newEvent);
-        }
+        this.events.put(newEvent.getId(), newEvent);
+
     }
 
     private void createEditedEvent(String speakerName, Instant eventTime, String eventName, List<String> participants, String room, int capacity){
         Event newEvent = new Event(speakerName, eventTime, eventName, participants, room, capacity);
-        String newId = newEvent.getEventTime() + newEvent.getRoom();
-        boolean flag = checkConflictEvent(newEvent);
-        if (!flag){
-            this.events.put(newId, newEvent);
-        }
+        this.events.put(newEvent.getId(), newEvent);
+
     }
 
     public void deleteEvent(String eventId){
@@ -90,10 +98,12 @@ public class EventManager {
     }
 
     public List<Event> getAvailableEvents(String username){
+        List<Event> myEvents = getUserEvents(username);
+        List<Instant> time = helpMethod(myEvents);
         List<Event> availableEvents = new ArrayList<>();
-        for(int i=0; i<events.size(); i++){
-            if(!events.get(i).getParticipants().contains(username) && !checkConflictUser(events.get(i), username)){
-                availableEvents.add(events.get(i));
+        for(Event value : this.events.values()){
+            if(!time.contains(value.getEventTime())){
+                availableEvents.add(value);
             }
         }
         return availableEvents;
@@ -107,9 +117,6 @@ public class EventManager {
         return participants.size() < maxCapacity;
     }
 
-    public HashMap<String, Event> getEventsHash() { // Getter required as events variable is private
-        return events;
-    }
 
     //TODO: Make Exceptions for this
     private boolean checkConflictEvent(Event event){
@@ -150,9 +157,9 @@ public class EventManager {
 
     public List<Event> getUserEvents(String username) {
         List<Event> myEvents = new ArrayList<>();
-        for (String id : getEventsHash().keySet()){
-            if (getParticipants(id).contains(username)){
-                myEvents.add(getEventsHash().get(id));
+        for (Event value : this.events.values()){
+            if (value.getParticipants().contains(username)){
+                myEvents.add(value);
             }
         }
         return myEvents;
@@ -238,6 +245,15 @@ public class EventManager {
 
 
     }
+
+    private List<Instant> helpMethod(List<Event> name){
+        List<Instant> time = new ArrayList<>();
+        for(int x=0; x<name.size(); x++) {
+            time.add(name.get(x).getEventTime());
+        }
+        return time;
+    }
 }
+
 
 
