@@ -29,7 +29,6 @@ public class UserManager {
 
     //Permission Methods
     public List<Permission> getPermissions(String username){
-
         return this.users.get(username).getPermissions();
     }
 

@@ -5,6 +5,8 @@ import Users.UserManager;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,7 @@ public class UserGateway extends Gateway{
 
 
     public UserGateway() {
-        super(3,"assets/user_data.csv");
+        super(3,"data/user_data.csv");
     }
 
     public void saveAllUsers(UserManager um) throws IOException {
@@ -24,6 +26,7 @@ public class UserGateway extends Gateway{
     }
 
     public void readUsersFromGateway(UserManager um) throws IOException {
+        if (Files.notExists(Path.of(getFilePath()))) return;
         this.readFromFile();
         for (int i = 0; i < this.getRowCount(); i++) {
             um.setSingleUserData(this.getRow(i));

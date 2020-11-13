@@ -27,17 +27,17 @@ public class PrimaryController {
     private MessageManager messageManager;
     // private InputPrompter inputPrompter; //TODO: Maybe this + add InputPrompter parameter to individual controllers so it doesn't need to keep getting instantiated?
 
-    public PrimaryController(){
-        EventGateway eventGateway = new EventGateway();
-        UserGateway userGateway = new UserGateway();
-        MessageManager messageManager = new MessageManager();
-        MessageGateway messageGateway = new MessageGateway(messageManager);
-        EventController eventController = new EventController(eventManager);
-        HashMap<String, User> users = new HashMap<>();
-        UserManager userManager = new UserManager(users);
-        UserController userController = new UserController(userManager);
-        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
-        LoginController loginController = new LoginController();
+    public PrimaryController() {
+        eventGateway = new EventGateway();
+        userGateway = new UserGateway();
+        messageManager = new MessageManager();
+        eventManager = new EventManager();
+        messageGateway = new MessageGateway(messageManager);
+        eventController = new EventController(eventManager);
+        userManager = new UserManager(new HashMap<>());
+        userController = new UserController(userManager);
+        messageController = new MessageController(messageManager, userManager, eventManager);
+        loginController = new LoginController();
         // InputPrompter inputPrompter = new InputPrompter();
     }
 
@@ -65,7 +65,7 @@ public class PrimaryController {
 
     }
 
-    public void run(){
+    public void run() {
         loadData();
         String username = loginController.loginUser(userManager);
         HashMap<String, SubController> subcontrollers = new HashMap<>();
@@ -73,7 +73,7 @@ public class PrimaryController {
         subcontrollers.put("MESSAGE", messageController);
         subcontrollers.put("USER", userController);
         List<Permission> permissions = userManager.getPermissions(username);
-        MenuController menuController = new MenuController(username, permissions, subcontrollers);
+        menuController = new MenuController(username, permissions, subcontrollers);
         menuController.selectSubcontroller();
     }
 

@@ -17,7 +17,7 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 
 public class GatewayTest {
-    private static String testFilePath = "assets/test.csv";
+    private static String testFilePath = "testfiles/test.csv";
     private Gateway gateway;
 
     String[][] table = new String[][] {
@@ -81,7 +81,7 @@ public class GatewayTest {
 
     @Test
     public void testReadFromFile() {
-        Gateway g = new Gateway(3, "assets/testfile.csv") {};
+        Gateway g = new Gateway(3, "testfiles/testfile.csv") {};
         try {
             g.readFromFile();
         } catch (IOException e) {

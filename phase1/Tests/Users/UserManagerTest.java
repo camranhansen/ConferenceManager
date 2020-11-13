@@ -159,6 +159,7 @@ public class UserManagerTest {
         for (String[] data : userList) {
             assertTrue(Arrays.equals(u1, data) || Arrays.equals(u2, data) || Arrays.equals(u3, data));
         }
+
     }
 
     @Test

@@ -85,7 +85,7 @@ public abstract class Gateway {
 
     public void readFromFile() throws IOException {
         File file = new File(filePath);
-        if (file.isFile()) throw new FileNotFoundException("File does not exist.");
+        if (!file.isFile()) throw new FileNotFoundException("File does not exist.");
         FileReader fileReader = new FileReader(filePath);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         String line = null;
