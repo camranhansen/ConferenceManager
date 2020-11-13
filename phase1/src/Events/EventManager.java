@@ -176,7 +176,7 @@ public class EventManager {
                 newRoom, event.getCapacity());
     }
 
-    public void editSpeaker(String id, String newSpeaker){
+    public void editSpeakerName(String id, String newSpeaker){
         Event event = this.events.get(id);
         if (!checkConflictSpeaker(event, newSpeaker)){
         createEditedEvent(newSpeaker, event.getEventTime(), event.getEventName(), event.getParticipants(),
