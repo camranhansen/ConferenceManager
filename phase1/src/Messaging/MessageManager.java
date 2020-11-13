@@ -1,5 +1,6 @@
 package Messaging;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +53,7 @@ public class MessageManager {
         return inbox.toString();
     }
 
-    public String wholeInboxToString(String username){
+    public String wholeInboxToString(String username) {
         StringBuilder allMessages = new StringBuilder();
         HashMap<String, List<Message>> inbox = retrieveUserInbox(username);
         if (inbox.isEmpty()){
@@ -64,5 +65,31 @@ public class MessageManager {
             allMessages.append("\n");
         }
         return allMessages.toString();
+    }
+
+    public List<String[]> getInboxAsArray(String user) {
+        HashMap<String, List<Message>> inbox = inboxes.get(user);
+
+        List<String[]> res = new ArrayList<>();
+        for (List<Message> fromUser : inbox.values()) {
+            String[] messageData = new String[4];
+            for (Message message : fromUser) {
+                messageData[0] = message.getSender();
+                messageData[1] = message.getTimeSent().toString();
+                messageData[2] = message.getContent();
+                messageData[3] = message.getRecipients().toString().replaceAll("[\\[\\]]", "");
+            }
+            res.add(messageData);
+        }
+        return res;
+    }
+
+    public void putMessageFromArray(String user, String[] row) {
+        HashMap<String, List<Message>> inbox = retrieveUserInbox(user);
+        String sender = row[0];
+        if (!inbox.containsKey(sender)) inbox.put(sender, new ArrayList<>());
+        List<Message> senderMessage = inbox.get(sender);
+        Message curMessage = new Message(sender, row[3].split(", "), row[2]);
+        curMessage.setTimeSent(Instant.parse(row[1]));
     }
 }
