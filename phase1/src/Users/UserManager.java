@@ -79,16 +79,20 @@ public class UserManager {
     }
 
     public String[] getSingleUserData(String username){
-        String password = users.get(username).getPassword();
-        String permissions = Arrays.deepToString(users.get(username).
-                getPermissions().toArray()).replace("[","").replace("]", "");
-        return new String[]{username, password, permissions};
+        if(userExists(username)){
+            String password = users.get(username).getPassword();
+            String permissions = this.PermissionsToString(users.get(username).getPermissions());
+            return new String[]{username, password, permissions};
+        }
+        else {
+            return new String[]{};
+        }
     }
 
     public void setSingleUserData(String[] userdata){
         String username = userdata[0];
         String password = userdata[1];
-        List<Permission> permissions = StringtoPermissions(userdata[3]);
+        List<Permission> permissions = StringToPermissions(userdata[3]);
         if (userExists(username)){
             users.get(username).setPassword(password);
             users.get(username).setPermissions(permissions);
@@ -98,8 +102,8 @@ public class UserManager {
         }
     }
 
-    private List<Permission> StringtoPermissions(String permission){
-        String[] strList = permission.split(",");
+    public List<Permission> StringToPermissions(String permission){
+        String[] strList = permission.split(", ");
         ArrayList<Permission> permissions = new ArrayList<>();
         for (String s: strList) {
             permissions.add(Permission.valueOf(s));
@@ -107,13 +111,15 @@ public class UserManager {
         return permissions;
     }
 
+    public String PermissionsToString(List<Permission> permissions){
+        return permissions.toString().replace("[", "").replace("]", "");
+    }
+
 
     //Validation methods
     public boolean uNameExists(String uname){
         return users.containsKey(uname);
     }
-
-
 
 
 }

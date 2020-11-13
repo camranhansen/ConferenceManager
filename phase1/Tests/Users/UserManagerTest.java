@@ -1,8 +1,10 @@
 package Users;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import org.junit.Test;
+import sun.security.util.ArrayUtil;
+
+import java.util.*;
+
 import static org.junit.Assert.*;
 
 public class UserManagerTest {
@@ -24,7 +26,7 @@ public class UserManagerTest {
         return um;
     }
 
-    @org.junit.Test
+    @Test
     public void userExists() {
 
         UserManager um = createUserManager();
@@ -34,7 +36,7 @@ public class UserManagerTest {
 
     }
 
-    @org.junit.Test
+    @Test
     public void createUser() {
 
         UserManager um = createUserManager();
@@ -47,7 +49,7 @@ public class UserManagerTest {
 
     }
 
-    @org.junit.Test
+    @Test
     public void removeUser() {
         UserManager um = createUserManager();
         um.removeUser("tom");
@@ -57,7 +59,7 @@ public class UserManagerTest {
 
     }
 
-    @org.junit.Test
+    @Test
     public void setPermission() {
         UserManager um = createUserManager();
         List<Permission> permissionsToAdd = new ArrayList<>();
@@ -70,7 +72,7 @@ public class UserManagerTest {
         assertEquals(um.getPermissions("bob"), permissionsToAdd);
     }
 
-    @org.junit.Test
+    @Test
     public void getUserByPermissionTemplate() {
         UserManager um = createUserManager();
         List<Permission> permissionsToAdd = new ArrayList<>();
@@ -89,7 +91,7 @@ public class UserManagerTest {
 
     }
 
-    @org.junit.Test
+    @Test
     public void addPermission() {
         UserManager um = createUserManager();
         assertFalse(um.getPermissions("bob").contains(Permission.USER_DELETE_ACCOUNT));
@@ -99,7 +101,7 @@ public class UserManagerTest {
     }
 
 
-    @org.junit.Test
+    @Test
     public void removePermission() {
         UserManager um = createUserManager();
         assertTrue(um.getPermissions("bob").contains(Permission.MESSAGE_SINGLE_USER));
@@ -109,12 +111,60 @@ public class UserManagerTest {
     }
 
 
-    @org.junit.Test
+    @Test
     public void setPassword() {
         UserManager um = createUserManager();
         assertEquals(um.getPassword("bob"), "123");
         um.setPassword("bob","789");
         assertNotEquals(um.getPassword("bob"),"123");
         assertEquals(um.getPassword("bob"),"789");
+    }
+
+    //Save and Set methods for Gateway
+    public HashMap<String, User> generateUserData(){
+        User u1 = new User("bob", "1234", Template.ATTENDEE.getPermissions());
+        User u2 = new User("jane", "5678", Template.ATTENDEE.getPermissions());
+        User u3 = new User("doe", "9012", Template.SPEAKER.getPermissions());
+        HashMap<String, User> userHashMap = new HashMap<>();
+        userHashMap.put(u1.getUsername(), u1);
+        userHashMap.put(u2.getUsername(), u2);
+        userHashMap.put(u3.getUsername(), u3);
+        return userHashMap;
+    }
+
+    @Test
+    public void getSingleUserData(){
+        //Test empty UserManager
+        UserManager um1 = new UserManager(new HashMap<>());
+        assertArrayEquals(new String[]{}, um1.getSingleUserData(""));
+
+        //Test correct data
+        UserManager um2 = new UserManager(generateUserData());
+        String permissions1 = um2.PermissionsToString(Template.ATTENDEE.getPermissions());
+        assertArrayEquals(new String[]{"bob", "1234",permissions1}, um2.getSingleUserData("bob"));
+        assertNotEquals(new String[]{"doe", "9012",permissions1}, um2.getSingleUserData("doe"));
+        //Test with additional data
+        String permissions2 = um2.PermissionsToString(Template.SPEAKER.getPermissions());
+        assertArrayEquals(new String[]{"doe", "9012",permissions2}, um2.getSingleUserData("doe"));
+    }
+
+    @Test
+    public void getAllUserData(){
+        UserManager um = new UserManager(generateUserData());
+        String[] u1 = um.getSingleUserData("bob");
+        String[] u2 = um.getSingleUserData("jane");
+        String[] u3 = um.getSingleUserData("doe");
+        ArrayList<String[]> userList = um.getAllUserData();
+
+    }
+
+    @Test
+    public void setSingleUserData(){
+
+    }
+
+    @Test
+    public void StringToPermissions(){
+
     }
 }
