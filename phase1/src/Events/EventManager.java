@@ -3,6 +3,7 @@ package Events;
 import Users.User;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.lang.String;
@@ -191,6 +192,27 @@ public class EventManager {
         this.events.get(eventId).setCapacity(capacity);
     }
 
+
+    //gateway method
+    public ArrayList<String[]> getAllEventData(){
+        ArrayList<String[]> eventList = new ArrayList<>();
+        for (Integer id: this.events.keySet()) {
+            eventList.add(getSingleUserData(id));
+        }
+        return eventList;
+    }
+
+    public String[] getSingleUserData(Integer id) {
+        Event event = this.events.get(id);
+        String eventId = String.valueOf(id);
+        String speakerName = event.getSpeakerName();
+        String time = event.getEventTime().toString();
+        String eventName = event.getEventName();
+        String participants = event.getParticipants().toString();
+        String room = event.getRoom();
+        String capacity = String.valueOf(event.getCapacity());
+        return new String[]{eventId, speakerName, time, eventName, participants, room, capacity};
+    }
 }
 
 
