@@ -58,13 +58,14 @@ public class UserController implements SubController {
     }
 
     public void createAccount(Template template){
-        String inputUsername = prompter.getResponse("Enter username");
+        String inputUsername = getNewUsername();
         String inputPassword = prompter.getResponse("Enter password");
+        //TODO determine whether we need to validate passwords
         this.um.createUser(inputUsername, inputPassword, template.getPermissions());
     }
 
     public void deleteAccount(){
-        String inputUsername = prompter.getResponse("Enter the username of the account you wish to delete");
+        String inputUsername = getExistingUsername();
         this.um.removeUser(inputUsername);
 
     }
@@ -75,7 +76,7 @@ public class UserController implements SubController {
     }
 
     public void editOtherPassword(){
-        String inputUsername = prompter.getResponse("Enter the username of the relevant user");
+        String inputUsername = getExistingUsername();
         this.editPassword(inputUsername);
     }
 
@@ -83,5 +84,22 @@ public class UserController implements SubController {
     //TODO: Implement when actually relevant :)
     }
 
+    public String getNewUsername(){
+        String userName = prompter.getResponse("Enter username");
+
+        while(um.uNameExists(userName)){
+            userName = prompter.getResponse("The username you entered already exists."+System.lineSeparator()+"Please enter a new username");
+        }
+
+        return userName;
+    }
+
+    public String getExistingUsername(){
+        String userName = prompter.getResponse("Enter username");
+        while(!um.uNameExists(userName)){
+            userName = prompter.getResponse("The username you entered does not exist."+System.lineSeparator()+"Please enter a new username");
+        }
+        return userName;
+    }
 
 }

@@ -108,4 +108,13 @@ public class UserManager {
         return permissions;
     }
 
+
+    //Validation methods
+    public boolean uNameExists(String uname){
+        return users.containsKey(uname);
+    }
+
+
+
+
 }
