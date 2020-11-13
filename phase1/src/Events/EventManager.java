@@ -237,7 +237,7 @@ public class EventManager {
         String participants = eventData[4];
         String room = eventData[5];
         int capacity = Integer.parseInt(eventData[6]);
-        if (!participants.equals("[]")){
+        if (!participants.equals("[]")) {
             String participants1 = participants.substring(1, participants.length()-1);
             String[] list = participants1.split(",");
             if (!this.events.containsKey(id)){

@@ -1,7 +1,6 @@
 package Users;
 
 import org.junit.Test;
-import sun.security.util.ArrayUtil;
 
 import java.util.*;
 
@@ -156,6 +155,10 @@ public class UserManagerTest {
         String[] u3 = um.getSingleUserData("doe");
         ArrayList<String[]> userList = um.getAllUserData();
 
+        assertEquals(3, userList.size());
+        for (String[] data : userList) {
+            assertTrue(Arrays.equals(u1, data) || Arrays.equals(u2, data) || Arrays.equals(u3, data));
+        }
     }
 
     @Test
