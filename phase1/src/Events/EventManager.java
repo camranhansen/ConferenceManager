@@ -213,14 +213,30 @@ public class EventManager {
 
     public String[] getSingleUserData(String id) {
         Event event = this.events.get(id);
-        String eventId = String.valueOf(id);
         String speakerName = event.getSpeakerName();
         String time = event.getEventTime().toString();
         String eventName = event.getEventName();
         String participants = event.getParticipants().toString();
         String room = event.getRoom();
         String capacity = String.valueOf(event.getCapacity());
-        return new String[]{eventId, speakerName, time, eventName, participants, room, capacity};
+        return new String[]{id, speakerName, time, eventName, participants, room, capacity};
+    }
+
+    public void setEventData(String[] eventData){
+        String id = eventData[0];
+        String speakerName = eventData[1];
+        Instant time = Instant.parse(eventData[2]);
+        String eventName = eventData[3];
+        String participants = eventData[4];
+        String[] listOfParticipants = participants.split(",");
+        String room = eventData[5];
+        int capacity = Integer.parseInt(eventData[6]);
+        if (!this.events.containsKey(id)){
+            this.createEvent(speakerName, time, eventName, room, capacity);
+        }
+
+
+
     }
 }
 
