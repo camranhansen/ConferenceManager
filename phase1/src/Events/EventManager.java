@@ -17,7 +17,7 @@ public class EventManager {
         this.events = new HashMap<>();
     }
 
-    public HashMap getEvents(){
+    public HashMap<String, Event> getEvents(){
         return this.events;
     }
 
@@ -119,21 +119,19 @@ public class EventManager {
 
 
     //TODO: Make Exceptions for this
-    private boolean checkConflictEvent(Event event){
+    //Check event conflicts (same room & same time)
+    private boolean checkConflictEvent(String eventId){
         boolean flag = false; //It means the event doesn't have a conflict
-        String newId = event.getEventTime() + event.getRoom();
-        for (String key : events.keySet()){
-            if (key.equals(newId)) {
-                flag = true;
-                break;
-            }
-        }
+        if (this.getAllEventIds().contains(eventId)){
+            flag = true; }
         return flag;
     }
 
-    private boolean checkConflictUser(Event event, String username) {
-        boolean flag = false;
-        List<Event> list = getUserEvents(username);
+    // Check speaker not appears in different places at the same time.
+    private boolean checkConflictSpeaker(String eventId, String username) {
+        boolean flag = false; // no conflicts
+        Event event = this.events.get(eventId);
+        List<Event> list = getEventBySpeakerName(username);
         for (Event value : list) {
             if (value.getEventTime().equals(event.getEventTime())) {
                 flag = true;
@@ -143,9 +141,20 @@ public class EventManager {
         return flag;
     }
 
-    private boolean checkConflictSpeaker(Event event, String username) {
-        boolean flag = false; // no conflicts
-        List<Event> list = getEventBySpeakerName(username);
+    //TODO: Check 9<Time<16.
+
+    // Check capacity when user enrols.
+    //TODO: Two checkCapacity functions (line 116)
+    private boolean checkCapacity(String eventId) {
+        Event event = this.events.get(eventId);
+        return event.getParticipants().size() < event.getCapacity(); //return ture if the event is not full.
+    }
+
+    // Check user not appears in different places at the same time.
+    private boolean checkConflictUser(String eventId, String username) {
+        boolean flag = false;
+        Event event = this.events.get(eventId);
+        List<Event> list = this.getUserEvents(username);
         for (Event value : list) {
             if (value.getEventTime().equals(event.getEventTime())) {
                 flag = true;
@@ -185,7 +194,7 @@ public class EventManager {
 
     public void editSpeakerName(String id, String newSpeaker){
         Event event = this.events.get(id);
-        if (!checkConflictSpeaker(event, newSpeaker)){
+        if (!checkConflictSpeaker(id, newSpeaker)){
         createEditedEvent(newSpeaker, event.getEventTime(), event.getEventName(), event.getParticipants(),
                 event.getRoom(), event.getCapacity());
         }
@@ -257,6 +266,14 @@ public class EventManager {
         }
         return time;
     }
+
+    public List<String> getAllEventIds(){
+        List<String> aList = new ArrayList<>();
+        aList.addAll(this.events.keySet());
+        return aList;
+    }
+
+
 }
 
 
