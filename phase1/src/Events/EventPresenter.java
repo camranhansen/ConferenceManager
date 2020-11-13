@@ -1,5 +1,7 @@
 package Events;
 
+import java.util.ArrayList;
+
 public class EventPresenter {
 
     // VIEW_ALL_EVENTS
@@ -17,7 +19,12 @@ public class EventPresenter {
         System.out.println("List of events that you are hosting:");
     }
 
-    //TODO: Implement methods in Controller to tell organizer that the event he created is not successful.
+    public void renderEvents(ArrayList<String> eventData){
+        for (String s: eventData){
+            System.out.println("Here's an event for you!" + System.lineSeparator() + s);
+        }
+    }
+
     public void foundConflictEvents(){
         System.out.println("Cannot create this event because it conflicts with an existing event.");
     }
