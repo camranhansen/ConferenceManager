@@ -13,6 +13,7 @@ public class MenuController {
     private String username;
     private List<Permission> permissions;
     private HashMap<String,SubController> subcontrollers;
+    private InputPrompter prompter;
 
     public MenuController(String username, List<Permission> permissions,
                           HashMap<String, SubController> subcontrollers) {
@@ -20,6 +21,7 @@ public class MenuController {
             this.username = username;
             this.permissions = permissions;
             this.subcontrollers = subcontrollers;
+            this.prompter = new InputPrompter();
 
     }
 
@@ -29,22 +31,25 @@ public class MenuController {
 
 
         if (permissions.size() < 8){
-
-            Permission permissionSelected = selectPermission(this.permissions);
-            String category = permissionSelected.getCategory();
-            this.subcontrollers.get(category).performSelectedAction(this.username, permissionSelected);
-
+            Permission permissionSelected = selectPermission(permissions);
+            subcontrollers.get(permissionSelected.getCategory()).performSelectedAction(username, permissionSelected);
 
         }
         else{
-            List<String> possibleCategories = this.mp.presentCategories(permissions);
-            //TODO: Don't expect just a number. use IsNumeric to parse whether number input or text
-            Scanner userInput = new Scanner(System.in);
-            int categoryInput = userInput.nextInt();
-            String categoryChoice = possibleCategories.get(categoryInput);
-            List<Permission> selectedPermissions = new ArrayList<Permission>();
+            List<String> categories = new ArrayList<>();
             for (Permission p: permissions) {
-                if (p.getCategory() == categoryChoice){
+                if (!categories.contains(p.getCategory()))
+                    categories.add(p.getCategory());
+            }
+
+            ArrayList<Option> categoryOptions = new ArrayList<>();
+            for (String category: categories){
+                categoryOptions.add(new Option(category));
+            }
+            String categoryChoice = prompter.menuOption(categoryOptions).toString();
+            List<Permission> selectedPermissions = new ArrayList<>();
+            for (Permission p: permissions) {
+                if (p.getCategory().equals(categoryChoice)){
                     selectedPermissions.add(p);
                 }
             }
@@ -57,13 +62,15 @@ public class MenuController {
 
     public Permission selectPermission(List<Permission> permissionsToShow){
 
-        this.mp.presentOptions(permissionsToShow);
-        Scanner userInput = new Scanner(System.in);
-        String option = userInput.nextLine();
-        //TODO: Don't expect just a number. use IsNumeric to parse whether number input or text
-        Permission permissionSelected = permissionsToShow.get(Integer.parseInt(option));
+        ArrayList<Option> optionList = new ArrayList<>();
 
-        return permissionSelected;
+        for(Permission p: permissionsToShow){
+            optionList.add(new Option(p.toString(),p));
+        }
+
+        Option optionSelected = prompter.menuOption(optionList);
+
+        return optionSelected.getPermissionHeld();
 
 
     }

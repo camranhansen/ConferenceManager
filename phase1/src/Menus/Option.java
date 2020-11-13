@@ -1,10 +1,12 @@
 package Menus;
 
 import Users.Permission;
+import Users.Template;
 
 public class Option {
     private String optionText;
     private Permission permissionHeld;
+    private Template templateHeld;
 
 
     public Option(String optionText){
@@ -16,9 +18,20 @@ public class Option {
         this.permissionHeld = permission;
     }
 
+    public Option(String optionText, Template template){
+        this.optionText = optionText;
+        this.templateHeld = template;
+    }
+
+
     public Permission getPermissionHeld(){
         return this.permissionHeld;
     }
+
+    public Template getTemplateHeld(){
+        return this.templateHeld;
+    }
+
 
     @Override
     public String toString() {
