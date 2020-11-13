@@ -23,7 +23,7 @@ public class UserGateway extends Gateway{
         this.flush();
     }
 
-    public void readFromGateway(UserManager um) throws IOException {
+    public void readUsersFromGateway(UserManager um) throws IOException {
         this.readFromFile();
         for (int i = 0; i < this.getRowCount(); i++) {
             um.setSingleUserData(this.getRow(i));

@@ -117,4 +117,8 @@ public abstract class Gateway {
         bufferedReader.close();
         fileReader.close();
     }
+
+    public String getFilePath() {
+        return filePath;
+    }
 }
