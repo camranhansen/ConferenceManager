@@ -63,10 +63,10 @@ public class EventManager {
 
     }
 
-    private void createEditedEvent(String speakerName, Instant eventTime, String eventName, List<String> participants, String room, int capacity){
+    private void createEditedEvent(String speakerName, Instant eventTime, String eventName, List<String> participants,
+                                   String room, int capacity){
         Event newEvent = new Event(speakerName, eventTime, eventName, participants, room, capacity);
         this.events.put(newEvent.getId(), newEvent);
-
     }
 
     public void deleteEvent(String eventId){
@@ -116,6 +116,7 @@ public class EventManager {
     public boolean checkCapacity(List<String> participants, int maxCapacity){
         return participants.size() < maxCapacity;
     }
+
 
 
     //TODO: Make Exceptions for this
@@ -238,11 +239,9 @@ public class EventManager {
         String[] listOfParticipants = participants.split(",");
         String room = eventData[5];
         int capacity = Integer.parseInt(eventData[6]);
-        if (!this.events.containsKey(id)){
+        if (!this.events.containsKey(id)) {
             this.createEvent(speakerName, time, eventName, room, capacity);
         }
-
-
 
     }
 

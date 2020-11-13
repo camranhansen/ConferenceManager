@@ -8,10 +8,13 @@ import Menus.InputPrompter;
 import Menus.Option;
 import Menus.SubController;
 import Users.Permission;
+import Users.Template;
+import Users.UserManager;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import Users.UserController;
 
 //import Users.Template;
 //import java.util.Arrays;
@@ -21,6 +24,7 @@ public class EventController implements SubController {
     private EventManager eventManager;
     private EventPresenter eventPresenter;
     private InputPrompter inputPrompter;
+    private UserManager userManager;
 
     public EventController(EventManager eventManager) {
         this.eventManager = eventManager;
@@ -28,6 +32,12 @@ public class EventController implements SubController {
         this.inputPrompter = new InputPrompter();
     }
 
+    public EventController(EventManager eventManager, UserManager userManager){
+        this.eventManager = eventManager;
+        this.eventPresenter = new EventPresenter();
+        this.inputPrompter = new InputPrompter();
+        this.userManager = userManager;
+    }
     public void addEvent(String speakerName, Instant time, String eventName, String room, int capacity){
         this.eventManager.createEvent(speakerName, time, eventName, room, capacity);
     }
@@ -98,6 +108,12 @@ public class EventController implements SubController {
             @Override
             public void run() {
                 String speakerName = inputPrompter.getResponse("Enter the new speaker's name");
+
+                while(!userManager.uNameExists(speakerName)&&
+                        !userManager.getPermissions(speakerName).contains(Template.SPEAKER)){
+                    speakerName = inputPrompter.getResponse("The username you have entered is not a speaker."+System.lineSeparator()+"Please enter a new username");
+                }
+
                 eventManager.editSpeakerName(eventID, speakerName);
             }
         };
