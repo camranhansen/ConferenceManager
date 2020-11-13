@@ -160,11 +160,39 @@ public class UserManagerTest {
 
     @Test
     public void setSingleUserData(){
-
+        UserManager um = new UserManager(new HashMap<>());
+        assertEquals(new ArrayList<>(), um.getAllUserData());
+        String[] u1 = new String[]{"bob", "1234", um.PermissionsToString(Template.ATTENDEE.getPermissions())};
+        um.setSingleUserData(u1);
+        assertArrayEquals(u1, um.getSingleUserData("bob"));
     }
 
     @Test
     public void StringToPermissions(){
+        UserManager um = new UserManager(new HashMap<>());
+        String str1 = "MESSAGE_ALL_USERS, USER_ALL_EDIT_PERMISSION, VIEW_SELF_MESSAGES";
+        List<Permission> permissions1 = new ArrayList<>();
+        permissions1.add(Permission.MESSAGE_ALL_USERS);
+        permissions1.add(Permission.USER_ALL_EDIT_PERMISSION);
+        permissions1.add(Permission.VIEW_SELF_MESSAGES);
 
+        String str2 = "MESSAGE_ALL_USERS";
+        List<Permission> permissions2 = new ArrayList<>();
+        permissions2.add(Permission.MESSAGE_ALL_USERS);
+        assertEquals(permissions1, um.StringToPermissions(str1));
+        assertEquals(permissions2, um.StringToPermissions(str2));
+        assertNotEquals(permissions1, um.StringToPermissions(str2));
+    }
+
+    @Test
+    public void PermissionsToString(){
+        UserManager um = new UserManager(new HashMap<>());
+        List<Permission> permissions1 = new ArrayList<>();
+        permissions1.add(Permission.MESSAGE_ALL_USERS);
+        permissions1.add(Permission.USER_ALL_EDIT_PERMISSION);
+        permissions1.add(Permission.VIEW_SELF_MESSAGES);
+
+        String str1 = "MESSAGE_ALL_USERS, USER_ALL_EDIT_PERMISSION, VIEW_SELF_MESSAGES";
+        assertEquals(str1, um.PermissionsToString(permissions1));
     }
 }
