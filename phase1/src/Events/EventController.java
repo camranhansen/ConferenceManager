@@ -1,9 +1,5 @@
 package Events;
 
-//import Messaging.MessagePresenter;
-//import Users.User;
-//import Users.UserManager;
-
 import Menus.InputPrompter;
 import Menus.Option;
 import Menus.SubController;
@@ -14,11 +10,6 @@ import Users.UserManager;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import Users.UserController;
-
-//import Users.Template;
-//import java.util.Arrays;
-//import java.util.HashMap;
 
 public class EventController implements SubController {
     private EventManager eventManager;
@@ -94,7 +85,6 @@ public class EventController implements SubController {
     public void deleteEvent(String eventID){
         this.eventManager.deleteEvent(eventID);
     }
-
 
     //TODO: Change time from string to instant
 //    public void editTime(int eventID){
