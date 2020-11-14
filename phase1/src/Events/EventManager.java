@@ -144,6 +144,7 @@ public class EventManager {
     public void addEventToHash(Event event) { // Temporary method for testing purposes only
         //TODO remove this. just use Create event
         events.put(event.getId(), event);
+        this.events.put(event.getId(), event);
     }
 
     public boolean checkCapacity(List<String> participants, int maxCapacity){
@@ -320,7 +321,5 @@ public class EventManager {
     }
 
 }
-
-
 
 
