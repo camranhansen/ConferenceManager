@@ -54,7 +54,7 @@ public class MessageGateway {
     }
 
     public void readAllUsers() throws IOException {
-        //if (Files.notExists(Path.of(directory))) return;
+        if (new File(directory).isDirectory()) return;
         File dataFolder = new File(directory);
         File[] files = dataFolder.listFiles();
 
