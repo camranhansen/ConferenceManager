@@ -46,7 +46,6 @@ public class InputPrompter {
 
     private void addExitOption(ArrayList<Option> options){
         Option exit = new Option("Exit");
-        //TODO add the exit function to this option :)
         options.add(0, exit);
     }
 
@@ -57,6 +56,11 @@ public class InputPrompter {
 
     public String getResponse(String prompt){
         inputPresenter.printPrompt(prompt);
-        return scanner.nextLine();
+
+        String in = scanner.nextLine();
+        //Check if input is "exit"
+        //Do something here
+        //like call some method....
+        return in;
     }
 }

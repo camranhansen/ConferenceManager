@@ -75,7 +75,8 @@ public class PrimaryController {
         subcontrollers.put("USER", userController);
         List<Permission> permissions = userManager.getPermissions(username);
         menuController = new MenuController(username, permissions, subcontrollers);
-        menuController.selectSubcontroller();
+        menuController.makeMenu();
+        saveData();
     }
 
     public void runWithoutGateways(){
@@ -89,7 +90,8 @@ public class PrimaryController {
         subcontrollers.put("USER", userController);
         List<Permission> permissions = userManager.getPermissions(username);
         menuController = new MenuController(username, permissions, subcontrollers);
-        menuController.selectSubcontroller();
+        menuController.makeMenu();
+        //Put exiting functions here
 
     }
 
