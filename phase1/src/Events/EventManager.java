@@ -110,7 +110,7 @@ public class EventManager {
     }
 
     public void addEventToHash(Event event) { // Temporary method for testing purposes only
-        events.put(event.getId(), event);
+        this.events.put(event.getId(), event);
     }
 
     public boolean checkCapacity(List<String> participants, int maxCapacity){
