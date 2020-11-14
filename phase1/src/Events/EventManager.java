@@ -1,14 +1,10 @@
 package Events;
 
-import Users.User;
-import sun.font.TrueTypeFont;
-
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.lang.String;
-import java.util.ArrayList;
 
 
 public class EventManager {
