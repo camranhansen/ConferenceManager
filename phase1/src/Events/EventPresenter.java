@@ -25,8 +25,12 @@ public class EventPresenter {
         }
     }
 
-    public void foundConflictEvents(){
-        System.out.println("Cannot create this event because it conflicts with an existing event.");
+    public void foundConflict(){
+        System.out.println("You already joined a event at the give time slot or the event you wish to enroll currently is full.");
+    }
+
+    public void wrongInput(){
+        System.out.println("Invalid input");
     }
 
     /*

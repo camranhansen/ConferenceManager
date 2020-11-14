@@ -14,60 +14,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import Events.EventPresenter;
+import org.junit.experimental.max.MaxCore;
 
+import java.time.temporal.ChronoUnit;
+
+import static java.time.Instant.MAX;
 import static org.junit.Assert.*;
 
 public class EventControllerTest {
 
     @Test
-    public void viewAllEvents() {
-        EventManager eventManager = new EventManager();
-        EventController control = new EventController(eventManager);
-        Instant time = Instant.now();
-        eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1", 2);
-        eventManager.createEvent("Rob Willis", time, "Test Event 2", "Meeting Room 2", 2);
-        eventManager.createEvent("Jane Doe", time, "Test Event 3", "Meeting Room 3", 2);
-        Event e1 = eventManager.getEventByName("Test Event");
-        Event e2 = eventManager.getEventByName("Test Event 2");
-        Event e3 = eventManager.getEventByName("Test Event 3");
-        List<Event> eventList = new ArrayList<>();
-        eventList.add(e1);
-        eventList.add(e2);
-        eventList.add(e3);
-        assertEquals(control.viewAllEvents(), eventList);
-        EventPresenter ep = new EventPresenter();
-
-    }
-
-    @Test
-    public void checkMyEvents() {
-        EventManager eventManager = new EventManager();
-        EventController control = new EventController(eventManager);
-        List<String> arr1 = new ArrayList<>();
-        arr1.add("Daniel Tan");
-        arr1.add("Cameron Blom");
-        List<String> arr2 = new ArrayList<>();
-        arr2.add("Cameron Blom");
-        Instant time = Instant.now();
-        eventManager.createEvent("Bob Smithers", time, "Test Event",  "Meeting Room 1",  2);
-        eventManager.createEvent("Rob Willis", time, "Test Event 2", "Meeting Room 2", 2);
-        control.enroll("Meeting Room 1"+time.toString(), "Daniel Tan");
-        Event e1 = eventManager.getEventByName("Test Event");
-        List<Event> eventList = new ArrayList<>();
-        eventList.add(e1);
-        assertEquals(control.checkMyEvents("Daniel Tan"), eventList);
-    }
-
-    @Test
     public void enroll() {
         EventManager eventManager = new EventManager();
         EventController control = new EventController(eventManager);
-        List<String> arr = new ArrayList<>();
-        Instant time = Instant.now();
+        Instant time = MAX;
         eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1", 2);
-        Event e1 = eventManager.getEventByName("Test Event");
-        control.enroll(e1.getId(), "John Smith");
-        assertTrue(control.checkMyEvents("John Smith").size() > 0);
+        control.enroll("Meeting Room 1" + time.toString(), "John Smith");
+        assertTrue(eventManager.getParticipants("Meeting Room 1" + time.toString()).contains("John Smith"));
     }
 
     @Test
@@ -76,66 +40,77 @@ public class EventControllerTest {
         EventController control = new EventController(eventManager);
         List<String> arr = new ArrayList<>();
         arr.add("John Smith");
-        Instant time = Instant.now();
+        Instant time = MAX;
         eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1", 2);
-        Event e1 = eventManager.getEventByName("Test Event");
-        control.drop(e1.getId(), "John Smith");
-        assertEquals(control.checkMyEvents("John Smith").size(), 0);
+        control.enroll("Meeting Room 1"+time.toString(), "John Smith");
+        assertEquals(eventManager.getParticipants("Meeting Room 1"+time.toString()).size(), 1);
+        control.drop("Meeting Room 1"+time.toString(), "John Smith");
+        assertEquals(eventManager.getParticipants("Meeting Room 1"+time.toString()).size(), 0);
+    }
+
+    @Test
+    public void viewAllEvents() {
+        EventManager eventManager = new EventManager();
+        EventController control = new EventController(eventManager);
+        Instant time = MAX;
+        control.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1", 2);
+        control.createEvent("Rob Willis", time, "Test Event 2", "Meeting Room 2", 2);
+        control.createEvent("Jane Doe", time, "Test Event 3", "Meeting Room 3", 2);
+        List<String> result = control.viewAllEvents();
+        System.out.println(result);
+        assertEquals(result.size(), 3);
+
+    }
+
+    @Test
+    public void checkMyEvents() {
+        EventManager eventManager = new EventManager();
+        EventController control = new EventController(eventManager);
+        Instant time = Instant.MAX;
+        eventManager.createEvent("Bob Smithers", time, "Test Event",  "Meeting Room 1",  2);
+        eventManager.createEvent("Rob Willis", time, "Test Event 2", "Meeting Room 2", 2);
+        control.enroll("Meeting Room 1"+time.toString(), "Daniel Tan");
+        List<String> result = control.viewMyEvents("Daniel Tan");
+        assertEquals(result.size(), 1);
+        assertEquals(result.size(),1);
     }
 
     @Test
     public void viewAvailableEvents() {
         EventManager eventManager = new EventManager();
         EventController control = new EventController(eventManager);
-        Instant time = Instant.now();
-        Instant time2 = time.plus(1, ChronoUnit.HOURS);
-        List<String> arr1 = new ArrayList<>();
-        List<String> arr2 = new ArrayList<>();
-        List<String> arr3 = new ArrayList<>();
-        arr3.add("Micheal");
-        Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
-        Event e2 = new Event("Janet Haws", time, "Test Event 2", arr2, "Meeting Room 2",  2);
-        Event e3 = new Event("Roger", time2, "Test Event 3", arr3, "Meeting Room 3",  2);
-        eventManager.addEventToHash(e1);
-        eventManager.addEventToHash(e2);
-        eventManager.addEventToHash(e3);
-        List<Event> list = new ArrayList<>();
-        list.add(e1);
-        list.add(e2);
-        assertEquals(control.viewAvailableEvent("Michael"), list);
+        Instant time = MAX;
+        Instant time2 = time.minus(1, ChronoUnit.HOURS);
+        eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2);
+        eventManager.createEvent("Janet Haws", time, "Test Event 2", "Meeting Room 2",  2);
+        eventManager.createEvent("Roger", time2, "Test Event 3", "Meeting Room 3",  2);
+        List<String> result = control.viewAvailableEvent("Micheal");
+        assertEquals(result.size(), 3 );
     }
 
     @Test
-    public void addEvent() {
+    public void createEvent() {
         EventManager eventManager = new EventManager();
         EventController control = new EventController(eventManager);
         String speakerName = "Olivia";
-        Instant time = Instant.now();
+        Instant time = MAX;
         String eventName = "Java Basics";
         String room = "Institute of Technology";
         int capacity = 2;
-        control.addEvent(speakerName, time, eventName, room, capacity);
-        assertTrue(eventManager.getEvents().size() > 0);
+        control.createEvent(speakerName, time, eventName, room, capacity);
+        assertEquals(eventManager.getEventSpeakerName(room + time.toString()), "Olivia");
     }
-
-    // @org.junit.jupiter.api.Test
-    // void enrollSelf() {
-    // }
 
     @Test
     public void deleteEvent() {
         EventManager eventManager = new EventManager();
         EventController control = new EventController(eventManager);
-        Instant time = Instant.now();
-        List<String> arr1 = new ArrayList<>();
-        Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
-        Event e2 = new Event("Roberto", time, "Test Event 2", arr1, "Meeting Room 2",  2);
-        eventManager.addEventToHash(e1);
-        eventManager.addEventToHash(e2);
-        HashMap<String, Event> list = new HashMap<>();
-        list.put(e1.getId(), e1);
-        control.deleteEvent(e2.getId());
-        assertEquals(eventManager.getEvents(), list);
+        Instant time =MAX;
+        eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2);
+        eventManager.createEvent("Roberto", time, "Test Event 2", "Meeting Room 2",  2);
+        assertEquals(eventManager.getEventList().size(), 2);
+        control.deleteEvent("Meeting Room 2" + time.toString());
+        assertEquals(eventManager.getEventList().size(), 1);
     }
 
     /*

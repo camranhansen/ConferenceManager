@@ -90,9 +90,6 @@ public class EventManager {
         return this.events.containsKey(eventID);
     }
 
-    public boolean userIsInEvent(String eventID, String username){
-        return events.get(eventID).getParticipants().contains(username);
-    }
 
 
     public Event getInfo(String eventID){
@@ -128,18 +125,23 @@ public class EventManager {
         this.events.put(event.getId(), event);
     }
 
-    public boolean checkCapacity(List<String> participants, int maxCapacity){
-        //TODO remove this method, it has become outdated by isEventFull(Id)
-        return participants.size() < maxCapacity;
+
+
+
+
+    // Check conflict methods
+    public boolean checkUserInEvent(Instant timeslot, String username){
+        for (String id: this.events.keySet()){
+            if(getEventTime(id).equals(timeslot) && getParticipants(id).contains(username)){
+                return true;
+            }
+        }
+        return false;
     }
 
-
-
-    // Check speaker not appears in different places at the same time.
-    private boolean checkConflictSpeaker(Instant timeSlot, String username) {
+    public boolean checkConflictSpeaker(Instant timeSlot, String username) {
 
         for (String id: this.events.keySet()){
-
             if(this.events.get(id).getEventTime().equals(timeSlot) &&
                     this.events.get(id).getSpeakerName().equals(username)){
                 return true;
@@ -148,25 +150,21 @@ public class EventManager {
         return false;
     }
 
+    public boolean checkRoom(Instant timeslot, String room){
+         for (String id: this.events.keySet()){
+             if(getEventTime(id).equals(timeslot) && getRoom(id).equals(room)){
+                 return true;
+             }
+         }
+         return false;
+    }
 
-    //TODO: Check 9<Time<16. This is not essential for the program, but is necessary to do later
-
-    // Check capacity when user enrols.
-    //TODO: Two checkCapacity functions (line 116)
     public boolean checkCapacity(String eventId) {
         Event event = this.events.get(eventId);
         return event.getParticipants().size() < event.getCapacity(); //return ture if the event is not full.
     }
 
     // Check user not appears in different places at the same time.
-    private boolean checkConflictUser(String eventId, String username) {
-        for (String id: this.events.keySet()){
-            if(this.events.get(id).getSpeakerName().equals(username)){
-                return true;
-            }
-        }
-        return false;
-    }
 
     public List<String> getUserEvents(String username) {
         //TODO should be refactored into returning a list of Strings
@@ -178,6 +176,18 @@ public class EventManager {
         }
         return myEvents;
     }
+    public void editSpeakerName(String id, String newSpeaker){
+        Event event = this.events.get(id);
+        createEditedEvent(newSpeaker, event.getEventTime(), event.getEventName(), event.getParticipants(),
+                event.getRoom(), event.getCapacity());
+
+    }
+
+    public void editEventName(String id, String newEventName){
+        Event event = this.events.get(id);
+        createEditedEvent(event.getSpeakerName(), event.getEventTime(), newEventName, event.getParticipants(),
+                event.getRoom(), event.getCapacity());
+    }
 
     public void editRoom(String id, String newRoom){
         Event event = this.events.get(id);
@@ -186,12 +196,6 @@ public class EventManager {
         deleteEvent(id);
     }
 
-    public void editSpeakerName(String id, String newSpeaker){
-        Event event = this.events.get(id);
-        createEditedEvent(newSpeaker, event.getEventTime(), event.getEventName(), event.getParticipants(),
-                event.getRoom(), event.getCapacity());
-
-    }
 
     public void editCapacity(String id, int newCapacity){
         Event event = this.events.get(id);
@@ -206,11 +210,7 @@ public class EventManager {
         deleteEvent(id);
     }
 
-    public void editEventName(String id, String newEventName){
-        Event event = this.events.get(id);
-        createEditedEvent(event.getSpeakerName(), event.getEventTime(), newEventName, event.getParticipants(),
-                event.getRoom(), event.getCapacity());
-    }
+
 
 
     //gateway method
@@ -254,10 +254,6 @@ public class EventManager {
 
     }
 
-
-
-
-
     public String getFormattedEvent(String id){
         Event e = this.events.get(id);
         String lineSep = ":" + System.lineSeparator();
@@ -265,7 +261,6 @@ public class EventManager {
                 "Event Time: " + e.getEventTime() + lineSep +
                 "Room: " + e.getRoom() + lineSep +
                 "Capacity: " + e.getParticipants().size() + "/" + e.getCapacity() + lineSep;
-
         return formatted;
     }
 
