@@ -26,6 +26,10 @@ public class MessagePresenter {
         System.out.println("This event is not your event");
     }
 
+    public void usernameInvalid(){
+        System.out.println("Invalid username. Please try again.");
+    }
+
 //    public void viewAllOrFromOne(){
 //        System.out.println("to view whole inbox: enter '1'.\nto view from one username: enter '2''.");
 //    }
