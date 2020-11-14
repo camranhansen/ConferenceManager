@@ -1,6 +1,7 @@
 package Events;
 
 import Users.User;
+import sun.font.TrueTypeFont;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -18,10 +19,18 @@ public class EventManager {
     }
 
     public HashMap<String, Event> getEvents(){
+        //TODO remove this function because it returns events, thereby breaking dependency rule
         return this.events;
     }
+    //This function is necessary.
+    public List<String> getAllEventIds(){
+        ArrayList<String> allIDS = new ArrayList<>(this.events.keySet());
+        return allIDS;
+    }
+
 
     public List<Event> getEventsList() {
+        //TODO remove this function because it returns events, thereby breaking dependency rule
         List<Event> eventsList = new ArrayList<>();
         for (String key : events.keySet()) {
             eventsList.add(events.get(key));
@@ -30,6 +39,7 @@ public class EventManager {
     }
 
     public Event getEventByName(String eventName){
+        //TODO remove this function, because it assumes that all event names are unique.
         Event result = new Event();
         for (Event value : events.values()){
             if (value.getEventName().equals(eventName)) result = value;
@@ -37,7 +47,9 @@ public class EventManager {
         return result;
     }
 
+
     public List<Event> getEventBySpeakerName(String userName){
+        //TODO this function should be removed because it returns a list of events
         List<Event> aList = new ArrayList<>();
         for (Event value : events.values()){
             if (value.getSpeakerName().equals(userName)){
@@ -48,6 +60,7 @@ public class EventManager {
     }
 
     public List<String> getSpkEvents(String userName){
+        //This method is better since it returns event IDs
         List<String> aList = new ArrayList<>();
         for (Event value: events.values()){
             if(value.getSpeakerName().equals(userName)){
@@ -60,24 +73,24 @@ public class EventManager {
     public void createEvent(String speakerName, Instant eventTime, String eventName, String room, int capacity){
         Event newEvent = new Event(speakerName, eventTime, eventName, room, capacity);
         this.events.put(newEvent.getId(), newEvent);
-
     }
 
     private void createEditedEvent(String speakerName, Instant eventTime, String eventName, List<String> participants, String room, int capacity){
         Event newEvent = new Event(speakerName, eventTime, eventName, participants, room, capacity);
         this.events.put(newEvent.getId(), newEvent);
-
     }
 
+
     public void deleteEvent(String eventId){
+
         this.events.remove(eventId);
     }
 
-    public List<String> getParticipants(String eventID){
-        return events.get(eventID).getParticipants();
-    }
+
 
     public boolean enrollUser(String eventID, String Username){
+        //TODO refactor this method into only doing the enrollUser.
+        //Call isEventFull in controller to check
         List<String> result = this.getParticipants(eventID);
         boolean check = this.checkCapacity(result, events.get(eventID).getCapacity()); // To be fixed
         if(check){
@@ -86,18 +99,34 @@ public class EventManager {
         }
         return false;
     }
+    //Call this as !isEventFull(ID);.
+    public boolean isEventFull(String eventID){
+        return (this.events.get(eventID).getCapacity() <=
+                this.events.get(eventID).getParticipants().size());
+    }
+
+    public boolean eventExists(String eventID){
+        return this.events.containsKey(eventID);
+    }
+
+    public boolean userIsInEvent(String eventID, String username){
+        return events.get(eventID).getParticipants().contains(username);
+    }
 
     public boolean dropUser(String eventID, String Username){
+        //TODO this should not return true.
+        // This should also call eventExists and userIsInEvent in controller
         events.get(eventID).getParticipants().remove(Username);
         return true;
     }
 
     public Event getInfo(String eventID){
-        //TODO: DISCUSS LATER
+        //TODO: remove this, since it returns an Event
         return events.get(eventID);
     }
 
     public List<Event> getAvailableEvents(String username){
+        //TODO remove this
         List<Event> myEvents = getUserEvents(username);
         List<Instant> time = helpMethod(myEvents);
         List<Event> availableEvents = new ArrayList<>();
@@ -107,41 +136,37 @@ public class EventManager {
             }
         }
         return availableEvents;
+        //Return a list of event IDs
     }
 
+
+
     public void addEventToHash(Event event) { // Temporary method for testing purposes only
+        //TODO remove this. just use Create event
         events.put(event.getId(), event);
     }
 
     public boolean checkCapacity(List<String> participants, int maxCapacity){
+        //TODO remove this method, it has become outdated by isEventFull(Id)
         return participants.size() < maxCapacity;
     }
 
 
-    //TODO: Make Exceptions for this
-    //Check event conflicts (same room & same time)
-    private boolean checkConflictEvent(String eventId){
-        boolean flag = false; //It means the event doesn't have a conflict
-        if (this.getAllEventIds().contains(eventId)){
-            flag = true; }
-        return flag;
-    }
-
     // Check speaker not appears in different places at the same time.
-    private boolean checkConflictSpeaker(String eventId, String username) {
-        boolean flag = false; // no conflicts
-        Event event = this.events.get(eventId);
-        List<Event> list = getEventBySpeakerName(username);
-        for (Event value : list) {
-            if (value.getEventTime().equals(event.getEventTime())) {
-                flag = true;
-                break;
+    private boolean checkConflictSpeaker(Instant timeSlot, String username) {
+
+        for (String id: this.events.keySet()){
+
+            if(this.events.get(id).getEventTime().equals(timeSlot) &&
+                    this.events.get(id).getSpeakerName().equals(username)){
+                return true;
             }
         }
-        return flag;
+        return false;
     }
 
-    //TODO: Check 9<Time<16.
+
+    //TODO: Check 9<Time<16. This is not essential for the program, but is necessary to do later
 
     // Check capacity when user enrols.
     //TODO: Two checkCapacity functions (line 116)
@@ -152,19 +177,16 @@ public class EventManager {
 
     // Check user not appears in different places at the same time.
     private boolean checkConflictUser(String eventId, String username) {
-        boolean flag = false;
-        Event event = this.events.get(eventId);
-        List<Event> list = this.getUserEvents(username);
-        for (Event value : list) {
-            if (value.getEventTime().equals(event.getEventTime())) {
-                flag = true;
-                break;
+        for (String id: this.events.keySet()){
+            if(this.events.get(id).getSpeakerName().equals(username)){
+                return true;
             }
         }
-        return flag;
+        return false;
     }
 
     public List<Event> getUserEvents(String username) {
+        //TODO should be refactored into returning a list of Strings
         List<Event> myEvents = new ArrayList<>();
         for (Event value : this.events.values()){
             if (value.getParticipants().contains(username)){
@@ -174,30 +196,19 @@ public class EventManager {
         return myEvents;
     }
 
-//    public String[] getSpkEvents(String username){
-//        ArrayList<String> spkEvents = new ArrayList<>();
-//        for(Event event:getEventsList()){
-//            if(event.getSpeakerName().equals(username)){
-//                spkEvents.add(event.getId());
-//            }
-//        }
-//        String[] eventIds = new String[spkEvents.size()];
-//        eventIds = spkEvents.toArray(eventIds);
-//        return eventIds;
-//    }
 
     public void editRoom(String id, String newRoom){
         Event event = this.events.get(id);
         createEditedEvent(event.getSpeakerName(), event.getEventTime(), event.getEventName(), event.getParticipants(),
                 newRoom, event.getCapacity());
+        deleteEvent(id);
     }
 
     public void editSpeakerName(String id, String newSpeaker){
         Event event = this.events.get(id);
-        if (!checkConflictSpeaker(id, newSpeaker)){
         createEditedEvent(newSpeaker, event.getEventTime(), event.getEventName(), event.getParticipants(),
                 event.getRoom(), event.getCapacity());
-        }
+
     }
 
     public void editCapacity(String id, int newCapacity){
@@ -210,6 +221,7 @@ public class EventManager {
         Event event = this.events.get(id);
         createEditedEvent(event.getSpeakerName(), newTime, event.getEventName(), event.getParticipants(),
                 event.getRoom(), event.getCapacity());
+        deleteEvent(id);
     }
 
     public void editEventName(String id, String newEventName){
@@ -217,6 +229,7 @@ public class EventManager {
         createEditedEvent(event.getSpeakerName(), event.getEventTime(), newEventName, event.getParticipants(),
                 event.getRoom(), event.getCapacity());
     }
+
 
     //gateway method
     public ArrayList<String[]> getAllEventData(){
@@ -267,10 +280,7 @@ public class EventManager {
         return time;
     }
 
-    public List<String> getAllEventIds(){
-        ArrayList<String> allIDS = new ArrayList<>(this.events.keySet());
-        return allIDS;
-    }
+
 
 
     public String getFormattedEvent(String id){
@@ -283,7 +293,34 @@ public class EventManager {
 
         return formatted;
     }
+
+    //New event data getters. Please only use these!
+    public String getEventSpeakerName(String id){
+        return events.get(id).getSpeakerName();
+    }
+
+    public Instant getEventTime(String id){
+        return events.get(id).getEventTime();
+    }
+
+    public String getEventName(String id){
+        return events.get(id).getEventName();
+    }
+
+    public List<String> getParticipants(String id){
+        return events.get(id).getParticipants();
+    }
+
+    public String getRoom(String id){
+        return events.get(id).getRoom();
+    }
+
+    public int getCapacity(String id){
+        return events.get(id).getCapacity();
+    }
+
 }
+
 
 
 
