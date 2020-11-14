@@ -135,7 +135,8 @@ public class MessageManager {
     }
 
     /**
-     * Create a new Message sent to the given user from a row storing all information about that Message.
+     * Create a new Message sent to the given user from a row storing all information about that Message. Put the
+     * message into the user inbox.
      * @param user Username of the recipient.
      * @param row A String[] with sender's username at index 0, sent time at index 1, message content at index 2, and
      * String[] of recipients' usernames at index 3.
@@ -143,10 +144,16 @@ public class MessageManager {
     public void putMessageFromArray(String user, String[] row) {
         HashMap<String, List<Message>> inbox = retrieveUserInbox(user);
         String sender = row[0];
-        if (!inbox.containsKey(sender)) inbox.put(sender, new ArrayList<>());
-        List<Message> senderMessage = inbox.get(sender);
         Message curMessage = new Message(sender, row[3].split(", "), row[2]);
         curMessage.setTimeSent(Instant.parse(row[1]));
+        if (!inbox.containsKey(sender)) {
+            ArrayList<Message> list = new ArrayList<>();
+            list.add(curMessage);
+            inbox.put(sender, list);
+        } else{
+            List<Message> senderMessage = inbox.get(sender);
+            senderMessage.add(curMessage);
+        }
     }
 
     /**
