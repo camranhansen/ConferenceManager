@@ -2,6 +2,7 @@ package Gateway;
 
 import Events.EventManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,7 +15,7 @@ public class EventGateway extends Gateway{
     }
 
     public void readEventsFromGateway(EventManager eventManager) throws IOException {
-        if (Files.notExists(Path.of(getFilePath()))) return;
+        if (new File(getFilePath()).isFile()) return;
         this.readFromFile();
         for (int i=0; i<this.getRowCount(); i++){
             String[] eventData = this.getRow(i);
