@@ -33,11 +33,11 @@ public class EventController implements SubController {
         this.eventManager.createEvent(speakerName, time, eventName, room, capacity);
     }
 
-    public List<Event> viewAllEvents(){
-        return eventManager.getEventsList();
+    public List<String> viewAllEvents(){
+        return eventManager.getEventList();
     }
 
-    public List<Event> checkMyEvents(String userName){
+    public List<String> checkMyEvents(String userName){
         //TODO: Validate userName.
         return eventManager.getUserEvents(userName);
     }
@@ -50,7 +50,7 @@ public class EventController implements SubController {
         this.eventManager.dropUser(eventID, username);
     }
 
-    public List<Event> viewAvailableEvent(String username){
+    public List<String> viewAvailableEvent(String username){
         return this.eventManager.getAvailableEvents(username);
     }
 
@@ -148,9 +148,9 @@ public class EventController implements SubController {
             @Override
             public void run() {
                 eventPresenter.viewMyEvents();
-                List<Event> result = checkMyEvents(username);
-                for (Event event : result) {
-                    System.out.println(event.getEventName());
+                List<String> result = checkMyEvents(username);
+                for (String event : result) {
+                    System.out.println(event);
                 }
             }
         };
@@ -159,9 +159,9 @@ public class EventController implements SubController {
             @Override
             public void run() {
                 eventPresenter.viewAvailableEvents();
-                List<Event> result = viewAvailableEvent(username);
-                for (Event event : result) {
-                    System.out.println(event.getEventName());
+                List<String> result = viewAvailableEvent(username);
+                for (String event : result) {
+                    System.out.println(event);
                 }
             }
         };
@@ -170,9 +170,9 @@ public class EventController implements SubController {
             @Override
             public void run() {
                 eventPresenter.viewAllEvents();
-                List<Event> result = viewAllEvents();
-                for (Event event : result) {
-                    System.out.println(event.getEventName());
+                List<String> result = viewAllEvents();
+                for (String event : result) {
+                    System.out.println(event);
                 }
             }
         };
@@ -216,9 +216,9 @@ public class EventController implements SubController {
         }
         else if(permissionSelected == Permission.VIEW_HOSTING_EVENTS){
             eventPresenter.viewSpeakerList();
-            List<Event> result = eventManager.getEventBySpeakerName(username);
-            for (Event event : result) {
-                System.out.println(event.getEventName());
+            List<String> result = eventManager.getSpkEvents(username);
+            for (String event : result) {
+                System.out.println(event);
             }
         }
         else if(permissionSelected == Permission.VIEW_ALL_EVENTS){

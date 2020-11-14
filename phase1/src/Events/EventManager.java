@@ -25,13 +25,13 @@ public class EventManager {
     }
 
 
-    public List<Event> getEventsList() {
-        //TODO remove this function because it returns events, thereby breaking dependency rule
-        List<Event> eventsList = new ArrayList<>();
-        for (String key : events.keySet()) {
-            eventsList.add(events.get(key));
+    public List<String> getEventList(){
+        /// return a list of eventId of all event
+        List<String> aList = new ArrayList<>();
+        for (Event value: this.events.values()){
+            aList.add(value.getId());
         }
-        return eventsList;
+        return aList;
     }
 
     public Event getEventByName(String eventName){
@@ -44,17 +44,6 @@ public class EventManager {
     }
 
 
-    public List<Event> getEventBySpeakerName(String userName){
-        //TODO this function should be removed because it returns a list of events
-        List<Event> aList = new ArrayList<>();
-        for (Event value : events.values()){
-            if (value.getSpeakerName().equals(userName)){
-                aList.add(value);
-            }
-        }
-        return aList;
-    }
-
     public List<String> getSpkEvents(String userName){
         //This method is better since it returns event IDs
         List<String> aList = new ArrayList<>();
@@ -66,6 +55,7 @@ public class EventManager {
         return aList;
     }
 
+
     public void createEvent(String speakerName, Instant eventTime, String eventName, String room, int capacity){
         Event newEvent = new Event(speakerName, eventTime, eventName, room, capacity);
         this.events.put(newEvent.getId(), newEvent);
@@ -76,27 +66,22 @@ public class EventManager {
         this.events.put(newEvent.getId(), newEvent);
     }
 
-
     public void deleteEvent(String eventId){
-
         this.events.remove(eventId);
     }
 
-
-
-    public boolean enrollUser(String eventID, String Username){
+    public void enrollUser(String eventID, String userName){
         //TODO refactor this method into only doing the enrollUser.
         //Call isEventFull in controller to check
-        List<String> result = this.getParticipants(eventID);
-        boolean check = this.checkCapacity(result, events.get(eventID).getCapacity()); // To be fixed
-        if(check){
-            events.get(eventID).getParticipants().add(Username);
-            return true;
-        }
-        return false;
+        this.events.get(eventID).getParticipants().add(userName);
     }
-    //Call this as !isEventFull(ID);.
+
+    public void dropUser(String eventID, String userName){
+        this.events.get(eventID).getParticipants().remove(userName);
+    }
+
     public boolean isEventFull(String eventID){
+        //Call this as !isEventFull(ID);.
         return (this.events.get(eventID).getCapacity() <=
                 this.events.get(eventID).getParticipants().size());
     }
@@ -109,33 +94,33 @@ public class EventManager {
         return events.get(eventID).getParticipants().contains(username);
     }
 
-    public boolean dropUser(String eventID, String Username){
-        //TODO this should not return true.
-        // This should also call eventExists and userIsInEvent in controller
-        events.get(eventID).getParticipants().remove(Username);
-        return true;
-    }
 
     public Event getInfo(String eventID){
         //TODO: remove this, since it returns an Event
         return events.get(eventID);
     }
 
-    public List<Event> getAvailableEvents(String username){
-        //TODO remove this
-        List<Event> myEvents = getUserEvents(username);
+    public List<String> getAvailableEvents(String username){
+        //Return a list of event IDs
+        List<String> myEvents = getUserEvents(username);
         List<Instant> time = helpMethod(myEvents);
-        List<Event> availableEvents = new ArrayList<>();
-        for(Event value : this.events.values()){
+        List<String> availableEvents = new ArrayList<>();
+        for(Event value: this.events.values()){
             if(!time.contains(value.getEventTime())){
-                availableEvents.add(value);
+                availableEvents.add(value.getId());
             }
         }
         return availableEvents;
-        //Return a list of event IDs
     }
 
-
+    private List<Instant> helpMethod(List<String> id){
+        List<Instant> time = new ArrayList<>();
+        for(int x=0; x<id.size(); x++) {
+            System.out.println();
+            time.add(getEventTime(id.get(x)));
+        }
+        return time;
+    }
 
     public void addEventToHash(Event event) { // Temporary method for testing purposes only
         //TODO remove this. just use Create event
@@ -147,6 +132,7 @@ public class EventManager {
         //TODO remove this method, it has become outdated by isEventFull(Id)
         return participants.size() < maxCapacity;
     }
+
 
 
     // Check speaker not appears in different places at the same time.
@@ -167,7 +153,7 @@ public class EventManager {
 
     // Check capacity when user enrols.
     //TODO: Two checkCapacity functions (line 116)
-    private boolean checkCapacity(String eventId) {
+    public boolean checkCapacity(String eventId) {
         Event event = this.events.get(eventId);
         return event.getParticipants().size() < event.getCapacity(); //return ture if the event is not full.
     }
@@ -182,17 +168,16 @@ public class EventManager {
         return false;
     }
 
-    public List<Event> getUserEvents(String username) {
+    public List<String> getUserEvents(String username) {
         //TODO should be refactored into returning a list of Strings
-        List<Event> myEvents = new ArrayList<>();
+        List<String> myEvents = new ArrayList<>();
         for (Event value : this.events.values()){
             if (value.getParticipants().contains(username)){
-                myEvents.add(value);
+                myEvents.add(value.getId());
             }
         }
         return myEvents;
     }
-
 
     public void editRoom(String id, String newRoom){
         Event event = this.events.get(id);
@@ -269,13 +254,6 @@ public class EventManager {
 
     }
 
-    private List<Instant> helpMethod(List<Event> name){
-        List<Instant> time = new ArrayList<>();
-        for(int x=0; x<name.size(); x++) {
-            time.add(name.get(x).getEventTime());
-        }
-        return time;
-    }
 
 
 
