@@ -105,7 +105,7 @@ public class UserTest {
 
     @Test
     public void permissionValue(){
-        assertEquals(Permission.valueOf("MESSAGE_ALL_ATTENDEES"),Permission.MESSAGE_ALL_USERS);
+        assertEquals(Permission.valueOf("MESSAGE_ALL_USERS"),Permission.MESSAGE_ALL_USERS);
 
 
     }
