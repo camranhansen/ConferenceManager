@@ -66,6 +66,7 @@ public class MessageController implements SubController {
     public void writeMessage(String from) {
         String to = inputPrompter.getResponse("Enter username to send to");
         while(! userManager.userExists(to)){
+            messagePresenter.usernameInvalid();
             to = inputPrompter.getResponse("Enter username to send to");
         }
         String content = getContent();
@@ -98,8 +99,6 @@ public class MessageController implements SubController {
                     writeToEvents(from, content, aList);
                 }
             }
-            //TODO: this will have to throw an exception... if a number is not put in or it is not a valid
-            // event id. We can also make each of their events an option that can then be chosen.
         };
         ArrayList<Option> options = new ArrayList<>();
         options.add(allEvents);
