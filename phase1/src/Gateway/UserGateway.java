@@ -3,10 +3,12 @@ package Gateway;
 import Users.User;
 import Users.UserManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class UserGateway extends Gateway{
     }
 
     public void readUsersFromGateway(UserManager um) throws IOException {
-        if (Files.notExists(Path.of(getFilePath()))) return;
+        if (!Files.exists(Paths.get(getFilePath()))) return;
         this.readFromFile();
         for (int i = 0; i < this.getRowCount(); i++) {
             um.setSingleUserData(this.getRow(i));

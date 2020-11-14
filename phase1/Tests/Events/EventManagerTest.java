@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static java.time.Instant.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 public class EventManagerTest {
 

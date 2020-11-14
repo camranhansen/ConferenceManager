@@ -1,5 +1,7 @@
 package Gateway;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -63,6 +65,8 @@ public abstract class Gateway {
     }
 
     public void flush() throws IOException {
+        File csvFile = new File(filePath);
+        csvFile.getParentFile().mkdirs();
         FileWriter fileWriter = new FileWriter(filePath);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         for (int row = 0; row < buffer.size(); row++) {
@@ -85,7 +89,7 @@ public abstract class Gateway {
 
     public void readFromFile() throws IOException {
         File file = new File(filePath);
-        if (!file.isFile()) throw new FileNotFoundException("File does not exist.");
+        if (!file.isFile()) throw new FileNotFoundException("File does not exist at path: " + file.getAbsolutePath());
         FileReader fileReader = new FileReader(filePath);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         String line = null;
