@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class EventGateway extends Gateway{
@@ -15,7 +16,7 @@ public class EventGateway extends Gateway{
     }
 
     public void readEventsFromGateway(EventManager eventManager) throws IOException {
-        if (new File(getFilePath()).isFile()) return;
+        if (!Files.exists(Paths.get(getFilePath()))) return;
         this.readFromFile();
         for (int i=0; i<this.getRowCount(); i++){
             String[] eventData = this.getRow(i);

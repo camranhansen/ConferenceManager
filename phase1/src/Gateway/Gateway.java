@@ -1,5 +1,7 @@
 package Gateway;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -63,6 +65,8 @@ public abstract class Gateway {
     }
 
     public void flush() throws IOException {
+        File csvFile = new File(filePath);
+        csvFile.getParentFile().mkdirs();
         FileWriter fileWriter = new FileWriter(filePath);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         for (int row = 0; row < buffer.size(); row++) {
