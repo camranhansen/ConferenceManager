@@ -312,7 +312,7 @@ public class MessageControllerTest {
         EventManager em = new EventManager();
         UserManager um = new UserManager(new HashMap<>());
         MessageController mc = new MessageController(mm, um, em);
-        List<String> participants = new ArrayList<>();
+        ArrayList<String> participants = new ArrayList<>();
         Instant time = Instant.now();
         participants.add("user1");
         participants.add("user2");
@@ -327,18 +327,8 @@ public class MessageControllerTest {
 
 
 
-//    @Test
-//    public void testViewMessage(){
-//        MessageManager mm = new MessageManager();
-//        EventManager em = new EventManager();
-//        UserManager um = new UserManager(new HashMap<>());
-//        MessageController mc = new MessageController(mm, um, em);
-//        mc.writeMessage("sender", "recipient", "message");
-//        HashMap<String, List<Message>> hashmap1 = mc.viewAllMessages("recipient");
-//        assertEquals(hashmap1.get("sender").get(0).getContent(),"message");
-//
-//
-//    }
+
+
 //    @Test
 //    public void testViewMessageMultipleMessages(){
 //        MessageManager mm = new MessageManager();
@@ -357,23 +347,3 @@ public class MessageControllerTest {
 //        assertEquals(hashmap2.get("sender").get(0).getContent(),"message2");
 //    }
 //
-//    @Test
-//    public void writeToEvents(){
-//        MessageManager mm = new MessageManager();
-//        EventManager em = new EventManager();
-//        UserManager um = new UserManager(new HashMap<>());
-//        MessageController mc = new MessageController(mm, um, em);
-//        List<String> participants = new ArrayList<>();
-//        Instant time = Instant.now();
-//        participants.add("user1");
-//        participants.add("user2");
-//        Event e1 = new Event("speaker", time, "Test Event", participants, "Meeting Room 1",  3);
-//        em.addEventToHash(e1);
-//        mc.writeToEvents("speaker", "announcement", 0);
-//        HashMap<String, List<Message>> hashmap1 = mc.viewAllMessages("user1");
-//        HashMap<String, List<Message>> hashmap2 = mc.viewAllMessages("user2");
-//        assertEquals(em.getParticipants(0), participants);
-//        assertEquals(hashmap1.get("speaker").get(0).getContent(), "announcement");
-//        assertEquals(hashmap2.get("speaker").get(0).getContent(), "announcement");
-//    }
-
