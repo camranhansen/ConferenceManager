@@ -48,6 +48,7 @@ public class UserGatewayTest {
         permission2.add(Permission.USER_ALL_EDIT_PERMISSION);
         String[] u2 = new String[]{"louis","asdf", um.PermissionsToString(permission2)};
         //Check for equality
+        assertNotEquals(0, userData.size());
         for (String[] s: userData) {
             assertTrue(Arrays.equals(u1, s) || Arrays.equals(u2, s));
             System.out.println(Arrays.toString(s));

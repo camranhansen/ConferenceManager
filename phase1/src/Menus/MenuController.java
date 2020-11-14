@@ -54,6 +54,7 @@ public class MenuController {
             }
             Option choice =  prompter.menuOption(categoryOptions);
             if(choice.toString().equals("Exit")){
+
                 return false;
             }
             String categoryChoice = choice.toString();

@@ -40,6 +40,11 @@ public class MessageController implements SubController {
         else if (permissionSelected == Permission.VIEW_SELF_MESSAGES){
             viewMessage(username);
         }
+
+        else if (permissionSelected == Permission.VIEW_OTHER_MESSAGES){
+            String otherUsername = inputPrompter.getResponse("Enter username's messages you'd like to see");
+            viewMessage(otherUsername);
+        }
     }
 
     public void orgSendToAll(String username){
@@ -152,7 +157,7 @@ public class MessageController implements SubController {
 
     public void orgSendToAllAtt(String from, String message){
         String[] attendees = getStringArray(userManager.getUserByPermissionTemplate(Template.ATTENDEE));
-        List<String> list = new ArrayList<String>(Arrays.asList(attendees));
+        List<String> list = new ArrayList<>(Arrays.asList(attendees));
         list.remove(from);
         attendees = list.toArray(new String[0]);
         if (!(attendees.length == 0)){
@@ -163,7 +168,7 @@ public class MessageController implements SubController {
 
     public void orgSendToAllSpeakers(String from, String message){
         String[] speakers = getStringArray(userManager.getUserByPermissionTemplate(Template.SPEAKER));
-        List<String> list = new ArrayList<String>(Arrays.asList(speakers));
+        List<String> list = new ArrayList<>(Arrays.asList(speakers));
         list.remove(from);
         speakers = list.toArray(new String[0]);
         if (!(speakers.length == 0)){
