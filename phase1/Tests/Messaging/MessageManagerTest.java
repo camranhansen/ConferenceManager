@@ -13,19 +13,19 @@ import static org.junit.Assert.*;
 
 public class MessageManagerTest {
 
-    @Test(timeout = 50)
+    @Test
     public void messageManagerConstructTest(){
         MessageManager messageManager = new MessageManager();
     }
 
-    @Test(timeout = 50)
+    @Test
     public void sendMessagesTest(){
         MessageManager messageManager = new MessageManager();
         messageManager.sendMessage("potter", "stupefy", "snape");
         messageManager.sendMessage("snape", "detention", "potter", "weasley", "granger");
     }
 
-    @Test(timeout = 50)
+    @Test
     public void retrieveMessagesTest(){
         MessageManager messageManager = new MessageManager();
         messageManager.sendMessage("potter", "stupefy", "snape");
@@ -39,20 +39,20 @@ public class MessageManagerTest {
         assertEquals("detention", i2Content);
     }
 
-    @Test//No message
+    @Test
     public void testRetrieveMessage1(){
         MessageManager mm = new MessageManager();
         assertEquals(mm.retrieveUserInbox("sender"), new HashMap<>());
 
     }
 
-    @Test(timeout = 50)
+    @Test
     public void testSendMessageEmpty() {
         MessageManager messageManager = new MessageManager();
         assertEquals("The inbox for John should be empty, but not null.", 0, messageManager.retrieveUserInbox("John").size());
     }
 
-    @Test(timeout = 50)
+    @Test
     public void testSendSingleRecipientMessage() {
         String sender = "John";
         String receiver = "Chief";
@@ -65,7 +65,7 @@ public class MessageManagerTest {
         assertEquals("Check if the recipients is correct.", receiver, message.getRecipients()[0]);
     }
 
-    @Test(timeout = 50)
+    @Test
     public void testSendMultiRecipientMessage() {
         String sender = "Will Smith";
         String[] receivers = new String[] {"Aladdin", "Mena Massoud"};

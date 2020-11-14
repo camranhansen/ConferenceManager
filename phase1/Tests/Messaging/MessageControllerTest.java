@@ -41,7 +41,7 @@ public class MessageControllerTest {
         System.setErr(originalErr);
     }
 
-    @Test(timeout = 50)
+    @Test
     public void controllerConstructTest() {
         MessageManager messageManager = new MessageManager();
         EventManager eventManager = new EventManager();
@@ -50,7 +50,7 @@ public class MessageControllerTest {
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
     }
 
-    @Test(timeout = 50)
+    @Test
     public void performSelectedMessageAllAttTest() {
         String input = "hello" + System.lineSeparator() + "1" + System.lineSeparator();
         InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -68,7 +68,7 @@ public class MessageControllerTest {
         assertTrue(message.contains("hello") && message.contains("org1"));
     }
 
-    @Test(timeout = 50)
+    @Test
     public void performSelectedMessageAllSpkTest() {
         String input = "hello" + System.lineSeparator() + "2" + System.lineSeparator();
         InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -88,7 +88,7 @@ public class MessageControllerTest {
         assertFalse(attendee.contains("hello"));
     }
 
-    @Test(timeout = 50)
+    @Test
     public void performSelectedMessageSingleTest() {
         String input = "u2" + System.lineSeparator() + "hello" + System.lineSeparator();
         InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -144,9 +144,9 @@ public class MessageControllerTest {
         assertTrue(messages.contains("hello") && messages.contains("spk1"));
     }
 
-    @Test(timeout = 50)
+    @Test
     public void performSelectedViewAllMessagesTest() {
-        String input = "1" + System.lineSeparator();
+        String input = "1\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
@@ -159,13 +159,13 @@ public class MessageControllerTest {
         messageManager.sendMessage("u2", "how are you?", "u1");
         messageManager.sendMessage("spk1", "hello", "u1");
         messageController.performSelectedAction("u1", Permission.VIEW_SELF_MESSAGES);
-        String out = "0. Exit" + System.lineSeparator() + "1. View all your messages"+ System.lineSeparator() +
-                "2. View messages from one user" + System.lineSeparator() +"spk1: hello, "+
-                System.lineSeparator() +"u2: hi, how are you?, " +System.lineSeparator()+System.lineSeparator();
-        assertEquals(outContent.toString(), out);
+        String out = "0. Exit\n" + "1. View all your messages\n" +
+                "2. View messages from one user\n" + "spk1: hello, \n"+"u2: hi, how are you?, \n\n";
+
+        assertEquals(out, outContent.toString().replaceAll("\r\n", "\n"));
     }
 
-    @Test(timeout = 50)
+    @Test
     public void performSelectedViewFromMessagesTest() {
         String input = "2" + System.lineSeparator() + "u2" + System.lineSeparator();
         InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -182,7 +182,7 @@ public class MessageControllerTest {
         messageController.performSelectedAction("u1", Permission.VIEW_SELF_MESSAGES);
     }
 
-    @Test(timeout = 50)
+    @Test
     public void writeMessageTest() {
         String input = "u1" + System.lineSeparator() + "hello" + System.lineSeparator();
         InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -199,7 +199,7 @@ public class MessageControllerTest {
         assertTrue(message.contains("hello"));
     }
 
-    @Test(timeout = 50)
+    @Test
     public void sendMessageTestToAllSpk() {
         MessageManager messageManager = new MessageManager();
         EventManager eventManager = new EventManager();
@@ -221,11 +221,11 @@ public class MessageControllerTest {
         um.createUser("user3", "123", Template.ATTENDEE.getPermissions());
         mc.orgSendToAllAtt("user", "hello");
         assertEquals(mm.retrieveUserInboxFor("user2", "user").get(0).getContent(), "hello");
-        assertEquals(Arrays.toString(mm.retrieveUserInboxFor("user3", "user").get(0).getRecipients()),
-                "[user2, user3]");
+        assertEquals("[user2, user3]",
+                Arrays.deepToString(mm.retrieveUserInboxFor("user3", "user").get(0).getRecipients()));
     }
 
-    @Test(timeout = 50)
+    @Test()
     public void viewAllTest() {
         MessageManager messageManager = new MessageManager();
         EventManager eventManager = new EventManager();
@@ -237,7 +237,7 @@ public class MessageControllerTest {
         System.out.println(messages);
     }
 
-    @Test(timeout = 50)
+    @Test
     public void viewFromTest() {
         MessageManager messageManager = new MessageManager();
         EventManager eventManager = new EventManager();
@@ -296,9 +296,6 @@ public class MessageControllerTest {
         ArrayList<String> list = new ArrayList<>();
         list.add(e1.getEventName());
         //mc.writeToEvents("spk1", "hello", list);
-
-
-
     }
 
 }
