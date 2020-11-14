@@ -8,6 +8,7 @@ import Users.Permission;
 import Users.Template;
 import Users.UserManager;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -152,6 +153,9 @@ public class MessageController implements SubController {
 
     public void orgSendToAllAtt(String from, String message){
         String[] attendees = getStringArray(userManager.getUserByPermissionTemplate(Template.ATTENDEE));
+        List<String> list = new ArrayList<String>(Arrays.asList(attendees));
+        list.remove(from);
+        attendees = list.toArray(new String[0]);
         if (!(attendees.length == 0)){
         messageManager.sendMessage(from, message, attendees);
         }
@@ -160,6 +164,9 @@ public class MessageController implements SubController {
 
     public void orgSendToAllSpeakers(String from, String message){
         String[] speakers = getStringArray(userManager.getUserByPermissionTemplate(Template.SPEAKER));
+        List<String> list = new ArrayList<String>(Arrays.asList(speakers));
+        list.remove(from);
+        speakers = list.toArray(new String[0]);
         if (!(speakers.length == 0)){
             messageManager.sendMessage(from, message, speakers);
         }

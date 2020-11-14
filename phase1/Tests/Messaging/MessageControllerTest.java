@@ -196,7 +196,7 @@ public class MessageControllerTest {
         um.createUser("user3", "123", Template.ATTENDEE.getPermissions());
         mc.orgSendToAllAtt("user", "hello");
         assertEquals(mm.retrieveUserInboxFor("user2", "user").get(0).getContent(), "hello");
-        //assertEquals(Arrays.toString(mm.retrieveUserInboxFor("user3", "user").get(0).getRecipients()), "[user2, user3]");
+        assertEquals(Arrays.toString(mm.retrieveUserInboxFor("user3", "user").get(0).getRecipients()), "[user2, user3]");
 
     }
 
