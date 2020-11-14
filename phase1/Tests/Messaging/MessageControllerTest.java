@@ -55,12 +55,17 @@ public class MessageControllerTest {
         String input = "hello" + System.lineSeparator() + "1" + System.lineSeparator();
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
+
         MessageManager messageManager = new MessageManager();
         EventManager eventManager = new EventManager();
         HashMap<String, User> users = generateUserHash();
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
         messageController.performSelectedAction("org1", Permission.MESSAGE_ALL_USERS);
+        String messages = messageManager.wholeInboxToString("u1");
+        String message = messageManager.singleInboxToString("u1", "org1");
+        assertTrue(messages.contains("hello"));
+        assertTrue(message.contains("hello") && message.contains("org1"));
     }
 
     @Test(timeout = 50)
@@ -75,6 +80,12 @@ public class MessageControllerTest {
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
         messageController.performSelectedAction("org1", Permission.MESSAGE_ALL_USERS);
+        String messages = messageManager.wholeInboxToString("spk1");
+        String message = messageManager.singleInboxToString("spk1", "org1");
+        String attendee = messageManager.wholeInboxToString("u1");
+        assertTrue(messages.contains("hello"));
+        assertTrue(message.contains("hello") && message.contains("org1"));
+        assertFalse(attendee.contains("hello"));
     }
 
     @Test(timeout = 50)
@@ -89,6 +100,8 @@ public class MessageControllerTest {
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
         messageController.performSelectedAction("u1", Permission.MESSAGE_SINGLE_USER);
+        String messages = messageManager.wholeInboxToString("u2");
+        assertTrue(messages.contains("hello") && messages.contains("u1"));
     }
 
     @Test
@@ -107,6 +120,8 @@ public class MessageControllerTest {
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
         messageController.performSelectedAction("spk1", Permission.MESSAGE_EVENT_USERS);
+        String messages = messageManager.wholeInboxToString("u2");
+        assertTrue(messages.contains("hello") && messages.contains("spk1"));
     }
 
     @Test
@@ -125,6 +140,8 @@ public class MessageControllerTest {
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
         messageController.performSelectedAction("spk1", Permission.MESSAGE_EVENT_USERS);
+        String messages = messageManager.wholeInboxToString("u2");
+        assertTrue(messages.contains("hello") && messages.contains("spk1"));
     }
 
     @Test(timeout = 50)
@@ -142,6 +159,10 @@ public class MessageControllerTest {
         messageManager.sendMessage("u2", "how are you?", "u1");
         messageManager.sendMessage("spk1", "hello", "u1");
         messageController.performSelectedAction("u1", Permission.VIEW_SELF_MESSAGES);
+        String out = "0. Exit" + System.lineSeparator() + "1. View all your messages"+ System.lineSeparator() +
+                "2. View messages from one user" + System.lineSeparator() +"spk1: hello, "+
+                System.lineSeparator() +"u2: hi, how are you?, " +System.lineSeparator()+System.lineSeparator();
+        assertEquals(outContent.toString(), out);
     }
 
     @Test(timeout = 50)
@@ -174,6 +195,8 @@ public class MessageControllerTest {
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
 
         messageController.writeMessage("u2");
+        String message = messageManager.singleInboxToString("u1", "u2");
+        assertTrue(message.contains("hello"));
     }
 
     @Test(timeout = 50)
@@ -198,8 +221,8 @@ public class MessageControllerTest {
         um.createUser("user3", "123", Template.ATTENDEE.getPermissions());
         mc.orgSendToAllAtt("user", "hello");
         assertEquals(mm.retrieveUserInboxFor("user2", "user").get(0).getContent(), "hello");
-        assertEquals(Arrays.toString(mm.retrieveUserInboxFor("user3", "user").get(0).getRecipients()), "[user2, user3]");
-
+        assertEquals(Arrays.toString(mm.retrieveUserInboxFor("user3", "user").get(0).getRecipients()),
+                "[user2, user3]");
     }
 
     @Test(timeout = 50)
@@ -214,7 +237,6 @@ public class MessageControllerTest {
         System.out.println(messages);
     }
 
-    //
     @Test(timeout = 50)
     public void viewFromTest() {
         MessageManager messageManager = new MessageManager();
