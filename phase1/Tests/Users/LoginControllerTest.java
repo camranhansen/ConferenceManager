@@ -36,7 +36,7 @@ public class LoginControllerTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
         UserManager um = createUserManager();
-        LoginController login = new LoginController();
+        LoginController login = new LoginController(um);
 
         assertEquals(login.loginUser(um), "bob");
 

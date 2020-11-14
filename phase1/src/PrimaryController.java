@@ -10,6 +10,7 @@ import Messaging.MessageManager;
 import Users.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class PrimaryController {
         userManager = new UserManager(new HashMap<>());
         userController = new UserController(userManager);
         messageController = new MessageController(messageManager, userManager, eventManager);
-        loginController = new LoginController();
+        loginController = new LoginController(userManager);
         // InputPrompter inputPrompter = new InputPrompter();
     }
 
@@ -75,6 +76,20 @@ public class PrimaryController {
         List<Permission> permissions = userManager.getPermissions(username);
         menuController = new MenuController(username, permissions, subcontrollers);
         menuController.selectSubcontroller();
+    }
+
+    public void runWithoutGateways(){
+        userManager.createUser("Camran","123",Template.ADMIN.getPermissions());
+
+        String username = loginController.loginUser(userManager);
+        HashMap<String, SubController> subcontrollers = new HashMap<>();
+        subcontrollers.put("EVENT", eventController);
+        subcontrollers.put("MESSAGE", messageController);
+        subcontrollers.put("USER", userController);
+        List<Permission> permissions = userManager.getPermissions(username);
+        menuController = new MenuController(username, permissions, subcontrollers);
+        menuController.selectSubcontroller();
+
     }
 
 }
