@@ -1,5 +1,6 @@
 package Messaging;
 
+import Events.Event;
 import Events.EventManager;
 import Users.Permission;
 import Users.Template;
@@ -183,6 +184,7 @@ public class MessageControllerTest {
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
         messageController.orgSendToAllSpeakers("u2", "hello");
+        assertEquals(messageManager.retrieveUserInboxFor("spk1", "u2").get(0).getContent(), "hello");
     }
 
     @Test
@@ -255,6 +257,26 @@ public class MessageControllerTest {
         mc.writeMessage("user");
         assertEquals(mm.retrieveUserInboxFor("user2","user").get(0).getContent(), "hello");
         assertEquals(Arrays.toString(mm.retrieveUserInboxFor("user2", "user").get(0).getRecipients()), "[user2]");
+    }
+
+    @Test
+    public void testWriteEvents(){
+        MessageManager mm = new MessageManager();
+        EventManager em = new EventManager();
+        UserManager um = new UserManager(new HashMap<>());
+        MessageController mc = new MessageController(mm, um, em);
+        List<String> participants = new ArrayList<>();
+        Instant time = Instant.now();
+        participants.add("user1");
+        participants.add("user2");
+        Event e1 = new Event("spk1", time, "Event", participants, "Meeting Room 1",  3);
+        em.addEventToHash(e1);
+        ArrayList<String> list = new ArrayList<>();
+        list.add(e1.getEventName());
+        //mc.writeToEvents("spk1", "hello", list);
+
+
+
     }
 
 }
