@@ -20,7 +20,7 @@ public class EventManagerTest {
         event.addEventToHash(e1);
         List<Event> events = new ArrayList<>();
         events.add(e1);
-        assertEquals(event.getEventsList(), events);
+        assertEquals(events, event.getEventsList());
     }
 
     @Test
@@ -34,7 +34,7 @@ public class EventManagerTest {
         event.addEventToHash(e1);
         event.addEventToHash(e2);
         event.addEventToHash(e3);
-        assertEquals(event.getEventByName("Test Event 2"), e2);
+        assertEquals(e2, event.getEventByName("Test Event 2"));
     }
 
     @Test
@@ -53,7 +53,7 @@ public class EventManagerTest {
         list.add(e1);
         list.add(e2);
 
-        assertEquals(event.getEventBySpeakerName("Bob Smithers").size(), 2);
+        assertEquals(2, event.getEventBySpeakerName("Bob Smithers").size());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class EventManagerTest {
         HashMap<String, Event> list = new HashMap<>();
         list.put(e1.getId(), e1);
         event.deleteEvent(e2.getId());
-        assertEquals(event.getEvents(), list);
+        assertEquals(list, event.getEvents());
     }
 
     @Test
@@ -92,7 +92,7 @@ public class EventManagerTest {
         Instant time = now();
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr, "Meeting Room 1",  2);
         event.addEventToHash(e1);
-        assertEquals(event.getParticipants(e1.getId()), arr1);
+        assertEquals(arr1, event.getParticipants(e1.getId()));
     }
 
     @Test
@@ -104,7 +104,7 @@ public class EventManagerTest {
         Event e1 = new Event("Bob Smithers", time,"Test Event", arr, "Meeting Room 1",  2);
         event.addEventToHash(e1);
         event.enrollUser(e1.getId(), name);
-        assertEquals(e1.getParticipants().size(),1);
+        assertEquals(1, e1.getParticipants().size());
     }
 
     @Test
@@ -117,7 +117,7 @@ public class EventManagerTest {
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr, "Meeting Room 1",  2);
         event.addEventToHash(e1);
         event.dropUser(e1.getId(), name);
-        assertEquals(e1.getParticipants().size(), 0);
+        assertEquals(0, e1.getParticipants().size());
     }
 
     @Test
@@ -128,7 +128,7 @@ public class EventManagerTest {
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr, "Meeting Room 1",  2);
         event.addEventToHash(e1);
         event.getEvents().put(e1.getId(), e1);
-        assertEquals(event.getInfo(e1.getId()), e1);
+        assertEquals(e1, event.getInfo(e1.getId()));
     }
 
     @Test
@@ -149,7 +149,7 @@ public class EventManagerTest {
         event.addEventToHash(e3);
         List<Event> list = new ArrayList<>();
         list.add(e3);
-        assertEquals(event.getAvailableEvents("Micheal").size(), 2);
+        assertEquals(2, event.getAvailableEvents("Micheal").size());
     }
 
     @Test
@@ -190,7 +190,7 @@ public class EventManagerTest {
         List<Event> list = new ArrayList<>();
         list.add(e1);
         list.add(e2);
-        assertTrue(event.getUserEvents("Michael").contains(list)&&list.contains(event.getUserEvents("Michael")));
+        assertTrue(event.getUserEvents("Michael").contains(list) && list.contains(event.getUserEvents("Michael")));
     }
 
     @Test
@@ -234,7 +234,7 @@ public class EventManagerTest {
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
         event.addEventToHash(e1);
         event.editSpeakerName(e1.getId(), "Roberto");
-        assertEquals(event.getEventByName("Test Event").getSpeakerName(), "Roberto");
+        assertEquals("Roberto", event.getEventByName("Test Event").getSpeakerName());
     }
 
     @Test
@@ -245,7 +245,6 @@ public class EventManagerTest {
         Event e1 = new Event("Bob Smithers", time, "Test Event", arr1, "Meeting Room 1",  2);
         event.addEventToHash(e1);
         event.editEventName(e1.getId(), "Clean Architecture");
-//        assertEquals(, "Clean Architecture");
     }
 
     @Test
@@ -257,7 +256,7 @@ public class EventManagerTest {
         event.addEventToHash(e1);
         event.editRoom(e1.getId(), "BH 101");
 
-        assertEquals(event.getEventByName("Test Event").getRoom(), "BH 101");
+        assertEquals("BH 101", event.getEventByName("Test Event").getRoom());
     }
 
     @Test
