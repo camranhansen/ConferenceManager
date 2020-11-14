@@ -75,16 +75,12 @@ public class UserManagerTest {
     public void getUserByPermissionTemplate() {
         UserManager um = createUserManager();
         List<Permission> permissionsToAdd = new ArrayList<>();
-        permissionsToAdd.add(Permission.USER_SELF_EDIT_PASSWORD);
-        permissionsToAdd.add(Permission.MESSAGE_SINGLE_USER);
-        permissionsToAdd.add(Permission.VIEW_ALL_EVENTS);
-        permissionsToAdd.add(Permission.VIEW_SELF_MESSAGES);
 
 
         assertTrue(um.getUserByPermissionTemplate(Template.ATTENDEE).isEmpty());
 
 
-        um.createUser("joe","imjoe",permissionsToAdd);
+        um.createUser("joe","imjoe",Template.ATTENDEE.getPermissions());
         assertFalse(um.getUserByPermissionTemplate(Template.ATTENDEE).isEmpty());
         assertTrue(um.getUserByPermissionTemplate(Template.ATTENDEE).contains("joe"));
 

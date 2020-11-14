@@ -21,7 +21,6 @@ public class LoginController {
     // DPE: This is an example of the Dependency Injection because we take
     // in a class as a parameter instead of storing it
     public String loginUser(UserManager um){
-        System.out.println("dleet this");
         String username = prompter.getResponse("Please enter your username");
         while(!um.uNameExists(username)){
             username = prompter.getResponse("That username does not exist." +
@@ -30,8 +29,12 @@ public class LoginController {
         System.out.println(username);
 
         String password = prompter.getResponse("Please enter your password");
+        System.out.println("Test");
+        while(!um.getPassword(username).equals(password)){
+            password = prompter.getResponse("That password is incorrect." +
+                    System.lineSeparator() + "Please enter the real password");
+        }
 
-        //TODO: only return when sure it is valid, else bad things happen...
         return username;
     }
 

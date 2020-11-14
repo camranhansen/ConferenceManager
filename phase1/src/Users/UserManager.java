@@ -60,7 +60,6 @@ public class UserManager {
 
     //Password Methods
     public String getPassword(String username){
-        //TODO: Validate username
         return this.users.get(username).getPassword();
     }
 

@@ -80,6 +80,7 @@ public class PrimaryController {
 
     public void runWithoutGateways(){
         userManager.createUser("Camran","123",Template.ADMIN.getPermissions());
+        userManager.createUser("Steve","asdf",Template.ADMIN.getPermissions());
 
         String username = loginController.loginUser(userManager);
         HashMap<String, SubController> subcontrollers = new HashMap<>();
