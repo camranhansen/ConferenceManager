@@ -180,6 +180,31 @@ public class MessageControllerTest {
         messageManager.sendMessage("u2", "how are you?", "u1");
         messageManager.sendMessage("spk1", "hello", "u1");
         messageController.performSelectedAction("u1", Permission.VIEW_SELF_MESSAGES);
+        String out = "0. Exit\n" + "1. View all your messages\n" +
+                "2. View messages from one user\n" + "Enter other username messages you'd like to see: \n"+
+                "u2: hi, how are you?, \n";
+
+        assertEquals(out, outContent.toString().replaceAll("\r\n", "\n"));
+    }
+
+    @Test
+    public void performSelectedViewOtherMessageTest(){
+        String input = "u1"+ System.lineSeparator()+"1" + System.lineSeparator() + "u2" + System.lineSeparator();
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+        messageManager.sendMessage("u2", "hi", "u1");
+        messageManager.sendMessage("u2", "how are you?", "u1");
+        messageManager.sendMessage("spk1", "hello", "u1");
+        messageController.performSelectedAction("u1", Permission.VIEW_OTHER_MESSAGES);
+        String out = "Enter username's messages you'd like to see: \n"+"0. Exit\n" + "1. View all your messages\n" +
+                "2. View messages from one user\n"+ "spk1: hello, \n" + "u2: hi, how are you?, \n\n";
+        assertEquals(out, outContent.toString().replaceAll("\r\n", "\n"));
     }
 
     @Test
