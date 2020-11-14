@@ -26,7 +26,13 @@ public class MenuController {
     }
 
 
-    public void selectSubcontroller(){
+    public void makeMenu(){
+        boolean keepGoing = selectSubcontroller();
+        while(keepGoing){
+            keepGoing = selectSubcontroller();
+        }
+    }
+    public boolean selectSubcontroller(){
         //Selects the subcontroller necessary for the given permission, and then tells it what permission is being used.
 
 
@@ -46,7 +52,11 @@ public class MenuController {
             for (String category: categories){
                 categoryOptions.add(new Option(category));
             }
-            String categoryChoice = prompter.menuOption(categoryOptions).toString();
+            Option choice =  prompter.menuOption(categoryOptions);
+            if(choice.toString().equals("Exit")){
+                return false;
+            }
+            String categoryChoice = choice.toString();
             List<Permission> selectedPermissions = new ArrayList<>();
             for (Permission p: permissions) {
                 if (p.getCategory().equals(categoryChoice)){
@@ -56,7 +66,9 @@ public class MenuController {
 
             Permission permissionSelected = selectPermission(selectedPermissions);
             this.subcontrollers.get(categoryChoice).performSelectedAction(this.username, permissionSelected);
+
         }
+        return true;
     }
 
 
