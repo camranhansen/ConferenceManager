@@ -101,6 +101,9 @@ public class EventController implements SubController {
 
     }
 
+    public void exitEarly(){
+        System.out.println("should be exiting here!");
+    }
     //enroll methods
 
     /**

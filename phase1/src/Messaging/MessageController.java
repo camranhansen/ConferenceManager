@@ -62,6 +62,10 @@ public class MessageController implements SubController {
         }
     }
 
+    public void exitEarly(){
+        System.out.println("should be exiting here!");
+    }
+
     /**
      * Takes in the message content from the user username.
      * Gives the user the option to send a message to all attendees or all speakers.
