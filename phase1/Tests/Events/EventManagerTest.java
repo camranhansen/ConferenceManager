@@ -106,14 +106,14 @@ public class EventManagerTest {
     }
 
     @Test
-    public void checkCapacity() {
+    public void isEventFull() {
         EventManager eventManager = new EventManager();
         Instant time = MAX;
         eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2);
         eventManager.enrollUser("Meeting Room 1" + time.toString(), "Sam");
-        assertTrue(eventManager.checkCapacity("Meeting Room 1" + time.toString()));
+        assertFalse(eventManager.isEventFull("Meeting Room 1" + time.toString()));
         eventManager.enrollUser("Meeting Room 1" + time.toString(), "Camran");
-        assertFalse(eventManager.checkCapacity("Meeting Room 1" + time.toString()));
+        assertTrue(eventManager.isEventFull("Meeting Room 1" + time.toString()));
     }
 
     @Test
