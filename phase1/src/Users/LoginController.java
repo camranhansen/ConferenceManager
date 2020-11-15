@@ -13,7 +13,6 @@ public class LoginController {
 
     /**
      * @param um the UserManager.
-     *
      */
     public LoginController(UserManager um){
         // DPE: This is an example of the Dependency Injection because we take
@@ -24,6 +23,10 @@ public class LoginController {
 
     }
 
+    /**
+     * Prompts the user for a valid username and password
+     * @return username of the user that has logged in with correct credentials
+     */
 
     public String loginUser(){
         String username = prompter.getResponse("Please enter your username");
@@ -37,7 +40,7 @@ public class LoginController {
         System.out.println("Test");
         while(!um.getPassword(username).equals(password)){
             password = prompter.getResponse("That password is incorrect." +
-                    System.lineSeparator() + "Please enter the real password");
+                    System.lineSeparator() + "Please enter the correct password");
         }
 
         return username;
