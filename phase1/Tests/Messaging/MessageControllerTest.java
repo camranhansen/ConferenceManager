@@ -302,7 +302,8 @@ public class MessageControllerTest {
         um.createUser("user2", "123", Template.ATTENDEE.getPermissions());
         mc.writeMessage("user");
         assertEquals(mm.retrieveUserInboxFor("user2","user").get(0).getContent(), "hello");
-        assertEquals(Arrays.toString(mm.retrieveUserInboxFor("user2", "user").get(0).getRecipients()), "[user2]");
+        assertEquals(Arrays.toString(mm.retrieveUserInboxFor("user2", "user").get(0).getRecipients()),
+                "[user2]");
     }
 
     @Test
@@ -319,30 +320,5 @@ public class MessageControllerTest {
         em.addEventToHash(e1);
         ArrayList<String> list = new ArrayList<>();
         list.add(e1.getEventName());
-        //mc.writeToEvents("spk1", "hello", list);
     }
-
 }
-
-
-
-
-
-//    @Test
-//    public void testViewMessageMultipleMessages(){
-//        MessageManager mm = new MessageManager();
-//        EventManager em = new EventManager();
-//        UserManager um = new UserManager(new HashMap<>());
-//        MessageController mc = new MessageController(mm, um, em);
-//        mc.writeMessage("sender", "recipient1", "message1");
-//        mc.writeMessage("sender", "recipient1", "message2");
-//        mc.writeMessage("sender", "recipient2", "message2");
-//        mc.writeMessage("sender2", "recipient1", "message3");
-//        HashMap<String, List<Message>> hashmap1 = mc.viewAllMessages("recipient1");
-//        HashMap<String, List<Message>> hashmap2 = mc.viewAllMessages("recipient2");
-//        assertEquals(hashmap1.get("sender").get(0).getContent(),"message1");
-//        assertEquals(hashmap1.get("sender2").get(0).getContent(),"message3");
-//        assertEquals(hashmap1.get("sender").get(1).getContent(),"message2");
-//        assertEquals(hashmap2.get("sender").get(0).getContent(),"message2");
-//    }
-//
