@@ -60,7 +60,7 @@ public class Event {
 
     /**
      * Getter function for the speaker name.
-     * @return
+     * @return String the name of the speaker.
      */
     public String getSpeakerName(){
         return this.speakerName;
@@ -68,7 +68,7 @@ public class Event {
 
     /**
      * Getter function for the event time.
-     * @return
+     * @return Instant represents the time of the event.
      */
     public Instant getEventTime(){
         return this.time;
@@ -76,7 +76,7 @@ public class Event {
 
     /**
      * Getter function for the event name.
-      * @return
+      * @return String represent the name of the event.
      */
     public String getEventName(){
         return this.eventName;
@@ -84,7 +84,7 @@ public class Event {
 
     /**
      * Getter function for the list of username who joined the event.
-     * @return
+     * @return List of string represents all the username who joined the event.
      */
     public List<String> getParticipants(){
         return this.participants;
@@ -92,7 +92,7 @@ public class Event {
 
     /**
      * Getter function for the name of the room.
-     * @return
+     * @return String represents the name of room.
      */
     public String getRoom(){
         return this.room;
@@ -100,7 +100,7 @@ public class Event {
 
     /**
      * Getter function for the maximum number of people can join the event.
-     * @return
+     * @return Integer represents the maximum number of people can join the event.
      */
     public int getCapacity(){
         return this.capacity;
@@ -108,16 +108,13 @@ public class Event {
 
     /**
      * Getter function for the id of the event, which is the combination of the room name + the event time.
-     * @return
+     * @return String represents the eventId
      */
     public String getId(){
         return this.id;
     }
 
     @Override
-    /**
-     * Use to check if two events are identical.
-     */
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -132,9 +129,6 @@ public class Event {
     }
 
     @Override
-    /**
-     * Use to check if two events are identical.
-     */
     public int hashCode() {
         return Objects.hash(speakerName, time, eventName, participants, room, capacity, id);
     }
