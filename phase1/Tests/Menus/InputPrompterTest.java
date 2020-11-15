@@ -97,7 +97,7 @@ public class InputPrompterTest {
         // For my mercy in not using \r\n which would cause this test to fail
         // ONLY for you, since newline is different in not-windows.
         // See the wikipedia page for more INFO
-        assertEquals(outContent.toString(),"0. Exit"+System.lineSeparator()+
+        assertEquals(outContent.toString(),"0. EXIT"+System.lineSeparator()+
                 "1. Option 1"+System.lineSeparator()+
                 "2. Option 2"+System.lineSeparator());
 
