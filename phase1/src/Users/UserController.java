@@ -15,6 +15,11 @@ public class UserController implements SubController {
     private InputPrompter prompter;
     private boolean exiting;
 
+    /**
+     * Instantiates the UserController object by inputting a created UserManager.
+     * This also instantiates and stores relevant classes
+     * @param um a pre-constructed UserManager object
+     */
     public UserController(UserManager um){
         this.um = um;
         this.up = new UserPresenter();
@@ -24,6 +29,12 @@ public class UserController implements SubController {
     }
 
 
+    /**
+     * For a given user, calls the appropriate method representing an action,
+     * based on the Permission passed in
+     * @param username the username of the User attempting to perform an action
+     * @param permissionSelected a Permission corresponding to an action that the user intends to perform
+     */
     public void performSelectedAction(String username, Permission permissionSelected) {
         if (permissionSelected == Permission.USER_CREATE_ACCOUNT){
             this.createAccount(this.selectTemplate());
@@ -50,6 +61,10 @@ public class UserController implements SubController {
         this.exiting = true;
     }
 
+    /**
+     * Prompts the user to select a Template for account creation.
+     * @return the Template selected by the user
+     */
     public Template selectTemplate(){
         ArrayList<Option> optionList = new ArrayList<>();
         List<Template> templates = Arrays.asList(Template.values());
@@ -65,6 +80,11 @@ public class UserController implements SubController {
 
     }
 
+    /**
+     * Creates a new user account using the input Template to define the list of Permissions,
+     * based on the user input.
+     * @param template a Template to initially set the Permissions for the user
+     */
     public void createAccount(Template template){
         String inputUsername = getNewUsername();
         if (!this.exiting){
@@ -80,6 +100,9 @@ public class UserController implements SubController {
 
     }
 
+    /**
+     * Removes the username and User object corresponding to the user input.
+     */
     public void deleteAccount(){
         String inputUsername = getExistingUsername();
         if (!this.exiting) {
@@ -90,6 +113,10 @@ public class UserController implements SubController {
 
     }
 
+    /**
+     * Change the password of the User object corresponding to the input username.
+     * @param username the username of the User whose password needs to be changed
+     */
     public void editPassword(String username){
         String inputPassword = prompter.getResponse("Enter the new password");
         if (!this.exiting) {
@@ -99,6 +126,10 @@ public class UserController implements SubController {
         }
     }
 
+    /**
+     * Change the password of another user, based on the user input.
+     * Only for select User types!
+     */
     public void editOtherPassword(){
         String inputUsername = getExistingUsername();
         if (!this.exiting) {
@@ -113,6 +144,10 @@ public class UserController implements SubController {
         System.out.println("This method has not been implemented yet, since it is not in the Phase 1 specifications. :)");
     }
 
+    /**
+     * Returns a new username as given by user input.
+     * @return string corresponding to the input username
+     */
     public String getNewUsername(){
         String userName = prompter.getResponse("Enter username");
 
@@ -123,6 +158,10 @@ public class UserController implements SubController {
         return userName;
     }
 
+    /**
+     * Returns an existing username as input by the user.
+     * @return string corresponding to the input username
+     */
     public String getExistingUsername(){
         String userName = prompter.getResponse("Enter username");
         while(!um.uNameExists(userName)&&!this.exiting){
