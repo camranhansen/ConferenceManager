@@ -368,29 +368,49 @@ public class EventManager {
     }
 
     //New event data getters. Please only use these!
+    /**
+     * Getter function for the speaker name.
+     * @return String the name of the speaker.
+     */
     public String getEventSpeakerName(String id){
         return events.get(id).getSpeakerName();
     }
-
+    /**
+     * Getter function for the event time.
+     * @return Instant represents the time of the event.
+     */
     public Instant getEventTime(String id){
         return events.get(id).getEventTime();
     }
-
+    /**
+     * Getter function for the event name.
+     * @return String represent the name of the event.
+     */
     public String getEventName(String id){
         return events.get(id).getEventName();
     }
-
+    /**
+     * Getter function for the list of username who joined the event.
+     * @return List of string represents all the username who joined the event.
+     */
     public List<String> getParticipants(String id){
         return events.get(id).getParticipants();
     }
-
+    /**
+     * Getter function for the name of the room.
+     * @return String represents the name of room.
+     */
     public String getRoom(String id){
         return events.get(id).getRoom();
     }
-
+    /**
+     * Getter function for the maximum number of people can join the event.
+     * @return Integer represents the maximum number of people can join the event.
+     */
     public int getCapacity(String id){
         return events.get(id).getCapacity();
     }
+
 
     @Override
     public boolean equals(Object o) {
