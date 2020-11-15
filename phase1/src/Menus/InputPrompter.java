@@ -54,7 +54,7 @@ public class InputPrompter {
     }
 
     private void addExitOption(ArrayList<Option> options){
-        Option exit = new Option("Exit");
+        Option exit = new Option("EXIT");
         options.add(0, exit);
     }
 
@@ -68,11 +68,12 @@ public class InputPrompter {
      * @param prompt Prompt in need of a user response.
      * @return The user's response.
      */
+
     public String getResponse(String prompt){
         inputPresenter.printPrompt(prompt);
 
         String in = scanner.nextLine();
-        if (in.equals("exit")){
+        if (in.equals("exit")||in.equals("EXIT")||in.equals("Exit")){
             exitOut();
             return null;
         }
