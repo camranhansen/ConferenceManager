@@ -7,6 +7,12 @@ public class User {
     private String password;
     private List<Permission> permissions;
 
+    /**
+     * Stores user data.
+     * @param username the username
+     * @param password password
+     * @param permissions list of
+     */
     public User(String username, String password, List<Permission> permissions) {
         this.username = username;
         this.password = password;
