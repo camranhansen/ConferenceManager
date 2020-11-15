@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class InputPrompter {
     private Scanner scanner;
     private InputPresenter inputPresenter;
+    private ArrayList<SubController> subControllers;
 
     /**
      * Creates a new InputPrompter.
@@ -13,6 +14,7 @@ public class InputPrompter {
     public InputPrompter() {
         this.scanner = new Scanner(System.in);
         this.inputPresenter = new InputPresenter();
+        this.subControllers = new ArrayList<>();
     }
 
     /**
@@ -52,7 +54,7 @@ public class InputPrompter {
     }
 
     private void addExitOption(ArrayList<Option> options){
-        Option exit = new Option("Exit");
+        Option exit = new Option("EXIT");
         options.add(0, exit);
     }
 
@@ -66,13 +68,31 @@ public class InputPrompter {
      * @param prompt Prompt in need of a user response.
      * @return The user's response.
      */
+
     public String getResponse(String prompt){
         inputPresenter.printPrompt(prompt);
 
         String in = scanner.nextLine();
-        //Check if input is "exit"
-        //Do something here
-        //like call some method....
+        if (in.equals("exit")||in.equals("EXIT")||in.equals("Exit")){
+            exitOut();
+            return null;
+        }
         return in;
     }
+
+    public void attach(SubController attached){
+        this.subControllers.add(attached);
+    }
+
+    public void exitOut(){
+        for(SubController sub: this.subControllers){
+            sub.exitEarly();
+        }
+    }
+
+
+    //If input is "exit"
+    //SubController.exitOut()
+
+
 }

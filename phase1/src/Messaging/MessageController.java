@@ -18,6 +18,7 @@ public class MessageController implements SubController {
     private EventManager eventManager;
     private MessagePresenter messagePresenter;
     private InputPrompter inputPrompter;
+    private boolean exiting;
 
     /**
      * Creates a new MessageController with message manger messageManger,
@@ -34,6 +35,8 @@ public class MessageController implements SubController {
         this.eventManager = eventManager;
         this.messagePresenter = new MessagePresenter();
         this.inputPrompter = new InputPrompter();
+        this.inputPrompter.attach(this);
+        this.exiting = false;
     }
 
     /**
@@ -58,8 +61,14 @@ public class MessageController implements SubController {
         }
         else if (permissionSelected == Permission.VIEW_OTHER_MESSAGES){
             String otherUsername = inputPrompter.getResponse("Enter username's messages you'd like to see");
-            viewMessage(otherUsername);
+            if(!this.exiting){
+            viewMessage(otherUsername);}
+            this.exiting = false;
         }
+    }
+
+    public void exitEarly(){
+        this.exiting = true;
     }
 
     /**
@@ -71,23 +80,26 @@ public class MessageController implements SubController {
      */
     public void orgSendToAll(String username){
         String content = getContent();
-        Option allAtt = new Option("Send to all attendees"){
-            @Override
-            public void run(){
-                orgSendToAllAtt(username, content);
-            }
-        };
-        Option allSpk = new Option("Send to all speakers") {
-            @Override
-            public void run(){
-                orgSendToAllSpeakers(username, content);
-            }
-        };
-        ArrayList<Option> options = new ArrayList<>();
-        options.add(allAtt);
-        options.add(allSpk);
-        Option choice = inputPrompter.menuOption(options);
-        choice.run();
+        if(!this.exiting){
+            Option allAtt = new Option("Send to all attendees"){
+                @Override
+                public void run(){
+                    orgSendToAllAtt(username, content);
+                }
+            };
+            Option allSpk = new Option("Send to all speakers") {
+                @Override
+                public void run(){
+                    orgSendToAllSpeakers(username, content);
+                }
+            };
+            ArrayList<Option> options = new ArrayList<>();
+            options.add(allAtt);
+            options.add(allSpk);
+            Option choice = inputPrompter.menuOption(options);
+            choice.run();
+        }
+        this.exiting = false;
     }
 
     /**
@@ -98,12 +110,16 @@ public class MessageController implements SubController {
      */
     public void writeMessage(String from) {
         String to = inputPrompter.getResponse("Enter username to send to");
-        while(! userManager.userExists(to)){
+        if(!this.exiting){
+        while(!userManager.userExists(to)&&!this.exiting){
             messagePresenter.usernameInvalid();
             to = inputPrompter.getResponse("Enter username to send to");
         }
+
         String content = getContent();
-        messageManager.sendMessage(from, content, to);
+        if(!this.exiting){
+            messageManager.sendMessage(from, content, to);}}
+        this.exiting = false;
     }
 
     /**
@@ -114,35 +130,38 @@ public class MessageController implements SubController {
      */
     public void messageEvents(String from){
         String content = getContent();
-        Option allEvents = new Option("Send to all your events"){
+        if(!this.exiting){
+            Option allEvents = new Option("Send to all your events"){
             @Override
             public void run(){
                 writeToEvents(from, content, eventManager.getSpkEvents(from));
             }
         };
-        Option oneEvent = new Option("Send to one of your events"){
-            @Override
-            public void run(){
-                String eventId = inputPrompter.getResponse("Enter event id to send to");
-                while(!eventManager.getEvents().containsKey(eventId)){
-                    messagePresenter.noEvent();
-                    eventId = inputPrompter.getResponse("Enter event id to send to");
+            Option oneEvent = new Option("Send to one of your events"){
+                @Override
+                public void run(){
+                    String eventId = inputPrompter.getResponse("Enter event id to send to");
+                    while(!eventManager.getEvents().containsKey(eventId)&&!exiting){
+                        messagePresenter.noEvent();
+                        eventId = inputPrompter.getResponse("Enter event id to send to");
+                    }
+                    if(!eventManager.getSpkEvents(from).contains(eventId)&&!exiting){
+                        messagePresenter.notSpeakerEvent();
+                    }
+                    else if(!exiting){
+                        List<String>aList = new ArrayList<>();
+                        aList.add(eventId);
+                        writeToEvents(from, content, aList);
+                    }
                 }
-                if(!eventManager.getSpkEvents(from).contains(eventId)){
-                    messagePresenter.notSpeakerEvent();
-                }
-                else{
-                    List<String>aList = new ArrayList<>();
-                    aList.add(eventId);
-                    writeToEvents(from, content, aList);
-                }
-            }
-        };
-        ArrayList<Option> options = new ArrayList<>();
-        options.add(allEvents);
-        options.add(oneEvent);
-        Option choice = inputPrompter.menuOption(options);
-        choice.run();
+            };
+            ArrayList<Option> options = new ArrayList<>();
+            options.add(allEvents);
+            options.add(oneEvent);
+            Option choice = inputPrompter.menuOption(options);
+            choice.run();
+        }
+        this.exiting = false;
     }
 
     /**
@@ -163,8 +182,10 @@ public class MessageController implements SubController {
             @Override
             public void run(){
                 String otherUser = inputPrompter.getResponse("Enter other username messages you'd like to see");
+                if(!exiting){
                 String messages = viewMessageFrom(username, otherUser);
                 messagePresenter.printMessages(messages);
+                }
             }
         };
         ArrayList<Option> options = new ArrayList<>();
@@ -172,6 +193,7 @@ public class MessageController implements SubController {
         options.add(viewOne);
         Option choice = inputPrompter.menuOption(options);
         choice.run();
+        this.exiting = false;
     }
 
     /**

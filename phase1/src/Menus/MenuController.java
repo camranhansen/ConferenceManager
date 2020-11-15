@@ -5,7 +5,6 @@ import Users.Permission;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 public class MenuController {
 
@@ -84,12 +83,5 @@ public class MenuController {
         Option optionSelected = prompter.menuOption(optionList);
 
         return optionSelected.getPermissionHeld();
-
-
     }
-
-
-
-
-
 }

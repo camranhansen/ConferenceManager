@@ -8,7 +8,6 @@ public class Option {
     private Permission permissionHeld;
     private Template templateHeld;
 
-
     public Option(String optionText){
         this.optionText = optionText;
     }
