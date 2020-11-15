@@ -5,8 +5,14 @@ import java.util.*;
 
 
 public class EventManager {
+    /**
+     * events stores a hashmap that maps events' IDs to an event.
+     */
     private HashMap<String, Event> events;
 
+    /**
+     * Instantiates EventManager
+     */
     public EventManager(){
         this.events = new HashMap<>();
     }
@@ -15,13 +21,22 @@ public class EventManager {
         //TODO remove this function because it returns events, thereby breaking dependency rule
         return this.events;
     }
+
     //This function is necessary.
+    /**
+     * Returns a list of all events' IDs that are stored in the instance variable events.
+     * @return A list of all events' IDs.
+     */
     public List<String> getAllEventIds(){
         ArrayList<String> allIDS = new ArrayList<>(this.events.keySet());
         return allIDS;
     }
 
-
+    //This function does the same thing as getAllEventIds().
+    /**
+     * Returns a list of all events' IDs that are stored in the instance variable events.
+     * @return A list of all events' IDs.
+     */
     public List<String> getEventList(){
         /// return a list of eventId of all event
         List<String> aList = new ArrayList<>();
@@ -40,7 +55,11 @@ public class EventManager {
         return result;
     }
 
-
+    /**
+     * Returns a list of IDs of events that has a specific speaker.
+     * @param userName Username of the speaker.
+     * @return A list of events' IDs.
+     */
     public List<String> getSpkEvents(String userName){
         //This method is better since it returns event IDs
         List<String> aList = new ArrayList<>();
@@ -52,41 +71,84 @@ public class EventManager {
         return aList;
     }
 
-
+    /**
+     * Defines a new event with the details speaker's name, event time, event name, room, and capacity.
+     * Adds this event to the collection of all events.
+     * @param speakerName Name of the speaker for the event.
+     * @param eventTime Time that the event takes place.
+     * @param eventName Name of the event.
+     * @param room Room which the event is being held in.
+     * @param capacity Maximum capacity of the event.
+     */
     public void createEvent(String speakerName, Instant eventTime, String eventName, String room, int capacity){
         Event newEvent = new Event(speakerName, eventTime, eventName, room, capacity);
         this.events.put(newEvent.getId(), newEvent);
     }
 
+    /**
+     * Defines a new event when an existing event is modified and being replaced by the new one.
+     * Adds this event to the collection of all events and replaces the event with a same ID.
+     * @param speakerName Name of the speaker for the event.
+     * @param eventTime Time that the event takes place.
+     * @param eventName Name of the event.
+     * @param participants Current participants of the event.
+     * @param room Room which the event is being held in.
+     * @param capacity Maximum capacity of the event.
+     */
     private void createEditedEvent(String speakerName, Instant eventTime, String eventName, List<String> participants, String room, int capacity){
         Event newEvent = new Event(speakerName, eventTime, eventName, participants, room, capacity);
         this.events.put(newEvent.getId(), newEvent);
     }
 
+    /**
+     * Deletes the event identified by an event ID from the collection of all events.
+     * @param eventId ID of the selected event.
+     */
     public void deleteEvent(String eventId){
         this.events.remove(eventId);
     }
 
+    /**
+     * Registers the user with a given username in the event identified by an event ID.
+     *
+     * @param eventID ID of the selected event.
+     * @param userName Username of the current user.
+     */
     public void enrollUser(String eventID, String userName){
         //TODO refactor this method into only doing the enrollUser.
         //Call isEventFull in controller to check
         this.events.get(eventID).getParticipants().add(userName);
     }
 
+    /**
+     * Withdraws the user with a given username from the event identified by an event ID.
+     *
+     * @param eventID ID of the selected event.
+     * @param userName Username of the current user.
+     */
     public void dropUser(String eventID, String userName){
         this.events.get(eventID).getParticipants().remove(userName);
     }
 
+    /**
+     * Returns a boolean to identify if the event reaches its capacity.
+     * @param eventID ID of the selected event.
+     * @return False if the event does not reach its capacity. True if the event is full.
+     */
     public boolean isEventFull(String eventID){
         //Call this as !isEventFull(ID);.
         return (this.events.get(eventID).getCapacity() <=
                 this.events.get(eventID).getParticipants().size());
     }
 
+    /**
+     * Returns a boolean to identify if the event exists.
+     * @param eventID ID of the selected event.
+     * @return False if the event does not exist. True if the event exists.
+     */
     public boolean eventExists(String eventID){
         return this.events.containsKey(eventID);
     }
-
 
 
     public Event getInfo(String eventID){
@@ -94,6 +156,11 @@ public class EventManager {
         return events.get(eventID);
     }
 
+    /**
+     * Returns a list of IDs of events that does not conflict with the events that the current user already enrolled in.
+     * @param username Username of the current user.
+     * @return A list of events' IDs .
+     */
     public List<String> getAvailableEvents(String username){
         //Return a list of event IDs
         List<String> myEvents = getUserEvents(username);
@@ -127,6 +194,13 @@ public class EventManager {
 
 
     // Check conflict methods
+    /**
+     * Returns a boolean to identify if a user is enrolled in any event during a specific time slot.
+     * @param timeslot A starting time of a time slot.
+     * @param username Username of the current user.
+     * @return False if the user is not enrolled in any event during the time slot.
+     * True if the user is enrolled in some events during the time slot.
+     */
     public boolean checkUserInEvent(Instant timeslot, String username){
         for (String id: this.events.keySet()){
             if(getEventTime(id).equals(timeslot) && getParticipants(id).contains(username)){
@@ -135,7 +209,13 @@ public class EventManager {
         }
         return false;
     }
-
+    /**
+     * Returns a boolean to identify if a speaker is holding any event during a specific time slot.
+     * @param timeSlot A starting time of a time slot.
+     * @param username Username of the speaker.
+     * @return False if the speaker is not holding any event during the time slot.
+     * True if the speaker is holding some events during the time slot.
+     */
     public boolean checkConflictSpeaker(Instant timeSlot, String username) {
 
         for (String id: this.events.keySet()){
@@ -146,7 +226,13 @@ public class EventManager {
         }
         return false;
     }
-
+    /**
+     * Returns a boolean to identify if a room is in use during a specific time slot.
+     * @param timeslot A starting time of a time slot.
+     * @param room A room name that is chosen.
+     * @return False if the room is not in use during the time slot.
+     * True if the room is in use during the time slot.
+     */
     public boolean checkRoom(Instant timeslot, String room){
          for (String id: this.events.keySet()){
              if(getEventTime(id).equals(timeslot) && getRoom(id).equals(room)){
@@ -156,13 +242,11 @@ public class EventManager {
          return false;
     }
 
-    public boolean checkCapacity(String eventId) {
-        Event event = this.events.get(eventId);
-        return event.getParticipants().size() < event.getCapacity(); //return ture if the event is not full.
-    }
-
-    // Check user not appears in different places at the same time.
-
+    /**
+     * Returns a list of IDs of events that a user is enrolled in.
+     * @param username Username of the current user.
+     * @return A list of events' IDs.
+     */
     public List<String> getUserEvents(String username) {
         //TODO should be refactored into returning a list of Strings
         List<String> myEvents = new ArrayList<>();
@@ -173,19 +257,33 @@ public class EventManager {
         }
         return myEvents;
     }
+
+    /**
+     * Changes the speaker of an event to a new speaker.
+     * @param id ID of the selected event.
+     * @param newSpeaker Username of the new speaker.
+     */
     public void editSpeakerName(String id, String newSpeaker){
         Event event = this.events.get(id);
         createEditedEvent(newSpeaker, event.getEventTime(), event.getEventName(), event.getParticipants(),
                 event.getRoom(), event.getCapacity());
 
     }
-
+    /**
+     * Changes the event name of an event to a new one.
+     * @param id ID of the selected event.
+     * @param newEventName A new name of the event.
+     */
     public void editEventName(String id, String newEventName){
         Event event = this.events.get(id);
         createEditedEvent(event.getSpeakerName(), event.getEventTime(), newEventName, event.getParticipants(),
                 event.getRoom(), event.getCapacity());
     }
-
+    /**
+     * Changes the room of an event to a new one.
+     * @param id ID of the selected event.
+     * @param newRoom A new room of the event.
+     */
     public void editRoom(String id, String newRoom){
         Event event = this.events.get(id);
         createEditedEvent(event.getSpeakerName(), event.getEventTime(), event.getEventName(), event.getParticipants(),
@@ -193,13 +291,21 @@ public class EventManager {
         deleteEvent(id);
     }
 
-
+    /**
+     * Changes the capacity of an event to a new one.
+     * @param id ID of the selected event.
+     * @param newCapacity A new capacity of the event.
+     */
     public void editCapacity(String id, int newCapacity){
         Event event = this.events.get(id);
         createEditedEvent(event.getSpeakerName(), event.getEventTime(), event.getEventName(), event.getParticipants(),
                 event.getRoom(), newCapacity);
     }
-
+    /**
+     * Changes the starting time of an event to a new one.
+     * @param id ID of the selected event.
+     * @param newTime A new starting time of the event.
+     */
     public void editTime(String id, Instant newTime){
         Event event = this.events.get(id);
         createEditedEvent(event.getSpeakerName(), newTime, event.getEventName(), event.getParticipants(),
