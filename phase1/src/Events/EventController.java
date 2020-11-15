@@ -26,6 +26,8 @@ public class EventController implements SubController {
 
     public EventController(EventManager eventManager){
         this.eventManager = eventManager;
+        this.eventPresenter = new EventPresenter();
+        this.inputPrompter = new InputPrompter();
     }
 
     /**
@@ -51,8 +53,6 @@ public class EventController implements SubController {
      */
 
     public void performSelectedAction(String username, Permission permissionSelected){
-        String eventIDStr = inputPrompter.getResponse("Enter the ID of the event you wish to interact with");
-
         if (permissionSelected== Permission.EVENT_SELF_ENROLL){
             enrollSelf(username);
         }
@@ -89,7 +89,8 @@ public class EventController implements SubController {
             deleteEvent(eventId);
         }
         else if(permissionSelected == Permission.EVENT_EDIT){
-            eventIDStr = getId();
+
+            String eventIDStr = getId();
             while(!eventManager.eventExists(eventIDStr)){
                 eventIDStr = getCorrectId();
             }
