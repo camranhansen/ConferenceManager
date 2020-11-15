@@ -11,16 +11,21 @@ public class LoginController {
     private UserManager um;
 
 
+    /**
+     * @param um the UserManager.
+     *
+     */
     public LoginController(UserManager um){
+        // DPE: This is an example of the Dependency Injection because we take
+        // in a class as a parameter instead of storing it
         this.screen = new LoginPresenter();
         this.prompter = new InputPrompter();
         this.um = um;
 
     }
 
-    // DPE: This is an example of the Dependency Injection because we take
-    // in a class as a parameter instead of storing it
-    public String loginUser(UserManager um){
+
+    public String loginUser(){
         String username = prompter.getResponse("Please enter your username");
         while(!um.uNameExists(username)){
             username = prompter.getResponse("That username does not exist." +

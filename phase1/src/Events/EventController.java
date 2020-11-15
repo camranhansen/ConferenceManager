@@ -18,9 +18,23 @@ public class EventController implements SubController {
     private InputPrompter inputPrompter;
     private UserManager userManager;
 
+    /**
+     * Creates a new EventController with event manager eventManager.
+     *
+     * @param eventManager Manager of the events.
+     */
+
     public EventController(EventManager eventManager){
         this.eventManager = eventManager;
     }
+
+    /**
+     * Creates a new EventController with event manager eventManager
+     * and user manager userManager.
+     *
+     * @param userManager Manager of the users.
+     * @param eventManager Manager of the events.
+     */
 
     public EventController(EventManager eventManager, UserManager userManager){
         this.eventManager = eventManager;
@@ -28,6 +42,13 @@ public class EventController implements SubController {
         this.inputPrompter = new InputPrompter();
         this.userManager = userManager;
     }
+
+    /**
+     * Directs the permission permissionSelected selected by the user with String username to further function.
+     *
+     * @param username Username of the current user.
+     * @param permissionSelected Permission the user would like to pursue.
+     */
 
     public void performSelectedAction(String username, Permission permissionSelected){
         String eventIDStr = inputPrompter.getResponse("Enter the ID of the event you wish to interact with");
@@ -81,6 +102,14 @@ public class EventController implements SubController {
     }
 
     //enroll methods
+
+    /**
+     * Allows the user with String username to choose between registering in or withdrawing from an event. Performs
+     * selected action based on the user's selection.
+     *
+     * @param username Username of the current user.
+     */
+
     public void enrollSelf(String username) {
 
         Option option1 = new Option("Enroll In Event") {
@@ -117,13 +146,36 @@ public class EventController implements SubController {
         Option choice = inputPrompter.menuOption(optionList);
         choice.run();
     }
+
+    /**
+     * Registers the user with String username in the event identified by String eventID.
+     *
+     * @param eventID ID of the selected event.
+     * @param username Username of the current user.
+     */
+
     public void enroll(String eventID, String username){
         this.eventManager.enrollUser(eventID, username);
     }
 
+    /**
+     * Withdraws the user with String username from the event identified by String eventID.
+     *
+     * @param eventID ID of the selected event.
+     * @param username Username of the current user.
+     */
+
     public void drop(String eventID, String username){
         this.eventManager.dropUser(eventID, username);
     }
+
+    /**
+     * Allows the user with String username to choose whether they wish to view the events they are enrolled in,
+     * the ones they can register for, or the entire selection of events.
+     * Shows the user the respective list given their choice.
+     *
+     * @param username Username of the current user.
+     */
 
     // View events methods
     public void viewEvents(String username) {
@@ -162,14 +214,27 @@ public class EventController implements SubController {
         Option choice = inputPrompter.menuOption(optionList);
         choice.run();
     }
-    public List<String> viewMyEvents(String userName){
-        List<String>aList = eventManager.getUserEvents(userName);
+
+    /**
+     * Returns the list of events which the user with String username is registered for.
+     *
+     * @param username Username of the current user.
+     */
+
+    public List<String> viewMyEvents(String username){
+        List<String>aList = eventManager.getUserEvents(username);
         List<String> result = new ArrayList<>();
         for(int i=0; i< aList.size(); i++){
             result.add(eventManager.getFormattedEvent(aList.get(i)));
         }
         return result;
     }
+
+    /**
+     * Returns the list of events which the user with String username can register in.
+     *
+     * @param username Username of the current user.
+     */
 
     public List<String> viewAvailableEvent(String username){
         List<String>aList = this.eventManager.getAvailableEvents(username);
@@ -179,6 +244,11 @@ public class EventController implements SubController {
         }
         return result;
     }
+
+    /**
+     * Returns a list of all the events.
+     *
+     */
 
     public List<String> viewAllEvents(){
         List<String> result = new ArrayList<>();
@@ -198,12 +268,40 @@ public class EventController implements SubController {
 //    }
 
     //create/delete event
-    public void deleteEvent(String eventId){
-        this.eventManager.deleteEvent(eventId);
+
+    /**
+     * Deletes the event identified by String eventID from the collection of all events.
+     *
+     * @param eventID ID of the selected event.
+     */
+
+    public void deleteEvent(String eventID){
+        this.eventManager.deleteEvent(eventID);
     }
+
+    /**
+     * Defines a new event with the details String speakerName, Instant time, String eventName, String room,
+     * and int capacity.
+     * Adds this event to the collection of all events.
+     *
+     * @param speakerName Name of the speaker for the event.
+     * @param time Time that the event takes place.
+     * @param eventName Name of the event.
+     * @param room Room which the event is being held in.
+     * @param capacity Maximum capacity of the event.
+     */
+
     public void createEvent(String speakerName, Instant time, String eventName, String room, int capacity){
         this.eventManager.createEvent(speakerName, time, eventName, room, capacity);
     }
+
+    /**
+     * Presents the options to modify either the speaker, the event name, the room, the capacity, or the time
+     * for the event identified by String eventID.
+     * Performs selected action.
+     *
+     * @param eventID ID of the selected event.
+     */
 
     public void editEvent(String eventID) {
         Option option1 = new Option("Change Speaker") {
@@ -277,33 +375,76 @@ public class EventController implements SubController {
 
 //get information from user
 
+    /**
+     * Prompts the user to enter the ID of the event which they wish to perform actions with.
+     * Returns the input.
+     *
+     */
+
     private String getId(){
-        return inputPrompter.getResponse("Enter EventId");
+        return inputPrompter.getResponse("Enter Event ID");
     }
+
+    /**
+     * Prompts the user to enter the correct ID of the event which they wish to perform actions with, as they have
+     * entered an invalid response.
+     * Returns the input.
+     *
+     */
 
     private String getCorrectId(){
         return inputPrompter.getResponse("Event does not exist, please enter the correct EventId");
     }
 
+    /**
+     * Prompts the user to enter their correct username, as they have entered a non-existent username.
+     * Returns the input.
+     *
+     */
+
     private String getCorrectName(){
         return inputPrompter.getResponse("User does not exist, please enter the correct Username");
     }
 
+    /**
+     * Prompts the user to enter the new name of the event.
+     * Returns the input.
+     *
+     */
 
     private String getEventNameInput(){
         String name = inputPrompter.getResponse("Enter the new event's name");
         return name;
     }
 
+    /**
+     * Prompts the user to enter the new room of the event.
+     * Returns the input.
+     *
+     */
+
     private String getRoomInput(){
         String room = inputPrompter.getResponse("Enter the new event's room");
         return room;
     }
 
+    /**
+     * Prompts the user to enter the new capacity of the event.
+     * Returns the input.
+     *
+     */
+
     private int getCapacityInput(){
         String capacity = inputPrompter.getResponse("Enter the new event's capacity");
         return Integer.parseInt(capacity.trim());
     }
+
+    /**
+     * Prompts the user to enter the new date and time slot of the event.
+     * Prompts the user to enter a valid input if an invalid response is received at any point during this inquiry.
+     * Returns the input as an Instant.
+     *
+     */
 
     private Instant getTimeInput(){
         String date = inputPrompter.getResponse("Enter the date");

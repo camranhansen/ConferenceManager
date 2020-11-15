@@ -38,7 +38,7 @@ public class LoginControllerTest {
         UserManager um = createUserManager();
         LoginController login = new LoginController(um);
 
-        assertEquals(login.loginUser(um), "bob");
+        assertEquals(login.loginUser(), "bob");
 
 
 
