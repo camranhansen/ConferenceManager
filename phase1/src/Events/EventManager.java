@@ -374,6 +374,11 @@ public class EventManager {
 
     }
 
+    /**
+     * Returns a string representation of an event.
+     * @param id Event id
+     * @return A string containing the given event's name time, room and capacity.
+     */
     public String getFormattedEvent(String id){
         Event e = this.events.get(id);
         String lineSep = ":" + System.lineSeparator();
