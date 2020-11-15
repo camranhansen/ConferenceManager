@@ -17,6 +17,7 @@ public class EventController implements SubController {
     private EventPresenter eventPresenter;
     private InputPrompter inputPrompter;
     private UserManager userManager;
+    private boolean exiting;
 
     /**
      * Creates a new EventController with event manager eventManager.
@@ -28,7 +29,11 @@ public class EventController implements SubController {
         this.eventManager = eventManager;
         this.eventPresenter = new EventPresenter();
         this.inputPrompter = new InputPrompter();
+        inputPrompter.attach(this);
+        this.exiting = false;
+
     }
+
 
     /**
      * Creates a new EventController with event manager eventManager
@@ -61,6 +66,7 @@ public class EventController implements SubController {
             while(!userManager.uNameExists(name)){
                 name = getCorrectName();
             }
+
             enrollSelf(name);
         }
         else if(permissionSelected == Permission.EVENT_CREATE){
@@ -103,7 +109,7 @@ public class EventController implements SubController {
     }
 
     public void exitEarly(){
-        System.out.println("should be exiting here!");
+        this.exiting = true;
     }
     //enroll methods
 
