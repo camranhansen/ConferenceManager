@@ -317,15 +317,27 @@ public class EventManager {
 
 
     //gateway method
+
+    /**
+     * Returns all information about all events stored in events hashmap in EventManager.
+     * @return An arraylist of String[]. Each String[] contains information of one event stored in events hashmap in
+     * EventManager.
+     */
     public ArrayList<String[]> getAllEventData(){
         ArrayList<String[]> eventList = new ArrayList<>();
         for (String id: this.events.keySet()) {
-            eventList.add(getSingleUserData(id));
+            eventList.add(getSingleEventData(id));
         }
         return eventList;
     }
 
-    public String[] getSingleUserData(String id) {
+    /**
+     * Returns all information of the given event that's stored in events hashmap in EventManager.
+     * @param id event id
+     * @return A String[] that contains information of one event stored in events hashmap, including event id, speaker's
+     * name, time, event name, participants, room number, and capacity.
+     */
+    public String[] getSingleEventData(String id) {
         Event event = this.events.get(id);
         String speakerName = event.getSpeakerName();
         String time = event.getEventTime().toString();
@@ -336,6 +348,11 @@ public class EventManager {
         return new String[]{id, speakerName, time, eventName, participants, room, capacity};
     }
 
+    /**
+     * Store the event data of an event in EventManager.
+     * @param eventData A string containing all datas of one event including event id, speaker's
+     * name, time, event name, participants, room number, and capacity.
+     */
     public void setEventData(String[] eventData){
         String id = eventData[0];
         String speakerName = eventData[1];
