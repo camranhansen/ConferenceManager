@@ -68,7 +68,7 @@ public class PrimaryController {
 
     public void run() {
         loadData();
-        String username = loginController.loginUser(userManager);
+        String username = loginController.loginUser();
         HashMap<String, SubController> subcontrollers = new HashMap<>();
         subcontrollers.put("EVENT", eventController);
         subcontrollers.put("MESSAGE", messageController);
@@ -83,7 +83,7 @@ public class PrimaryController {
         userManager.createUser("Camran","123",Template.ADMIN.getPermissions());
         userManager.createUser("Steve","asdf",Template.ADMIN.getPermissions());
 
-        String username = loginController.loginUser(userManager);
+        String username = loginController.loginUser();
         HashMap<String, SubController> subcontrollers = new HashMap<>();
         subcontrollers.put("EVENT", eventController);
         subcontrollers.put("MESSAGE", messageController);
