@@ -1,6 +1,7 @@
 package Events;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EventPresenter {
 
@@ -19,7 +20,7 @@ public class EventPresenter {
         System.out.println("List of events that you are hosting:");
     }
 
-    public void renderEvents(ArrayList<String> eventData){
+    public void renderEvents(List<String> eventData){
         for (String s: eventData){
             System.out.println("Here's an event for you!" + System.lineSeparator() + s);
         }

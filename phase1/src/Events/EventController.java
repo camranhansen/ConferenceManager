@@ -188,7 +188,7 @@ public class EventController implements SubController {
             public void run() {
                 eventPresenter.viewMyEvents();
                 List<String> result = viewMyEvents(username);
-                System.out.println(result);
+                eventPresenter.renderEvents(result);
             }
         };
 
@@ -197,7 +197,7 @@ public class EventController implements SubController {
             public void run() {
                 eventPresenter.viewAvailableEvents();
                 List<String> result = viewAvailableEvent(username);
-                System.out.println(result);
+                eventPresenter.renderEvents(result);
             }
         };
 
@@ -206,7 +206,8 @@ public class EventController implements SubController {
             public void run() {
                 eventPresenter.viewAllEvents();
                 List<String> result = viewAllEvents();
-                System.out.println(result);
+                eventPresenter.renderEvents(result);
+
             }
         };
 
