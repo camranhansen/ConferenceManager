@@ -43,9 +43,9 @@ public class EventControllerTest {
         Instant time = MAX;
         eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1", 2);
         control.enroll("Meeting Room 1"+time.toString(), "John Smith");
-        assertEquals(eventManager.getParticipants("Meeting Room 1"+time.toString()).size(), 1);
+        assertEquals(1, eventManager.getParticipants("Meeting Room 1"+time.toString()).size());
         control.drop("Meeting Room 1"+time.toString(), "John Smith");
-        assertEquals(eventManager.getParticipants("Meeting Room 1"+time.toString()).size(), 0);
+        assertEquals(0, eventManager.getParticipants("Meeting Room 1"+time.toString()).size());
     }
 
     @Test
@@ -57,8 +57,7 @@ public class EventControllerTest {
         control.createEvent("Rob Willis", time, "Test Event 2", "Meeting Room 2", 2);
         control.createEvent("Jane Doe", time, "Test Event 3", "Meeting Room 3", 2);
         List<String> result = control.viewAllEvents();
-        System.out.println(result);
-        assertEquals(result.size(), 3);
+        assertEquals(3, result.size());
 
     }
 
@@ -71,8 +70,8 @@ public class EventControllerTest {
         eventManager.createEvent("Rob Willis", time, "Test Event 2", "Meeting Room 2", 2);
         control.enroll("Meeting Room 1"+time.toString(), "Daniel Tan");
         List<String> result = control.viewMyEvents("Daniel Tan");
-        assertEquals(result.size(), 1);
-        assertEquals(result.size(),1);
+        assertEquals(1, result.size());
+        assertEquals(1, result.size());
     }
 
     @Test
@@ -85,7 +84,7 @@ public class EventControllerTest {
         eventManager.createEvent("Janet Haws", time, "Test Event 2", "Meeting Room 2",  2);
         eventManager.createEvent("Roger", time2, "Test Event 3", "Meeting Room 3",  2);
         List<String> result = control.viewAvailableEvent("Micheal");
-        assertEquals(result.size(), 3 );
+        assertEquals(3, result.size());
     }
 
     @Test
@@ -98,7 +97,7 @@ public class EventControllerTest {
         String room = "Institute of Technology";
         int capacity = 2;
         control.createEvent(speakerName, time, eventName, room, capacity);
-        assertEquals(eventManager.getEventSpeakerName(room + time.toString()), "Olivia");
+        assertEquals("Olivia", eventManager.getEventSpeakerName(room + time.toString()));
     }
 
     @Test
@@ -108,9 +107,9 @@ public class EventControllerTest {
         Instant time =MAX;
         eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2);
         eventManager.createEvent("Roberto", time, "Test Event 2", "Meeting Room 2",  2);
-        assertEquals(eventManager.getEventList().size(), 2);
+        assertEquals(2, eventManager.getEventList().size());
         control.deleteEvent("Meeting Room 2" + time.toString());
-        assertEquals(eventManager.getEventList().size(), 1);
+        assertEquals(1, eventManager.getEventList().size());
     }
 
     /*
