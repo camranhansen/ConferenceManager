@@ -13,14 +13,17 @@ public class UserController implements SubController {
     private UserManager um;
     private UserPresenter up;
     private InputPrompter prompter;
+    private boolean exiting;
 
     public UserController(UserManager um){
         this.um = um;
         this.up = new UserPresenter();
         this.prompter = new InputPrompter();
+        this.prompter.attach(this);
+        this.exiting = false;
     }
 
-    @Override
+
     public void performSelectedAction(String username, Permission permissionSelected) {
         if (permissionSelected == Permission.USER_CREATE_ACCOUNT){
             this.createAccount(this.selectTemplate());
@@ -42,11 +45,16 @@ public class UserController implements SubController {
         }
     }
 
+    //DPE observer!
+    public void exitEarly(){
+        this.exiting = true;
+    }
+
     public Template selectTemplate(){
         ArrayList<Option> optionList = new ArrayList<>();
         List<Template> templates = Arrays.asList(Template.values());
-        for(Template t: templates){
-            optionList.add(new Option(t.toString(),t));
+        for(Template t: templates) {
+            optionList.add(new Option(t.toString(), t));
             //DPE DESIGN PATTERN HERE. USING OPTION AS
             // ADAPTOR!!!!
         }
@@ -59,14 +67,27 @@ public class UserController implements SubController {
 
     public void createAccount(Template template){
         String inputUsername = getNewUsername();
-        String inputPassword = prompter.getResponse("Enter password");
-        //TODO determine whether we need to validate passwords
-        this.um.createUser(inputUsername, inputPassword, template.getPermissions());
+        if (!this.exiting){
+            String inputPassword = prompter.getResponse("Enter password");
+            if (!this.exiting) {
+                this.um.createUser(inputUsername, inputPassword, template.getPermissions());
+            }else{
+                this.exiting = false;
+            }
+        } else{
+            this.exiting = false;
+        }
+
     }
 
     public void deleteAccount(){
         String inputUsername = getExistingUsername();
-        this.um.removeUser(inputUsername);
+        System.out.println("WE ARE HERE");
+        if (!this.exiting) {
+            this.um.removeUser(inputUsername);
+        }else{
+            this.exiting = false;
+        }
 
     }
 
@@ -87,7 +108,7 @@ public class UserController implements SubController {
     public String getNewUsername(){
         String userName = prompter.getResponse("Enter username");
 
-        while(um.uNameExists(userName)){
+        while(um.uNameExists(userName)&&!this.exiting){
             userName = prompter.getResponse("The username you entered already exists."+System.lineSeparator()+"Please enter a new username");
         }
 
@@ -96,7 +117,7 @@ public class UserController implements SubController {
 
     public String getExistingUsername(){
         String userName = prompter.getResponse("Enter username");
-        while(!um.uNameExists(userName)){
+        while(!um.uNameExists(userName)&&!this.exiting){
             userName = prompter.getResponse("The username you entered does not exist."+System.lineSeparator()+"Please enter a new username");
         }
         return userName;
