@@ -2,6 +2,7 @@ package Events;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class Event {
@@ -65,4 +66,22 @@ public class Event {
         return this.id;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return capacity == event.capacity &&
+                speakerName.equals(event.speakerName) &&
+                time.equals(event.time) &&
+                eventName.equals(event.eventName) &&
+                participants.equals(event.participants) &&
+                room.equals(event.room) &&
+                id.equals(event.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(speakerName, time, eventName, participants, room, capacity, id);
+    }
 }
