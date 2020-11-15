@@ -82,7 +82,6 @@ public class UserController implements SubController {
 
     public void deleteAccount(){
         String inputUsername = getExistingUsername();
-        System.out.println("WE ARE HERE");
         if (!this.exiting) {
             this.um.removeUser(inputUsername);
         }else{
@@ -93,16 +92,25 @@ public class UserController implements SubController {
 
     public void editPassword(String username){
         String inputPassword = prompter.getResponse("Enter the new password");
-        this.um.setPassword(username,inputPassword);
+        if (!this.exiting) {
+            this.um.setPassword(username,inputPassword);
+        }else{
+            this.exiting = false;
+        }
     }
 
     public void editOtherPassword(){
         String inputUsername = getExistingUsername();
-        this.editPassword(inputUsername);
+        if (!this.exiting) {
+            this.editPassword(inputUsername);
+        }else{
+            this.exiting = false;
+        }
     }
 
     public void editPermissions(){
     //TODO: Implement when actually relevant :)
+        System.out.println("This method has not been implemented yet, since it is not in the Phase 1 specifications. :)");
     }
 
     public String getNewUsername(){
