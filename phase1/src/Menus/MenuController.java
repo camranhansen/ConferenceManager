@@ -14,6 +14,12 @@ public class MenuController {
     private HashMap<String,SubController> subcontrollers;
     private InputPrompter prompter;
 
+    /**
+     * @param username the username of the user that this menu is being generated for
+     * @param permissions the list of permissions that the user has available to them
+     * @param subcontrollers the subcontrollers that correspond with the total possible list of permissions
+     */
+
     public MenuController(String username, List<Permission> permissions,
                           HashMap<String, SubController> subcontrollers) {
             this.mp = new MenuPresenter();
@@ -25,15 +31,23 @@ public class MenuController {
     }
 
 
+    /** Continuously calls selectSubController until the user exits from the program by selecting the exit option
+     * In selectSubcontroller
+     */
     public void makeMenu(){
         boolean keepGoing = selectSubcontroller();
         while(keepGoing){
             keepGoing = selectSubcontroller();
         }
     }
-    public boolean selectSubcontroller(){
-        //Selects the subcontroller necessary for the given permission, and then tells it what permission is being used.
 
+    /**
+     * Prompts the user for numeric input regarding the permission that they wish to invoke.
+     * Calls on the @see SubController interface corresponding with the selected permission
+     * To perform the selected action
+     * @return Returns true if the user has selected to exit. Returns false if the user has selected something other than to exit.
+     */
+    public boolean selectSubcontroller(){
 
         if (permissions.size() < 8){
             Permission permissionSelected = selectPermission(permissions);
@@ -52,7 +66,7 @@ public class MenuController {
                 categoryOptions.add(new Option(category));
             }
             Option choice =  prompter.menuOption(categoryOptions);
-            if(choice.toString().equals("Exit")){
+            if(choice.toString().equals("EXIT")||choice.toString().equals("Exit")){
 
                 return false;
             }
@@ -72,6 +86,11 @@ public class MenuController {
     }
 
 
+    /**
+     * The user selects a permission from an inputted list
+     * @param permissionsToShow the list of permissions that the user can select from
+     * @return the permission the user has selected
+     */
     public Permission selectPermission(List<Permission> permissionsToShow){
 
         ArrayList<Option> optionList = new ArrayList<>();
