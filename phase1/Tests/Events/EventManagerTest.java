@@ -3,7 +3,6 @@ import org.junit.Test;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static java.time.Instant.*;
@@ -18,7 +17,7 @@ public class EventManagerTest {
         eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2);
         List<String> aList = new ArrayList<>();
         aList.add("Meeting Room 1" + time.toString());
-        assertEquals(eventManager.getEventList(), aList);
+        assertEquals(aList, eventManager.getEventList());
     }
 
     @Test
@@ -32,7 +31,7 @@ public class EventManagerTest {
         List<String> aList = new ArrayList<>();
         aList.add("Meeting Room 1" + time2.toString());
         aList.add("Meeting Room 1" + time.toString());
-        assertEquals(eventManager.getSpkEvents("Bob Smithers"), aList);
+        assertEquals(aList, eventManager.getSpkEvents("Bob Smithers"));
     }
 
     @Test
@@ -40,7 +39,7 @@ public class EventManagerTest {
         EventManager eventManager = new EventManager();
         Instant time = MAX;
         eventManager.createEvent("Bob Smithers", time,"Test Event", "Meeting Room 1",  2);
-        assertTrue(eventManager.getEventList().size()==1);
+        assertEquals(1, eventManager.getEventList().size());
     }
 
     @Test
@@ -49,9 +48,9 @@ public class EventManagerTest {
         Instant time = MAX;
         eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2);
         eventManager.createEvent("Roberto", time, "Test Event 2", "Meeting Room 2",  2);
-        assertTrue(eventManager.getEventList().size()==2);
+        assertEquals(2, eventManager.getEventList().size());
         eventManager.deleteEvent("Meeting Room 2" + time.toString());
-        assertTrue(eventManager.getEventList().size()==1);
+        assertEquals(1,eventManager.getEventList().size());
     }
 
     @Test
@@ -65,7 +64,7 @@ public class EventManagerTest {
         eventManager.enrollUser("Meeting Room 1" + time.toString(),"Daniel Tan" );
         eventManager.enrollUser("Meeting Room 1" + time.toString(),"Cameron Blom" );
         eventManager.getParticipants("Meeting Room 1" + time.toString());
-        assertEquals(eventManager.getParticipants("Meeting Room 1" + time.toString()), aList);
+        assertEquals(aList, eventManager.getParticipants("Meeting Room 1" + time.toString()));
 
     }
 
@@ -78,21 +77,18 @@ public class EventManagerTest {
         Instant time = MAX;
         eventManager.createEvent( "Bob Smithers", time,"Test Event", "Meeting Room 1",  2);
         eventManager.enrollUser("Meeting Room 1" + time.toString(), "Micheal");
-        assertEquals(eventManager.getParticipants("Meeting Room 1" + time.toString()), arr);
+        assertEquals(arr, eventManager.getParticipants("Meeting Room 1" + time.toString()));
     }
 
     @Test
     public void dropUser() {
         EventManager eventManager = new EventManager();
-        String name = "Micheal";
-        List<String> arr = new ArrayList<>();
-        arr.add(name);
         Instant time = MAX;
         eventManager.createEvent( "Bob Smithers", time,"Test Event", "Meeting Room 1",  2);
         eventManager.enrollUser("Meeting Room 1" + time.toString(), "Micheal");
-        assertEquals(eventManager.getParticipants("Meeting Room 1" + time.toString()).size(), 1);
+        assertEquals(1, eventManager.getParticipants("Meeting Room 1" + time.toString()).size());
         eventManager.dropUser("Meeting Room 1" + time.toString(), "Micheal");
-        assertEquals(eventManager.getParticipants("Meeting Room 1" + time.toString()).size(), 0);
+        assertEquals(0, eventManager.getParticipants("Meeting Room 1" + time.toString()).size());
     }
 
 
@@ -106,7 +102,7 @@ public class EventManagerTest {
         eventManager.createEvent("Roger", time2, "Test Event 3", "Meeting Room 3",  2);
         eventManager.enrollUser("Meeting Room 2" + time2.toString(), "Micheal");
         eventManager.enrollUser("Meeting Room 3" + time2.toString(), "Micheal");
-        assertEquals(eventManager.getAvailableEvents("Micheal").size(), 1);
+        assertEquals(1, eventManager.getAvailableEvents("Micheal").size());
     }
 
     @Test
@@ -131,9 +127,9 @@ public class EventManagerTest {
         eventManager.createEvent("Roger", time3, "Test Event 3", "Meeting Room 3",  2);
         eventManager.enrollUser("Meeting Room 1" + time.toString(), "Michael");
         eventManager.enrollUser("Meeting Room 2" + time2.toString(), "Michael");
-        assertEquals(eventManager.getUserEvents("Michael").size(), 2);
+        assertEquals(2, eventManager.getUserEvents("Michael").size());
         eventManager.enrollUser("Meeting Room 3" + time3.toString(), "Michael");
-        assertEquals(eventManager.getUserEvents("Michael").size(), 3);
+        assertEquals(3, eventManager.getUserEvents("Michael").size());
     }
 
 
@@ -144,7 +140,7 @@ public class EventManagerTest {
         Instant time2 = time.minus(1, ChronoUnit.HOURS);
         eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2);
         eventManager.editTime("Meeting Room 1" + time.toString(), time2);
-        assertEquals(eventManager.getEventTime("Meeting Room 1" + time2.toString()), time2);
+        assertEquals(time2, eventManager.getEventTime("Meeting Room 1" + time2.toString()));
     }
 
     @Test
@@ -153,7 +149,7 @@ public class EventManagerTest {
         Instant time = Instant.MAX;
         eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2);
         eventManager.editSpeakerName("Meeting Room 1" + time.toString(), "Roberto");
-        assertEquals(eventManager.getEventSpeakerName("Meeting Room 1" + time.toString()), "Roberto");
+        assertEquals("Roberto", eventManager.getEventSpeakerName("Meeting Room 1" + time.toString()));
     }
 
     @Test
@@ -162,7 +158,7 @@ public class EventManagerTest {
         Instant time = Instant.MAX;
         eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2);
         eventManager.editEventName("Meeting Room 1" + time.toString(), "Clean Architecture");
-        assertEquals(eventManager.getEventName("Meeting Room 1" + time.toString()), "Clean Architecture");
+        assertEquals("Clean Architecture", eventManager.getEventName("Meeting Room 1" + time.toString()));
     }
 
     @Test
@@ -171,7 +167,7 @@ public class EventManagerTest {
         Instant time = Instant.MAX;
         eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2);
         eventManager.editRoom("Meeting Room 1" + time.toString(), "BH 101");
-        assertEquals(eventManager.getRoom("BH 101" + time.toString()),"BH 101");
+        assertEquals("BH 101", eventManager.getRoom("BH 101" + time.toString()));
     }
 
     @Test
@@ -180,7 +176,7 @@ public class EventManagerTest {
         Instant time = Instant.MAX;
         eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2);
         eventManager.editCapacity("Meeting Room 1" + time.toString(), 5);
-        assertEquals(eventManager.getCapacity("Meeting Room 1" + time.toString()), 5);
+        assertEquals(5, eventManager.getCapacity("Meeting Room 1" + time.toString()));
     }
 
 }

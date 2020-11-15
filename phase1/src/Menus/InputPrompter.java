@@ -1,20 +1,27 @@
 package Menus;
 
-import Users.Permission;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class InputPrompter {
     private Scanner scanner;
     private InputPresenter inputPresenter;
 
+    /**
+     * Creates a new InputPrompter.
+     */
     public InputPrompter() {
         this.scanner = new Scanner(System.in);
         this.inputPresenter = new InputPresenter();
     }
 
+    /**
+     * Shows the user the options options and returns the user's
+     * selected option out of the options options.
+     *
+     * @param options Options to select from.
+     * @return The option the user has selected.
+     */
     public Option menuOption(ArrayList<Option> options){
         addExitOption(options);
         inputPresenter.printOptions(options);
@@ -53,7 +60,12 @@ public class InputPrompter {
         //TODO: back to main menu
     }
 
-
+    /**
+     * Returns the user's response to a prompt prompt.
+     *
+     * @param prompt Prompt in need of a user response.
+     * @return The user's response.
+     */
     public String getResponse(String prompt){
         inputPresenter.printPrompt(prompt);
 

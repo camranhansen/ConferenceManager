@@ -18,7 +18,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -180,6 +179,31 @@ public class MessageControllerTest {
         messageManager.sendMessage("u2", "how are you?", "u1");
         messageManager.sendMessage("spk1", "hello", "u1");
         messageController.performSelectedAction("u1", Permission.VIEW_SELF_MESSAGES);
+        String out = "0. Exit\n" + "1. View all your messages\n" +
+                "2. View messages from one user\n" + "Enter other username messages you'd like to see: \n"+
+                "u2: hi, how are you?, \n";
+
+        assertEquals(out, outContent.toString().replaceAll("\r\n", "\n"));
+    }
+
+    @Test
+    public void performSelectedViewOtherMessageTest(){
+        String input = "u1"+ System.lineSeparator()+"1" + System.lineSeparator() + "u2" + System.lineSeparator();
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        MessageManager messageManager = new MessageManager();
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager);
+        messageManager.sendMessage("u2", "hi", "u1");
+        messageManager.sendMessage("u2", "how are you?", "u1");
+        messageManager.sendMessage("spk1", "hello", "u1");
+        messageController.performSelectedAction("u1", Permission.VIEW_OTHER_MESSAGES);
+        String out = "Enter username's messages you'd like to see: \n"+"0. Exit\n" + "1. View all your messages\n" +
+                "2. View messages from one user\n"+ "spk1: hello, \n" + "u2: hi, how are you?, \n\n";
+        assertEquals(out, outContent.toString().replaceAll("\r\n", "\n"));
     }
 
     @Test
@@ -287,7 +311,7 @@ public class MessageControllerTest {
         EventManager em = new EventManager();
         UserManager um = new UserManager(new HashMap<>());
         MessageController mc = new MessageController(mm, um, em);
-        List<String> participants = new ArrayList<>();
+        ArrayList<String> participants = new ArrayList<>();
         Instant time = Instant.now();
         participants.add("user1");
         participants.add("user2");
@@ -302,18 +326,8 @@ public class MessageControllerTest {
 
 
 
-//    @Test
-//    public void testViewMessage(){
-//        MessageManager mm = new MessageManager();
-//        EventManager em = new EventManager();
-//        UserManager um = new UserManager(new HashMap<>());
-//        MessageController mc = new MessageController(mm, um, em);
-//        mc.writeMessage("sender", "recipient", "message");
-//        HashMap<String, List<Message>> hashmap1 = mc.viewAllMessages("recipient");
-//        assertEquals(hashmap1.get("sender").get(0).getContent(),"message");
-//
-//
-//    }
+
+
 //    @Test
 //    public void testViewMessageMultipleMessages(){
 //        MessageManager mm = new MessageManager();
@@ -332,23 +346,3 @@ public class MessageControllerTest {
 //        assertEquals(hashmap2.get("sender").get(0).getContent(),"message2");
 //    }
 //
-//    @Test
-//    public void writeToEvents(){
-//        MessageManager mm = new MessageManager();
-//        EventManager em = new EventManager();
-//        UserManager um = new UserManager(new HashMap<>());
-//        MessageController mc = new MessageController(mm, um, em);
-//        List<String> participants = new ArrayList<>();
-//        Instant time = Instant.now();
-//        participants.add("user1");
-//        participants.add("user2");
-//        Event e1 = new Event("speaker", time, "Test Event", participants, "Meeting Room 1",  3);
-//        em.addEventToHash(e1);
-//        mc.writeToEvents("speaker", "announcement", 0);
-//        HashMap<String, List<Message>> hashmap1 = mc.viewAllMessages("user1");
-//        HashMap<String, List<Message>> hashmap2 = mc.viewAllMessages("user2");
-//        assertEquals(em.getParticipants(0), participants);
-//        assertEquals(hashmap1.get("speaker").get(0).getContent(), "announcement");
-//        assertEquals(hashmap2.get("speaker").get(0).getContent(), "announcement");
-//    }
-
