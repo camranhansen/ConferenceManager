@@ -46,7 +46,7 @@ public class InputPrompter {
     }
 
     private boolean inputCheck(ArrayList<Option> options, String userInput){
-        if (!userInput.matches("^[0-9]*$") || Integer.parseInt(userInput) >= options.size()) {
+        if (!userInput.matches("^[0-9]+$") || Integer.parseInt(userInput) >= options.size()) {
             inputPresenter.errorMessage();
             return false;
         }
