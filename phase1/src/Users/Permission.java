@@ -3,7 +3,9 @@ package Users;
 import java.util.Arrays;
 import java.util.List;
 
-//TODO: Consider case when id does not refer to a valid enum value, using valueOf(id)
+/**
+ * Permissions available to the user. See template for specific permissions for user types.
+ */
 public enum Permission {
     //TEMPLATE for permission: ENTITY_SCOPE_ACTION,
     // where entity refers to the entity being accessed,

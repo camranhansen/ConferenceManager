@@ -3,6 +3,12 @@ package Users;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Template for user creation. The way it is set up now,
+ * "higher" permission levels also have the permissions of the
+ * "lower" ones, i.e. organizers have access to all speaker functions,
+ *  but this can easily be changed later.
+ */
 public enum Template {
     ATTENDEE(new Permission[] {
             Permission.USER_SELF_EDIT_PASSWORD,
