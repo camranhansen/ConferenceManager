@@ -107,7 +107,7 @@ public class EventController implements SubController {
             viewEvents(username);
         }
         else if(permissionSelected == Permission.VIEW_HOSTING_EVENTS){
-            viewHostingEvent(username);
+            eventPresenter.renderEvents(viewHostingEvent(username));
         }
 
     }
@@ -120,7 +120,7 @@ public class EventController implements SubController {
         List<String> List = new ArrayList<>();
         List<String> aList = eventManager.getEventList();
         for (int i = 0; i < aList.size(); i++) {
-            if (eventManager.getEventSpeakerName(aList.get(i)) == name) {
+            if (eventManager.getEventSpeakerName(aList.get(i)).equals(name)) {
                 List.add(eventManager.getFormattedEvent(aList.get(i)));
             }
         }
