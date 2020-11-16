@@ -72,12 +72,14 @@ public class EventController implements SubController {
         else if(permissionSelected == Permission.EVENT_CREATE){
             Instant time = getTimeInput();
             String speakerName = inputPrompter.getResponse("Enter the new speaker's name");
-            while (!userManager.uNameExists(speakerName)&&!userManager.getPermissions(speakerName).contains(Template.SPEAKER.getPermissions())){
+            speakerName = getExistUserInput(speakerName);
+            while (!userManager.getPermissions(speakerName).containsAll(Template.SPEAKER.getPermissions())) {
 //                !userManager.getPermissions(speakerName).contains(Template.SPEAKER.getPermissions()))
                 speakerName = inputPrompter.getResponse("The username you have entered is not a speaker." + System.lineSeparator() + "Please enter a new username");
-                while(eventManager.checkConflictSpeaker(time, speakerName)) {
-                    speakerName = inputPrompter.getResponse("The speaker is not available at that time." + System.lineSeparator() + "Please enter a new username");
-                }
+                speakerName = getExistUserInput(speakerName);
+            }
+            while(eventManager.checkConflictSpeaker(time, speakerName)) {
+                speakerName = inputPrompter.getResponse("The speaker is not available at that time." + System.lineSeparator() + "Please enter a new username");
             }
             String eventName = getEventNameInput();
             String room = getRoomInput();
@@ -270,15 +272,6 @@ public class EventController implements SubController {
         return result;
     }
 
-// Edit event methods
-    //TODO: Change time from string to instant
-//    public void editTime(int eventID){
-//        this.eventPresenter.enterTime();
-//        Instant time = this.getTimeInput();
-//        this.eventManager.editTime(eventID, time);
-//    }
-
-    //create/delete event
 
     /**
      * Deletes the event identified by String eventID from the collection of all events.
@@ -320,7 +313,7 @@ public class EventController implements SubController {
             public void run() {
                 String speakerName = inputPrompter.getResponse("Enter the new speaker's name");
                 while (!userManager.uNameExists(speakerName) &&
-                        !userManager.getPermissions(speakerName).contains(Template.SPEAKER.getPermissions())) {
+                        !userManager.getPermissions(speakerName).containsAll(Template.SPEAKER.getPermissions())) {
                     speakerName = inputPrompter.getResponse("The username you have entered is not a speaker." + System.lineSeparator() + "Please enter a new username");
                     while(eventManager.checkConflictSpeaker(eventManager.getEventTime(eventID), speakerName)) {
                         speakerName = inputPrompter.getResponse("The speaker is not available at that time." + System.lineSeparator() + "Please enter a new username");
@@ -459,7 +452,7 @@ public class EventController implements SubController {
 
     private Instant getTimeInput(){
         String date = inputPrompter.getResponse("Enter the day of the month");
-        while(!date.trim().matches("[0-2][0-9]|[3][0-1]|[0-9]")){
+        while(!date.trim().matches("[0-2][0-9]|[3][0-1]|[1-9]")){
             date = inputPrompter.getResponse("The date you entered is invalid."+System.lineSeparator()+
                     "Please enter a new day of the month");
         }
@@ -471,8 +464,16 @@ public class EventController implements SubController {
             time = inputPrompter.getResponse("The time slot you chose is invalid."+System.lineSeparator()+
                     "Please enter a new time slot");
         }
+        if(time.length() == 1) {
+            time = "0" + time;
+        }
         return Instant.parse("2020-12-" + date.trim() + "T" + time.trim() + ":00:00.00Z");
     }
 
-
+    private String getExistUserInput(String name){
+        while(!userManager.uNameExists(name)){
+            name = inputPrompter.getResponse("The username you have entered does not exist." + System.lineSeparator() + "Please enter a new username");
+        }
+        return name;
+    }
 }
