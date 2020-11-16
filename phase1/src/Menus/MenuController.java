@@ -50,7 +50,11 @@ public class MenuController {
     public boolean selectSubcontroller(){
 
         if (permissions.size() < 8){
-            Permission permissionSelected = selectPermission(permissions);
+            Option optionSelected = selectPermission(permissions);
+            if (optionSelected.toString().equals("EXIT")){
+                return false;
+            }
+            Permission permissionSelected = optionSelected.getPermissionHeld();
             subcontrollers.get(permissionSelected.getCategory()).performSelectedAction(username, permissionSelected);
 
         }
@@ -78,7 +82,7 @@ public class MenuController {
                 }
             }
 
-            Permission permissionSelected = selectPermission(selectedPermissions);
+            Permission permissionSelected = selectPermission(selectedPermissions).getPermissionHeld();
             this.subcontrollers.get(categoryChoice).performSelectedAction(this.username, permissionSelected);
 
         }
@@ -91,7 +95,7 @@ public class MenuController {
      * @param permissionsToShow the list of permissions that the user can select from
      * @return the permission the user has selected
      */
-    public Permission selectPermission(List<Permission> permissionsToShow){
+    public Option selectPermission(List<Permission> permissionsToShow){
 
         ArrayList<Option> optionList = new ArrayList<>();
 
@@ -99,8 +103,6 @@ public class MenuController {
             optionList.add(new Option(p.toString(),p));
         }
 
-        Option optionSelected = prompter.menuOption(optionList);
-
-        return optionSelected.getPermissionHeld();
+        return prompter.menuOption(optionList);
     }
 }
