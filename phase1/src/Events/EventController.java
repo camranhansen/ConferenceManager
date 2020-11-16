@@ -471,6 +471,9 @@ public class EventController implements SubController {
             time = inputPrompter.getResponse("The time slot you chose is invalid."+System.lineSeparator()+
                     "Please enter a new time slot");
         }
+        if(time.length() == 1){
+            time = "0"+time;
+        }
         return Instant.parse("2020-12-" + date.trim() + "T" + time.trim() + ":00:00.00Z");
     }
 
