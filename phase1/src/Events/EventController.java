@@ -66,7 +66,6 @@ public class EventController implements SubController {
             while(!userManager.uNameExists(name)){
                 name = getCorrectName();
             }
-
             enrollSelf(name);
         }
         else if(permissionSelected == Permission.EVENT_CREATE){
@@ -107,11 +106,18 @@ public class EventController implements SubController {
         else if(permissionSelected == Permission.VIEW_ALL_EVENTS){
             viewEvents(username);
         }
+        else if(permissionSelected == Permission.VIEW_HOSTING_EVENTS){
+            viewHostingEvent(username);
+        }
 
     }
 
     public void exitEarly(){
         this.exiting = true;
+    }
+
+    public void viewHostingEvent(String name){
+        this.eventManager.viewHostingEvent(name);
     }
     //enroll methods
 

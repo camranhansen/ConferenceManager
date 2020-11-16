@@ -21,6 +21,16 @@ public class EventManager {
         //TODO remove this function because it returns events, thereby breaking dependency rule
         return this.events;
     }
+    public List<String> viewHostingEvent(String name){
+        List<String> List = new ArrayList<>();
+        List<String>aList = this.getEventList();
+        for(int i=0; i<aList.size();i++){
+            if(getEventSpeakerName(aList.get(i)) == name){
+                List.add(getFormattedEvent(aList.get(i)));
+            }
+        }
+        return List;
+    }
 
     //This function is necessary.
     /**
