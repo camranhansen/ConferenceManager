@@ -31,14 +31,9 @@ public class Event {
      * @param room The name of the room of the event.
      * @param capacity The maximum number of people can join this event.
      */
-    public Event(String speakerName, Instant time, String eventName,List<String> participants, String room, int capacity ){
-        this.speakerName = speakerName;
-        this.time = time;
-        this.eventName = eventName;
-        this.participants = participants;
-        this.room = room;
-        this.capacity = capacity;
-        this.id = room + time.toString() ;
+    public Event(String speakerName, Instant time, String eventName, List<String> participants, String room, int capacity) {
+        this(speakerName, time, eventName, room, capacity);
+        this.participants.addAll(participants);
     }
 
     /**
