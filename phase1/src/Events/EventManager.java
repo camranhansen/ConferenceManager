@@ -115,9 +115,8 @@ public class EventManager {
      * @param userName Username of the current user.
      */
     public void enrollUser(String eventID, String userName){
-        //TODO refactor this method into only doing the enrollUser.
-        //Call isEventFull in controller to check
-        this.events.get(eventID).getParticipants().add(userName);
+
+        this.events.get(eventID).addParticipant(userName);
     }
 
     /**
@@ -127,7 +126,7 @@ public class EventManager {
      * @param userName Username of the current user.
      */
     public void dropUser(String eventID, String userName){
-        this.events.get(eventID).getParticipants().remove(userName);
+        this.events.get(eventID).removeParticipant(userName);
     }
 
     /**

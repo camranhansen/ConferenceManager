@@ -1,4 +1,5 @@
 package Events;
+import javax.print.DocFlavor;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +91,17 @@ public class Event {
         return this.participants;
     }
 
+    /**
+     * Add a participant
+     * @param username the username of the participant in question
+     */
+    public void addParticipant(String username){
+        this.participants.add(username);
+    }
+
+    public void removeParticipant(String username){
+        this.participants.remove(username);
+    }
     /**
      * Getter function for the name of the room.
      * @return String represents the name of room.
