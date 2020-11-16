@@ -1,10 +1,7 @@
 package Messaging;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 //TODO: add a constructor for inboxes that already exist
 
@@ -127,7 +124,7 @@ public class MessageManager {
                 messageData[0] = message.getSender();
                 messageData[1] = message.getTimeSent().toString();
                 messageData[2] = message.getContent();
-                messageData[3] = message.getRecipients().toString().replaceAll("[\\[\\]]", "");
+                messageData[3] = Arrays.toString(message.getRecipients()).replaceAll("[\\[\\]]", "");
             }
             res.add(messageData);
         }
