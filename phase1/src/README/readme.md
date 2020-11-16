@@ -36,3 +36,6 @@ csv file.
 3. Select event_self_enroll (or other_enroll if you want to enroll another user), and then paste the event ID of the desired event.
 We realize that this method is not very user-friendly, but we devoted our team time to other things, and will be implementing a 
 much nicer method of enrolling in an event through a menu of options.
+
+#UML
+The UML documents are located in the UML package in phase1
