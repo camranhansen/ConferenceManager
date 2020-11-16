@@ -51,7 +51,7 @@ public class MenuControllerTest {
         MenuController mc = new MenuController("bob",
                 newPermissions, subControllers);
 
-        assertEquals(mc.selectPermission(newPermissions),Permission.USER_ALL_EDIT_PERMISSION);
+        assertEquals(Permission.USER_ALL_EDIT_PERMISSION, mc.selectPermission(newPermissions).getPermissionHeld());
     }
 
     @Test
@@ -70,7 +70,7 @@ public class MenuControllerTest {
         permissions.add(Permission.MESSAGE_SINGLE_USER);
         permissions.add(Permission.MESSAGE_ALL_USERS);
         permissions.add(Permission.VIEW_SELF_MESSAGES);
-        assertEquals(Permission.MESSAGE_SINGLE_USER, menuController.selectPermission(permissions));
+        assertEquals(Permission.MESSAGE_SINGLE_USER, menuController.selectPermission(permissions).getPermissionHeld());
     }
 
     private MenuController generateMenuController(){

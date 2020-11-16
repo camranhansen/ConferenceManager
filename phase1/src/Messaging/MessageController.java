@@ -134,7 +134,7 @@ public class MessageController implements SubController {
             Option allEvents = new Option("Send to all your events"){
             @Override
             public void run(){
-                writeToEvents(from, content, eventManager.getSpkEvents(from));
+                writeToEvents(from, content, getSpeakerEventIds(from));
             }
         };
             Option oneEvent = new Option("Send to one of your events"){
@@ -145,7 +145,7 @@ public class MessageController implements SubController {
                         messagePresenter.noEvent();
                         eventId = inputPrompter.getResponse("Enter event id to send to");
                     }
-                    if(!eventManager.getSpkEvents(from).contains(eventId)&&!exiting){
+                    if(!getSpeakerEventIds(from).contains(eventId)&&!exiting){
                         messagePresenter.notSpeakerEvent();
                     }
                     else if(!exiting){
@@ -270,6 +270,17 @@ public class MessageController implements SubController {
         else{
         messagePresenter.noSpeakers();
         }
+    }
+
+    private List<String> getSpeakerEventIds(String username){
+        List<String> eventIds = eventManager.getAllEventIds();
+        List<String> speakersEvents = new ArrayList<>();
+        for (String id: eventIds){
+            if(eventManager.getEventSpeakerName(id).equals(username)){
+                speakersEvents.add(id);
+            }
+        }
+        return speakersEvents;
     }
 
     private String getContent(){
