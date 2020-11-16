@@ -112,6 +112,16 @@ public class EventControllerTest {
         assertEquals(1, eventManager.getEventList().size());
     }
 
+    @Test
+    public void testViewHostingEvent() {
+        EventManager eventManager = new EventManager();
+        EventController eventController = new EventController(eventManager);
+        eventController.createEvent("John", Instant.ofEpochSecond(1000), "Debugggggg", "BAH", 4);
+
+        List<String> actual = eventController.viewHostingEvent("John");
+        assertEquals(eventManager.getFormattedEvent(eventManager.getSpkEvents("John").get(0)), actual.get(0));
+    }
+
     /*
     @org.junit.jupiter.api.Test
     void getSpeakerNameInput() {
