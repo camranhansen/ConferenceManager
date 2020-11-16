@@ -116,8 +116,15 @@ public class EventController implements SubController {
         this.exiting = true;
     }
 
-    public void viewHostingEvent(String name){
-        this.eventManager.viewHostingEvent(name);
+    public List<String> viewHostingEvent(String name) {
+        List<String> List = new ArrayList<>();
+        List<String> aList = eventManager.getEventList();
+        for (int i = 0; i < aList.size(); i++) {
+            if (eventManager.getEventSpeakerName(aList.get(i)) == name) {
+                List.add(eventManager.getFormattedEvent(aList.get(i)));
+            }
+        }
+        return List;
     }
     //enroll methods
 
