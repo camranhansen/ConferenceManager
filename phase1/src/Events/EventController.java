@@ -21,7 +21,7 @@ public class EventController implements SubController {
 
     /**
      * Creates a new EventController with event manager eventManager.
-     *
+     * THIS SHOULD NOT BE USED EXCEPT FOR IN TESTING
      * @param eventManager Manager of the events.
      */
 
@@ -72,8 +72,8 @@ public class EventController implements SubController {
         else if(permissionSelected == Permission.EVENT_CREATE){
             Instant time = getTimeInput();
             String speakerName = inputPrompter.getResponse("Enter the new speaker's name");
-            while (!userManager.uNameExists(speakerName) &&
-                    !userManager.getPermissions(speakerName).contains(Template.SPEAKER)) {
+            while (!userManager.uNameExists(speakerName)&&!userManager.getPermissions(speakerName).contains(Template.SPEAKER.getPermissions())){
+//                !userManager.getPermissions(speakerName).contains(Template.SPEAKER.getPermissions()))
                 speakerName = inputPrompter.getResponse("The username you have entered is not a speaker." + System.lineSeparator() + "Please enter a new username");
                 while(eventManager.checkConflictSpeaker(time, speakerName)) {
                     speakerName = inputPrompter.getResponse("The speaker is not available at that time." + System.lineSeparator() + "Please enter a new username");
@@ -320,7 +320,7 @@ public class EventController implements SubController {
             public void run() {
                 String speakerName = inputPrompter.getResponse("Enter the new speaker's name");
                 while (!userManager.uNameExists(speakerName) &&
-                        !userManager.getPermissions(speakerName).contains(Template.SPEAKER)) {
+                        !userManager.getPermissions(speakerName).contains(Template.SPEAKER.getPermissions())) {
                     speakerName = inputPrompter.getResponse("The username you have entered is not a speaker." + System.lineSeparator() + "Please enter a new username");
                     while(eventManager.checkConflictSpeaker(eventManager.getEventTime(eventID), speakerName)) {
                         speakerName = inputPrompter.getResponse("The speaker is not available at that time." + System.lineSeparator() + "Please enter a new username");
@@ -458,15 +458,20 @@ public class EventController implements SubController {
      */
 
     private Instant getTimeInput(){
-        String date = inputPrompter.getResponse("Enter the date");
-        while(Integer.parseInt(date.trim())< Instant.now().get(ChronoField.DAY_OF_MONTH)){
-            date = inputPrompter.getResponse("The date you entered is invalid."+System.lineSeparator()+"Please enter a new date");
+        String date = inputPrompter.getResponse("Enter the day of the month");
+        while(!date.trim().matches("[0-2][0-9]|[3][0-1]|[0-9]")){
+            date = inputPrompter.getResponse("The date you entered is invalid."+System.lineSeparator()+
+                    "Please enter a new day of the month");
         }
-        String time = inputPrompter.getResponse("Chose the time slot from 9 am to 16 pm");
-        while (Integer.parseInt(time.trim())<9 || Integer.parseInt(time.trim())>16){
-            time = inputPrompter.getResponse("The time slot you chose is invalid."+System.lineSeparator()+"Please enter a new time slot");
+        if(date.length() == 1){
+            date = "0"+date;
         }
-        return Instant.parse("2020-12-" + date + "T" + time + ":00:00.00Z");
+        String time = inputPrompter.getResponse("Chose the time slot from 9 to 16 on a 24-hour clock");
+        while (!time.trim().matches("[9]|[1][0-6]")){
+            time = inputPrompter.getResponse("The time slot you chose is invalid."+System.lineSeparator()+
+                    "Please enter a new time slot");
+        }
+        return Instant.parse("2020-12-" + date.trim() + "T" + time.trim() + ":00:00.00Z");
     }
 
 

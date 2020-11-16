@@ -87,7 +87,7 @@ public class MenuControllerTest {
         UserManager userManager = new UserManager(users);
         SubController messageController = new MessageController(messageManager, userManager, eventManager);
         SubController userController = new UserController(userManager);
-        SubController eventController = new EventController(eventManager);
+        SubController eventController = new EventController(eventManager, userManager);
         subControllers.put("message controller", messageController);
         subControllers.put("user controller", userController);
         subControllers.put("event controller", eventController);

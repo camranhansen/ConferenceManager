@@ -34,9 +34,9 @@ public class PrimaryController {
         messageManager = new MessageManager();
         eventManager = new EventManager();
         messageGateway = new MessageGateway(messageManager);
-        eventController = new EventController(eventManager);
         userManager = new UserManager(new HashMap<>());
         userController = new UserController(userManager);
+        eventController = new EventController(eventManager, userManager);
         messageController = new MessageController(messageManager, userManager, eventManager);
         loginController = new LoginController(userManager);
         // InputPrompter inputPrompter = new InputPrompter();
