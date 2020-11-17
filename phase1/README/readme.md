@@ -1,11 +1,11 @@
 #Setup Instructions
-1. Create a package named data in phase1\src
-2. Copy [user_data.csv](user_data.csv) and [event_data.csv](event_data.csv) from phase1\src\README 
+1. Create a folder named data in phase1\
+2. Copy [user_data.csv](user_data.csv) and [event_data.csv](event_data.csv) from phase1\README
 (where one would find this file) and into the newly 
-created phase1\src\data directory
+created phase1\data directory
 3. Create a new run configuration (application), and set
  the main class to EntryPoint, JRE to 1.8, and
- and the working directory to ~group_0489\phase1\src
+ and the working directory to ~group_0489\phase1\
 4. Run EntryPoint with these aforementioned configurations.
 
 #Creating users
@@ -38,4 +38,4 @@ We realize that this method is not very user-friendly, but we devoted our team t
 much nicer method of enrolling in an event through a menu of options.
 
 #UML
-The UML documents are located in the UML package in phase1
+The UML documents are located in the UML folder in phase1.
