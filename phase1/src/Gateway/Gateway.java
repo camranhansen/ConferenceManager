@@ -123,36 +123,47 @@ public abstract class Gateway {
      * Flushes the buffer into the file.
      * Will create file if it doesn't exist.
      * Will create parent directories up until the given file path if necessary.
-     * @throws IOException from {@link FileWriter}, {@link FileWriter#close()},
-     *                     {@link BufferedWriter#write(int)} and {@link BufferedWriter#close()}.
+     * @throws IOException from {@link BufferedWriter}.
      */
     public void flush() throws IOException {
         File csvFile = new File(filePath);
         csvFile.getParentFile().mkdirs();
-        FileWriter fileWriter = new FileWriter(filePath);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        for (int row = 0; row < buffer.size(); row++) {
-            String[] rowArray = buffer.get(row);
-            for (int col = 0; col < colWidth; col++) {
-                bufferedWriter.write("\"");
-                bufferedWriter.write(rowArray[col]);
-                bufferedWriter.write("\"");
-                if (col != colWidth - 1) {
-                    bufferedWriter.write(",");
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+        try {
+            fileWriter = new FileWriter(filePath);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            for (int row = 0; row < buffer.size(); row++) {
+                String[] rowArray = buffer.get(row);
+                for (int col = 0; col < colWidth; col++) {
+                    bufferedWriter.write("\"");
+                    bufferedWriter.write(rowArray[col]);
+                    bufferedWriter.write("\"");
+                    if (col != colWidth - 1) {
+                        bufferedWriter.write(",");
+                    }
+                }
+                if (row != buffer.size() - 1) {
+                    bufferedWriter.write("\n");
                 }
             }
-            if (row != buffer.size() - 1) {
-                bufferedWriter.write("\n");
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            try {
+                if (bufferedWriter != null) {
+                    bufferedWriter.close();
+                }
+            } catch (IOException e) {
+                throw e;
             }
         }
-        bufferedWriter.close();
-        fileWriter.close();
     }
 
     /**
      * Reads the data from the file designated at instantiation.
      * @throws FileNotFoundException if the file does not exist.
-     * @throws IOException from {@link BufferedReader#close()} and {@link FileReader#close()}.
+     * @throws IOException from {@link BufferedReader#readLine()} and when trying to close said reader.
      */
     public void readFromFile() throws IOException {
         File file = new File(filePath);
@@ -161,32 +172,42 @@ public abstract class Gateway {
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         String line = null;
         buffer.clear();
-        while ((line = bufferedReader.readLine()) != null) {
-            boolean openQuote = false;
-            int lastDelimiterIndex = 0;
-            int cellIndex = 0;
-            String[] cells = new String[colWidth];
-            for (int i = 0; i < line.length(); i++) {
-                char current = line.charAt(i);
-                if (current == '\"') {
-                    openQuote = !openQuote;
-                }
-                if (i == line.length() - 1 || (current != '\"' && !openQuote)) {
-                    cells[cellIndex] = line.substring(lastDelimiterIndex, i);
-                    cells[cellIndex] = cells[cellIndex].substring(1);
-                    if (i != line.length() - 1) {
-                        cells[cellIndex] = cells[cellIndex].substring(0, cells[cellIndex].length() - 1);
+        try {
+            while ((line = bufferedReader.readLine()) != null) {
+                boolean openQuote = false;
+                int lastDelimiterIndex = 0;
+                int cellIndex = 0;
+                String[] cells = new String[colWidth];
+                for (int i = 0; i < line.length(); i++) {
+                    char current = line.charAt(i);
+                    if (current == '\"') {
+                        openQuote = !openQuote;
                     }
+                    if (i == line.length() - 1 || (current != '\"' && !openQuote)) {
+                        cells[cellIndex] = line.substring(lastDelimiterIndex, i);
+                        cells[cellIndex] = cells[cellIndex].substring(1);
+                        if (i != line.length() - 1) {
+                            cells[cellIndex] = cells[cellIndex].substring(0, cells[cellIndex].length() - 1);
+                        }
 
-                    cellIndex++;
-                    lastDelimiterIndex = i + 1;
+                        cellIndex++;
+                        lastDelimiterIndex = i + 1;
+                    }
                 }
-            }
 
-            buffer.add(cells);
+                buffer.add(cells);
+            }
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            try {
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
+            } catch (IOException e) {
+                throw e;
+            }
         }
-        bufferedReader.close();
-        fileReader.close();
     }
 
     /**
