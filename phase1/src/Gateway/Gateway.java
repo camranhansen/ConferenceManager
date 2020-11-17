@@ -128,11 +128,9 @@ public abstract class Gateway {
     public void flush() throws IOException {
         File csvFile = new File(filePath);
         csvFile.getParentFile().mkdirs();
-        FileWriter fileWriter = null;
         BufferedWriter bufferedWriter = null;
         try {
-            fileWriter = new FileWriter(filePath);
-            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter = new BufferedWriter(new FileWriter(filePath));
             for (int row = 0; row < buffer.size(); row++) {
                 String[] rowArray = buffer.get(row);
                 for (int col = 0; col < colWidth; col++) {
@@ -168,8 +166,7 @@ public abstract class Gateway {
     public void readFromFile() throws IOException {
         File file = new File(filePath);
         if (!file.isFile()) throw new FileNotFoundException("File does not exist at path: " + file.getAbsolutePath());
-        FileReader fileReader = new FileReader(filePath);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
         String line = null;
         buffer.clear();
         try {
