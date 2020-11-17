@@ -3,6 +3,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -82,8 +83,8 @@ public abstract class Gateway {
      *             with {@link Gateway#getColWidth()}.
      */
     public void updateRow(int row, String[] data) {
-        if (data.toString().contains("\"")) throw new IllegalArgumentException("Quote (\") characters are not allowed.");
-        if (data.toString().contains("\n")) throw new IllegalArgumentException("Line breaks not allowed.");
+        if (Arrays.toString(data).contains("\"")) throw new IllegalArgumentException("Quote (\") characters are not allowed.");
+        if (Arrays.toString(data).contains("\n")) throw new IllegalArgumentException("Line breaks not allowed.");
         if (data.length != colWidth) throw new IllegalArgumentException("Data is not equal to designated amount of columns.");
         if (buffer.size() < row + 1) {
             for (int i = buffer.size(); i < row; i++) {
@@ -153,7 +154,7 @@ public abstract class Gateway {
                     bufferedWriter.close();
                 }
             } catch (IOException e) {
-                throw e;
+                e.printStackTrace();
             }
         }
     }
@@ -202,7 +203,7 @@ public abstract class Gateway {
                     bufferedReader.close();
                 }
             } catch (IOException e) {
-                throw e;
+                e.printStackTrace();
             }
         }
     }
