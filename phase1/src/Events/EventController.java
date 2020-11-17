@@ -464,7 +464,7 @@ public class EventController implements SubController {
      */
 
     private Instant getTimeInput(){
-        String date = inputPrompter.getResponse("Enter the day of the month");
+        String date = inputPrompter.getResponse("Enter the numerical day of the month (from 1-31)");
         while(!date.trim().matches("[0-2][0-9]|[3][0-1]|[1-9]")){
             date = inputPrompter.getResponse("The date you entered is invalid."+System.lineSeparator()+
                     "Please enter a new day of the month");
