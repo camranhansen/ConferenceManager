@@ -7,11 +7,11 @@ import java.util.List;
 public class MessageMover {
     private HashMap<String, List<Message>> inbox;
     private HashMap<String, List<Message>> readInbox;
-    private HashMap<String, List<Message>> archivedInbox;
+    private List<Message> archivedInbox;
 
     public MessageMover(HashMap<String, List<Message>> readInbox,
                         HashMap<String, List<Message>> inbox,
-                        HashMap<String, List<Message>> archivedInbox){
+                        List<Message> archivedInbox){
         this.inbox = inbox;
         this.readInbox = readInbox;
         this.archivedInbox = archivedInbox;
