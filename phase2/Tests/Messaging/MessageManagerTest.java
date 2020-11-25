@@ -23,6 +23,7 @@ public class MessageManagerTest {
         MessageManager messageManager = new MessageManager();
         messageManager.sendMessage("potter", "stupefy", "snape");
         messageManager.sendMessage("snape", "detention", "potter", "weasley", "granger");
+        //assertEquals("stupefy", messageManager.get)
     }
 
     @Test
@@ -130,6 +131,19 @@ public class MessageManagerTest {
         }
     }
 
+    @Test
+    public void testRetrieveUserInboxForUnreadInbox(){
 
+    }
+
+    @Test
+    public void testRetrieveUserInboxForReadInbox(){
+
+    }
+
+    @Test
+    public void testSendMessageUnreadInbox(){
+
+    }
 }
 
