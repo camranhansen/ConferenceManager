@@ -90,9 +90,6 @@ public class InputPrompter {
         }
     }
 
-
-    //If input is "exit"
-    //SubController.exitOut()
-
+    //TODO implement specific prompter methods... e.g. getExistingUsername, getExistingUsername(Template t), getValidTimeslot, getValidRoom.... etc.
 
 }
