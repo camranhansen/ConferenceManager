@@ -30,9 +30,17 @@ public class MessageMover {
 
     }
 
-    public void moveUnreadToRead(String from){
-        List<Message> messages = this.inbox.remove(from);
-        this.readInbox.put(from, messages);
+    public void moveUnreadToRead(Message message){
+        String from = message.getSender();
+        if (!readInbox.containsKey(from)){
+            List<Message> messages = new ArrayList<>();
+            messages.add(message);
+            readInbox.put(from, messages);
+        }
+        else{
+            readInbox.get(from).add(message);
+        }
+        inbox.get(from).remove(message);//removing from unread
     }
 
     public void moveArchivedToUnread(String from){
@@ -53,7 +61,15 @@ public class MessageMover {
     public void deleteOneMessage(String username, Message message){}
 
 
-    public void deleteConversation(String username, String from){}
+    public void deleteConversation(String username, String from){
+        if (inbox.containsKey(from)){
+            inbox.remove(from);
+        }
+        if (readInbox.containsKey(from)){
+            readInbox.remove(from);
+        }
+        archivedInbox.removeIf(message -> message.getSender().equals(from));
+    }
 
     public void clearAllInboxes(){
         inbox.clear();
