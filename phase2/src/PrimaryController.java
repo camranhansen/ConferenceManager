@@ -1,16 +1,15 @@
-import Events.EventController;
-import Events.EventManager;
-import Gateway.EventGateway;
-import Gateway.MessageGateway;
-import Gateway.UserGateway;
-import Menus.MenuController;
-import Menus.SubController;
-import Messaging.MessageController;
-import Messaging.MessageManager;
-import Users.*;
+import events.EventController;
+import events.EventManager;
+import gateway.EventGateway;
+import gateway.MessageGateway;
+import gateway.UserGateway;
+import menu.MenuController;
+import menu.SubController;
+import messaging.MessageController;
+import messaging.MessageManager;
+import users.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

@@ -14,7 +14,7 @@ created phase1/data directory
 new user this way. Simply log in via the premade admin account that 
 innately has access to all methods (username: admin, password: admin),
 and create a user from there, selecting the permission template desired.
-See Template and Permission in the Users package for more clarification.
+See Template and Permission in the users package for more clarification.
 
  Through the pre-loaded file
 - Add a new row to user_data.csv in the data package, with the format
