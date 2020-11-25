@@ -1,4 +1,4 @@
-package Gateway;
+package gateway;
 
 import java.util.List;
 import java.util.Map;
