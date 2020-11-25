@@ -11,12 +11,19 @@ public class MessageManager {
      * Message sent by the sender to the recipient.
      */
     private HashMap<String, HashMap<String, List<Message>>> inboxes;
+    private HashMap<String, HashMap<String, List<Message>>> readInboxes;
+    private HashMap<String, HashMap<String, List<Message>>> unreadInboxes;
+    private HashMap<String, List<Message>> archivedMessages;
 
     /**
      * Instantiates messageManager
      */
     public MessageManager() {
         inboxes = new HashMap<>();
+        readInboxes = new HashMap<>();
+        unreadInboxes = new HashMap<>();
+        archivedMessages = new HashMap<>();
+
     }
 
     /**
@@ -29,13 +36,18 @@ public class MessageManager {
         Message msg = new Message(from, to, content);
         for (int i = 0; i < to.length; i++) {
             HashMap<String, List<Message>> userInbox = retrieveUserInbox(to[i]);
-
+            HashMap<String, List<Message>> unreadInbox = getUnreadInbox(to[i]);
             if (!userInbox.containsKey(from)) {
                 ArrayList<Message> message = new ArrayList<>();
                 userInbox.put(from, message);
             }
+            if(!unreadInbox.containsKey(from)){
+                unreadInbox.put(from, new ArrayList<Message>());
+            }
             List<Message> messagesFrom = userInbox.get(from);
             messagesFrom.add(msg);
+            unreadInbox.get(from).add(msg);
+
         }
     }
 
@@ -46,10 +58,40 @@ public class MessageManager {
      */
     public HashMap<String, List<Message>> retrieveUserInbox(String user) {
         if (!inboxes.containsKey(user)) {
-            HashMap<String, List<Message>> hashmap = new HashMap<String, List<Message>>();
+            HashMap<String, List<Message>> hashmap = new HashMap<>();
             inboxes.put(user, hashmap);
         }
         return inboxes.get(user);
+    }
+
+    //ADDED:
+    public HashMap<String, List<Message>> getReadInbox(String username) {
+        if (!readInboxes.containsKey(username)) {
+            HashMap<String, List<Message>> hashmap = new HashMap<>();
+            readInboxes.put(username, hashmap);
+        }
+        return readInboxes.get(username);
+    }
+
+    public HashMap<String, List<Message>> getUnreadInbox(String username){
+        if(!unreadInboxes.containsKey(username)){
+            HashMap<String, List<Message>> hashmap = new HashMap<>();
+            unreadInboxes.put(username, hashmap);
+        }
+        return readInboxes.get(username);
+    }
+
+    public List<Message> getUnreadFrom(String username, String from){
+        return getUnreadInbox(username).get(from);
+    }
+
+    //ADDED:
+    public List<Message> getArchivedInbox(String username) {
+        if(!archivedMessages.containsKey(username)){
+            List<Message> messages = new ArrayList<>();
+            archivedMessages.put(username, messages);
+        }
+        return archivedMessages.get(username);
     }
 
     /**
@@ -58,9 +100,25 @@ public class MessageManager {
      * @param from Username of the sender.
      * @return A list of Message.
      */
+    // only retrieveUserInboxFor move read message to unread
     public List<Message> retrieveUserInboxFor(String user, String from) {
+        List<Message> messages = retrieveUserInbox(user).get(from);
+        HashMap<String, List<Message>> readInbox = getReadInbox(user);
+        HashMap<String, List<Message>> unreadInbox = getUnreadInbox(user);
+        if (readInbox.containsKey(from)){
+            for(Message m: messages) {
+                if(!readInbox.get(from).contains(m)){
+                    readInbox.get(from).add(m);
+                }
+            }
+        }
+        for (Message m: messages){
+            unreadInbox.get(from).remove(m);
+        }
         return retrieveUserInbox(user).get(from);
     }
+
+
 
     /**
      * Returns the String representation of all the messages sent from one user to another user. If the given sender
@@ -162,4 +220,5 @@ public class MessageManager {
 
         return inboxes.keySet().iterator();
     }
+
 }
