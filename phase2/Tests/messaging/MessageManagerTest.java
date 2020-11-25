@@ -19,7 +19,7 @@ public class MessageManagerTest {
         MessageManager messageManager = new MessageManager();
         messageManager.sendMessage("potter", "stupefy", "snape");
         messageManager.sendMessage("snape", "detention", "potter", "weasley", "granger");
-        //assertEquals("stupefy", messageManager.get)
+
     }
 
     @Test
@@ -129,17 +129,28 @@ public class MessageManagerTest {
 
     @Test
     public void testRetrieveUserInboxForUnreadInbox(){
-
+        MessageManager mm = new MessageManager();
+        mm.sendMessage("sender", "hello", "recipient");
+        mm.retrieveUserInboxFor("recipient", "sender");
+        assertEquals("hello", mm.retrieveUserInboxFor("recipient", "sender").get(0).getContent());
+        assertEquals(0, mm.getUnreadFrom("recipient", "sender").size());
     }
 
     @Test
     public void testRetrieveUserInboxForReadInbox(){
-
+        MessageManager mm = new MessageManager();
+        mm.sendMessage("sender", "hello", "recipient");
+        mm.retrieveUserInboxFor("recipient", "sender");
+        assertEquals("hello", mm.retrieveUserInboxFor("recipient", "sender").get(0).getContent());
+        assertEquals("hello", mm.getReadInbox("recipient").get("sender").get(0).getContent());
     }
 
     @Test
     public void testSendMessageUnreadInbox(){
-
+        MessageManager mm = new MessageManager();
+        mm.sendMessage("sender", "hello", "recipient");
+        assertEquals("hello", mm.getUnreadFrom("recipient", "sender").get(0).getContent());
+        assertEquals(0, mm.getReadInbox("recipient").size());
     }
 }
 
