@@ -1,6 +1,5 @@
 package Messaging;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,5 +49,9 @@ public class MessageMover {
 
     public void deleteConversation(String username, String from){}
 
-    public void clearInbox(String username, HashMap<String, List<Message>> inbox){}
+    public void clearAllInboxes(){
+        inbox.clear();
+        readInbox.clear();
+        archivedInbox.clear();
+    }
 }
