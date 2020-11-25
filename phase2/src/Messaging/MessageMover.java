@@ -1,5 +1,6 @@
 package Messaging;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,9 +17,17 @@ public class MessageMover {
         this.archivedInbox = archivedInbox;
     }
 
-    public void moveReadToUnread(String from){
-        List<Message> messages = this.readInbox.remove(from);
-        this.inbox.put(from, messages);
+    public void moveReadToUnread(Message message){
+        String from = message.getSender();
+        readInbox.get(from).remove(message);
+        if(!inbox.containsKey(from)) {
+            List<Message> m = new ArrayList<>();
+            inbox.put(from, m);
+        } else{
+            List<Message> m = inbox.get(from);
+            m.add(message);
+        }
+
     }
 
     public void moveUnreadToRead(String from){
@@ -30,22 +39,19 @@ public class MessageMover {
         //think about if the user is both in unread and archived
     }
 
-//    public void moveToArchived(Message message){
-//        //Check if message is in unread?? Or restrict to only moving read to archived
-//        String from = message.getSender();
-//        List<Message> messages = readInbox.get(from);
-//        messages.remove(message);
-//        if (!archivedInbox.containsKey(from)){
-//            List<Message> newMessages = new ArrayList<>();
-//            newMessages.add(message);
-//            archivedInbox.put(from, newMessages);
-//        }
-//        else{
-//            archivedInbox.get(from).add(message);
-//        }
-//    }
-
+    public void moveToArchived(Message message) {
+        String from = message.getSender();
+        if (inbox.containsKey(from)) {
+            if (inbox.get(from).contains(message)) {
+                this.moveUnreadToRead(message);
+            }
+        }
+        if (!archivedInbox.contains(message)){
+            archivedInbox.add(message);
+        }
+    }
     public void deleteOneMessage(String username, Message message){}
+
 
     public void deleteConversation(String username, String from){}
 
