@@ -58,16 +58,20 @@ public class MessageMover {
             archivedInbox.add(message);
         }
     }
-    public void deleteOneMessage(String username, Message message){}
+    public void deleteOneMessage(String from, Message message){
+        if (inbox.containsKey((from))){
+            inbox.get(from).remove(message);
+        }
+        if (readInbox.containsKey(from)){
+            readInbox.get(from).remove(message);
+        }
+        archivedInbox.remove(message);
+    }
 
 
     public void deleteConversation(String username, String from){
-        if (inbox.containsKey(from)){
-            inbox.remove(from);
-        }
-        if (readInbox.containsKey(from)){
-            readInbox.remove(from);
-        }
+        inbox.remove(from);
+        readInbox.remove(from);
         archivedInbox.removeIf(message -> message.getSender().equals(from));
     }
 

@@ -14,6 +14,7 @@ public class MessageManager {
     private HashMap<String, HashMap<String, List<Message>>> readInboxes;
     private HashMap<String, HashMap<String, List<Message>>> unreadInboxes;
     private HashMap<String, List<Message>> archivedMessages;
+    private MessageMover messageMover;
 
     /**
      * Instantiates messageManager
@@ -23,6 +24,7 @@ public class MessageManager {
         readInboxes = new HashMap<>();
         unreadInboxes = new HashMap<>();
         archivedMessages = new HashMap<>();
+
     }
 
     /**
@@ -41,7 +43,7 @@ public class MessageManager {
             }
             List<Message> messagesFrom = userInbox.get(from);
             messagesFrom.add(msg);
-            this.moveToUnread(to[i], from, msg);
+
         }
     }
 
