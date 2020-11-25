@@ -9,12 +9,10 @@ public class MessageMover {
     private HashMap<String, List<Message>> readInbox;
     private List<Message> archivedInbox;
 
-    public MessageMover(HashMap<String, List<Message>> readInbox,
-                        HashMap<String, List<Message>> inbox,
-                        List<Message> archivedInbox){
-        this.inbox = inbox;
-        this.readInbox = readInbox;
-        this.archivedInbox = archivedInbox;
+    public MessageMover(MessageManager messageManager, String username){
+        this.inbox = messageManager.retrieveUserInbox(username);
+        this.readInbox = messageManager.getReadInbox(username);
+        this.archivedInbox = messageManager.getArchivedInbox(username);
     }
 
     public void moveReadToUnread(Message message){
@@ -27,7 +25,6 @@ public class MessageMover {
             List<Message> m = inbox.get(from);
             m.add(message);
         }
-
     }
 
     public void moveUnreadToRead(Message message){
@@ -43,10 +40,6 @@ public class MessageMover {
         inbox.get(from).remove(message);//removing from unread
     }
 
-    public void moveArchivedToUnread(String from){
-        //think about if the user is both in unread and archived
-    }
-
     public void moveToArchived(Message message) {
         String from = message.getSender();
         if (inbox.containsKey(from)) {
@@ -58,6 +51,7 @@ public class MessageMover {
             archivedInbox.add(message);
         }
     }
+
     public void deleteOneMessage(String from, Message message){
         if (inbox.containsKey((from))){
             inbox.get(from).remove(message);
@@ -69,7 +63,7 @@ public class MessageMover {
     }
 
 
-    public void deleteConversation(String username, String from){
+    public void deleteConversation(String from){
         inbox.remove(from);
         readInbox.remove(from);
         archivedInbox.removeIf(message -> message.getSender().equals(from));
