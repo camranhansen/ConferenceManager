@@ -58,6 +58,24 @@ public class MessageManager {
         return inboxes.get(user);
     }
 
+    //ADDED:
+    public HashMap<String, List<Message>> getReadInbox(String username) {
+        if (!readInboxes.containsKey(username)) {
+            HashMap<String, List<Message>> hashmap = new HashMap<>();
+            readInboxes.put(username, hashmap);
+        }
+        return readInboxes.get(username);
+    }
+
+    //ADDED:
+    public List<Message> getArchivedInbox(String username) {
+        if(!archivedMessages.containsKey(username)){
+            List<Message> messages = new ArrayList<>();
+            archivedMessages.put(username, messages);
+        }
+        return archivedMessages.get(username);
+    }
+
     /**
      * Returns the messages sent from one user to another user.
      * @param user Username of the recipient.
