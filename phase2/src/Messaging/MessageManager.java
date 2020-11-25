@@ -36,17 +36,17 @@ public class MessageManager {
         Message msg = new Message(from, to, content);
         for (int i = 0; i < to.length; i++) {
             HashMap<String, List<Message>> userInbox = retrieveUserInbox(to[i]);
-            HashMap<String, List<Message>> unreadInbox = getUnreadInbox(to[i]);
+            HashMap<String, List<Message>> unreadUserInbox = getUnreadInbox(to[i]);
             if (!userInbox.containsKey(from)) {
                 ArrayList<Message> message = new ArrayList<>();
                 userInbox.put(from, message);
             }
-            if(!unreadInbox.containsKey(from)){
-                unreadInbox.put(from, new ArrayList<Message>());
+            if(!unreadUserInbox.containsKey(from)){
+                unreadUserInbox.put(from, new ArrayList<Message>());
             }
             List<Message> messagesFrom = userInbox.get(from);
             messagesFrom.add(msg);
-            unreadInbox.get(from).add(msg);
+            unreadUserInbox.get(from).add(msg);
 
         }
     }
@@ -78,7 +78,7 @@ public class MessageManager {
             HashMap<String, List<Message>> hashmap = new HashMap<>();
             unreadInboxes.put(username, hashmap);
         }
-        return readInboxes.get(username);
+        return unreadInboxes.get(username);
     }
 
     public List<Message> getUnreadFrom(String username, String from){
@@ -111,9 +111,13 @@ public class MessageManager {
                     readInbox.get(from).add(m);
                 }
             }
+        }else{
+            readInbox.put(from, messages);
         }
-        for (Message m: messages){
-            unreadInbox.get(from).remove(m);
+        if(unreadInbox.containsKey(from)){
+            for (Message m: messages){
+                unreadInbox.get(from).remove(m);
+            }
         }
         return retrieveUserInbox(user).get(from);
     }
