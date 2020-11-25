@@ -14,7 +14,6 @@ public class MessageManager {
     private HashMap<String, HashMap<String, List<Message>>> readInboxes;
     private HashMap<String, HashMap<String, List<Message>>> unreadInboxes;
     private HashMap<String, List<Message>> archivedMessages;
-    private MessageMover messageMover;
 
     /**
      * Instantiates messageManager
@@ -37,12 +36,17 @@ public class MessageManager {
         Message msg = new Message(from, to, content);
         for (int i = 0; i < to.length; i++) {
             HashMap<String, List<Message>> userInbox = retrieveUserInbox(to[i]);
+            HashMap<String, List<Message>> unreadInbox = getUnreadInbox(to[i]);
             if (!userInbox.containsKey(from)) {
                 ArrayList<Message> message = new ArrayList<>();
                 userInbox.put(from, message);
             }
+            if(!unreadInbox.containsKey(from)){
+                unreadInbox.put(from, new ArrayList<Message>());
+            }
             List<Message> messagesFrom = userInbox.get(from);
             messagesFrom.add(msg);
+            unreadInbox.get(from).add(msg);
 
         }
     }
@@ -69,6 +73,18 @@ public class MessageManager {
         return readInboxes.get(username);
     }
 
+    public HashMap<String, List<Message>> getUnreadInbox(String username){
+        if(!unreadInboxes.containsKey(username)){
+            HashMap<String, List<Message>> hashmap = new HashMap<>();
+            unreadInboxes.put(username, hashmap);
+        }
+        return readInboxes.get(username);
+    }
+
+    public List<Message> getUnreadFrom(String username, String from){
+        return getUnreadInbox(username).get(from);
+    }
+
     //ADDED:
     public List<Message> getArchivedInbox(String username) {
         if(!archivedMessages.containsKey(username)){
@@ -87,8 +103,17 @@ public class MessageManager {
     // only retrieveUserInboxFor move read message to unread
     public List<Message> retrieveUserInboxFor(String user, String from) {
         List<Message> messages = retrieveUserInbox(user).get(from);
-        for(Message m: messages){
-            this.moveToRead(user, from, m);
+        HashMap<String, List<Message>> readInbox = getReadInbox(user);
+        HashMap<String, List<Message>> unreadInbox = getUnreadInbox(user);
+        if (readInbox.containsKey(from)){
+            for(Message m: messages) {
+                if(!readInbox.get(from).contains(m)){
+                    readInbox.get(from).add(m);
+                }
+            }
+        }
+        for (Message m: messages){
+            unreadInbox.get(from).remove(m);
         }
         return retrieveUserInbox(user).get(from);
     }
@@ -196,121 +221,4 @@ public class MessageManager {
         return inboxes.keySet().iterator();
     }
 
-    public void moveToArchived(String username, Message message){
-        if(!archivedMessages.containsKey(username)){
-            List<Message> messages = new ArrayList<>();
-            messages.add(message);
-            archivedMessages.put(username, messages);
-        }else{
-            List<Message> messages = archivedMessages.get(username);
-            messages.add(message);
-        }
-    }
-
-    public List<Message> viewArchivedMessages(String username){
-        if(!archivedMessages.containsKey(username)){
-            return new ArrayList<Message>();
-        }else{
-            return archivedMessages.get(username);
-        }
-    }
-
-    public void deleteEntireInbox(String username){
-        inboxes.remove(username);
-        unreadInboxes.remove(username);
-        readInboxes.remove(username);
-        archivedMessages.remove(username);
-    }
-
-    public void deleteEntireConvo(String username, String from){
-        if(inboxes.containsKey(username)){
-            inboxes.get(username).remove(from);
-        }
-        if(unreadInboxes.containsKey(username)){
-            unreadInboxes.get(username).remove(from);
-        }
-        if(readInboxes.containsKey(username)){
-            readInboxes.get(username).remove(from);
-        }
-        if(archivedMessages.containsKey(username)){
-            List<Message> message = archivedMessages.get(username);
-            message.removeIf(m -> m.getSender().equals(from));
-        }
-
-    }
-
-    public void deleteOneMessage(String username, String from, Message message){
-        if(inboxes.containsKey(username)){
-            HashMap<String, List<Message>> hashmap = inboxes.get(username);
-            if(hashmap.containsKey(from)){
-                hashmap.get(from).remove(message);
-            }
-        }
-        if(unreadInboxes.containsKey(username)){
-            HashMap<String, List<Message>> hashmap = unreadInboxes.get(username);
-            if(hashmap.containsKey((from))){
-                hashmap.get(from).remove(message);
-            }
-        }
-        if(readInboxes.containsKey(username)){
-            HashMap<String, List<Message>> hashmap = readInboxes.get(username);
-            if(hashmap.containsKey((from))){
-                hashmap.get(from).remove(message);
-            }
-        }
-        if(archivedMessages.containsKey(username)){
-            archivedMessages.get(username).remove(message);
-        }
-    }
-
-    public void moveToRead(String username, String from, Message message){
-        if(!readInboxes.containsKey(username)){
-            HashMap<String, List<Message>> m = new HashMap<>();
-            readInboxes.put(username, m);
-        }
-        HashMap<String, List<Message>> m1 = readInboxes.get(username);
-        if (!m1.containsKey(from)){
-            List<Message> m3 = new ArrayList<>();
-            m3.add(message);
-            m1.put(from, m3);
-        }else{
-            m1.get(from).add(message);
-        }
-        if (unreadInboxes.containsKey(username)){
-            HashMap<String, List<Message>> hashmap = unreadInboxes.get(username);
-            if (hashmap.containsKey(from)) {
-                hashmap.get(from).remove(message);
-            }
-        }
-    }
-
-
-    public void moveToUnread(String username, String from, Message message){
-        if(!unreadInboxes.containsKey(username)){
-            HashMap<String, List<Message>> m = new HashMap<>();
-            unreadInboxes.put(username, m);
-        }
-        HashMap<String, List<Message>> m1 = unreadInboxes.get(username);
-        if (!m1.containsKey(from)){
-            List<Message> m3 = new ArrayList<>();
-            m3.add(message);
-            m1.put(from, m3);
-        }else{
-            m1.get(from).add(message);
-        }
-        if (readInboxes.containsKey(username)){
-            HashMap<String, List<Message>> hashmap = readInboxes.get(username);
-            if (hashmap.containsKey(from)) {
-                hashmap.get(from).remove(message);
-            }
-        }
-    }
-
-    public List<Message> viewUnreadFrom(String username, String from){
-        return unreadInboxes.get(username).get(from);
-    }
-
-    public HashMap<String, List<Message>> viewUnread(String username){
-        return unreadInboxes.get(username);
-    }
 }
