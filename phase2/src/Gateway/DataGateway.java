@@ -27,7 +27,7 @@ public interface DataGateway<K, V> extends Map<K, V> {
     List<V> retrieveByField(String field, String filter);
 
     /**
-     * Empties the table completely.
+     * Empties the table completely and fully.
      */
     void clear();
 }
