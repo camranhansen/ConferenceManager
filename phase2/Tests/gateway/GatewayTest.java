@@ -16,7 +16,7 @@ public class GatewayTest {
 
     String[][] table = new String[][] {
             {"Alicia", "Harrison", "Yosi"},
-            {"Gateway", "Test", "File"},
+            {"gateway", "Test", "File"},
             {"I\'m", "Very", "Bored"}
     };
 
