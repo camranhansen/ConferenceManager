@@ -64,10 +64,10 @@ public class EventManager {
         this.events.put(newParty.getId(), newParty);
     }
 
-    public void createMultiSpkEvent(List<String> speakerName, Instant time, String eventName, String room, int capacity){
-        Events newMultiSpkEvent = new MultiSpkEvent(speakerName, time, eventName, room, capacity);
-        this.events.put(newMultiSpkEvent.getId(), newMultiSpkEvent);
-    }
+//    public void createMultiSpkEvent(List<String> speakerName, Instant time, String eventName, String room, int capacity){
+//        Events newMultiSpkEvent = new MultiSpkEvent(speakerName, time, eventName, room, capacity);
+//        this.events.put(newMultiSpkEvent.getId(), newMultiSpkEvent);
+//    }
 
     /**
      * Defines a new event when an existing event is modified and being replaced by the new one.
@@ -89,10 +89,10 @@ public class EventManager {
         this.events.put(newParty.getId(), newParty);
     }
 
-    private void createEditedMultiSpkEvent(List<String> speakerName, Instant time, String eventName, List<String> participants, String room, int capacity){
-        Events newMultiSpkEvent = new MultiSpkEvent(speakerName, time, eventName, participants, room, capacity);
-        this.events.put(newMultiSpkEvent.getId(), newMultiSpkEvent);
-    }
+//    private void createEditedMultiSpkEvent(List<String> speakerName, Instant time, String eventName, List<String> participants, String room, int capacity){
+//        Events newMultiSpkEvent = new MultiSpkEvent(speakerName, time, eventName, participants, room, capacity);
+//        this.events.put(newMultiSpkEvent.getId(), newMultiSpkEvent);
+//    }
 
     /**
      * Deletes the event identified by an event ID from the collection of all events.
@@ -244,17 +244,17 @@ public class EventManager {
      * @param id ID of the selected event.
      * @param newSpeaker Username of the new speaker.
      */
-    public void editSpeakerName(String id, List<String> newSpeaker){
-        Events value = this.events.get(id);
-        if(this.events.get(id).getType().equals("E")) {
-            createEditedEvent(newSpeaker, value.getEventTime(), value.getEventName(), value.getParticipants(),
-                    value.getRoom(), value.getCapacity());
-        }
-        else{
-            createEditedMultiSpkEvent(newSpeaker, value.getEventTime(), value.getEventName(), value.getParticipants(),
-                    value.getRoom(), value.getCapacity());
-        }
-    }
+//    public void editSpeakerName(String id, List<String> newSpeaker){
+//        Events value = this.events.get(id);
+//        if(this.events.get(id).getType().equals("E")) {
+//            createEditedEvent(newSpeaker, value.getEventTime(), value.getEventName(), value.getParticipants(),
+//                    value.getRoom(), value.getCapacity());
+//        }
+//        else{
+////            createEditedMultiSpkEvent(newSpeaker, value.getEventTime(), value.getEventName(), value.getParticipants(),
+////                    value.getRoom(), value.getCapacity());
+////        }
+////    }
 
 
     /**

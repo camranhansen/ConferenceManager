@@ -10,7 +10,7 @@ import users.UserManager;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-
+@Deprecated
 public class EventController implements SubController {
     private EventManager eventManager;
     private EventPresenter eventPresenter;
