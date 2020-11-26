@@ -152,5 +152,14 @@ public class MessageManagerTest {
         assertEquals("hello", mm.getUnreadFrom("recipient", "sender").get(0).getContent());
         assertEquals(0, mm.getReadInbox("recipient").size());
     }
+
+    @Test
+    public void testSendMessageUnreadInbox2(){
+        MessageManager mm = new MessageManager();
+        mm.sendMessage("sender", "hello", "recipient");
+        mm.sendMessage("sender", "hi", "recipient","recipient2");
+        assertEquals("hi", mm.getUnreadFrom("recipient", "sender").get(1).getContent());
+        assertEquals("hi", mm.getUnreadFrom("recipient2", "sender").get(0).getContent());
+    }
 }
 

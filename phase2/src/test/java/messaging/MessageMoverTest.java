@@ -29,7 +29,7 @@ public class MessageMoverTest {
         String from = "attendee2";
         MessageManager messageManager = new MessageManager();
         messageManager.sendMessage(from, "Hi", username);
-        HashMap<String, List<Message>> unread = messageManager.retrieveUserInbox(username);
+        HashMap<String, List<Message>> unread = messageManager.getUnreadInbox(username);
         HashMap<String, List<Message>> read = messageManager.getReadInbox(username);
         MessageMover messageMover = new MessageMover(messageManager, username);
         assertTrue(unread.containsKey(from));
@@ -103,13 +103,13 @@ public class MessageMoverTest {
         Message message = new Message(from, users, "hello");
         ArrayList<Message> messages = new ArrayList<>();
         messages.add(message);
-        HashMap<String, List<Message>> unread = messageManager.retrieveUserInbox(username);
+        HashMap<String, List<Message>> unread = messageManager.getUnreadInbox(username);
         unread.put(from, messages);
         MessageMover messageMover = new MessageMover(messageManager, username);
         assertEquals(message, unread.get(from).get(0));
         messageMover.deleteOneMessage(from, message);
         assertTrue(unread.get(from).isEmpty());
-        assertTrue(messageManager.retrieveUserInbox(username).get(from).isEmpty());
+        assertTrue(messageManager.getUnreadInbox(username).get(from).isEmpty());
     }
 
     @Test
@@ -154,7 +154,7 @@ public class MessageMoverTest {
         Message message = new Message(from, users, "hello");
         ArrayList<Message> messages = new ArrayList<>();
         messages.add(message);
-        HashMap<String, List<Message>> unread = messageManager.retrieveUserInbox(username);
+        HashMap<String, List<Message>> unread = messageManager.getUnreadInbox(username);
         List<Message> archived = messageManager.getArchivedInbox(username);
         unread.put(from, messages);
         MessageMover messageMover = new MessageMover(messageManager, username);
@@ -175,7 +175,7 @@ public class MessageMoverTest {
         Message message = new Message(from, users, "hello");
         ArrayList<Message> messages = new ArrayList<>();
         messages.add(message);
-        HashMap<String, List<Message>> unread = messageManager.retrieveUserInbox(username);
+        HashMap<String, List<Message>> unread = messageManager.getUnreadInbox(username);
         HashMap<String, List<Message>> read = messageManager.getReadInbox(username);
         List<Message> archived = messageManager.getArchivedInbox(username);
         unread.put(from, messages);
@@ -189,5 +189,34 @@ public class MessageMoverTest {
         assertTrue(unread.isEmpty());
         assertTrue(read.isEmpty());
         assertTrue(archived.isEmpty());
+    }
+
+    @Test
+    public void testMoveToReadUnread(){
+        Message message = new Message("sender", new String[]{"recipient"}, "hello");
+        MessageManager mm = new MessageManager();
+        mm.sendMessage("sender", "hello", "recipient");
+        mm.retrieveUserInboxFor("recipient", "sender");
+        MessageMover messageMover = new MessageMover(mm, "recipient");
+        messageMover.moveReadToUnread(message);
+        assertEquals("hello", mm.getUnreadInbox("recipient").get("sender").get(0).getContent());
+        assertEquals(0, mm.getReadInbox("recipient").get("sender").size());
+        messageMover.moveUnreadToRead(message);
+        assertEquals("hello", mm.getReadInbox("recipient").get("sender").get(0).getContent());
+        assertEquals(0, mm.getUnreadInbox("recipient").get("sender").size());
+
+    }
+
+
+    @Test
+    public void testMoveRemoveMessageFromArchived(){
+        Message message = new Message("sender", new String[]{"recipient"}, "hello");
+        MessageManager mm = new MessageManager();
+        mm.sendMessage("sender", "hello", "recipient");
+        MessageMover messageMover = new MessageMover(mm, "recipient");
+        messageMover.moveToArchived(message);
+        assertEquals("hello", mm.getArchivedInbox("recipient").get(0).getContent());
+        messageMover.removeFromArchived(message);
+        assertEquals(0, mm.getArchivedInbox("recipient").size());
     }
 }

@@ -10,14 +10,22 @@ public class MessageMover {
     private List<Message> archivedInbox;
 
     public MessageMover(MessageManager messageManager, String username){
-        this.inbox = messageManager.retrieveUserInbox(username);
+        this.inbox = messageManager.getUnreadInbox(username);
         this.readInbox = messageManager.getReadInbox(username);
         this.archivedInbox = messageManager.getArchivedInbox(username);
     }
 
     public void moveReadToUnread(Message message){
         String from = message.getSender();
-        readInbox.get(from).remove(message);
+        List<Message> messages = new ArrayList<>();
+        for(Message m: readInbox.get(from)){
+            if (m.getContent().equals(message.getContent()) && m.getTimeSent().toString().substring(0,19).equals(message.getTimeSent().toString().substring(0,19))){
+                messages.add(m);
+            }
+        }
+        for (Message m: messages){
+            readInbox.get(from).remove(m);
+        }
         if(!inbox.containsKey(from)) {
             List<Message> m = new ArrayList<>();
             inbox.put(from, m);
@@ -29,6 +37,15 @@ public class MessageMover {
 
     public void moveUnreadToRead(Message message){
         String from = message.getSender();
+        List<Message> messages1 = new ArrayList<>();
+        for(Message m: inbox.get(from)){
+            if (m.getContent().equals(message.getContent()) && m.getTimeSent().toString().substring(0,19).equals(message.getTimeSent().toString().substring(0,19))){
+                messages1.add(m);
+            }
+        }
+        for (Message m: messages1){
+            inbox.get(from).remove(m);
+        }
         if (!readInbox.containsKey(from)){
             List<Message> messages = new ArrayList<>();
             messages.add(message);
@@ -37,7 +54,6 @@ public class MessageMover {
         else{
             readInbox.get(from).add(message);
         }
-        inbox.get(from).remove(message);//removing from unread
     }
 
     public void moveToArchived(Message message) {
