@@ -1,16 +1,30 @@
 package menu;
 
 
-public abstract class MenuLayer {
-    public String flag;
+public class MenuLayer {
+    public MenuFlag flag;
+
+    public MenuLayer(){
+        this.flag = MenuFlag.CONTINUE;
+    }
+
+    public MenuLayer(MenuFlag flag){
+        this.flag = flag;
+
+    }
 
 
-    abstract public MenuLayer run();
+    public MenuLayer run(){
+        //Note that this has to be overridden
+        return new MenuLayer(MenuFlag.EXIT);
+    }
 
-    abstract public String toString();
 
-    public String getFlag(){
+    public MenuFlag getFlag(){
         return flag;
     }
 
 }
+
+
+

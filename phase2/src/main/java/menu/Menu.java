@@ -5,18 +5,34 @@ import java.util.Stack;
 public class Menu {
 
     public Stack<MenuLayer> menuLayerStack;
+    public static MenuLayer exitMenuLayer;
+
+    public Menu(MenuLayer bottomLayer){
+        this.menuLayerStack = new Stack<>();
+        this.menuLayerStack.push(bottomLayer);
+        exitMenuLayer = new MenuLayer(MenuFlag.EXIT);
+    }
 
     public void runTopMenuLayer(){
-        //TODO flag logic.
-        //if flag is back1...
-        // if flag is exit_to_main...
-        MenuLayer newLayer = menuLayerStack.peek().run();
-        if (newLayer == null){
-            goBackToMainScreen();
-        }else{
-            menuLayerStack.push(newLayer);
-            runTopMenuLayer();
+
+        MenuLayer newLayer = menuLayerStack.peek();
+        switch (newLayer.getFlag()){
+
+            case EXIT:
+                System.out.println("program should exit now?");
+                break;
+            case LOGIN:
+                //
+            case MAIN:
+                //
+            case BACK:
+                //
+            case CONTINUE:
+                menuLayerStack.push(newLayer.run());
+                runTopMenuLayer();
+
         }
+
     }
 
     public void goBackToMainScreen(){
