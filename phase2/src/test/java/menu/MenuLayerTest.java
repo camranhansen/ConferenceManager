@@ -1,6 +1,7 @@
 package menu;
 
 import org.junit.Test;
+import org.testng.xml.dom.ParentSetter;
 
 import static org.junit.Assert.*;
 
@@ -9,7 +10,7 @@ public class MenuLayerTest {
     @Test
     public void testDefaultRun() {
         MenuLayer m1 = new MenuLayer();
-        assertEquals(MenuFlag.EXIT,m1.run().getFlag());
+        assertEquals(GoalFlag.EXIT,m1.run().getGoalFlag());
     }
 
     @Test
@@ -19,10 +20,10 @@ public class MenuLayerTest {
             public MenuLayer run(){
                 //You would put the code that actually does the changes to the program state in here.
                 //E.g. render a menu, etc.
-                return new MenuLayer(MenuFlag.LOGIN);
-            };
+                return new MenuLayer(GoalFlag.LOGIN);
+            }
         };
-        assertEquals(MenuFlag.LOGIN,m1.run().getFlag());
+        assertEquals(GoalFlag.LOGIN,m1.run().getGoalFlag());
     }
 
 }

@@ -1,9 +1,9 @@
 package menu;
 
-public enum MenuFlag {
+public enum GoalFlag {
     CONTINUE,
     BACK,
     MAIN,
     LOGIN,
-    EXIT,;
+    EXIT,
 };

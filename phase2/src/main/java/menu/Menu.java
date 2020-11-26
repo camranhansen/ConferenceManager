@@ -10,13 +10,13 @@ public class Menu {
     public Menu(MenuLayer bottomLayer){
         this.menuLayerStack = new Stack<>();
         this.menuLayerStack.push(bottomLayer);
-        exitMenuLayer = new MenuLayer(MenuFlag.EXIT);
+        exitMenuLayer = new MenuLayer(GoalFlag.EXIT);
     }
 
     public void runTopMenuLayer(){
 
         MenuLayer newLayer = menuLayerStack.peek();
-        switch (newLayer.getFlag()){
+        switch (newLayer.getGoalFlag()){
 
             case EXIT:
                 System.out.println("program should exit now?");
@@ -36,7 +36,7 @@ public class Menu {
     }
 
     public void goBackToMainScreen(){
-        //Get rid of all elements in menuLayerStack except for main screen and login.
+
     }
 
 
