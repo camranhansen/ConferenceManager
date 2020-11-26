@@ -5,12 +5,11 @@ import java.util.Stack;
 public class Menu {
 
     public Stack<MenuLayer> menuLayerStack;
-    public static MenuLayer exitMenuLayer;
+    public static MenuLayer exitMenuLayer = new MenuLayer(GoalFlag.EXIT);
 
     public Menu(MenuLayer bottomLayer){
         this.menuLayerStack = new Stack<>();
         this.menuLayerStack.push(bottomLayer);
-        exitMenuLayer = new MenuLayer(GoalFlag.EXIT);
     }
 
     public void runTopMenuLayer(){
