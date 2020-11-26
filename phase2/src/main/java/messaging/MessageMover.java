@@ -52,6 +52,10 @@ public class MessageMover {
         }
     }
 
+    public void removeFromArchived(Message message){
+        archivedInbox.remove(message);
+    }
+
     public void deleteOneMessage(String from, Message message){
         if (inbox.containsKey((from))){
             inbox.get(from).remove(message);
