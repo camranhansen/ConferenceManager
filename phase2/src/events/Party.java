@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Event extends Events {
+public class Party extends Events {
     private List<String> speakerName;
     private Instant time;
     private String eventName;
@@ -14,24 +14,25 @@ public class Event extends Events {
     private String id;
     private String type;
 
-    public Event(List<String> speakerName, Instant time, String eventName, String room, int capacity ){
-        this.speakerName = speakerName;
+    public Party(Instant time, String eventName, String room, int capacity ){
         this.time = time;
         this.eventName = eventName;
-        this.participants = new ArrayList<>();
         this.room = room;
         this.capacity = capacity;
+        this.participants = new ArrayList<>();
+        this.type = "P";
         this.id = room + time.toString();
-        this.type = "E";
+        this.speakerName = new ArrayList<>();
     }
 
-    public Event(List<String> speakerName, Instant time, String eventName, List<String> participants, String room, int capacity) {
-        this(speakerName, time, eventName, room, capacity);
+    public Party(Instant time, String eventName, List<String> participants, String room, int capacity){
+        this(time, eventName, room, capacity);
         this.participants = participants;
     }
 
     public String getType(){
         return this.type;
     }
+
 
 }

@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Event extends Events {
+public class MultiSpkEvent extends Events{
     private List<String> speakerName;
     private Instant time;
     private String eventName;
@@ -14,7 +14,7 @@ public class Event extends Events {
     private String id;
     private String type;
 
-    public Event(List<String> speakerName, Instant time, String eventName, String room, int capacity ){
+    public MultiSpkEvent(List<String> speakerName, Instant time, String eventName, String room, int capacity ){
         this.speakerName = speakerName;
         this.time = time;
         this.eventName = eventName;
@@ -22,10 +22,10 @@ public class Event extends Events {
         this.room = room;
         this.capacity = capacity;
         this.id = room + time.toString();
-        this.type = "E";
+        this.type = "M";
     }
 
-    public Event(List<String> speakerName, Instant time, String eventName, List<String> participants, String room, int capacity) {
+    public MultiSpkEvent(List<String> speakerName, Instant time, String eventName, List<String> participants, String room, int capacity){
         this(speakerName, time, eventName, room, capacity);
         this.participants = participants;
     }
@@ -33,5 +33,4 @@ public class Event extends Events {
     public String getType(){
         return this.type;
     }
-
 }
