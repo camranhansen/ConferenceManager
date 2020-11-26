@@ -1,8 +1,6 @@
 package menu;
 
 import org.junit.Test;
-import org.testng.xml.dom.ParentSetter;
-
 import static org.junit.Assert.*;
 
 public class MenuLayerTest {
