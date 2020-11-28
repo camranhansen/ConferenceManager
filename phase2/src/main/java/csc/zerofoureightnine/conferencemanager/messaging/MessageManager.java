@@ -3,6 +3,9 @@ package csc.zerofoureightnine.conferencemanager.messaging;
 import java.time.Instant;
 import java.util.*;
 
+import csc.zerofoureightnine.conferencemanager.gateway.SQLMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMapping;
+
 
 //TODO: add a constructor for inboxes that already exist
 
@@ -11,6 +14,8 @@ public class MessageManager {
      * inboxes stores a hashmap that maps recipients' usernames to a hashmap that maps the senders' usernames to a list of
      * Message sent by the sender to the recipient.
      */
+    private SQLMap<String, Message> inbox;
+
     private HashMap<String, HashMap<String, List<Message>>> inboxes;
     private HashMap<String, HashMap<String, List<Message>>> readInboxes;
     private HashMap<String, HashMap<String, List<Message>>> unreadInboxes;

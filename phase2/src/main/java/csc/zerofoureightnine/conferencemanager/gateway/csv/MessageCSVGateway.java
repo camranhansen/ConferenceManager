@@ -1,4 +1,4 @@
-package csc.zerofoureightnine.conferencemanager.gateway;
+package csc.zerofoureightnine.conferencemanager.gateway.csv;
 
 import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
 
