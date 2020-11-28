@@ -54,20 +54,11 @@ public class EventManager {
      * @param room Room which the event is being held in.
      * @param capacity Maximum capacity of the event.
      */
-    public void createEvent(List<String> speakerName, Instant eventTime, String eventName, String room, int capacity){
-        Events newEvent = new Event(speakerName, eventTime, eventName, room, capacity);
+    public void createEvent(List<String> speakerName, Instant eventTime, String eventName, String room, int capacity, EventType type){
+        Events newEvent = new Events(speakerName, eventTime, eventName, room, capacity, type);
         this.events.put(newEvent.getId(), newEvent);
     }
 
-    public void createParty(Instant time, String eventName, String room, int capacity){
-        Events newParty = new Party(time, eventName, room, capacity);
-        this.events.put(newParty.getId(), newParty);
-    }
-
-//    public void createMultiSpkEvent(List<String> speakerName, Instant time, String eventName, String room, int capacity){
-//        Events newMultiSpkEvent = new MultiSpkEvent(speakerName, time, eventName, room, capacity);
-//        this.events.put(newMultiSpkEvent.getId(), newMultiSpkEvent);
-//    }
 
     /**
      * Defines a new event when an existing event is modified and being replaced by the new one.
@@ -79,20 +70,11 @@ public class EventManager {
      * @param room Room which the event is being held in.
      * @param capacity Maximum capacity of the event.
      */
-    private void createEditedEvent(List<String> speakerName, Instant eventTime, String eventName, List<String> participants, String room, int capacity){
-        Events newEvent = new Event(speakerName, eventTime, eventName, participants, room, capacity);
+    private void createEditedEvent(List<String> speakerName, Instant eventTime, String eventName, List<String> participants, String room, int capacity, EventType type){
+        Events newEvent = new Events(speakerName, participants,  eventTime, eventName, room, capacity, type);
         this.events.put(newEvent.getId(), newEvent);
     }
 
-    private void createEditedParty(Instant time, String eventName, List<String> participants, String room, int capacity){
-        Events newParty = new Party(time, eventName, participants, room, capacity);
-        this.events.put(newParty.getId(), newParty);
-    }
-
-//    private void createEditedMultiSpkEvent(List<String> speakerName, Instant time, String eventName, List<String> participants, String room, int capacity){
-//        Events newMultiSpkEvent = new MultiSpkEvent(speakerName, time, eventName, participants, room, capacity);
-//        this.events.put(newMultiSpkEvent.getId(), newMultiSpkEvent);
-//    }
 
     /**
      * Deletes the event identified by an event ID from the collection of all events.
@@ -150,7 +132,6 @@ public class EventManager {
      * @return A list of events' IDs .
      */
     public List<String> getAvailableEvents(String username){
-        //Return a list of event IDs
         List<String> myEvents = getUserEvents(username);
         List<Instant> time = myEventTime(myEvents);
         List<String> availableEvents = new ArrayList<>();
@@ -244,17 +225,11 @@ public class EventManager {
      * @param id ID of the selected event.
      * @param newSpeaker Username of the new speaker.
      */
-//    public void editSpeakerName(String id, List<String> newSpeaker){
-//        Events value = this.events.get(id);
-//        if(this.events.get(id).getType().equals("E")) {
-//            createEditedEvent(newSpeaker, value.getEventTime(), value.getEventName(), value.getParticipants(),
-//                    value.getRoom(), value.getCapacity());
-//        }
-//        else{
-////            createEditedMultiSpkEvent(newSpeaker, value.getEventTime(), value.getEventName(), value.getParticipants(),
-////                    value.getRoom(), value.getCapacity());
-////        }
-////    }
+    public void editSpeakerName(String id, List<String> newSpeaker){
+        Events value = this.events.get(id);
+        createEditedEvent(newSpeaker, value.getEventTime(), value.getEventName(), value.getParticipants(),
+                value.getRoom(), value.getCapacity(), value.getType());
+    }
 
 
     /**
@@ -265,7 +240,7 @@ public class EventManager {
     public void editEventName(String id, String newEventName){
         Events value = this.events.get(id);
         createEditedEvent(value.getSpeakerName(), value.getEventTime(), newEventName, value.getParticipants(),
-                value.getRoom(), value.getCapacity());
+                value.getRoom(), value.getCapacity(), value.getType());
     }
     /**
      * Changes the room of an event to a new one.
@@ -275,7 +250,7 @@ public class EventManager {
     public void editRoom(String id, String newRoom){
         Events value = this.events.get(id);
         createEditedEvent(value.getSpeakerName(), value.getEventTime(), value.getEventName(), value.getParticipants(),
-                newRoom, value.getCapacity());
+                newRoom, value.getCapacity(), value.getType());
         deleteEvent(id);
     }
 
@@ -287,7 +262,7 @@ public class EventManager {
     public void editCapacity(String id, int newCapacity){
         Events value = this.events.get(id);
         createEditedEvent(value.getSpeakerName(), value.getEventTime(), value.getEventName(), value.getParticipants(),
-                value.getRoom(), newCapacity);
+                value.getRoom(), newCapacity, value.getType());
     }
     /**
      * Changes the starting time of an event to a new one.
@@ -297,7 +272,7 @@ public class EventManager {
     public void editTime(String id, Instant newTime){
         Events value = this.events.get(id);
         createEditedEvent(value.getSpeakerName(), newTime, value.getEventName(), value.getParticipants(),
-                value.getRoom(), value.getCapacity());
+                value.getRoom(), value.getCapacity(), value.getType());
         deleteEvent(id);
     }
 
@@ -333,7 +308,7 @@ public class EventManager {
         String participants = event.getParticipants().toString();
         String room = event.getRoom();
         String capacity = String.valueOf(event.getCapacity());
-        String type = event.getType();
+        String type = event.getType().toString();
         return new String[]{id, speakerName, time, eventName, participants, room, capacity, type};
     }
 
@@ -352,15 +327,16 @@ public class EventManager {
         String participants = eventData[4];
         String room = eventData[5];
         int capacity = Integer.parseInt(eventData[6]);
+        EventType type = EventType.valueOf(eventData[7]);
         if (!participants.equals("[]")) {
             String participants1 = participants.substring(1, participants.length()-1);
             String[] list = participants1.split(",");
             if (!this.events.containsKey(id)){
-                Event event = new Event(spk, time, eventName, Arrays.asList(list), room, capacity);
+                Events event = new Events(spk, Arrays.asList(list), time, eventName, room, capacity, type);
                 this.events.put(id, event);
             }
         }else{
-            this.createEvent(spk, time, eventName, room, capacity);
+            this.createEvent(spk, time, eventName, room, capacity, type);
         }
 
     }
@@ -422,6 +398,10 @@ public class EventManager {
      */
     public int getCapacity(String id){
         return events.get(id).getCapacity();
+    }
+
+    public EventType getEventType(String id){
+        return events.get(id).getType();
     }
 
 
