@@ -15,12 +15,16 @@ public class UserData {
     public int id;
 
     @ManyToMany(mappedBy = "recipients")
-    private Set<MessageData> inboxes = new HashSet<>();
+    private Set<MessageData> messages = new HashSet<>();
 
     public void addMessageData(MessageData messageData) {
-        if (inboxes.add(messageData)) {
+        if (messages.add(messageData)) {
             messageData.addRecipient(this);
         }
+    }
+
+    public Set<MessageData> getMessages() {
+        return messages;
     }
 
     public int getId() {

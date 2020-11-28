@@ -8,7 +8,7 @@ import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 public class SQLMapping {
     private SessionFactory factory;
 
-    private SQLMapping() {
+    public SQLMapping() {
         factory = new Configuration().
                 addAnnotatedClass(MessageData.class).
                 buildSessionFactory();

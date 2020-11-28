@@ -1,6 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -15,7 +16,7 @@ import javax.persistence.Table;
 public class MessageData {
 
     @Id
-    private String id;
+    private int id;
 
     @Column(name = "content")
     private String content;
@@ -68,8 +69,25 @@ public class MessageData {
     public void setTimeSent(Instant timeSent) {
         this.timeSent = timeSent;
     }
-    
-    public String getId() {
+
+    public int getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MessageData that = (MessageData) o;
+        return id == that.id &&
+                content.equals(that.content) &&
+                timeSent.equals(that.timeSent) &&
+                sender.equals(that.sender) &&
+                recipients.equals(that.recipients);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, content, timeSent, sender, recipients);
     }
 }
