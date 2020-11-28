@@ -169,6 +169,53 @@ public class MessageManager {
         return allMessages.toString();
     }
 
+
+    public String archivedMessagesToString(String username) {
+        if(getArchivedInbox(username).isEmpty()){
+            return "You have no archived messages";
+        }
+        List<Message> messages = getArchivedInbox(username);
+        StringBuilder string = new StringBuilder();
+        for (Message m: messages){
+            string.append(m.getSender());
+            string.append(": ");
+            string.append(m.getContent());
+            string.append("\n");
+        }
+        return string.toString();
+    }
+
+
+    public String unreadInboxToString(String username){
+        if (getUnreadInbox(username).isEmpty()){
+            return "You have no unread messages";
+        }
+        HashMap<String, List<Message>> unread = getUnreadInbox(username);
+        StringBuilder string = new StringBuilder();
+        for (String from: unread.keySet()){
+            string.append(singleUnreadInboxToString(username, from));
+            string.append("\n");
+        }
+        return string.toString();
+    }
+
+
+    public String singleUnreadInboxToString(String username, String from){
+        HashMap<String, List<Message>> unread = getUnreadInbox(username);
+        if (!unread.containsKey(from)){
+            return "You have no unread messages from "+from;
+        }
+        List<Message> unreadFrom = getUnreadFrom(username, from);
+        StringBuilder string = new StringBuilder(from);
+        string.append(": ");
+        for (Message message: unreadFrom){
+            string.append(message.getContent());
+            string.append(", ");
+        }
+        return string.substring(0, string.length()-2);
+    }
+
+
     /**
      * Returns a list of the information of all message sent to the user including sender, sent time, content, and all
      * recipients.
