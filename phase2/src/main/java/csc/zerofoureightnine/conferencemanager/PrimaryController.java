@@ -3,7 +3,7 @@ package csc.zerofoureightnine.conferencemanager;
 import csc.zerofoureightnine.conferencemanager.events.EventController;
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.gateway.EventCSVGateway;
-import csc.zerofoureightnine.conferencemanager.gateway.MessageGateway;
+import csc.zerofoureightnine.conferencemanager.gateway.MessageCSVGateway;
 import csc.zerofoureightnine.conferencemanager.gateway.UserCSVGateway;
 import csc.zerofoureightnine.conferencemanager.menu.MenuController;
 import csc.zerofoureightnine.conferencemanager.menu.SubController;
@@ -18,7 +18,7 @@ import java.util.List;
 public class PrimaryController {
     private EventCSVGateway eventGateway;
     private UserCSVGateway userGateway;
-    private MessageGateway messageGateway;
+    private MessageCSVGateway messageCSVGateway;
     private EventController eventController;
     private UserController userController;
     private MessageController messageController;
@@ -34,7 +34,7 @@ public class PrimaryController {
         userGateway = new UserCSVGateway();
         messageManager = new MessageManager();
         eventManager = new EventManager();
-        messageGateway = new MessageGateway(messageManager);
+        messageCSVGateway = new MessageCSVGateway(messageManager);
         userManager = new UserManager(new HashMap<>());
         userController = new UserController(userManager);
         eventController = new EventController(eventManager, userManager);
@@ -47,7 +47,7 @@ public class PrimaryController {
         try {
             this.eventGateway.readEventsFromGateway(eventManager);
             this.userGateway.readUsersFromGateway(userManager);
-            this.messageGateway.readAllUsers();
+            this.messageCSVGateway.readAllUsers();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Failed to read from files");
@@ -59,7 +59,7 @@ public class PrimaryController {
         try {
             this.eventGateway.saveEvents(eventManager);
             this.userGateway.saveAllUsers(userManager);
-            this.messageGateway.saveAllUsers();
+            this.messageCSVGateway.saveAllUsers();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Failed to save to files");

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class MessageGateway {
+public class MessageCSVGateway {
     private static final String directory = "data/user/inboxes/";
     private class UserMessageCSVGateway extends CSVGateway {
         public UserMessageCSVGateway(String user) {
@@ -19,7 +19,7 @@ public class MessageGateway {
     }
     MessageManager manager;
 
-    public MessageGateway(MessageManager manager) {
+    public MessageCSVGateway(MessageManager manager) {
         this.manager = manager;
     }
 
