@@ -1,4 +1,4 @@
-package csc.zerofoureightnine.conferencemanager.gateway;
+package csc.zerofoureightnine.conferencemanager.gateway.csv;
 
 import org.junit.AfterClass;
 import org.junit.Before;
