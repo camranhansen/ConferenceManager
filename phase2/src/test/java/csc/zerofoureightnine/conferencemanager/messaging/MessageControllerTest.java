@@ -1,6 +1,5 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
-import csc.zerofoureightnine.conferencemanager.events.Event;
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.users.Permission;
 import csc.zerofoureightnine.conferencemanager.users.Template;
