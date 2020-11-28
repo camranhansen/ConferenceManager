@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+@Deprecated
 public class EventCSVGateway extends CSVGateway {
 
     public EventCSVGateway() {

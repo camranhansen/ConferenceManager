@@ -1,8 +1,10 @@
 package csc.zerofoureightnine.conferencemanager.datacollection;
 
 public class DataCollectionPresenter {
-
-    public void printStatsPage(RuntimeDataHolder, StoredDataGetter){
+    //TODO: Finish implementing this
+    /*
+    public void printStatsPage(RuntimeDataHolder RuntimeDataHolder, StoredDataGetter storedDataGetter){
         System.out.println(StoredDataGetter.toString() + RuntimeDataHolder.toString());
     }
+    */
 }

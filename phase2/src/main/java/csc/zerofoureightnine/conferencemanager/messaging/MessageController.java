@@ -6,6 +6,10 @@ import java.util.List;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.menu.InputPrompter;
+import csc.zerofoureightnine.conferencemanager.menu.Option;
+import csc.zerofoureightnine.conferencemanager.menu.SubController;
+import csc.zerofoureightnine.conferencemanager.users.Permission;
+import csc.zerofoureightnine.conferencemanager.users.Template;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 
 public class MessageController implements SubController {
@@ -135,10 +139,13 @@ public class MessageController implements SubController {
                 @Override
                 public void run() {
                     String eventId = inputPrompter.getResponse("Enter event id to send to");
+                    //TODO Implement changes
+                    /*
                     while (!eventManager.getEvents().containsKey(eventId) && !exiting) {
                         messagePresenter.noEvent();
                         eventId = inputPrompter.getResponse("Enter event id to send to");
                     }
+                    */
                     if (!getSpeakerEventIds(from).contains(eventId) && !exiting) {
                         messagePresenter.notSpeakerEvent();
                     } else if (!exiting) {

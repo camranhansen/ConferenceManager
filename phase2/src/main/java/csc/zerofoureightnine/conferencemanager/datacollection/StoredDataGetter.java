@@ -1,4 +1,4 @@
-package datacollection;
+package csc.zerofoureightnine.conferencemanager.datacollection;
 
 public class StoredDataGetter {
 }
