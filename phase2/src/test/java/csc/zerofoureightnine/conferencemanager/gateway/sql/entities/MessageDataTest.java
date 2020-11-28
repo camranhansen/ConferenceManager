@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class MessageDataTests {
+public class MessageDataTest {
 
     public void testAddingRecipient() {
         MessageData messageData = new MessageData();

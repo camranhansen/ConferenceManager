@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 
-public class MessageSQLGatewayTests {
+public class MessageSQLGatewayTest {
     SQLMapping mapping;
 
     @BeforeClass
