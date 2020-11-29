@@ -1,19 +1,19 @@
-package csc.zerofoureightnine.conferencemanager.specialrequests;
+package csc.zerofoureightnine.conferencemanager.users;
 import java.util.UUID;
 
 public class SpecialRequest {
-    String requestingUser;
-    UUID requestID;
-    String header;
-    String description;
-    boolean addressed;
+    private String requestingUser;
+    private UUID requestID;
+    private String header;
+    private String description;
+    private boolean addressed;
 
     public SpecialRequest(String requestingUser, String header, String description, boolean addressed) {
         this.requestingUser = requestingUser;
         this.header = header;
         this.description = description;
         this.addressed = addressed;
-        this.requestID = UUID.fromString(requestingUser + header + description);
+        this.requestID = UUID.randomUUID();
     }
 
     public UUID getRequestID() {
