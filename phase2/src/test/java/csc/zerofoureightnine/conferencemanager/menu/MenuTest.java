@@ -4,7 +4,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.omg.CORBA.Current;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
