@@ -11,11 +11,24 @@ public class InputPresenter {
         }
     }
 
-    public void errorMessage(){
+    public void errorMessageForOptions(){
         System.out.println("Please make a selection by typing the options' corresponding integer.");
     }
 
     public void printPrompt(String prompt){
         System.out.println(prompt+": ");
+    }
+
+    public void doesNotExist(String invalid){
+        System.out.println(invalid+"does not exist. Please try again.");
+    }
+
+    //Separate class??
+    public void isFull(String isFull){
+        System.out.println(isFull + "is full.");
+    }
+
+    public void alreadyEnrolled(String in){
+        System.out.println("You've already enrolled in" + in);
     }
 }
