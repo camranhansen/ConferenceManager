@@ -12,7 +12,7 @@ public class SQLTest {
     @Test
     public void testSQLDatabaseConnection() throws ClassNotFoundException, SQLException {
         Class.forName("org.hsqldb.jdbc.JDBCDriver");
-        Connection c = DriverManager.getConnection("jdbc:hsqldb:file:db/data", "", "");
+        Connection c = DriverManager.getConnection("jdbc:hsqldb:file:db/data", "SA", "");
         assertTrue(c.isValid(100));
     }
 }
