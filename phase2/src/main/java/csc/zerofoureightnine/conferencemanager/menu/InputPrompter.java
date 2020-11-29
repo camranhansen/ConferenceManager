@@ -39,15 +39,15 @@ public class InputPrompter {
         String userInput =  scanner.nextLine();
 
         String input = userInput.trim();
-        while (! inputCheck(options, input)) {
+        while (! optionInputCheck(options, input)) {
             input = String.valueOf(userInput(options));
         }
         return Integer.parseInt(input);
     }
 
-    private boolean inputCheck(ArrayList<Option> options, String userInput){
+    private boolean optionInputCheck(ArrayList<Option> options, String userInput){
         if (!userInput.matches("^[0-9]+$") || Integer.parseInt(userInput) >= options.size()) {
-            inputPresenter.errorMessage();
+            inputPresenter.errorMessageForOptions();
             return false;
         }
         return true;
@@ -68,10 +68,8 @@ public class InputPrompter {
      * @param prompt Prompt in need of a user response.
      * @return The user's response.
      */
-
     public String getResponse(String prompt){
         inputPresenter.printPrompt(prompt);
-
         String in = scanner.nextLine();
         if (in.equals("exit")||in.equals("EXIT")||in.equals("Exit")){
             exitOut();
@@ -88,6 +86,17 @@ public class InputPrompter {
         for(SubController sub: this.subControllers){
             sub.exitEarly();
         }
+    }
+
+    public void enterUsername(){
+        //getResponse()
+        //check valid username
+    }
+
+    public void checkPermission(){} //?
+
+    public void doesNotExist(String invalid){
+        inputPresenter.doesNotExist(invalid);
     }
 
     //TODO implement specific prompter methods... e.g. getExistingUsername, getExistingUsername(Template t), getValidTimeslot, getValidRoom.... etc.
