@@ -8,4 +8,5 @@ public enum CurrentStateFlag {
     BRANCH,
     MAIN,
     LOGIN,
+    EMPTY,
 }
