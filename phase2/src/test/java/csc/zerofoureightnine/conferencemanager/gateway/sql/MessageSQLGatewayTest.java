@@ -8,10 +8,10 @@ import org.junit.Test;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 
 public class MessageSQLGatewayTest {
-    SQLMapping mapping;
+    private static SQLMapping mapping;
 
     @BeforeClass
-    public void setup() {
+    public static void setup() {
         mapping = new SQLMapping();
     }
 

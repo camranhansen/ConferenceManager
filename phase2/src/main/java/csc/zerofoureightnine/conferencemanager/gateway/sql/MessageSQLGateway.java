@@ -1,12 +1,14 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql;
 
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
-import csc.zerofoureightnine.conferencemanager.messaging.Message;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class MessageSQLGateway implements SQLMap<String, MessageData> {
     SQLMapping mapping;
@@ -17,19 +19,19 @@ public class MessageSQLGateway implements SQLMap<String, MessageData> {
 
     @Override
     public int size() {
-        // TODO Auto-generated method stub
+        
         return 0;
     }
 
     @Override
     public boolean isEmpty() {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
     @Override
     public boolean containsKey(Object key) {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
@@ -83,19 +85,28 @@ public class MessageSQLGateway implements SQLMap<String, MessageData> {
 
     @Override
     public int save(String key, MessageData entity) {
-        // TODO Auto-generated method stub
-        return 0;
+        entity.setId(key);
+        Session session = mapping.getFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        int id = (int) session.save(entity);
+        transaction.commit();
+        session.close();
+        return id;
     }
 
     @Override
     public MessageData load(String key) {
-        // TODO Auto-generated method stub
-        return null;
+        Session session = mapping.getFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        MessageData messages = (MessageData) session.get(MessageData.class, key);
+        transaction.commit();
+        session.close();
+        return messages;
     }
 
     @Override
     public List<MessageData> retrieveByField(String field, String filter) {
-        // TODO Auto-generated method stub
+        // TODO auto-generated method stub
         return null;
     }
 

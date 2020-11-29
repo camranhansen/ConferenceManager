@@ -14,9 +14,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "messages")
 public class MessageData {
-
     @Id
-    private int id;
+    private String id;
 
     @Column(name = "content")
     private String content;
@@ -70,8 +69,12 @@ public class MessageData {
         this.timeSent = timeSent;
     }
 
-    public int getId() {
+    public String getID() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -79,7 +82,7 @@ public class MessageData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MessageData that = (MessageData) o;
-        return id == that.id &&
+        return id.equals(that.getID()) &&
                 content.equals(that.content) &&
                 timeSent.equals(that.timeSent) &&
                 sender.equals(that.sender) &&
