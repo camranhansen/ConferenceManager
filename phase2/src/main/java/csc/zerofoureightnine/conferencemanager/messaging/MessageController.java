@@ -139,13 +139,10 @@ public class MessageController implements SubController {
                 @Override
                 public void run() {
                     String eventId = inputPrompter.getResponse("Enter event id to send to");
-                    //TODO Implement changes
-                    /*
-                    while (!eventManager.getEvents().containsKey(eventId) && !exiting) {
+                    while (!eventManager.getAllEventIds().contains(eventId) && !exiting) {
                         messagePresenter.noEvent();
                         eventId = inputPrompter.getResponse("Enter event id to send to");
                     }
-                    */
                     if (!getSpeakerEventIds(from).contains(eventId) && !exiting) {
                         messagePresenter.notSpeakerEvent();
                     } else if (!exiting) {
@@ -188,9 +185,17 @@ public class MessageController implements SubController {
                 }
             }
         };
+        Option viewArchived = new Option("View archived messages"){
+            @Override
+            public void run() {
+                String messages = viewArchived(username);
+                messagePresenter.printMessages(messages);
+            }
+        };
         ArrayList<Option> options = new ArrayList<>();
         options.add(viewAll);
         options.add(viewOne);
+        options.add(viewArchived);
         Option choice = inputPrompter.menuOption(options);
         choice.run();
         this.exiting = false;
@@ -215,6 +220,34 @@ public class MessageController implements SubController {
      */
     public String viewMessageFrom(String username, String from) {
         return messageManager.singleInboxToString(username, from);
+    }
+
+    public String viewAllUnread(String username) {
+        return messageManager.unreadInboxToString(username);
+    }
+
+    public String viewArchived(String username) {
+        return messageManager.archivedMessagesToString(username);
+    }
+
+    public void deleteAll(String username) {
+        MessageMover messageMover = new MessageMover(messageManager, username);
+        messageMover.clearAllInboxes();
+    }
+
+    public void deleteFrom(String username, String from) {
+        MessageMover messageMover = new MessageMover(messageManager, username);
+        messageMover.deleteConversation(from);
+    }
+
+    public void moveToArchived(String username, Message message) {
+        MessageMover messageMover = new MessageMover(messageManager, username);
+        messageMover.moveToArchived(message);
+    }
+
+    public void moveToUnread(String username, Message message) {
+        MessageMover messageMover = new MessageMover(messageManager, username);
+        messageMover.moveReadToUnread(message);
     }
 
     /**
