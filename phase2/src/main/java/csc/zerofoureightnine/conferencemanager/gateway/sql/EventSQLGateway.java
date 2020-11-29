@@ -84,10 +84,10 @@ public class EventSQLGateway implements SQLMap<String, EventData> {
     }
 
     @Override
-    public int save(String key, EventData entity) {
+    public String save(String key, EventData entity) {
         Session session = mapping.getFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        int id = (int) session.save(entity);
+        String id = String.valueOf(session.save(entity));
         transaction.commit();
         return id;
     }

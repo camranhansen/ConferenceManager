@@ -7,12 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "events")
@@ -22,6 +17,7 @@ public class EventData {
     private int dataId;
 
     @Column(name = "speaker")
+    @ElementCollection
     private List<String> speaker;
 
     @Column(name = "time")
@@ -31,6 +27,7 @@ public class EventData {
     private String eventName;
 
     @Column(name = "participants")
+    @ElementCollection
     private List<String> participants;
 
     @Column(name = "room")

@@ -84,11 +84,11 @@ public class MessageSQLGateway implements SQLMap<String, MessageData> {
     }
 
     @Override
-    public int save(String key, MessageData entity) {
+    public String save(String key, MessageData entity) {
         entity.setId(key);
         Session session = mapping.getFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        int id = (int) session.save(entity);
+        String id = (String) session.save(entity);
         transaction.commit();
         session.close();
         return id;

@@ -10,7 +10,7 @@ public interface SQLMap<K, V> extends Map<K, V> {
      * @param entity The field data for the record.
      * @return The numerical ID.
      */
-    int save(K key, V entity);
+    String save(K key, V entity);
 
     /**
      * Loads a record given its associated key.

@@ -163,3 +163,6 @@ hs_err_pid*
 ### Manual Extension for Eclipse/VSCode ###
 .classpath
 .project
+
+### Database ###
+**/db/**

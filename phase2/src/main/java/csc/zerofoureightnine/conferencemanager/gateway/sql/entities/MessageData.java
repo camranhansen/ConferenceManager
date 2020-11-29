@@ -1,15 +1,11 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "messages")
@@ -18,18 +14,18 @@ public class MessageData {
     private String id;
 
     @Column(name = "content")
-    private String content;
+    private String content = "";
 
     @Column(name = "time_delivered")
-    private Instant timeSent;
+    private Instant timeSent = Instant.ofEpochMilli(0);
 
     @Column(name = "sender")
-    private String sender;
+    private String sender = "";
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
-    private Set<UserData> recipients;
+    private Set<UserData> recipients = new HashSet<>();
 
     public void addRecipients(Set<UserData> users) {
 
@@ -82,15 +78,11 @@ public class MessageData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MessageData that = (MessageData) o;
-        return id.equals(that.getID()) &&
-                content.equals(that.content) &&
-                timeSent.equals(that.timeSent) &&
-                sender.equals(that.sender) &&
-                recipients.equals(that.recipients);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, timeSent, sender, recipients);
+        return Objects.hash(id);
     }
 }

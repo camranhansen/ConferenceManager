@@ -15,9 +15,10 @@ public class SQLMapping {
                 addAnnotatedClass(MessageData.class).
                 addAnnotatedClass(UserData.class).
                 addAnnotatedClass(EventData.class).
-                setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect").
-                setProperty("hibernate.connection.driver_class", "org.sqlite.JDBC").
-                setProperty("hibernate.connection.url", "jdbc:sqlite:test.db").
+                setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect").
+                setProperty("hibernate.connection.driver_class", "org.hsqldb.jdbc.JDBCDriver").
+                setProperty("hibernate.connection.url", "jdbc:hsqldb:file:db/data").
+                setProperty("hibernate.hbm2ddl.auto", "create").
                 buildSessionFactory();
     }
 
