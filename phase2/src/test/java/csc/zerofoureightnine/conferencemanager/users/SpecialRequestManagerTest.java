@@ -2,7 +2,6 @@ package csc.zerofoureightnine.conferencemanager.users;
 
 import org.junit.Test;
 
-import javax.xml.ws.soap.Addressing;
 import java.util.*;
 
 import static org.junit.Assert.*;
