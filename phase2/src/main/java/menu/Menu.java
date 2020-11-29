@@ -6,7 +6,7 @@ public class Menu {
 
     public Stack<MenuLayer> menuLayerStack;
     public static MenuLayer exitMenuLayer = new MenuLayer(GoalFlag.EXIT);
-
+    //NOTE: see the command object
     public Menu(MenuLayer bottomLayer){
         this.menuLayerStack = new Stack<>();
         this.menuLayerStack.push(bottomLayer);
@@ -35,7 +35,25 @@ public class Menu {
     }
 
     public void goBackToMainScreen(){
+        while(menuLayerStack.peek().getCurrentStateFlag() != CurrentStateFlag.MAIN){
+            menuLayerStack.pop();
+        }
+    }
 
+    public void goBackToLoginScreen(){
+
+    }
+
+    public void goBackOneLayer(){
+
+    }
+
+    public void exitOut(){
+
+    }
+
+    public CurrentStateFlag getCurrentStateFlag(){
+        return menuLayerStack.peek().getCurrentStateFlag();
     }
 
 
