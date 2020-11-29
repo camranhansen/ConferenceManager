@@ -158,7 +158,7 @@ public class MessageControllerTest {
         messageManager.sendMessage("spk1", "hello", "u1");
         messageController.performSelectedAction("u1", Permission.VIEW_SELF_MESSAGES);
         String out = "0. EXIT\n" + "1. View all your messages\n" +
-                "2. View messages from one user\n" + "spk1: hello, \n"+"u2: hi, how are you?, \n\n";
+                "2. View messages from one user\n" + "3. View archived messages\n" + "spk1: hello, \n"+"u2: hi, how are you?, \n\n";
 
         assertEquals(out, outContent.toString().replaceAll("\r\n", "\n"));
     }
@@ -179,7 +179,7 @@ public class MessageControllerTest {
         messageManager.sendMessage("spk1", "hello", "u1");
         messageController.performSelectedAction("u1", Permission.VIEW_SELF_MESSAGES);
         String out = "0. EXIT\n" + "1. View all your messages\n" +
-                "2. View messages from one user\n" + "Enter other username messages you'd like to see: \n"+
+                "2. View messages from one user\n" + "3. View archived messages\n" + "Enter other username messages you'd like to see: \n"+
                 "u2: hi, how are you?, \n";
 
         assertEquals(out, outContent.toString().replaceAll("\r\n", "\n"));
@@ -201,7 +201,7 @@ public class MessageControllerTest {
         messageManager.sendMessage("spk1", "hello", "u1");
         messageController.performSelectedAction("u1", Permission.VIEW_OTHER_MESSAGES);
         String out = "Enter username's messages you'd like to see: \n"+"0. EXIT\n" + "1. View all your messages\n" +
-                "2. View messages from one user\n"+ "spk1: hello, \n" + "u2: hi, how are you?, \n\n";
+                "2. View messages from one user\n"+ "3. View archived messages\n" + "spk1: hello, \n" + "u2: hi, how are you?, \n\n";
         assertEquals(out, outContent.toString().replaceAll("\r\n", "\n"));
     }
 
