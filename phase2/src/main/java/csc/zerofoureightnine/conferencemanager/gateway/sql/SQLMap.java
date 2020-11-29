@@ -1,15 +1,16 @@
-package csc.zerofoureightnine.conferencemanager.gateway;
+package csc.zerofoureightnine.conferencemanager.gateway.sql;
 
 import java.util.List;
 import java.util.Map;
 
-public interface DataGateway<K, V> extends Map<K, V> {
+public interface SQLMap<K, V> extends Map<K, V> {
     /**
      * Saves the entity to the database with the associated key as the identifier.
      * @param key The identifier for the record.
      * @param entity The field data for the record.
+     * @return The numerical ID.
      */
-    void save(K key, V entity);
+    int save(K key, V entity);
 
     /**
      * Loads a record given its associated key.

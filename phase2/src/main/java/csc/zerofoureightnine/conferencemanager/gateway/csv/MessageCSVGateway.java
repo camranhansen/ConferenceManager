@@ -1,4 +1,4 @@
-package csc.zerofoureightnine.conferencemanager.gateway;
+package csc.zerofoureightnine.conferencemanager.gateway.csv;
 
 import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
 
@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Deprecated
 public class MessageCSVGateway {
     private static final String directory = "data/user/inboxes/";
     private class UserMessageCSVGateway extends CSVGateway {

@@ -1,4 +1,4 @@
-package csc.zerofoureightnine.conferencemanager.gateway;
+package csc.zerofoureightnine.conferencemanager.gateway.csv;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 
@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+@Deprecated
 public class EventCSVGateway extends CSVGateway {
 
     public EventCSVGateway() {

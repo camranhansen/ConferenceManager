@@ -3,7 +3,6 @@ package csc.zerofoureightnine.conferencemanager.messaging;
 import java.time.Instant;
 import java.util.*;
 
-
 //TODO: add a constructor for inboxes that already exist
 
 public class MessageManager {
@@ -11,6 +10,7 @@ public class MessageManager {
      * inboxes stores a hashmap that maps recipients' usernames to a hashmap that maps the senders' usernames to a list of
      * Message sent by the sender to the recipient.
      */
+
     private HashMap<String, HashMap<String, List<Message>>> inboxes;
     private HashMap<String, HashMap<String, List<Message>>> readInboxes;
     private HashMap<String, HashMap<String, List<Message>>> unreadInboxes;

@@ -1,4 +1,4 @@
-package csc.zerofoureightnine.conferencemanager.gateway;
+package csc.zerofoureightnine.conferencemanager.gateway.csv;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;

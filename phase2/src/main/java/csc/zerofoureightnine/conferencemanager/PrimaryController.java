@@ -2,9 +2,9 @@ package csc.zerofoureightnine.conferencemanager;
 
 import csc.zerofoureightnine.conferencemanager.events.EventController;
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
-import csc.zerofoureightnine.conferencemanager.gateway.EventCSVGateway;
-import csc.zerofoureightnine.conferencemanager.gateway.MessageCSVGateway;
-import csc.zerofoureightnine.conferencemanager.gateway.UserCSVGateway;
+import csc.zerofoureightnine.conferencemanager.gateway.csv.EventCSVGateway;
+import csc.zerofoureightnine.conferencemanager.gateway.csv.MessageCSVGateway;
+import csc.zerofoureightnine.conferencemanager.gateway.csv.UserCSVGateway;
 import csc.zerofoureightnine.conferencemanager.menu.MenuController;
 import csc.zerofoureightnine.conferencemanager.menu.SubController;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageController;

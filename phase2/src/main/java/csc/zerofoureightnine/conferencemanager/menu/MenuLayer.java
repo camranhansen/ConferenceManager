@@ -54,6 +54,10 @@ public class MenuLayer {
         return goalFlag;
     }
 
+    public CurrentStateFlag getCurrentStateFlag(){
+        return currentStateFlag;
+    }
+
 }
 
 
