@@ -1,6 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.datacollection;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
+import csc.zerofoureightnine.conferencemanager.messaging.Message;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 
@@ -55,12 +56,12 @@ public class StoredDataGetter {
     @Override
     public String toString(){
         String lineSep = ":" + System.lineSeparator();
-        String formatted = "Number of enrolled events: " + this.eventManager.getUserEvents(this.name).size() + lineSep +
-                "Number of events: " + this.eventManager.getAllEventIds().size() + lineSep +
-                "Number of events that are available: " + this.eventManager.getAvailableEvents(this.name).size() + lineSep +
-                "Number of retrieve messages: " + getRetrieveMessages(this.name) + lineSep +
-                "Number of unread messages: " + getUnreadMessages(this.name) + lineSep +
-                "Number of read messages: " + getReadMessages(this.name) + lineSep +
+        String formatted = "Number of enrolled events: " + eventManager.getUserEvents(name).size() + lineSep +
+                "Number of events: " + eventManager.getAllEventIds().size() + lineSep +
+                "Number of events that are available: " + eventManager.getAvailableEvents(name).size() + lineSep +
+                "Number of retrieve messages: " + getRetrieveMessages(name) + lineSep +
+                "Number of unread messages: " + getUnreadMessages(name) + lineSep +
+                "Number of read messages: " + getReadMessages(name) + lineSep +
                 "Average room capacity: " + getAverageCapacity() + lineSep;
         return formatted;
     }
