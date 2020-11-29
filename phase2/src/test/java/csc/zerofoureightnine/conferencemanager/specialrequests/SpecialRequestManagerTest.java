@@ -1,5 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.specialrequests;
 
+import csc.zerofoureightnine.conferencemanager.users.SpecialRequest;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -37,8 +38,6 @@ public class SpecialRequestManagerTest {
     public void getUserRequests() {
 
         //Assert that bob's requests are equal to premade requests
-
-
     }
 
     @Test
