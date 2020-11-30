@@ -184,7 +184,7 @@ public class UserManager {
         return permissions.toString().replace("[", "").replace("]", "");
     }
 
-
+    //TODO: this is duplicate code... remove.
     //Validation methods
     public boolean uNameExists(String uname){
         return users.containsKey(uname);
