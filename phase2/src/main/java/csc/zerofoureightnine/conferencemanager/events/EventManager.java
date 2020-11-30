@@ -8,7 +8,7 @@ public class EventManager {
     /**
      * csc.zerofoureightnine.conferencemanager.events stores a hashmap that maps csc.zerofoureightnine.conferencemanager.events' IDs to an event.
      */
-    private HashMap<String, Events> events;
+    private HashMap<String, Event> events;
 
     /**
      * Instantiates EventManager
@@ -37,7 +37,7 @@ public class EventManager {
      */
     public List<String> getSpkEvents(String userName){
         List<String> aList = new ArrayList<>();
-        for (Events value: events.values()){
+        for (Event value: events.values()){
             if(value.getSpeakerName().contains(userName)){
                 aList.add(value.getId());
             }
@@ -55,7 +55,7 @@ public class EventManager {
      * @param capacity Maximum capacity of the event.
      */
     public void createEvent(List<String> speakerName, Instant eventTime, String eventName, String room, int capacity, EventType type){
-        Events newEvent = new Events(speakerName, eventTime, eventName, room, capacity, type);
+        Event newEvent = new Event(speakerName, eventTime, eventName, room, capacity, type);
         this.events.put(newEvent.getId(), newEvent);
     }
 
@@ -71,7 +71,7 @@ public class EventManager {
      * @param capacity Maximum capacity of the event.
      */
     private void createEditedEvent(List<String> speakerName, Instant eventTime, String eventName, List<String> participants, String room, int capacity, EventType type){
-        Events newEvent = new Events(speakerName, participants,  eventTime, eventName, room, capacity, type);
+        Event newEvent = new Event(speakerName, participants,  eventTime, eventName, room, capacity, type);
         this.events.put(newEvent.getId(), newEvent);
     }
 
@@ -135,7 +135,7 @@ public class EventManager {
         List<String> myEvents = getUserEvents(username);
         List<Instant> time = myEventTime(myEvents);
         List<String> availableEvents = new ArrayList<>();
-        for(Events value: this.events.values()){
+        for(Event value: this.events.values()){
             if(!time.contains(value.getEventTime())){
                 availableEvents.add(value.getId());
             }
@@ -212,7 +212,7 @@ public class EventManager {
      */
     public List<String> getUserEvents(String username) {
         List<String> myEvents = new ArrayList<>();
-        for (Events value : this.events.values()){
+        for (Event value : this.events.values()){
             if (value.getParticipants().contains(username)){
                 myEvents.add(value.getId());
             }
@@ -226,7 +226,7 @@ public class EventManager {
      * @param newSpeaker Username of the new speaker.
      */
     public void editSpeakerName(String id, List<String> newSpeaker){
-        Events value = this.events.get(id);
+        Event value = this.events.get(id);
         createEditedEvent(newSpeaker, value.getEventTime(), value.getEventName(), value.getParticipants(),
                 value.getRoom(), value.getCapacity(), value.getType());
     }
@@ -238,7 +238,7 @@ public class EventManager {
      * @param newEventName A new name of the event.
      */
     public void editEventName(String id, String newEventName){
-        Events value = this.events.get(id);
+        Event value = this.events.get(id);
         createEditedEvent(value.getSpeakerName(), value.getEventTime(), newEventName, value.getParticipants(),
                 value.getRoom(), value.getCapacity(), value.getType());
     }
@@ -248,7 +248,7 @@ public class EventManager {
      * @param newRoom A new room of the event.
      */
     public void editRoom(String id, String newRoom){
-        Events value = this.events.get(id);
+        Event value = this.events.get(id);
         createEditedEvent(value.getSpeakerName(), value.getEventTime(), value.getEventName(), value.getParticipants(),
                 newRoom, value.getCapacity(), value.getType());
         deleteEvent(id);
@@ -260,7 +260,7 @@ public class EventManager {
      * @param newCapacity A new capacity of the event.
      */
     public void editCapacity(String id, int newCapacity){
-        Events value = this.events.get(id);
+        Event value = this.events.get(id);
         createEditedEvent(value.getSpeakerName(), value.getEventTime(), value.getEventName(), value.getParticipants(),
                 value.getRoom(), newCapacity, value.getType());
     }
@@ -270,7 +270,7 @@ public class EventManager {
      * @param newTime A new starting time of the event.
      */
     public void editTime(String id, Instant newTime){
-        Events value = this.events.get(id);
+        Event value = this.events.get(id);
         createEditedEvent(value.getSpeakerName(), newTime, value.getEventName(), value.getParticipants(),
                 value.getRoom(), value.getCapacity(), value.getType());
         deleteEvent(id);
@@ -301,7 +301,7 @@ public class EventManager {
      * name, time, event name, participants, room number, and capacity.
      */
     public String[] getSingleEventData(String id) {
-        Events event = this.events.get(id);
+        Event event = this.events.get(id);
         String speakerName = event.getSpeakerName().toString();
         String time = event.getEventTime().toString();
         String eventName = event.getEventName();
@@ -332,7 +332,7 @@ public class EventManager {
             String participants1 = participants.substring(1, participants.length()-1);
             String[] list = participants1.split(",");
             if (!this.events.containsKey(id)){
-                Events event = new Events(spk, Arrays.asList(list), time, eventName, room, capacity, type);
+                Event event = new Event(spk, Arrays.asList(list), time, eventName, room, capacity, type);
                 this.events.put(id, event);
             }
         }else{
@@ -347,7 +347,7 @@ public class EventManager {
      * @return A string containing the given event's name time, room and capacity.
      */
     public String getFormattedEvent(String id){
-        Events e = this.events.get(id);
+        Event e = this.events.get(id);
         String lineSep = ":" + System.lineSeparator();
         String formatted = "Event Name: " + e.getEventName() + lineSep +
                 "Event Time: " + e.getEventTime() + lineSep +

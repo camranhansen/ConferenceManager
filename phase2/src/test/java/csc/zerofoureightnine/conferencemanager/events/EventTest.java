@@ -14,7 +14,7 @@ public class EventTest {
         List<String> arr = new ArrayList<>();
         Instant time = Instant.now();
         arr.add("Bob Smithers");
-        Events e1 = new Events(arr,time, "Test Event", "Meeting Room 1",  2, EventType.SINGLE);
+        Event e1 = new Event(arr,time, "Test Event", "Meeting Room 1",  2, EventType.SINGLE);
         assertEquals(arr, e1.getSpeakerName());
     }
 
@@ -23,7 +23,7 @@ public class EventTest {
         List<String> arr = new ArrayList<>();
         Instant time = Instant.now();
         arr.add("Bob Smithers");
-        Events e1 = new Events(arr,time, "Test Event", "Meeting Room 1",  2, EventType.SINGLE);
+        Event e1 = new Event(arr,time, "Test Event", "Meeting Room 1",  2, EventType.SINGLE);
         assertEquals("Test Event", e1.getEventName() );
     }
 
@@ -32,7 +32,7 @@ public class EventTest {
         List<String> arr = new ArrayList<>();
         Instant time = Instant.now();
         arr.add("Bob Smithers");
-        Events e1 = new Events(arr,time, "Test Event", "Meeting Room 1",  2, EventType.SINGLE);
+        Event e1 = new Event(arr,time, "Test Event", "Meeting Room 1",  2, EventType.SINGLE);
         assertEquals(0,e1.getParticipants().size());
     }
 
@@ -41,7 +41,7 @@ public class EventTest {
         List<String> arr = new ArrayList<>();
         Instant time = Instant.now();
         arr.add("Bob Smithers");
-        Events e1 = new Events(arr,time, "Test Event", "Meeting Room 1",  2, EventType.SINGLE);
+        Event e1 = new Event(arr,time, "Test Event", "Meeting Room 1",  2, EventType.SINGLE);
         assertEquals("Meeting Room 1", e1.getRoom());
     }
 
@@ -50,7 +50,7 @@ public class EventTest {
         List<String> arr = new ArrayList<>();
         Instant time = Instant.now();
         arr.add("Bob Smithers");
-        Events e1 = new Events(arr,time, "Test Event", "Meeting Room 1",  2, EventType.SINGLE);
+        Event e1 = new Event(arr,time, "Test Event", "Meeting Room 1",  2, EventType.SINGLE);
         assertEquals(2, e1.getCapacity());
     }
 
@@ -59,10 +59,10 @@ public class EventTest {
         List<String> arr = new ArrayList<>();
         Instant time = Instant.now();
         arr.add("Bob Smithers");
-        Events e1 = new Events(arr,time, "Test Event1", "Meeting Room 1",  2, EventType.SINGLE);
-        Events e2 = new Events(arr,time, "Test Event2", "Meeting Room 2",  2, EventType.SINGLE);
-        Events e3 = new Events(arr,time, "Test Event3", "Meeting Room 3",  2, EventType.SINGLE);
-        Events e4 = new Events(arr,time, "Test Event4", "Meeting Room 4",  2, EventType.SINGLE);
+        Event e1 = new Event(arr,time, "Test Event1", "Meeting Room 1",  2, EventType.SINGLE);
+        Event e2 = new Event(arr,time, "Test Event2", "Meeting Room 2",  2, EventType.SINGLE);
+        Event e3 = new Event(arr,time, "Test Event3", "Meeting Room 3",  2, EventType.SINGLE);
+        Event e4 = new Event(arr,time, "Test Event4", "Meeting Room 4",  2, EventType.SINGLE);
         assertNotEquals(e1.getId(), e2.getId());
         assertNotEquals(e3.getId(), e4.getId());
         assertNotEquals(e1.getId(), e4.getId());

@@ -15,7 +15,7 @@ public class Menu {
     /**
      * A menu is...
      * @param bottomLayer the bottom layer of this menu stack.
-     *                    During runtime, <Code>bottomLayer</Code></> be instantiated with {@Link CurrentStateFlag} LOGIN
+     *                    During runtime, <Code>bottomLayer</Code></> will be instantiated with {@link CurrentStateFlag} LOGIN
      */
     public Menu(MenuLayer bottomLayer){
         this.menuLayerStack = new Stack<>();
