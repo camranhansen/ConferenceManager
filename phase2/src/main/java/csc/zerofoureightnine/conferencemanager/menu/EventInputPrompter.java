@@ -1,30 +1,22 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
-import csc.zerofoureightnine.conferencemanager.users.PermissionManager;
-import csc.zerofoureightnine.conferencemanager.users.User;
+import csc.zerofoureightnine.conferencemanager.users.Template;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
-
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventInputPrompter extends InputPrompter{
 
     private EventManager eventManager;
-    private UserManager userManager;
-    private PermissionManager permissionManager;
     private EventInputPresenter eventInputPresenter;
-    private String username;
 
-    public EventInputPrompter(EventManager eventManager, UserManager userManager, PermissionManager permissionManager,
-                              String username){
+    public EventInputPrompter(EventManager eventManager, UserManager userManager){
         super();
         this.eventManager = eventManager;
-        this.userManager = userManager;
-        this.permissionManager = permissionManager;
         this.eventInputPresenter = new EventInputPresenter();
-        this.username = username;
     }
-    public void createEventPrompt(){}
 
     public String canEnrollIn(String username){
         String eventId = enterEventIdPrompt();
@@ -32,6 +24,65 @@ public class EventInputPrompter extends InputPrompter{
             eventId = enterEventIdPrompt();
         }
         return eventId;
+    }
+
+    public Instant pickEventTime() {
+        String date = dayOfMonth();
+        String time = timeOfDay();
+        return Instant.parse("2020-12-" + date.trim() + "T" + time.trim() + ":00:00.00Z");
+    }
+
+    //TODO: depending on how options work, this will need to be modified:
+    public String pickSingleSpeaker(UserManager userManager, Instant time){
+        eventInputPresenter.forSpeaker();
+        String speaker = super.enterValidUsername(userManager);
+        if (!isSpeaker(userManager, speaker)){
+            eventInputPresenter.notSpeaker(speaker);
+            speaker = super.enterValidUsername(userManager);
+        }
+        if (checkSpeakerConflict(speaker, time)){
+            eventInputPresenter.isBooked("Speaker");
+            speaker = super.enterValidUsername(userManager);
+        }
+        return speaker;
+    }
+
+    public String pickEventName(){
+        return super.getResponse("Enter the name of the new event");
+    }
+
+    public String pickEventRoom(Instant time){
+        String room = super.getResponse("Enter event room");
+        while(eventManager.checkRoom(time, room)){
+            eventInputPresenter.isBooked(room);
+            room = super.getResponse("Enter event room");
+        }
+        return room;
+    }
+
+    public int pickEventCapacity(){
+        String capacity = super.getResponse("Enter the capacity of this event");
+        eventInputPresenter.capacityWarning();
+        while(!capacity.trim().matches("[0-9]|[0-9][0-9]|[0-9][0-9][0-9]")){
+            eventInputPresenter.invalidCap();
+            capacity = super.getResponse("Enter the capacity of this event");
+        }
+        return Integer.parseInt(capacity.trim());
+    }
+
+    //Idk if this is necessary: can just do username input check and then canEnrollIn in the controller class
+    public String enrollOtherPrompt(UserManager userManager){
+        String other = super.enterValidUsername(userManager);
+        return canEnrollIn(other);
+    }
+
+    private String enterEventIdPrompt(){
+        String id = super.getResponse("Enter event id");
+        while (!eventManager.eventExists(id)){
+            doesNotExist("This id ");
+            id = super.getResponse("Enter event id");
+        }
+        return id;
     }
 
     private boolean canEnroll(String eventId, String username){
@@ -51,31 +102,15 @@ public class EventInputPrompter extends InputPrompter{
         return true;
     }
 
-    //Idk if this is necessary: can just do username input check and then canEnrollIn in the controller class
-    public String enrollOtherPrompt(UserManager userManager){
-        String other = super.enterValidUsername(userManager);
-        return canEnrollIn(other);
+    private boolean checkSpeakerConflict(String speaker, Instant time){
+        List<String> speakers = new ArrayList<>();
+        speakers.add(speaker);
+        return eventManager.checkConflictSpeaker(time, speakers);
     }
 
-    public void eventEditPrompt(){}
-
-    private String enterEventIdPrompt(){
-        String id = super.getResponse("Enter event id");
-        while (!eventManager.eventExists(id)){
-            doesNotExist("This id ");
-            id = super.getResponse("Enter event id");
-        }
-        return id;
-    }
-
-    private boolean checkUserPermission(){
-        return false;
-    }
-
-    public Instant getEventTime() {
-        String date = dayOfMonth();
-        String time = timeOfDay();
-        return Instant.parse("2020-12-" + date.trim() + "T" + time.trim() + ":00:00.00Z");
+    private boolean isSpeaker(UserManager userManager, String speaker){
+        List<String> speakers = userManager.getUserByPermissionTemplate(Template.SPEAKER);
+        return speakers.contains(speaker);
     }
 
     private String dayOfMonth(){
