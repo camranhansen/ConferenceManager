@@ -6,10 +6,7 @@ import java.util.*;
 //TODO: add a constructor for inboxes that already exist
 
 public class MessageManager {
-    /**
-     * inboxes stores a hashmap that maps recipients' usernames to a hashmap that maps the senders' usernames to a list of
-     * Message sent by the sender to the recipient.
-     */
+
 
     private HashMap<String, HashMap<String, List<Message>>> inboxes;
     private HashMap<String, HashMap<String, List<Message>>> readInboxes;
@@ -17,7 +14,15 @@ public class MessageManager {
     private HashMap<String, List<Message>> archivedMessages;
 
     /**
-     * Instantiates messageManager
+     * Instantiates the messageManager that stores four hashmaps
+     * {@code inboxes} stores a hashmap that maps recipients' usernames to a hashmap that maps the senders' usernames
+     * to a list of Message sent by the sender to the recipient.
+     * {@code readInboxes} stores a hashmap that maps recipients' usernames to a hashmap that maps the senders'
+     * usernames to a list of read Message from the sender to the recipient.
+     * {@code unreadInboxes} stores a hashmap that maps recipients' usernames to a hashmap that maps the senders'
+     * usernames to a list of unread Message from the sender to the recipient.
+     * {@code archivedMessages} stores a hashmap that maps the recipients' usernames to a list of their archived
+     * Messages.
      */
     public MessageManager() {
         inboxes = new HashMap<>();
@@ -29,9 +34,9 @@ public class MessageManager {
 
     /**
      * User sends a message to one or more csc.zerofoureightnine.conferencemanager.users. This message is stored in inboxes.
-     * @param from Username of the sender of this message
-     * @param content Content of the message
-     * @param to Usernames of one or a list of recipients to this message
+     * @param from username of the sender of this message
+     * @param content content of the message
+     * @param to usernames of one or a list of recipients to this message
      */
     public void sendMessage(String from, String content, String... to) {
         Message msg = new Message(from, to, content);
@@ -39,11 +44,12 @@ public class MessageManager {
             HashMap<String, List<Message>> userInbox = retrieveUserInbox(to[i]);
             HashMap<String, List<Message>> unreadUserInbox = getUnreadInbox(to[i]);
             if (!userInbox.containsKey(from)) {
-                ArrayList<Message> message = new ArrayList<>();
+                List<Message> message = new ArrayList<>();
                 userInbox.put(from, message);
             }
             if(!unreadUserInbox.containsKey(from)){
-                unreadUserInbox.put(from, new ArrayList<Message>());
+                List<Message> m = new ArrayList<>();
+                unreadUserInbox.put(from, m);
             }
             List<Message> messagesFrom = userInbox.get(from);
             messagesFrom.add(msg);
@@ -52,10 +58,11 @@ public class MessageManager {
         }
     }
 
+
     /**
      * Returns the inbox of the given user.
-     * @param user Username of the user whose inbox will be retrieved.
-     * @return A hashmap that maps the username of sender to a list of Message sent to the given user.
+     * @param user username of the user whose inbox will be retrieved
+     * @return a hashmap that maps the username of sender to a list of Message sent to the given user
      */
     public HashMap<String, List<Message>> retrieveUserInbox(String user) {
         if (!inboxes.containsKey(user)) {
@@ -66,6 +73,14 @@ public class MessageManager {
     }
 
     //ADDED:
+
+    /**
+     * Returns the read inbox of the given user.
+     * @param username username of the user whose read inbox will be retrieved
+     * @return a hashmap that maps the username of the sender to a list of read Message sent by the sender to the
+     * given user
+     */
+
     public HashMap<String, List<Message>> getReadInbox(String username) {
         if (!readInboxes.containsKey(username)) {
             HashMap<String, List<Message>> hashmap = new HashMap<>();
@@ -73,6 +88,13 @@ public class MessageManager {
         }
         return readInboxes.get(username);
     }
+
+    /**
+     * Returns the unread inbox of the given user.
+     * @param username username of the user whose unread inbox will be retrieved
+     * @return a hashmap that maps the username of the sender to a list of unread Message sent by the sender to the
+     * given user
+     */
 
     public HashMap<String, List<Message>> getUnreadInbox(String username){
         if(!unreadInboxes.containsKey(username)){
@@ -82,11 +104,22 @@ public class MessageManager {
         return unreadInboxes.get(username);
     }
 
+    /**
+     * Returns the unread inbox of the user from a specific sender.
+     * @param username username of the user
+     * @param from username of the sender
+     * @return a list of unread Message that the sender has sent to the user
+     */
     public List<Message> getUnreadFrom(String username, String from){
         return getUnreadInbox(username).get(from);
     }
 
     //ADDED:
+    /**
+     * Returns the archived inbox of the given user
+     * @param username username of the user
+     * @return a list of archived Message of the given user
+     */
     public List<Message> getArchivedInbox(String username) {
         if(!archivedMessages.containsKey(username)){
             List<Message> messages = new ArrayList<>();
@@ -170,6 +203,14 @@ public class MessageManager {
     }
 
 
+    /**
+     * Returns all archived Message of the given user. If the given user has no archived Message, returns "You have no
+     * archived messages".
+     * @param username username of the user
+     * @return A string representation of all the archived Message of the given user, including information about the
+     * content and the username of the sender, or "You have no archived messages" if this user's archived Message inbox
+     * is empty.
+     */
     public String archivedMessagesToString(String username) {
         if(getArchivedInbox(username).isEmpty()){
             return "You have no archived messages";
@@ -186,6 +227,13 @@ public class MessageManager {
     }
 
 
+    /**
+     * Returns all unread Message of the given user. If this user has no Message in unreadInbox, returns
+     * "You have no unread messages".
+     * @param username username of the user
+     * @return a string representation of all the unread Message of the give user, including information about the
+     * content and the username of the sender, or "You have no unread messages" if this user's unreadInbox in empty.
+     */
     public String unreadInboxToString(String username){
         if (getUnreadInbox(username).isEmpty()){
             return "You have no unread messages";
@@ -200,6 +248,15 @@ public class MessageManager {
     }
 
 
+    /**
+     * Returns all unread Message of the given user from the given sender. If this user has no unread Message from the
+     * given sender, returns "You have no unread messages from sender".
+     * @param username username of the user
+     * @param from username of the sender
+     * @return a string representation of all unread Message of the user from the sender, including the sender's
+     * username and message contents, or "You have no unread messages from sender" if this user's unreadInbox from the
+     * sender is empty.
+     */
     public String singleUnreadInboxToString(String username, String from){
         HashMap<String, List<Message>> unread = getUnreadInbox(username);
         if (!unread.containsKey(from)){
@@ -254,7 +311,7 @@ public class MessageManager {
         Message curMessage = new Message(sender, row[3].split(", "), row[2]);
         curMessage.setTimeSent(Instant.parse(row[1]));
         if (!inbox.containsKey(sender)) {
-            ArrayList<Message> list = new ArrayList<>();
+            List<Message> list = new ArrayList<>();
             list.add(curMessage);
             inbox.put(sender, list);
         } else{
