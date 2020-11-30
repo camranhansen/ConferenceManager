@@ -3,6 +3,7 @@ package csc.zerofoureightnine.conferencemanager.datacollection;
 import java.util.HashMap;
 
 public class RuntimeDataHolder {
+
     private HashMap<RuntimeStats, Integer> statMap;
 
     public RuntimeDataHolder() {
@@ -17,6 +18,7 @@ public class RuntimeDataHolder {
     public int getStatValue (RuntimeStats runtimeStats) { return statMap.get(runtimeStats); } // For testing
 
     @Override
+    //TODO get rid of this function.
     public String toString() {
         String s = "";
         for (RuntimeStats x: RuntimeStats.values()) {
@@ -24,4 +26,9 @@ public class RuntimeDataHolder {
         }
         return s;
     }
+
+    public HashMap<RuntimeStats, Integer> getStatMap() {
+        return statMap;
+    }
+
 }
