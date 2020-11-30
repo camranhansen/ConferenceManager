@@ -23,12 +23,7 @@ public class InputPresenter {
         System.out.println(invalid+"does not exist. Please try again.");
     }
 
-    //Separate class??
-    public void isFull(String isFull){
-        System.out.println(isFull + "is full.");
-    }
-
-    public void alreadyEnrolled(String in){
-        System.out.println("You've already enrolled in" + in);
+    public void incorrectPassword(){
+        System.out.println("Incorrect password. Please try again.");
     }
 }

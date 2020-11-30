@@ -1,5 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 
+import csc.zerofoureightnine.conferencemanager.users.UserManager;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -88,9 +90,27 @@ public class InputPrompter {
         }
     }
 
-    public void enterUsername(){
-        //getResponse()
-        //check valid username
+    public String loginIn(UserManager userManager){
+        String username = enterValidUsername(userManager);
+        passwordCheck(username, userManager);
+        return username;
+    }
+
+    public String enterValidUsername(UserManager userManager){
+        String username = getResponse("Please enter a username");
+        while(!userManager.userExists(username)){
+            doesNotExist("This username ");
+            username = getResponse("Please enter a username");
+        }
+        return username;
+    }
+
+    private void passwordCheck(String username, UserManager userManager){
+        String password = getResponse("Please enter your password");
+        while(!userManager.getPassword(username).equals(password)){
+            inputPresenter.incorrectPassword();
+            password = getResponse("Please enter your password");
+        }
     }
 
     public void checkPermission(){} //?
