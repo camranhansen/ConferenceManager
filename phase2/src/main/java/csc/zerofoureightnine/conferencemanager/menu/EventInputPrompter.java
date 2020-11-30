@@ -12,7 +12,7 @@ public class EventInputPrompter extends InputPrompter{
     private EventManager eventManager;
     private EventInputPresenter eventInputPresenter;
 
-    public EventInputPrompter(EventManager eventManager, UserManager userManager){
+    public EventInputPrompter(EventManager eventManager){
         super();
         this.eventManager = eventManager;
         this.eventInputPresenter = new EventInputPresenter();
