@@ -21,6 +21,14 @@ public class LoginMenuLayer extends MenuLayer {
                              SpecialRequestManager rm){
         //NOTE: these names are intentionally short because the passing of use cases
         //is irrelevant to actually being read by a human.
+
+        //if input == exit..
+        //if input == .....
+        //checkIfExiting()
+        //if exiting is true return new MenuLayer(EXIT)
+        //inputprompter.pair(this)
+        // if exiting... then call paired menu function exitEarly()
+        // which returns a new Menu with the exit flag
         return new MainMenuLayer(em, um, mm, pm, rm);
     }
 }
