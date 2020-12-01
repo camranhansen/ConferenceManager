@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Query;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -106,8 +108,19 @@ public class MessageSQLGateway implements SQLMap<String, MessageData> {
 
     @Override
     public List<MessageData> retrieveByField(String field, String filter) {
-        // TODO auto-generated method stub
-        return null;
+        Session session = mapping.getFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        StringBuilder sb = new StringBuilder();
+        sb.append("select md from MessageData md where md.");
+        sb.append(field);
+        sb.append(" like \'");
+        sb.append(filter);
+        sb.append("%\'");
+        Query q = session.createQuery(sb.toString());
+        List<MessageData> res = q.getResultList();
+        tx.commit();
+        session.close();
+        return res;
     }
 
     @Override
