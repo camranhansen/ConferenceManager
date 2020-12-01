@@ -101,8 +101,8 @@ public class EventData {
         return eventId;
     }
 
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
+    public void setEventId() {
+        this.eventId = this.room + this.time.toString();
     }
 
     public EventType getType() {
