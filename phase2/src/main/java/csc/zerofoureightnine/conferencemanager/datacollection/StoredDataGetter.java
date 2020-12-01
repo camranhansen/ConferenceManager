@@ -1,7 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.datacollection;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
-import csc.zerofoureightnine.conferencemanager.messaging.Message;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 
@@ -50,7 +49,7 @@ public class StoredDataGetter {
         for(String id: aList){
             capacity += this.eventManager.getCapacity(id);
         }
-        return capacity/(aList.size());
+        return (double)capacity/(aList.size());
     }
 
     @Override
