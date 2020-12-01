@@ -169,5 +169,24 @@ public class SpecialRequestManager {
         return null;
     }
 
+    /**
+     * Returns a List of strings where:
+     * index 0 = requestID of the SpecialRequest
+     * index 1 = username of the requesting User
+     * index 2 = header of the SpecialRequest (e.g. "Dietary", "Physical", etc.)
+     * index 3 = specific details of the SpecialRequest (e.g. "i am lactose intolerant", etc.)
+     * @param requestID the UUID of the SpecialRequest
+     * @return a List of Strings with the contents defined above
+     */
+    public List<String> getRequestDetails(UUID requestID){
+        List<String> details = new ArrayList<>();
+        SpecialRequest r = this.getRequestFromID(requestID);
+        details.add(r.getRequestID().toString());
+        details.add(r.getRequestingUser());
+        details.add(r.getHeader());
+        details.add(r.getDescription());
+        return details;
+    }
+
 
 }

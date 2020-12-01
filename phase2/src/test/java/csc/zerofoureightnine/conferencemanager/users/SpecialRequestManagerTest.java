@@ -159,6 +159,17 @@ public class SpecialRequestManagerTest {
         assertEquals(2, srm.getAddressedRequests().size());
     }
 
-
+    @Test
+    public void getRequestDetails(){
+        HashMap<String, List<SpecialRequest>> map = this.generateRequestMap();
+        SpecialRequestManager srm = new SpecialRequestManager(map);
+        SpecialRequest timRequest = map.get("tim").get(0);
+        List<String> test= new ArrayList<>();
+        test.add(timRequest.getRequestID().toString());
+        test.add(timRequest.getRequestingUser());
+        test.add(timRequest.getHeader());
+        test.add(timRequest.getDescription());
+        assertEquals(test, srm.getRequestDetails(srm.getRequests("tim").get(0)));
+    }
 
 }
