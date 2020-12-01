@@ -70,11 +70,11 @@ public class EventInputPrompter extends InputPrompter{
         return Integer.parseInt(capacity.trim());
     }
 
-    //Idk if this is necessary: can just do username input check and then canEnrollIn in the controller class
-    public String enrollOtherPrompt(UserManager userManager){
-        String other = super.enterValidUsername(userManager);
-        return canEnrollIn(other);
-    }
+//    //Idk if this is necessary: can just do username input check and then canEnrollIn in the controller class
+//    public String enrollOtherPrompt(UserManager userManager){
+//        String other = super.enterValidUsername(userManager);
+//        return canEnrollIn(other);
+//    }
 
     private String enterEventIdPrompt(){
         String id = super.getResponse("Enter event id");

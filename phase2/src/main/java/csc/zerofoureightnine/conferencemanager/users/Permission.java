@@ -48,6 +48,10 @@ public enum Permission {
         this.category = category;
     }
 
+    /**
+     * Returns the category of this permission.
+     * @return category of this permission
+     */
     public String getCategory(){
         return this.category;
     }
