@@ -2,8 +2,10 @@ package csc.zerofoureightnine.conferencemanager.gateway.sql;
 
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Projections;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,8 +21,18 @@ public class EventSQLGateway implements SQLMap<String, EventData> {
 
     @Override
     public int size() {
-        // TODO Auto-generated method stub
-        return 0;
+        Session session = mapping.getFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        Criteria criteria = session.createCriteria(EventData.class);
+        criteria.setProjection(Projections.rowCount());
+        Integer rowCount = 0;
+        List data = criteria.list();
+            if (data!=null) {
+                rowCount = ((Number) data.get(0)).intValue();
+            }
+        transaction.commit();
+
+        return rowCount;
     }
 
     @Override

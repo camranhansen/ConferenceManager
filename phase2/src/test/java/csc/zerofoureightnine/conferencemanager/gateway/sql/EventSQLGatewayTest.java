@@ -45,4 +45,31 @@ public class EventSQLGatewayTest {
 
         assertEquals(expectedData, data);
     }
+
+    @Test
+    public void SizeTest() {
+        EventSQLGateway eventSQLGateway = new EventSQLGateway(mapping);
+
+        List<String> speaker = new ArrayList<>();
+        List<String> participants = new ArrayList<>();
+
+        for (int i = 0; i < 100; i++) {
+            EventData events = new EventData();
+            speaker.add("A"+i);
+            events.setSpeaker(speaker);
+            events.setEventName("Review"+i);
+            events.setTime(Instant.ofEpochMilli(1024+i));
+            participants.add("B"+i);
+            events.setParticipants(participants);
+            events.setRoom("105"+i);
+            events.setEventId();
+            events.setCapacity(20);
+            String key = ""+i;
+            eventSQLGateway.save(key, events);
+        }
+
+        assertEquals(100, eventSQLGateway.size());
+    }
+
+
 }
