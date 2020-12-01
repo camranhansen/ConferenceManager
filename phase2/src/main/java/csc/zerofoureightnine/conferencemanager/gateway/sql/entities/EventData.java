@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class EventData {
 
     @Id
-    private int dataId;
+    private String dataId;
 
     @Column(name = "speaker")
     @ElementCollection
@@ -42,11 +42,11 @@ public class EventData {
     @Column(name = "event_type")
     private EventType type;
 
-    public int getDataId() {
+    public String getDataId() {
         return dataId;
     }
 
-    public void setDataId(int dataId) {
+    public void setDataId(String dataId) {
         this.dataId = dataId;
     }
     public List<String> getSpeaker() {
@@ -111,5 +111,18 @@ public class EventData {
 
     public void setType(EventType type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EventData that = (EventData) o;
+        return Objects.equals(eventId, that.eventId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eventId);
     }
 }

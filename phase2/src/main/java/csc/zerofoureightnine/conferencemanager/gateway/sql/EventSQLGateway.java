@@ -85,6 +85,7 @@ public class EventSQLGateway implements SQLMap<String, EventData> {
 
     @Override
     public String save(String key, EventData entity) {
+        entity.setDataId(key);
         Session session = mapping.getFactory().openSession();
         Transaction transaction = session.beginTransaction();
         String id = String.valueOf(session.save(entity));
