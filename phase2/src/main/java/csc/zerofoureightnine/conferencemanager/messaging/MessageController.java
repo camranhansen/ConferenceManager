@@ -310,7 +310,7 @@ public class MessageController implements SubController {
         List<String> eventIds = eventManager.getAllEventIds();
         List<String> speakersEvents = new ArrayList<>();
         for (String id : eventIds) {
-            if (eventManager.getEventSpeakerName(id).equals(username)) {
+            if (eventManager.getEventSpeakerName(id).contains(username)) {
                 speakersEvents.add(id);
             }
         }

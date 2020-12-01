@@ -70,6 +70,46 @@ public class EventInputPrompterTest {
     }
 
     @Test
+    public void canEnrollInFullTest(){
+        String input = "Main Room2020-12-05T09:00:00Z\nMain Room2020-12-04T09:00:00Z";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        String username = "attendee1";
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        EventInputPrompter eventInputPrompter = new EventInputPrompter(eventManager);
+        createEvent3(eventManager, userManager);
+        eventManager.enrollUser("Main Room2020-12-05T09:00:00Z", username);
+        createEvent2(eventManager, userManager);
+        String yes = eventInputPrompter.canEnrollIn("attendee2");
+        eventManager.enrollUser(yes, "attendee2");
+        assertEquals("Main Room2020-12-04T09:00:00Z", yes);
+        assertTrue(eventManager.getParticipants("Main Room2020-12-04T09:00:00Z").contains("attendee2"));
+    }
+
+    @Test
+    public void canEnrollInAtSameTimeTest(){
+        String input = "Pool2020-12-05T09:00:00Z\nMain Room2020-12-04T09:00:00Z";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        String username = "attendee1";
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        EventInputPrompter eventInputPrompter = new EventInputPrompter(eventManager);
+        createEvent4(eventManager, userManager);
+        createEvent3(eventManager, userManager);
+        eventManager.enrollUser("Main Room2020-12-05T09:00:00Z", username);
+        createEvent2(eventManager, userManager);
+        String yes = eventInputPrompter.canEnrollIn(username);
+        eventManager.enrollUser(yes, "attendee2");
+        assertEquals("Main Room2020-12-04T09:00:00Z", yes);
+        assertTrue(eventManager.getParticipants("Main Room2020-12-04T09:00:00Z").contains("attendee2"));
+    }
+
+
+    @Test
     public void pickSingleSpeakerCorrectInputTest(){
         String input = "spk1" + "\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -95,6 +135,35 @@ public class EventInputPrompterTest {
         Instant time = Instant.parse("2020-12-02T09:00:00Z");
         String speaker = eventInputPrompter.pickSingleSpeaker(userManager, time);
         assertEquals("spk1", speaker);
+    }
+
+    @Test
+    public void pickSingleSpeakerNotSpeakerTest(){
+        String input = "attendee1\nspk1\n";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        EventInputPrompter eventInputPrompter = new EventInputPrompter(eventManager);
+        Instant time = Instant.parse("2020-12-02T09:00:00Z");
+        String speaker = eventInputPrompter.pickSingleSpeaker(userManager, time);
+        assertEquals("spk1", speaker);
+    }
+
+    @Test
+    public void pickSingleSpeakerConflictTest(){
+        String input = "spk1\nspk2\n";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        EventManager eventManager = new EventManager();
+        HashMap<String, User> users = generateUserHash();
+        UserManager userManager = new UserManager(users);
+        EventInputPrompter eventInputPrompter = new EventInputPrompter(eventManager);
+        Instant time = Instant.parse("2020-12-02T09:00:00Z");
+        createEvent(eventManager, userManager);
+        String speaker = eventInputPrompter.pickSingleSpeaker(userManager, time);
+        assertEquals("spk2", speaker);
     }
 
     @Test
@@ -224,4 +293,35 @@ public class EventInputPrompterTest {
         eventManager.createEvent(speakers, time, name, room, capacity, eventType);
     }
 
+    private void createEvent3(EventManager eventManager, UserManager userManager){
+        String input = "5\n9\nPrivate Knitting\nspk1\nMain Room\n1";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        EventInputPrompter eventInputPrompter = new EventInputPrompter(eventManager);
+        Instant time = eventInputPrompter.pickEventTime();
+        String name = eventInputPrompter.pickEventName();
+        String speaker = eventInputPrompter.pickSingleSpeaker(userManager, time);
+        String room = eventInputPrompter.pickEventRoom(time);
+        int capacity = eventInputPrompter.pickEventCapacity();
+        List<String> speakers = new ArrayList<>();
+        speakers.add(speaker);
+        EventType eventType = EventType.SINGLE;
+        eventManager.createEvent(speakers, time, name, room, capacity, eventType);
+    }
+
+    private void createEvent4(EventManager eventManager, UserManager userManager){
+        String input = "5\n9\nPool Party\nspk2\nPool\n2";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        EventInputPrompter eventInputPrompter = new EventInputPrompter(eventManager);
+        Instant time = eventInputPrompter.pickEventTime();
+        String name = eventInputPrompter.pickEventName();
+        String speaker = eventInputPrompter.pickSingleSpeaker(userManager, time);
+        String room = eventInputPrompter.pickEventRoom(time);
+        int capacity = eventInputPrompter.pickEventCapacity();
+        List<String> speakers = new ArrayList<>();
+        speakers.add(speaker);
+        EventType eventType = EventType.SINGLE;
+        eventManager.createEvent(speakers, time, name, room, capacity, eventType);
+    }
 }
