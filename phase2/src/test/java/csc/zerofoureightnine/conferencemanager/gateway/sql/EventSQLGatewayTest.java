@@ -1,10 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql;
 
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
