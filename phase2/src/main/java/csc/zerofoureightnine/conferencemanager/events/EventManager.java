@@ -143,6 +143,7 @@ public class EventManager {
         return availableEvents;
     }
 
+    //TODO make javadoc even though this is a private method! I don't want to lose marks LOL
     private List<Instant> myEventTime(List<String> id){
         List<Instant> time = new ArrayList<>();
         for(int x=0; x<id.size(); x++) {
@@ -404,7 +405,7 @@ public class EventManager {
         return events.get(id).getType();
     }
 
-
+    //TODO write javadoc. mostly used for test cases.
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -412,7 +413,7 @@ public class EventManager {
         EventManager that = (EventManager) o;
         return events.equals(that.events);
     }
-
+    //TODO write javadoc
     @Override
     public int hashCode() {
         return Objects.hash(events);

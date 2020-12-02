@@ -15,7 +15,7 @@ public class Menu {
     /**
      * A menu is...
      * @param bottomLayer the bottom layer of this menu stack.
-     *                    During runtime, <Code>bottomLayer</Code></> will be instantiated with {@link CurrentStateFlag} LOGIN
+     *                    During runtime, <Code>bottomLayer</Code></> will be instantiated with {@link StateFlag} LOGIN
      */
     public Menu(MenuLayer bottomLayer){
         this.menuLayerStack = new Stack<>();
@@ -32,9 +32,9 @@ public class Menu {
                 //TODO actually do exiting stuff.
                 break;
             case LOGIN:
-                goBackToState(CurrentStateFlag.LOGIN);
+                goBackToState(StateFlag.LOGIN);
             case MAIN:
-                goBackToState(CurrentStateFlag.MAIN);
+                goBackToState(StateFlag.MAIN);
                 //TODO talk to someone about how to test that the currentstateflag is exactly this at this time..
                 //Perhaps using logger?
             case BACK:
@@ -47,7 +47,7 @@ public class Menu {
 
     }
 
-    public void goBackToState(CurrentStateFlag stateFlag){
+    public void goBackToState(StateFlag stateFlag){
         while(menuLayerStack.peek().getCurrentStateFlag() != stateFlag){
             menuLayerStack.pop();
         }
@@ -61,9 +61,9 @@ public class Menu {
         menuLayerStack.removeAllElements();
     }
 
-    public CurrentStateFlag getCurrentStateFlag(){
+    public StateFlag getCurrentStateFlag(){
         if(menuLayerStack.isEmpty()){
-            return CurrentStateFlag.EMPTY;
+            return StateFlag.EMPTY;
         }else{
             return menuLayerStack.peek().getCurrentStateFlag();
         }
