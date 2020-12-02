@@ -45,24 +45,24 @@ public class MenuTest {
 
     @Test
     public void getCurrentStateFlag(){
-        MenuLayer m1 = new MenuLayer(CurrentStateFlag.LOGIN);
+        MenuLayer m1 = new MenuLayer(StateFlag.LOGIN);
         Menu menu1 = new Menu(m1);
 
-        Assert.assertEquals(CurrentStateFlag.LOGIN, menu1.getCurrentStateFlag());
+        Assert.assertEquals(StateFlag.LOGIN, menu1.getCurrentStateFlag());
     }
     @Test
     public void testGoBackToState() {
         //Note: never do this in the actual program. This is just for testing.
-        MenuLayer m1 = new MenuLayer(CurrentStateFlag.LOGIN){
+        MenuLayer m1 = new MenuLayer(StateFlag.LOGIN){
             @Override
             public MenuLayer run() {
-                return new MenuLayer(CurrentStateFlag.MAIN){
+                return new MenuLayer(StateFlag.MAIN){
                     @Override
                     public MenuLayer run(){
-                        return new MenuLayer(CurrentStateFlag.BRANCH){
+                        return new MenuLayer(StateFlag.BRANCH){
                             @Override
                             public MenuLayer run(){
-                                return new MenuLayer(CurrentStateFlag.BRANCH);
+                                return new MenuLayer(StateFlag.BRANCH);
                             }
                         };
                     }
@@ -70,26 +70,26 @@ public class MenuTest {
             }
         };
         Menu menu1 = new Menu(m1);
-        Assert.assertEquals(CurrentStateFlag.LOGIN,menu1.getCurrentStateFlag());
+        Assert.assertEquals(StateFlag.LOGIN,menu1.getCurrentStateFlag());
         menu1.runTopMenuLayer();
-        Assert.assertEquals(CurrentStateFlag.BRANCH, menu1.getCurrentStateFlag());
-        menu1.goBackToState(CurrentStateFlag.LOGIN);
-        Assert.assertEquals(CurrentStateFlag.LOGIN, menu1.getCurrentStateFlag());
-        Assert.assertNotEquals(CurrentStateFlag.MAIN, menu1.getCurrentStateFlag());
+        Assert.assertEquals(StateFlag.BRANCH, menu1.getCurrentStateFlag());
+        menu1.goBackToState(StateFlag.LOGIN);
+        Assert.assertEquals(StateFlag.LOGIN, menu1.getCurrentStateFlag());
+        Assert.assertNotEquals(StateFlag.MAIN, menu1.getCurrentStateFlag());
     }
 
     @Test
     public void testGoBackOneState(){
-        MenuLayer m1 = new MenuLayer(CurrentStateFlag.LOGIN){
+        MenuLayer m1 = new MenuLayer(StateFlag.LOGIN){
             @Override
             public MenuLayer run() {
-                return new MenuLayer(CurrentStateFlag.MAIN){
+                return new MenuLayer(StateFlag.MAIN){
                     @Override
                     public MenuLayer run(){
-                        return new MenuLayer(CurrentStateFlag.BRANCH){
+                        return new MenuLayer(StateFlag.BRANCH){
                             @Override
                             public MenuLayer run(){
-                                return new MenuLayer(CurrentStateFlag.BRANCH);
+                                return new MenuLayer(StateFlag.BRANCH);
                             }
                         };
                     }
@@ -97,18 +97,18 @@ public class MenuTest {
             }
         };
         Menu menu1 = new Menu(m1);
-        Assert.assertEquals(CurrentStateFlag.LOGIN,menu1.getCurrentStateFlag());
+        Assert.assertEquals(StateFlag.LOGIN,menu1.getCurrentStateFlag());
         menu1.runTopMenuLayer();
-        Assert.assertEquals(CurrentStateFlag.BRANCH, menu1.getCurrentStateFlag());
+        Assert.assertEquals(StateFlag.BRANCH, menu1.getCurrentStateFlag());
         menu1.goBackOneState();
         //This is
-        Assert.assertEquals(CurrentStateFlag.BRANCH, menu1.getCurrentStateFlag());
+        Assert.assertEquals(StateFlag.BRANCH, menu1.getCurrentStateFlag());
         menu1.goBackOneState();
-        Assert.assertEquals(CurrentStateFlag.BRANCH, menu1.getCurrentStateFlag());
+        Assert.assertEquals(StateFlag.BRANCH, menu1.getCurrentStateFlag());
         menu1.goBackOneState();
-        Assert.assertEquals(CurrentStateFlag.MAIN, menu1.getCurrentStateFlag());
+        Assert.assertEquals(StateFlag.MAIN, menu1.getCurrentStateFlag());
         menu1.goBackOneState();
-        Assert.assertEquals(CurrentStateFlag.LOGIN, menu1.getCurrentStateFlag());
+        Assert.assertEquals(StateFlag.LOGIN, menu1.getCurrentStateFlag());
     }
 
     @Test

@@ -3,14 +3,14 @@ package csc.zerofoureightnine.conferencemanager.menu;
 
 public class MenuLayer {
     public GoalFlag goalFlag;
-    public CurrentStateFlag currentStateFlag;
+    public StateFlag currentStateFlag;
 
     /**
      * Default MenuLayer constructor for some branch csc.zerofoureightnine.conferencemanager.menu layer
      */
     public MenuLayer(){
         this.goalFlag = GoalFlag.CONTINUE;
-        this.currentStateFlag = CurrentStateFlag.BRANCH;
+        this.currentStateFlag = StateFlag.BRANCH;
     }
 
     /**
@@ -20,7 +20,7 @@ public class MenuLayer {
      */
     public MenuLayer(GoalFlag goalFlag){
         this.goalFlag = goalFlag;
-        this.currentStateFlag = CurrentStateFlag.BRANCH;
+        this.currentStateFlag = StateFlag.BRANCH;
     }
 
     /**
@@ -31,7 +31,7 @@ public class MenuLayer {
      * @param currentStateFlag denotes the specific state of this MenuLayer.
      *                         Relevant for login and main csc.zerofoureightnine.conferencemanager.menu.
      */
-    public MenuLayer(CurrentStateFlag currentStateFlag){
+    public MenuLayer(StateFlag currentStateFlag){
 
         this.goalFlag = GoalFlag.CONTINUE;
         this.currentStateFlag = currentStateFlag;
@@ -54,7 +54,7 @@ public class MenuLayer {
         return goalFlag;
     }
 
-    public CurrentStateFlag getCurrentStateFlag(){
+    public StateFlag getCurrentStateFlag(){
         return currentStateFlag;
     }
 
