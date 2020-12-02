@@ -28,7 +28,7 @@ public class MessageSQLGatewayTest {
         Session sess = mapping.getFactory().openSession();
         Transaction tx = sess.beginTransaction();
         sess.save(recipient);
-        System.out.println("transaction active:" + tx.isActive());
+        System.out.println("transaction active: " + tx.isActive());
         tx.commit();
         sess.close();
 
