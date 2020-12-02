@@ -36,19 +36,20 @@ public class EventData {
     @Column(name = "capacity")
     private int capacity;
 
-    @Column(name = "event_id")
-    private String eventId;
+//    @Column(name = "event_id")
+//    private String eventId;
 
-    @Column(name = "event_type")
-    private EventType type;
+//    @Column(name = "event_type")
+//    private EventType type;
 
     public String getDataId() {
         return dataId;
     }
 
-    public void setDataId(String dataId) {
-        this.dataId = dataId;
+    public void setDataId() {
+        this.dataId =this.room + this.time.toString();
     }
+
     public List<String> getSpeaker() {
         return speaker;
     }
@@ -97,32 +98,32 @@ public class EventData {
         this.capacity = capacity;
     }
 
-    public String getEventId() {
-        return eventId;
-    }
+//    public String getEventId() {
+//        return eventId;
+//    }
+//
+//    public void setEventId() {
+//        this.eventId = this.room + this.time.toString();
+//    }
 
-    public void setEventId() {
-        this.eventId = this.room + this.time.toString();
-    }
-
-    public EventType getType() {
-        return type;
-    }
-
-    public void setType(EventType type) {
-        this.type = type;
-    }
+//    public EventType getType() {
+//        return type;
+//    }
+//
+//    public void setType(EventType type) {
+//        this.type = type;
+//    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EventData that = (EventData) o;
-        return Objects.equals(eventId, that.eventId);
+        return Objects.equals(dataId, that.dataId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(eventId);
+        return Objects.hash(dataId);
     }
 }

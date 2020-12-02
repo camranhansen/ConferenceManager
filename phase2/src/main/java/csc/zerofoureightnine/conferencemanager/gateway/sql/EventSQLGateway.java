@@ -31,7 +31,7 @@ public class EventSQLGateway implements SQLMap<String, EventData> {
                 rowCount = ((Number) data.get(0)).intValue();
             }
         transaction.commit();
-
+            session.close();
         return rowCount;
     }
 
@@ -97,11 +97,12 @@ public class EventSQLGateway implements SQLMap<String, EventData> {
 
     @Override
     public String save(String key, EventData entity) {
-        entity.setDataId(key);
+        entity.setDataId();
         Session session = mapping.getFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        String id = String.valueOf(session.save(entity));
+        String id = (String) session.save(entity);
         transaction.commit();
+        session.close();
         return id;
     }
 
@@ -111,6 +112,7 @@ public class EventSQLGateway implements SQLMap<String, EventData> {
         Transaction transaction = session.beginTransaction();
         EventData eventdata = session.get(EventData.class, key);
         transaction.commit();
+        session.close();
         return eventdata;
     }
 

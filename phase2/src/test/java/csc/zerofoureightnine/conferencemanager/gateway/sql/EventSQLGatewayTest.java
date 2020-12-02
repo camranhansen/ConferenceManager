@@ -5,6 +5,7 @@ import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -35,14 +36,15 @@ public class EventSQLGatewayTest {
         expectedData.setSpeaker(speaker);
         expectedData.setTime(Instant.ofEpochMilli(1024));
         expectedData.setParticipants(participants);
+        expectedData.setEventName("Review");
         expectedData.setRoom("102");
-        expectedData.setEventId();
+        expectedData.setDataId();
+//        expectedData.setEventId();
         expectedData.setCapacity(20);
 
-        String key = "1";
-        eventSQLGateway.save(key, expectedData);
-        EventData data = eventSQLGateway.load(key);
-
+        String key = expectedData.getDataId();
+        String id = eventSQLGateway.save(key, expectedData);
+        EventData data = eventSQLGateway.load(id);
         assertEquals(expectedData, data);
     }
 
@@ -62,13 +64,13 @@ public class EventSQLGatewayTest {
             participants.add("B"+i);
             events.setParticipants(participants);
             events.setRoom("105"+i);
-            events.setEventId();
+            events.setDataId();
             events.setCapacity(20);
-            String key = ""+i;
+            String key = events.getDataId();
             eventSQLGateway.save(key, events);
         }
 
-        assertEquals(100, eventSQLGateway.size());
+        assertEquals(101, eventSQLGateway.size());
     }
 
 

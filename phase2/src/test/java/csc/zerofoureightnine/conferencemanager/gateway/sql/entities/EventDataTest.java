@@ -64,16 +64,16 @@ public class EventDataTest {
         assertEquals(20, eventData.getCapacity());
     }
 
-    @Test
-    public void testEventIdData() {
-        EventData eventData = new EventData();
-        Instant timeSent = Instant.ofEpochMilli(1024);
-        eventData.setTime(timeSent);
-        eventData.setRoom("101");
-        eventData.setEventId();
-
-        assertEquals(eventData.getRoom()+eventData.getTime().toString(), eventData.getEventId());
-    }
+//    @Test
+//    public void testEventIdData() {
+//        EventData eventData = new EventData();
+//        Instant timeSent = Instant.ofEpochMilli(1024);
+//        eventData.setTime(timeSent);
+//        eventData.setRoom("101");
+//        eventData.setEventId();
+//
+//        assertEquals(eventData.getRoom()+eventData.getTime().toString(), eventData.getEventId());
+//    }
 
 //    @Test
 //    public void testEventTypeData() {
