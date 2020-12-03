@@ -2,10 +2,8 @@ package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.*;
 
@@ -24,19 +22,6 @@ public class UserData {
     @Column(name = "permissions")
     @ElementCollection
     private List<Permission> permissions;
-
-    @ManyToMany(mappedBy = "recipients", fetch = FetchType.EAGER)
-    private Set<MessageData> messages = new HashSet<>();
-
-    public void addMessageData(MessageData messageData) {
-        if (messages.add(messageData)) {
-            messageData.addRecipient(this);
-        }
-    }
-
-    public Set<MessageData> getMessages() {
-        return messages;
-    }
 
     public int getId() {
         return id;
