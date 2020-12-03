@@ -3,6 +3,9 @@ package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 import csc.zerofoureightnine.conferencemanager.events.EventType;
 
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -17,8 +20,8 @@ public class EventData {
     private String dataId;
 
     @Column(name = "speaker")
-    @ElementCollection
-    private List<String> speaker;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> speakers = new HashSet<>();
 
     @Column(name = "time")
     private Instant time;
@@ -27,8 +30,8 @@ public class EventData {
     private String eventName;
 
     @Column(name = "participants")
-    @ElementCollection
-    private List<String> participants;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> participants = new HashSet<>();
 
     @Column(name = "room")
     private String room;
@@ -50,13 +53,17 @@ public class EventData {
         this.dataId =this.room + this.time.toString();
     }
 
-    public List<String> getSpeaker() {
-        return speaker;
+    public Set<String> getSpeakers() {
+        return speakers;
     }
 
-    public void setSpeaker(List<String> speaker) {
-        this.speaker = speaker;
+    public void addSpeakers(String... speaker) {
+        this.speakers.addAll(Arrays.asList(speaker));
     }
+
+	public void addSpeakers(Collection<String> speaker) {
+        this.speakers.addAll(speaker);
+	}
 
     public Instant getTime() {
         return time;
@@ -74,12 +81,16 @@ public class EventData {
         this.eventName = eventName;
     }
 
-    public List<String> getParticipants() {
+    public Set<String> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(List<String> participants) {
-        this.participants = participants;
+    public void addParticipants(String... participants) {
+        this.participants.addAll(Arrays.asList(participants));
+    }
+
+    public void addParticipants(Collection<String> participants) {
+        this.participants.addAll(participants);
     }
 
     public String getRoom() {
@@ -118,12 +129,19 @@ public class EventData {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EventData that = (EventData) o;
-        return Objects.equals(dataId, that.dataId);
+        EventData eventData = (EventData) o;
+        return capacity == eventData.capacity &&
+                dataId.equals(eventData.dataId) &&
+                speakers.equals(eventData.speakers) &&
+                time.equals(eventData.time) &&
+                eventName.equals(eventData.eventName) &&
+                participants.equals(eventData.participants) &&
+                room.equals(eventData.room) &&
+                type == eventData.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dataId);
+        return Objects.hash(dataId, speakers, time, eventName, participants, room, capacity, type);
     }
 }

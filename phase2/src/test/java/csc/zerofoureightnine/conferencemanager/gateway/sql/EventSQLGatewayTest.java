@@ -2,11 +2,6 @@ package csc.zerofoureightnine.conferencemanager.gateway.sql;
 
 import csc.zerofoureightnine.conferencemanager.events.EventType;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -35,9 +30,9 @@ public class EventSQLGatewayTest {
         participants.add("Mike");
 
         EventData expectedData = new EventData();
-        expectedData.setSpeaker(speaker);
+        expectedData.addSpeakers(speaker);
         expectedData.setTime(Instant.ofEpochMilli(1024));
-        expectedData.setParticipants(participants);
+        expectedData.addParticipants(participants);
         expectedData.setEventName("Review");
         expectedData.setRoom("102");
         expectedData.setDataId();
@@ -62,11 +57,11 @@ public class EventSQLGatewayTest {
         for (int i = 0; i < 100; i++) {
             EventData events = new EventData();
             speaker.add("A"+i);
-            events.setSpeaker(speaker);
+            events.addSpeakers(speaker);
             events.setEventName("Review"+i);
             events.setTime(Instant.ofEpochMilli(1024+i));
             participants.add("B"+i);
-            events.setParticipants(participants);
+            events.addParticipants(participants);
             events.setRoom("105"+i);
             events.setDataId();
             events.setCapacity(20);
@@ -89,9 +84,9 @@ public class EventSQLGatewayTest {
         participants.add("Cat");
         participants.add("Dog");
 
-        expectedData.setSpeaker(speaker);
+        expectedData.addSpeakers(speaker);
         expectedData.setTime(Instant.ofEpochMilli(1024));
-        expectedData.setParticipants(participants);
+        expectedData.addParticipants(participants);
         expectedData.setEventName("Review 2");
         expectedData.setRoom("103");
         expectedData.setDataId();
@@ -125,9 +120,9 @@ public class EventSQLGatewayTest {
         participants.add("Sprite");
         participants.add("7Up");
 
-        expectedData.setSpeaker(speaker);
+        expectedData.addSpeakers(speaker);
         expectedData.setTime(Instant.ofEpochMilli(1024));
-        expectedData.setParticipants(participants);
+        expectedData.addParticipants(participants);
         expectedData.setEventName("Review 3");
         expectedData.setRoom("288");
         expectedData.setDataId();
@@ -154,9 +149,9 @@ public class EventSQLGatewayTest {
         participants.add("Water");
         participants.add("Tea");
 
-        ed.setSpeaker(speaker);
+        ed.addSpeakers(speaker);
         ed.setTime(Instant.ofEpochMilli(1024));
-        ed.setParticipants(participants);
+        ed.addParticipants(participants);
         ed.setEventName("Review 4");
         ed.setRoom("999");
         ed.setDataId();

@@ -1,9 +1,9 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -25,11 +25,19 @@ public class MessageData {
     private String sender = "";
 
     @Column(name = "recipients")
-    @ElementCollection
-    private List<String> recipients = new ArrayList<>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> recipients = new HashSet<>();
 
-    public List<String> getRecipients() {
+    public Set<String> getRecipients() {
         return recipients;
+    }
+
+    public void addRecipients(String... recipients) {
+        this.recipients.addAll(Arrays.asList(recipients));
+    }
+
+    public void addRecipients(Collection<String> recipients) {
+        this.recipients.addAll(recipients);
     }
 
     public String getSender() {
@@ -69,11 +77,15 @@ public class MessageData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MessageData that = (MessageData) o;
-        return Objects.equals(id, that.id);
+        return id.equals(that.id) &&
+                Objects.equals(content, that.content) &&
+                timeSent.equals(that.timeSent) &&
+                sender.equals(that.sender) &&
+                recipients.equals(that.recipients);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, content, timeSent, sender, recipients);
     }
 }

@@ -3,24 +3,22 @@ package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 import csc.zerofoureightnine.conferencemanager.events.EventType;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static csc.zerofoureightnine.conferencemanager.events.EventType.PARTY;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class EventDataTest {
 
     @Test
     public void testEventSpeakerData() {
         EventData eventData = new EventData();
-        List<String> speaker = new ArrayList<>();
+        Set<String> speaker = new HashSet<>();
         speaker.add("Bob");
-        eventData.setSpeaker(speaker);
-        assertEquals(speaker, eventData.getSpeaker());
+        eventData.addSpeakers(speaker);
+        assertEquals(speaker, eventData.getSpeakers());
     }
 
     @Test
@@ -43,10 +41,10 @@ public class EventDataTest {
     @Test
     public void testEventParticipantData() {
         EventData eventData = new EventData();
-        List<String> participants = new ArrayList<>();
+        Set<String> participants = new HashSet<>();
         participants.add("Annie");
         participants.add("Shawn");
-        eventData.setParticipants(participants);
+        eventData.addParticipants(participants);
         assertEquals(participants, eventData.getParticipants());
     }
 
