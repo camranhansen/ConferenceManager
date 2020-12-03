@@ -132,7 +132,7 @@ public class MessageController implements SubController {
             Option allEvents = new Option("Send to all your events") {
                 @Override
                 public void run() {
-                    writeToEvents(from, content, getSpeakerEventIds(from));
+                    writeToEvents(from, content, eventManager.getSpkEvents(from));
                 }
             };
             Option oneEvent = new Option("Send to one of your events") {
@@ -173,6 +173,7 @@ public class MessageController implements SubController {
             public void run() {
                 String messages = viewAllMessages(username);
                 messagePresenter.printMessages(messages);
+
             }
         };
         Option viewOne = new Option("View messages from one user") {
@@ -192,10 +193,18 @@ public class MessageController implements SubController {
                 messagePresenter.printMessages(messages);
             }
         };
+        Option viewUnread = new Option("View unread messages"){
+            @Override
+            public void run(){
+                String messages = viewAllUnread(username);
+                messagePresenter.printMessages(messages);
+            }
+        };
         ArrayList<Option> options = new ArrayList<>();
         options.add(viewAll);
         options.add(viewOne);
         options.add(viewArchived);
+        options.add(viewUnread);
         Option choice = inputPrompter.menuOption(options);
         choice.run();
         this.exiting = false;

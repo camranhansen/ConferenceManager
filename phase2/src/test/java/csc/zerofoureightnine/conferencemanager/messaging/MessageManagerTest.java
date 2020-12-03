@@ -2,6 +2,7 @@ package csc.zerofoureightnine.conferencemanager.messaging;
 
 import org.junit.Test;
 
+import javax.xml.bind.SchemaOutputResolver;
 import java.util.HashMap;
 import java.util.List;
 
@@ -160,6 +161,61 @@ public class MessageManagerTest {
         mm.sendMessage("sender", "hi", "recipient","recipient2");
         assertEquals("hi", mm.getUnreadFrom("recipient", "sender").get(1).getContent());
         assertEquals("hi", mm.getUnreadFrom("recipient2", "sender").get(0).getContent());
+    }
+
+    @Test
+    public void testSingleUnreadInboxToString(){
+        MessageManager mm = new MessageManager();
+        mm.sendMessage("sender", "hello", "recipient");
+        mm.sendMessage("sender", "hi", "recipient","recipient2");
+        String string = mm.singleUnreadInboxToString("recipient", "sender");
+        String string1 = mm.singleUnreadInboxToString("recipient", "sender1");
+        assertEquals("sender: hello, hi", string);
+        assertEquals("You have no unread messages from sender1", string1);
+    }
+
+    @Test
+    public void testUnreadInboxToString(){
+        MessageManager mm = new MessageManager();
+        mm.sendMessage("sender", "hello", "recipient");
+        mm.sendMessage("sender", "hi", "recipient","recipient2");
+        String string = mm.unreadInboxToString("recipient");
+        String string2 = mm.unreadInboxToString("recipient2");
+        String string3 = mm.unreadInboxToString("recipient3");
+        assertEquals("sender: hello, hi\n", string);
+        assertEquals("sender: hi\n", string2);
+        assertEquals("You have no unread messages", string3);
+        mm.sendMessage("sender2", "bye", "recipient", "recipient2");
+        String string4 = mm.unreadInboxToString("recipient");
+        assertEquals("sender: hello, hi\n" + "sender2: bye\n", string4);
+
+    }
+
+    @Test
+    public void testArchivedMessagesToString(){
+        MessageManager mm = new MessageManager();
+        Message message = new Message("sender", new String[]{"recipient"}, "hello");
+        mm.sendMessage("sender", "hello", "recipient");
+        mm.sendMessage("sender", "hi", "recipient","recipient2");
+        MessageMover messageMover = new MessageMover(mm, "recipient");
+        messageMover.moveToArchived(message);
+        String string = mm.archivedMessagesToString("recipient");
+        assertEquals("sender: hello\n", string);
+        String string2 = mm.archivedMessagesToString("recipient2");
+        assertEquals("You have no archived messages", string2);
+        Message message2 = new Message("sender2", new String[]{"recipient"}, "hello");
+        mm.sendMessage("sender2", "hello", "recipient", "recipient2");
+        messageMover.moveToArchived(message2);
+        String string3 = mm.archivedMessagesToString("recipient");
+        assertEquals("sender: hello\n" + "sender2: hello\n", string3);
+        messageMover.removeFromArchived(message);
+        String string4 = mm.archivedMessagesToString("recipient");
+        assertEquals("sender2: hello\n", string4);
+        messageMover.removeFromArchived(message2);
+        String string5 = mm.archivedMessagesToString("recipient");
+        assertEquals("You have no archived messages", string5);
+
+
     }
 }
 
