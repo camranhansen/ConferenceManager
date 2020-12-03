@@ -6,7 +6,6 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,10 +13,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "events")
-public class EventData {
-
+public class EventData implements Identifiable<String> {
     @Id
-    private String dataId;
+    private String id;
 
     @Column(name = "speaker")
     @ElementCollection(fetch = FetchType.EAGER)
@@ -39,19 +37,8 @@ public class EventData {
     @Column(name = "capacity")
     private int capacity;
 
-//    @Column(name = "event_id")
-//    private String eventId;
-
     @Column(name = "event_type")
     private EventType type;
-
-    public String getDataId() {
-        return dataId;
-    }
-
-    public void setDataId() {
-        this.dataId =this.room + this.time.toString();
-    }
 
     public Set<String> getSpeakers() {
         return speakers;
@@ -131,7 +118,7 @@ public class EventData {
         if (o == null || getClass() != o.getClass()) return false;
         EventData eventData = (EventData) o;
         return capacity == eventData.capacity &&
-                dataId.equals(eventData.dataId) &&
+                getId().equals(eventData.getId()) &&
                 speakers.equals(eventData.speakers) &&
                 time.equals(eventData.time) &&
                 eventName.equals(eventData.eventName) &&
@@ -142,6 +129,16 @@ public class EventData {
 
     @Override
     public int hashCode() {
-        return Objects.hash(dataId, speakers, time, eventName, participants, room, capacity, type);
+        return Objects.hash(getId(), speakers, time, eventName, participants, room, capacity, type);
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 }

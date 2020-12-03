@@ -1,7 +1,5 @@
 package csc.zerofoureightnine.conferencemanager.input;
 
-import csc.zerofoureightnine.conferencemanager.input.validators.Validator;
-
 public enum InputStrategy {
     //Not text based
     MENU(""), //Special

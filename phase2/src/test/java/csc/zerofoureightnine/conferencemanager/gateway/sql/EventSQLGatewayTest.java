@@ -13,11 +13,11 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 public class EventSQLGatewayTest {
-    private static SQLMapping mapping;
+    private static SQLConfiguration mapping;
 
     @BeforeClass
     public static void setup() {
-        mapping = new SQLMapping();
+        mapping = new SQLConfiguration();
     }
 
     @Test
@@ -35,12 +35,10 @@ public class EventSQLGatewayTest {
         expectedData.addParticipants(participants);
         expectedData.setEventName("Review");
         expectedData.setRoom("102");
-        expectedData.setDataId();
-//        expectedData.setEventId();
         expectedData.setCapacity(20);
         expectedData.setType(EventType.SINGLE);
 
-        String key = expectedData.getDataId();
+        String key = "AbetterID";
         String id = eventSQLGateway.save(key, expectedData);
         EventData data = eventSQLGateway.load(id);
         assertEquals(expectedData, data);
@@ -48,7 +46,7 @@ public class EventSQLGatewayTest {
 
     @Test
     public void SizeTest() {
-        mapping = new SQLMapping();
+        mapping = new SQLConfiguration();
         EventSQLGateway eventSQLGateway = new EventSQLGateway(mapping);
 
         List<String> speaker = new ArrayList<>();
@@ -63,11 +61,9 @@ public class EventSQLGatewayTest {
             participants.add("B"+i);
             events.addParticipants(participants);
             events.setRoom("105"+i);
-            events.setDataId();
             events.setCapacity(20);
             events.setType(EventType.SINGLE);
-            String key = events.getDataId();
-            eventSQLGateway.save(key, events);
+            eventSQLGateway.save(i + "key", events);
         }
 
         assertEquals(100, eventSQLGateway.size());
@@ -89,12 +85,10 @@ public class EventSQLGatewayTest {
         expectedData.addParticipants(participants);
         expectedData.setEventName("Review 2");
         expectedData.setRoom("103");
-        expectedData.setDataId();
-//        expectedData.setEventId();
         expectedData.setCapacity(20);
         expectedData.setType(EventType.SINGLE);
 
-        String key = expectedData.getDataId();
+        String key = "hahahaha";
         eventSQLGateway.save(key, expectedData);
 
         //List<EventData> data = eventSQLGateway.retrieveByField("eventName", "Review 2");
@@ -104,7 +98,7 @@ public class EventSQLGatewayTest {
 
     @Test
     public void isEmptyTest() {
-        mapping = new SQLMapping();
+        mapping = new SQLConfiguration();
         EventSQLGateway eventSQLGateway = new EventSQLGateway(mapping);
         assertTrue(eventSQLGateway.isEmpty());
     }
@@ -125,12 +119,10 @@ public class EventSQLGatewayTest {
         expectedData.addParticipants(participants);
         expectedData.setEventName("Review 3");
         expectedData.setRoom("288");
-        expectedData.setDataId();
-//        expectedData.setEventId();
         expectedData.setCapacity(20);
         expectedData.setType(EventType.SINGLE);
 
-        String key = expectedData.getDataId();
+        String key = "muahahaha!";
         eventSQLGateway.save(key, expectedData);
 
         assertTrue(eventSQLGateway.containsKey(key));
@@ -154,10 +146,9 @@ public class EventSQLGatewayTest {
         ed.addParticipants(participants);
         ed.setEventName("Review 4");
         ed.setRoom("999");
-        ed.setDataId();
         ed.setCapacity(20);
         ed.setType(EventType.SINGLE);
-        String key = ed.getDataId();
+        String key = "ohno";
         eventSQLGateway.save(key, ed);
 
         int size = eventSQLGateway.size();

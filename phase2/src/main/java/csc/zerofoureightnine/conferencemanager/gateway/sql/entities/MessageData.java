@@ -11,10 +11,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "messages")
-public class MessageData {
+public class MessageData implements Identifiable<String> {
     @Id
     private String id;
-
+    
     @Column(name = "content")
     private String content = "";
 
@@ -27,6 +27,7 @@ public class MessageData {
     @Column(name = "recipients")
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> recipients = new HashSet<>();
+
 
     public Set<String> getRecipients() {
         return recipients;
@@ -64,20 +65,12 @@ public class MessageData {
         this.timeSent = timeSent;
     }
 
-    public String getID() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MessageData that = (MessageData) o;
-        return id.equals(that.id) &&
+        return getId().equals(that.getId()) &&
                 Objects.equals(content, that.content) &&
                 timeSent.equals(that.timeSent) &&
                 sender.equals(that.sender) &&
@@ -86,6 +79,16 @@ public class MessageData {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, timeSent, sender, recipients);
+        return Objects.hash(getId(), content, timeSent, sender, recipients);
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 }
