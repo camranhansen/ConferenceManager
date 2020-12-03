@@ -1,5 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 
+import csc.zerofoureightnine.conferencemanager.input.InputPrompter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

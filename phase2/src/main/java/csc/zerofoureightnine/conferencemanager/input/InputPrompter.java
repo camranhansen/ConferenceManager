@@ -1,5 +1,7 @@
-package csc.zerofoureightnine.conferencemanager.menu;
+package csc.zerofoureightnine.conferencemanager.input;
 
+import csc.zerofoureightnine.conferencemanager.menu.Option;
+import csc.zerofoureightnine.conferencemanager.menu.SubController;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 
 import java.util.ArrayList;

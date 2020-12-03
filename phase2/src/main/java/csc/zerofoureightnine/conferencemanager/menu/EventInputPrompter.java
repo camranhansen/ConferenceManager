@@ -1,13 +1,14 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
+import csc.zerofoureightnine.conferencemanager.input.InputPrompter;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventInputPrompter extends InputPrompter{
+public class EventInputPrompter extends InputPrompter {
 
     private EventManager eventManager;
     private EventInputPresenter eventInputPresenter;

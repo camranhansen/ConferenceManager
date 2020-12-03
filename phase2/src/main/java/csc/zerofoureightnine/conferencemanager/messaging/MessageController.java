@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
-import csc.zerofoureightnine.conferencemanager.menu.InputPrompter;
+import csc.zerofoureightnine.conferencemanager.input.InputPrompter;
 import csc.zerofoureightnine.conferencemanager.menu.Option;
 import csc.zerofoureightnine.conferencemanager.menu.SubController;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;

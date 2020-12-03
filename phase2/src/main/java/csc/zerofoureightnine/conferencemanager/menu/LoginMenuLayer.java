@@ -1,5 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 
+import csc.zerofoureightnine.conferencemanager.input.InputPrompter;
+
 public class LoginMenuLayer extends MenuLayer {
     InputPrompter prompter;
     public LoginMenuLayer(InputPrompter prompter){
