@@ -1,9 +1,12 @@
 package csc.zerofoureightnine.conferencemanager;
 
-import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeDataHolder;
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
 import csc.zerofoureightnine.conferencemanager.users.*;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
+import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequest;
+import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestManager;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,6 +1,7 @@
-package csc.zerofoureightnine.conferencemanager.users;
+package csc.zerofoureightnine.conferencemanager.users.login;
 
 import csc.zerofoureightnine.conferencemanager.menu.InputPrompter;
+import csc.zerofoureightnine.conferencemanager.users.UserManager;
 
 public class LoginController {
 

@@ -3,8 +3,8 @@ package csc.zerofoureightnine.conferencemanager.events;
 import csc.zerofoureightnine.conferencemanager.menu.InputPrompter;
 import csc.zerofoureightnine.conferencemanager.menu.Option;
 import csc.zerofoureightnine.conferencemanager.menu.SubController;
-import csc.zerofoureightnine.conferencemanager.users.Permission;
-import csc.zerofoureightnine.conferencemanager.users.Template;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 
 import java.time.Instant;

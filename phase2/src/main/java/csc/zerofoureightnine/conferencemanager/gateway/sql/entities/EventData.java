@@ -39,8 +39,8 @@ public class EventData {
 //    @Column(name = "event_id")
 //    private String eventId;
 
-//    @Column(name = "event_type")
-//    private EventType type;
+    @Column(name = "event_type")
+    private EventType type;
 
     public String getDataId() {
         return dataId;
@@ -106,13 +106,13 @@ public class EventData {
 //        this.eventId = this.room + this.time.toString();
 //    }
 
-//    public EventType getType() {
-//        return type;
-//    }
-//
-//    public void setType(EventType type) {
-//        this.type = type;
-//    }
+    public EventType getType() {
+        return type;
+    }
+
+    public void setType(EventType type) {
+        this.type = type;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import csc.zerofoureightnine.conferencemanager.users.login.LoginController;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

@@ -1,5 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.users;
 
+import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequest;
+import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestManager;
 import org.junit.Test;
 
 import java.util.*;

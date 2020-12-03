@@ -1,5 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.users;
 
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import org.junit.Test;
 
 import java.util.ArrayList;

@@ -2,8 +2,8 @@ package csc.zerofoureightnine.conferencemanager.menu;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
-import csc.zerofoureightnine.conferencemanager.users.PermissionManager;
-import csc.zerofoureightnine.conferencemanager.users.SpecialRequestManager;
+import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
+import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestManager;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 
 public class MainMenuLayer extends MenuLayer {

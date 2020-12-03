@@ -1,4 +1,4 @@
-package csc.zerofoureightnine.conferencemanager.users;
+package csc.zerofoureightnine.conferencemanager.users.specialrequest;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -5,6 +5,8 @@ import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageController;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
 import csc.zerofoureightnine.conferencemanager.users.*;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;

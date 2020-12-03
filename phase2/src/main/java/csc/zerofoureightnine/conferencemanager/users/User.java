@@ -1,5 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.users;
 
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+
 import java.util.List;
 
 public class User {

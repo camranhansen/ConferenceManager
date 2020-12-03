@@ -1,5 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 
+import csc.zerofoureightnine.conferencemanager.events.EventType;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -7,6 +8,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import static csc.zerofoureightnine.conferencemanager.events.EventType.PARTY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -75,12 +77,12 @@ public class EventDataTest {
 //        assertEquals(eventData.getRoom()+eventData.getTime().toString(), eventData.getEventId());
 //    }
 
-//    @Test
-//    public void testEventTypeData() {
-//        EventData eventData = new EventData();
-//        EventType type = new
-//        eventData.setType(PARTY);
-//
-//        assertEquals(PARTY, eventData.getType());
-    //   }
+    @Test
+    public void testEventTypeData() {
+        EventData eventData = new EventData();
+        EventType type = PARTY;
+        eventData.setType(type);
+
+        assertEquals(PARTY, eventData.getType());
+       }
 }

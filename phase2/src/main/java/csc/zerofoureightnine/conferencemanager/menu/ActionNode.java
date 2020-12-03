@@ -1,10 +1,8 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 
-import csc.zerofoureightnine.conferencemanager.input.InputStrategy;
-import csc.zerofoureightnine.conferencemanager.users.Permission;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 import java.util.EnumMap;
-import java.util.List;
 
 public class ActionNode extends MenuNode {
 

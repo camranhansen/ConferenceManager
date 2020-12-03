@@ -1,12 +1,12 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 
-import csc.zerofoureightnine.conferencemanager.users.Permission;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static csc.zerofoureightnine.conferencemanager.users.Permission.MESSAGE_ALL_USERS;
+import static csc.zerofoureightnine.conferencemanager.users.permission.Permission.MESSAGE_ALL_USERS;
 import static org.junit.Assert.assertEquals;
 
 public class UserDataTest {

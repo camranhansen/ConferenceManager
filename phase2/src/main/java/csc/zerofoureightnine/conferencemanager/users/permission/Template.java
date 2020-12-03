@@ -1,4 +1,4 @@
-package csc.zerofoureightnine.conferencemanager.users;
+package csc.zerofoureightnine.conferencemanager.users.permission;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,31 +12,53 @@ import java.util.List;
 public enum Template {
     ATTENDEE(new Permission[] {
             Permission.USER_SELF_EDIT_PASSWORD,
+            Permission.USER_CREATE_REQUEST, //New
+            Permission.USER_SELF_EDIT_REQUEST, //New
 
             Permission.MESSAGE_SINGLE_USER,
-
-            Permission.EVENT_SELF_ENROLL,
-
-            Permission.VIEW_SELF_MESSAGES,
-            Permission.VIEW_ALL_EVENTS}),
-    SPEAKER(new Permission[] {
-            Permission.USER_SELF_EDIT_PASSWORD,
-
-            Permission.MESSAGE_SINGLE_USER,
-            Permission.MESSAGE_EVENT_USERS,
+            Permission.MESSAGE_ARCHIVE, //New
+            Permission.MESSAGE_DELETE, //New
+            Permission.MESSAGE_UNREAD, //New
 
             Permission.EVENT_SELF_ENROLL,
 
             Permission.VIEW_SELF_MESSAGES,
             Permission.VIEW_ALL_EVENTS,
-            Permission.VIEW_HOSTING_EVENTS}),
+            Permission.VIEW_SELF_REQUESTS, //New
+            Permission.VIEW_SELF_STATISTICS //New
+            }),
+    SPEAKER(new Permission[] {
+            Permission.USER_SELF_EDIT_PASSWORD,
+            Permission.USER_CREATE_REQUEST, //New
+            Permission.USER_SELF_EDIT_REQUEST, //New
+
+            Permission.MESSAGE_SINGLE_USER,
+            Permission.MESSAGE_EVENT_USERS,
+            Permission.MESSAGE_ARCHIVE, //New
+            Permission.MESSAGE_DELETE, //New
+            Permission.MESSAGE_UNREAD, //New
+
+            Permission.EVENT_SELF_ENROLL,
+
+            Permission.VIEW_SELF_MESSAGES,
+            Permission.VIEW_ALL_EVENTS,
+            Permission.VIEW_HOSTING_EVENTS,
+            Permission.VIEW_SELF_REQUESTS, //New
+            Permission.VIEW_SELF_STATISTICS //New
+            }),
     ORGANIZER(new Permission[] {
             Permission.USER_SELF_EDIT_PASSWORD,
             Permission.USER_CREATE_SPEAKER_ACCOUNT,
+            Permission.USER_CREATE_REQUEST, //New
+            Permission.USER_SELF_EDIT_REQUEST, //New
+            Permission.USER_OTHER_EDIT_REQUEST, //New
 
             Permission.MESSAGE_SINGLE_USER,
             Permission.MESSAGE_EVENT_USERS,
             Permission.MESSAGE_ALL_USERS,
+            Permission.MESSAGE_ARCHIVE, //New
+            Permission.MESSAGE_DELETE, //New
+            Permission.MESSAGE_UNREAD, //New
 
             Permission.EVENT_SELF_ENROLL,
             Permission.EVENT_OTHER_ENROLL,
@@ -46,7 +68,12 @@ public enum Template {
 
             Permission.VIEW_SELF_MESSAGES,
             Permission.VIEW_ALL_EVENTS,
-            Permission.VIEW_HOSTING_EVENTS}),
+            Permission.VIEW_HOSTING_EVENTS,
+            Permission.VIEW_SELF_REQUESTS, //New
+            Permission.VIEW_SELF_STATISTICS, //New
+            Permission.VIEW_OTHER_REQUESTS, //New
+            Permission.VIEW_ALL_STATISTICS //New
+            }),
     ADMIN(new Permission[] {
             Permission.USER_ALL_EDIT_PERMISSION,
             Permission.USER_OTHER_EDIT_PASSWORD,
@@ -54,10 +81,16 @@ public enum Template {
             Permission.USER_DELETE_ACCOUNT,
             Permission.USER_SELF_EDIT_PASSWORD,
             Permission.USER_CREATE_SPEAKER_ACCOUNT,
+            Permission.USER_CREATE_REQUEST, //New
+            Permission.USER_SELF_EDIT_REQUEST, //New
+            Permission.USER_OTHER_EDIT_REQUEST, //New
 
             Permission.MESSAGE_SINGLE_USER,
             Permission.MESSAGE_EVENT_USERS,
             Permission.MESSAGE_ALL_USERS,
+            Permission.MESSAGE_ARCHIVE, //New
+            Permission.MESSAGE_DELETE, //New
+            Permission.MESSAGE_UNREAD, //New
 
             Permission.EVENT_SELF_ENROLL,
             Permission.EVENT_OTHER_ENROLL,
@@ -68,7 +101,12 @@ public enum Template {
             Permission.VIEW_SELF_MESSAGES,
             Permission.VIEW_OTHER_MESSAGES,
             Permission.VIEW_ALL_EVENTS,
-            Permission.VIEW_HOSTING_EVENTS});
+            Permission.VIEW_HOSTING_EVENTS,
+            Permission.VIEW_SELF_REQUESTS, //New
+            Permission.VIEW_SELF_STATISTICS, //New
+            Permission.VIEW_OTHER_REQUESTS, //New
+            Permission.VIEW_ALL_STATISTICS //New
+            });
 
     private final List<Permission> permissions; //Use getPermissions
 

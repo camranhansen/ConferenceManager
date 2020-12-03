@@ -1,4 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.users;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import csc.zerofoureightnine.conferencemanager.users.permission.Template;
+
 import java.util.*;
 
 

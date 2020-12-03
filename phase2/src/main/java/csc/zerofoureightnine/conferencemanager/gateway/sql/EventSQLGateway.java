@@ -20,6 +20,10 @@ public class EventSQLGateway implements SQLMap<String, EventData> {
         this.mapping = mapping;
     }
 
+    /**
+     * Return the size of the database.
+     * @return The number of rows in the database.
+     */
     @Override
     public int size() {
         Session session = mapping.getFactory().openSession();
@@ -36,34 +40,64 @@ public class EventSQLGateway implements SQLMap<String, EventData> {
         return rowCount;
     }
 
+    /**
+     * Return whether the size of the database is zero.
+     * @return True if the database is empty.
+     */
     @Override
     public boolean isEmpty() {
         return this.size() == 0;
     }
 
+    /**
+     * Return whether the database contains an ID(key) of an entity data.
+     * @param key The identifier for the record.
+     * @return True if the database contains the ID(key).
+     */
     @Override
     public boolean containsKey(Object key) {
         List<EventData> result = this.retrieveByField("id", (String) key);
         return !result.isEmpty();
     }
 
+    /**
+     * Return whether the database contains an entity data.
+     * @param value The entity data.
+     * @return True if the database contains the data.
+     */
     @Override
     public boolean containsValue(Object value) {
         EventData ed = (EventData) value;
         return this.containsKey(ed.getDataId());
     }
 
+    /**
+     * Get an entity data by its ID(key) from the database.
+     * @param key The identifier for the record.
+     * @return The entity data that corresponding to the ID(key).
+     */
     @Override
     public EventData get(Object key) {
         return this.load((String) key);
     }
 
+    /**
+     * Put an entity data to the database with the associated key as the identifier.
+     * @param key The identifier for the record.
+     * @param value The entity data.
+     * @return The record that is put into the database.
+     */
     @Override
     public EventData put(String key, EventData value) {
         this.save(key, value);
         return this.load(key);
     }
 
+    /**
+     * Delete the record of data from the database .
+     * @param key The identifier for the record.
+     * @return The record that is removed.
+     */
     @Override
     public EventData remove(Object key) {
         EventData ed = this.load((String) key);

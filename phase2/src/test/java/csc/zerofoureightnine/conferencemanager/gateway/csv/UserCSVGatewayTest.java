@@ -1,7 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.gateway.csv;
 
-import csc.zerofoureightnine.conferencemanager.users.Permission;
-import csc.zerofoureightnine.conferencemanager.users.Template;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 import org.junit.Test;
 import csc.zerofoureightnine.conferencemanager.users.UserManagerTest;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;

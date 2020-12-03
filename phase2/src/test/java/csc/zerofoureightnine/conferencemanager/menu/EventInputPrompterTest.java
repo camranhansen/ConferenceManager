@@ -1,7 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.events.EventType;
-import csc.zerofoureightnine.conferencemanager.users.Template;
+import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 import csc.zerofoureightnine.conferencemanager.users.User;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import org.junit.After;

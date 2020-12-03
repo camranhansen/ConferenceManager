@@ -1,7 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 
-import csc.zerofoureightnine.conferencemanager.users.Permission;
-import csc.zerofoureightnine.conferencemanager.users.Template;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 
 public class Option {
     private String optionText;
