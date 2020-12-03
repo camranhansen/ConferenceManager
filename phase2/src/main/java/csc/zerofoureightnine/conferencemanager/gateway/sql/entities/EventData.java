@@ -36,8 +36,8 @@ public class EventData {
     @Column(name = "capacity")
     private int capacity;
 
-    @Column(name = "event_id")
-    private String eventId;
+//    @Column(name = "event_id")
+//    private String eventId;
 
     @Column(name = "event_type")
     private EventType type;
