@@ -23,7 +23,7 @@ public class EventData {
     @Column(name = "time")
     private Instant time;
 
-    @Column(name = "event_name")
+    @Column(name = "eventName")
     private String eventName;
 
     @Column(name = "participants")

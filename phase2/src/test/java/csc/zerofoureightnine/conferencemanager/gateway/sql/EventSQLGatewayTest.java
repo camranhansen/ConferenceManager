@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 public class EventSQLGatewayTest {
@@ -50,6 +51,7 @@ public class EventSQLGatewayTest {
 
     @Test
     public void SizeTest() {
+        mapping = new SQLMapping();
         EventSQLGateway eventSQLGateway = new EventSQLGateway(mapping);
 
         List<String> speaker = new ArrayList<>();
@@ -70,8 +72,99 @@ public class EventSQLGatewayTest {
             eventSQLGateway.save(key, events);
         }
 
-        assertEquals(101, eventSQLGateway.size());
+        assertEquals(100, eventSQLGateway.size());
     }
 
+    @Test
+    public void retrieveByFieldTest() {
+        EventSQLGateway eventSQLGateway = new EventSQLGateway(mapping);
+        EventData expectedData = new EventData();
+
+        List<String> speaker = new ArrayList<>();
+        speaker.add("Allen");
+        List<String> participants = new ArrayList<>();
+        participants.add("Cat");
+        participants.add("Dog");
+
+        expectedData.setSpeaker(speaker);
+        expectedData.setTime(Instant.ofEpochMilli(1024));
+        expectedData.setParticipants(participants);
+        expectedData.setEventName("Review 2");
+        expectedData.setRoom("103");
+        expectedData.setDataId();
+//        expectedData.setEventId();
+        expectedData.setCapacity(20);
+
+        String key = expectedData.getDataId();
+        eventSQLGateway.save(key, expectedData);
+
+        //List<EventData> data = eventSQLGateway.retrieveByField("eventName", "Review 2");
+        List<EventData> data = eventSQLGateway.retrieveByField("id", key);
+        assertEquals(expectedData, data.get(0));
+    }
+
+    @Test
+    public void isEmptyTest() {
+        mapping = new SQLMapping();
+        EventSQLGateway eventSQLGateway = new EventSQLGateway(mapping);
+        assertTrue(eventSQLGateway.isEmpty());
+    }
+
+    @Test
+    public void containsKeyTest(){
+        EventSQLGateway eventSQLGateway = new EventSQLGateway(mapping);
+        EventData expectedData = new EventData();
+
+        List<String> speaker = new ArrayList<>();
+        speaker.add("Coke");
+        List<String> participants = new ArrayList<>();
+        participants.add("Sprite");
+        participants.add("7Up");
+
+        expectedData.setSpeaker(speaker);
+        expectedData.setTime(Instant.ofEpochMilli(1024));
+        expectedData.setParticipants(participants);
+        expectedData.setEventName("Review 3");
+        expectedData.setRoom("288");
+        expectedData.setDataId();
+//        expectedData.setEventId();
+        expectedData.setCapacity(20);
+
+        String key = expectedData.getDataId();
+        eventSQLGateway.save(key, expectedData);
+
+        assertTrue(eventSQLGateway.containsKey(key));
+        assertFalse(eventSQLGateway.containsKey("abc"));
+
+    }
+
+    @Test
+    public void removeAndContainsKey(){
+        EventSQLGateway eventSQLGateway = new EventSQLGateway(mapping);
+        EventData ed = new EventData();
+
+        List<String> speaker = new ArrayList<>();
+        speaker.add("Speaker Coffee");
+        List<String> participants = new ArrayList<>();
+        participants.add("Water");
+        participants.add("Tea");
+
+        ed.setSpeaker(speaker);
+        ed.setTime(Instant.ofEpochMilli(1024));
+        ed.setParticipants(participants);
+        ed.setEventName("Review 4");
+        ed.setRoom("999");
+        ed.setDataId();
+        ed.setCapacity(20);
+        String key = ed.getDataId();
+        eventSQLGateway.save(key, ed);
+
+        int size = eventSQLGateway.size();
+        EventData dataRemoved = eventSQLGateway.remove(key);
+
+        assertEquals(ed, dataRemoved);
+        assertFalse(eventSQLGateway.containsKey(key));
+        assertEquals(size-1, eventSQLGateway.size());
+    }
 
 }

@@ -1,11 +1,13 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql;
 
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
 
+import javax.persistence.Query;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -36,38 +38,41 @@ public class EventSQLGateway implements SQLMap<String, EventData> {
 
     @Override
     public boolean isEmpty() {
-        // TODO Auto-generated method stub
-        return false;
+        return this.size() == 0;
     }
 
     @Override
     public boolean containsKey(Object key) {
-        // TODO Auto-generated method stub
-        return false;
+        List<EventData> result = this.retrieveByField("id", (String) key);
+        return !result.isEmpty();
     }
 
     @Override
     public boolean containsValue(Object value) {
-        // TODO Auto-generated method stub
-        return false;
+        EventData ed = (EventData) value;
+        return this.containsKey(ed.getDataId());
     }
 
     @Override
     public EventData get(Object key) {
-        // TODO Auto-generated method stub
-        return null;
+        return this.load((String) key);
     }
 
     @Override
     public EventData put(String key, EventData value) {
-        // TODO Auto-generated method stub
-        return null;
+        this.save(key, value);
+        return this.load(key);
     }
 
     @Override
     public EventData remove(Object key) {
-        // TODO Auto-generated method stub
-        return null;
+        EventData ed = this.load((String) key);
+        Session session = mapping.getFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        session.delete(ed);
+        transaction.commit();
+        session.close();
+        return ed;
     }
 
     @Override
@@ -96,7 +101,7 @@ public class EventSQLGateway implements SQLMap<String, EventData> {
 
     @Override
     public String save(String key, EventData entity) {
-        entity.setDataId();
+        //entity.setDataId();
         Session session = mapping.getFactory().openSession();
         Transaction transaction = session.beginTransaction();
         String id = (String) session.save(entity);
@@ -117,8 +122,19 @@ public class EventSQLGateway implements SQLMap<String, EventData> {
 
     @Override
     public List<EventData> retrieveByField(String field, String filter) {
-        // TODO Auto-generated method stub
-        return null;
+        Session session = mapping.getFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        StringBuilder sb = new StringBuilder();
+        sb.append("select md from EventData md where md.");
+        sb.append(field);
+        sb.append(" like \'");
+        sb.append(filter);
+        sb.append("%\'");
+        Query q = session.createQuery(sb.toString());
+        List<EventData> res = q.getResultList();
+        tx.commit();
+        session.close();
+        return res;
     }
 
     @Override
