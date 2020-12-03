@@ -1,4 +1,4 @@
-package csc.zerofoureightnine.conferencemanager.gateway.sql;
+package csc.zerofoureightnine.conferencemanager.gateway;
 
 import java.util.List;
 import java.util.Map;
