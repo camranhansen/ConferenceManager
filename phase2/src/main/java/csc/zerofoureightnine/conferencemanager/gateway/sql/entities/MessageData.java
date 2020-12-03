@@ -1,7 +1,9 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -22,22 +24,11 @@ public class MessageData {
     @Column(name = "sender")
     private String sender = "";
 
+    @Column(name = "recipients")
+    @ElementCollection
+    private List<String> recipients = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable
-    private Set<UserData> recipients = new HashSet<>();
-
-    public void addRecipients(Set<UserData> users) {
-
-    }
-
-    public void addRecipient(UserData user) {
-        if (recipients.add(user)) {
-            user.addMessageData(this);
-        }
-    }
-
-    public Set<UserData> getRecipients() {
+    public List<String> getRecipients() {
         return recipients;
     }
 

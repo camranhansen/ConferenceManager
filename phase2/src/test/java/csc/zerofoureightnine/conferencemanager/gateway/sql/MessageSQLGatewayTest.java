@@ -2,9 +2,6 @@ package csc.zerofoureightnine.conferencemanager.gateway.sql;
 
 import static org.junit.Assert.assertEquals;
 
-import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -24,20 +21,13 @@ public class MessageSQLGatewayTest {
     @Test
     public void SaveAndLoadTest() {
         MessageSQLGateway mSqlGateway = new MessageSQLGateway(mapping);
-        UserData recipient = new UserData();
-        Session sess = mapping.getFactory().openSession();
-        Transaction tx = sess.beginTransaction();
-        sess.save(recipient);
-        System.out.println("transaction active: " + tx.isActive());
-        tx.commit();
-        sess.close();
 
         String key = "absolutely.";
         MessageData expectedData = new MessageData();
         expectedData.setContent("Hello.");
         expectedData.setTimeSent(Instant.ofEpochMilli(1024));
         expectedData.setSender("Bob");
-        expectedData.addRecipient(recipient);
+        expectedData.getRecipients().add("John");
         mSqlGateway.save(key, expectedData);
         MessageData data = mSqlGateway.load(key);
 
@@ -48,13 +38,7 @@ public class MessageSQLGatewayTest {
     public void retrieveByFieldTest() {
         MessageSQLGateway mSqlGateway = new MessageSQLGateway(mapping);
         MessageData expectedData = new MessageData();
-        UserData recipient = new UserData();
-        Session sess = mapping.getFactory().openSession();
-        Transaction tx = sess.beginTransaction();
-        sess.save(recipient);
-        tx.commit();
-        sess.close();
-        expectedData.addRecipient(recipient);
+        expectedData.getRecipients().add("Better John");
         String key = "A better key than the last one.";
         expectedData.setContent("Better content than the last one.");
         expectedData.setTimeSent(Instant.ofEpochMilli(1025));

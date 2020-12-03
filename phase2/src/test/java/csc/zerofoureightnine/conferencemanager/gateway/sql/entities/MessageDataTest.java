@@ -11,28 +11,11 @@ import org.junit.Test;
 
 public class MessageDataTest {
 
+    @Test
     public void testAddingRecipient() {
         MessageData messageData = new MessageData();
-        UserData userData = new UserData();
-        messageData.addRecipient(userData);
-        assertTrue("Should contain the added userdata representing the recipient.", messageData.getRecipients().contains(userData));
-    }
-
-    @Test
-    public void testBidirectionalityForRecipients() throws NoSuchFieldException, IllegalAccessException {
-        MessageData messageData = new MessageData();
-        Field fieldMSGID = MessageData.class.getDeclaredField("id");
-        fieldMSGID.setAccessible(true);
-        fieldMSGID.set(messageData, "ID");
-
-        UserData userData = new UserData();
-        Field fieldUserID = UserData.class.getDeclaredField("id");
-        fieldUserID.setAccessible(true);
-        fieldUserID.set(userData, 1);
-        messageData.addRecipient(userData);
-
-        assertTrue("Message should contain the added userdata representing the recipient", messageData.getRecipients().contains(userData));
-        assertTrue("userData should contain the message in its inbox.", userData.getMessages().contains(messageData));
+        messageData.getRecipients().add("Bob");
+        assertTrue("Should contain the added userdata representing the recipient.", messageData.getRecipients().contains("Bob"));
     }
 
     @Test
