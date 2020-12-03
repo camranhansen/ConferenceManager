@@ -2,10 +2,7 @@ package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 
 import static org.junit.Assert.*;
 
-import java.lang.reflect.Field;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Test;
 

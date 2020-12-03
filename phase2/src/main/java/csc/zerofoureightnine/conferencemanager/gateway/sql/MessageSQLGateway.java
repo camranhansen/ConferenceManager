@@ -12,7 +12,7 @@ import javax.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class MessageSQLGateway implements SQLMap<String, MessageData> {
+public class MessageSQLGateway implements PersistentMap<String, MessageData> {
     SQLMapping mapping;
 
     public MessageSQLGateway(SQLMapping mapping) {

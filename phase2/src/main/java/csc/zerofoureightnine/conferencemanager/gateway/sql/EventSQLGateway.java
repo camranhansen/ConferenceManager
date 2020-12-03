@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class EventSQLGateway implements SQLMap<String, EventData> {
+public class EventSQLGateway implements PersistentMap<String, EventData> {
     SQLMapping mapping;
 
     public EventSQLGateway(SQLMapping mapping) {

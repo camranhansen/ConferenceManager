@@ -3,7 +3,7 @@ package csc.zerofoureightnine.conferencemanager.gateway.sql;
 import java.util.List;
 import java.util.Map;
 
-public interface SQLMap<K, V> extends Map<K, V> {
+public interface PersistentMap<K, V> extends Map<K, V> {
     /**
      * Saves the entity to the database with the associated key as the identifier.
      * @param key The identifier for the record.
