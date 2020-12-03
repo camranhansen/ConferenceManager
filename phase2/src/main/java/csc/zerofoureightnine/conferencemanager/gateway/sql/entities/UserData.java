@@ -1,8 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 
-import csc.zerofoureightnine.conferencemanager.users.Permission;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
-import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;

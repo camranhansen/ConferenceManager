@@ -1,4 +1,4 @@
-package csc.zerofoureightnine.conferencemanager.users;
+package csc.zerofoureightnine.conferencemanager.users.permission;
 
 import java.util.Arrays;
 import java.util.List;

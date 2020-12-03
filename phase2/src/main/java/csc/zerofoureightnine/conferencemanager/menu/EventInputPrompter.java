@@ -1,7 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
-import csc.zerofoureightnine.conferencemanager.users.Template;
+import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import java.time.Instant;
 import java.util.ArrayList;

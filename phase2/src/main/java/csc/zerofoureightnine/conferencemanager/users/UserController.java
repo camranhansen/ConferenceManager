@@ -3,6 +3,8 @@ package csc.zerofoureightnine.conferencemanager.users;
 import csc.zerofoureightnine.conferencemanager.menu.InputPrompter;
 import csc.zerofoureightnine.conferencemanager.menu.Option;
 import csc.zerofoureightnine.conferencemanager.menu.SubController;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 
 import java.util.ArrayList;
 import java.util.Arrays;

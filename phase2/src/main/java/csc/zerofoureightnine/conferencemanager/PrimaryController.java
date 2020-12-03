@@ -10,6 +10,9 @@ import csc.zerofoureightnine.conferencemanager.menu.SubController;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageController;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
 import csc.zerofoureightnine.conferencemanager.users.*;
+import csc.zerofoureightnine.conferencemanager.users.login.LoginController;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -81,7 +84,7 @@ public class PrimaryController {
     }
 
     public void runWithoutGateways(){
-        userManager.createUser("Camran","123",Template.ADMIN.getPermissions());
+        userManager.createUser("Camran","123", Template.ADMIN.getPermissions());
         userManager.createUser("Steve","asdf",Template.ADMIN.getPermissions());
 
         String username = loginController.loginUser();

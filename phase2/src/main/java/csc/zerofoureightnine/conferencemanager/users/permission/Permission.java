@@ -1,4 +1,4 @@
-package csc.zerofoureightnine.conferencemanager.users;
+package csc.zerofoureightnine.conferencemanager.users.permission;
 
 /**
  * Permissions available to the user. See template for specific permissions for user types.
@@ -29,7 +29,7 @@ public enum Permission {
     USER_SELF_EDIT_PASSWORD("USER"),
     USER_OTHER_EDIT_PASSWORD("USER"),
     USER_CREATE_ACCOUNT("USER"),
-    USER_CREATE_SPEAKER_ACCOUNT("USER"),
+    USER_CREATE_SPEAKER_ACCOUNT("USER"), //THIS SHOULD NOW EXTENDED TO ALL ACCOUNT TYPES NOT JUST SPEAKERS
     USER_DELETE_ACCOUNT("USER"), //Delete other people's account, or yourself.
     //New for Phase 2!
     USER_CREATE_REQUEST("USER"), //Create a SpecialRequest.

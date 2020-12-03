@@ -1,6 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 
-import csc.zerofoureightnine.conferencemanager.users.Permission;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 public interface SubController {
     /**
