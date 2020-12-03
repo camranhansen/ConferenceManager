@@ -29,6 +29,8 @@ public class MessageSQLGatewayTest {
         expectedData.setSender("Bob");
         expectedData.getRecipients().add("John");
         mSqlGateway.save(key, expectedData);
+        expectedData.setContent("Hi");
+        assertEquals("Hi", expectedData.getContent());
         MessageData data = mSqlGateway.load(key);
 
         assertEquals(expectedData, data);
