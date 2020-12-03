@@ -1,5 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql;
 
+import csc.zerofoureightnine.conferencemanager.events.EventType;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
@@ -42,6 +43,7 @@ public class EventSQLGatewayTest {
         expectedData.setDataId();
 //        expectedData.setEventId();
         expectedData.setCapacity(20);
+        expectedData.setType(EventType.SINGLE);
 
         String key = expectedData.getDataId();
         String id = eventSQLGateway.save(key, expectedData);
@@ -68,6 +70,7 @@ public class EventSQLGatewayTest {
             events.setRoom("105"+i);
             events.setDataId();
             events.setCapacity(20);
+            events.setType(EventType.SINGLE);
             String key = events.getDataId();
             eventSQLGateway.save(key, events);
         }
@@ -94,6 +97,7 @@ public class EventSQLGatewayTest {
         expectedData.setDataId();
 //        expectedData.setEventId();
         expectedData.setCapacity(20);
+        expectedData.setType(EventType.SINGLE);
 
         String key = expectedData.getDataId();
         eventSQLGateway.save(key, expectedData);
@@ -129,6 +133,7 @@ public class EventSQLGatewayTest {
         expectedData.setDataId();
 //        expectedData.setEventId();
         expectedData.setCapacity(20);
+        expectedData.setType(EventType.SINGLE);
 
         String key = expectedData.getDataId();
         eventSQLGateway.save(key, expectedData);
@@ -156,6 +161,7 @@ public class EventSQLGatewayTest {
         ed.setRoom("999");
         ed.setDataId();
         ed.setCapacity(20);
+        ed.setType(EventType.SINGLE);
         String key = ed.getDataId();
         eventSQLGateway.save(key, ed);
 
