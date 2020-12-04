@@ -28,9 +28,11 @@ public class MessageData implements Identifiable<String> {
     private Set<String> recipients = new HashSet<>();
 
     @Column(name = "read")
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> read = new HashSet<>();
 
     @Column(name = "archived")
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> archived = new HashSet<>();
 
     public MessageData() {
