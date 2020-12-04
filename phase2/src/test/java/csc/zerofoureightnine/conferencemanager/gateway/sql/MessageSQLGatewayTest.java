@@ -74,11 +74,11 @@ public class MessageSQLGatewayTest {
         MessageData md2 = mSqlGateway.load(key);
         assertEquals(md.getSender(), md2.getSender());
 
-        md.setArchived(true);
+        md.addToArchived("recipient");
         mSqlGateway.remove(key);
         mSqlGateway.save(key, md);
         MessageData md3 = mSqlGateway.load(key);
-        assertTrue(md3.getArchived());
+        assertTrue(md3.getArchived().contains("recipient"));
         assertEquals(md.getArchived(), md3.getArchived());
 
 
