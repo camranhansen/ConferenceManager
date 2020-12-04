@@ -19,8 +19,10 @@ public enum InputStrategy {
     EVENT_HOUR("Enter hour of the event", false, "Invalid hour. Please try again"),
     EVENT_CAPACITY("Enter the capacity for this event", false,
             "Invalid capacity. Please try again"),
-    EVENT_ROOM("Enter the room this event will be in", false, "Invalid room. Please try again"),
-    EVENT_SPEAKER_SINGLE("Enter speaker name", false, "Invalid speaker. Please try again"),
+    EVENT_ROOM("Enter the room this event will be in", false,
+            "Room is unavailable. Please try again"),
+    EVENT_SPEAKER_SINGLE("Enter speaker names, comma separated, or enter 'party' for no speakers",
+            false, "Invalid speaker. Please try again"),
         //Messaging related
     MESSAGE_CONTENT("Enter the content for your message", false,
                 "Message exceeds character limit. Please try again")
