@@ -39,20 +39,61 @@ public class MenuNodeTraverser {
     }
 
     public void traverseMenu(){
+        doNodeInput();
         switch(this.menuGoal){
             case CONTINUE:
-                exploreNode();
+                doNodeAction();
+                goToNextNode();
+                traverseMenu();
+                break;
             case BACK:
                 goBackOneNode();
+                traverseMenu();
+                break;
             case MAIN:
                 goBackMenuNode();
+                traverseMenu();
+                break;
             case LOGOUT:
                 System.out.println("logging out!");
+                break;
                 //Note that the above print statement is a placeholder.
-                // Essentially.. this node should break out.
         }
 
     }
+
+
+    private void goToNextNode(){
+        //go to designated child node depending on input history.
+        List<MenuNode> nodesByPosition = new ArrayList<>(current.getChildren().values());
+        if(this.current.getInputStrategy().equals(InputStrategy.MENU)){
+            //this RELIES on the invariant that
+            //anything with inputSTrategy menu MUST give a single number.
+            // list indices MUST start at 0
+            current = nodesByPosition.get(Integer.parseInt(inputHistory.get(current)));
+        }else{
+            current = nodesByPosition.get(0); //
+
+        }
+    }
+
+
+    private void doNodeInput(){
+
+        this.prompter.addValidResponseToInputHistory();
+
+        //Dealing with taskPermission
+
+        traverseMenu();
+    }
+
+    private void doNodeAction() {
+        if (current.getTaskPermission() != null){
+            //
+            actionHolder.get(current.getTaskPermission()).run(inputHistory, username);
+        }
+    }
+
 
     public MenuNode getCurrent(){
         return this.current;
@@ -67,42 +108,17 @@ public class MenuNodeTraverser {
         switch(menuGoal){
             case CONTINUE:
                 this.menuGoal = MenuGoal.CONTINUE;
+                break;
             case BACK:
                 this.menuGoal = MenuGoal.BACK;
+                break;
             case MAIN:
                 this.menuGoal = MenuGoal.MAIN;
+                break;
             case LOGOUT:
                 this.menuGoal = MenuGoal.LOGOUT;
+                break;
         }
-    }
-
-    private void exploreNode(){
-
-        //Dealing with InputStrategy
-        // (see representation invariant in MenuNode that inputStrategy must exist for a given node)
-//        int nodeIdentifier = 0;
-//        if (current.getInputStrategy().equals(InputStrategy.MENU)){
-//            nodeIdentifier = prompter.askUserForNextMenuNode(current.getInputStrategy(), current.getChildren());
-//            this.inputHistory.put(current, Integer.toString(nodeIdentifier));
-//        }else{
-//            //In this case, by the representation invariants set in MenuNode, we know that
-//            // There must be only one child node.
-//            this.inputHistory.put(current, prompter.getStringByStrat(current.getInputStrategy()));
-//        }
-
-
-        //Dealing with taskPermission
-
-        if (current.getTaskPermission() != null){
-            //
-            actionHolder.get(current.getTaskPermission()).run(inputHistory, username);
-        }
-
-
-        List<MenuNode> nodesByPosition = new ArrayList<MenuNode>(current.getChildren().values());
-//        current = nodesByPosition.get(nodeIdentifier);
-
-        traverseMenu();
     }
 
     /**
