@@ -6,7 +6,8 @@ import java.util.List;
 
 public enum InputStrategy {
     //Not text based
-    MENU("", true), //Special
+    CATEGORY_MENU("", true), //This means that the only job of this node is to do a menu choice.
+    PERMISSION_MENU("", true), //TODO make prompts for these
     OPTION("", true), //Also special
     //SPECIAL
 
@@ -26,6 +27,7 @@ public enum InputStrategy {
 
     private final String prompt; //Use getCategory
     private final boolean isMenu;
+
     InputStrategy(String prompt, boolean isMenu){
         this.prompt = prompt;
         this.isMenu = isMenu;

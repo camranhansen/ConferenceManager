@@ -10,11 +10,6 @@ public interface SubController {
      */
     void performSelectedAction(String username, Permission permissionSelected);
 
-    /**
-     * Called when you want to flag the subcontroller to exit early from a
-     * Text prompt
-     */
-    void exitEarly();
 }
 
 

@@ -33,6 +33,7 @@ public class InputPrompter {
 
     public void attachCurrentTraverser(MenuNodeTraverser traverser){
         this.currentTraverser = traverser;
+
     }
 
     public void addValidResponseToInputHistory(){

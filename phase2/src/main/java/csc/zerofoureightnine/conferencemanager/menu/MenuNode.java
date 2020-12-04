@@ -13,6 +13,7 @@ public class MenuNode {
     // Login is done outside of this node structure
     private MenuNode parent;
     private LinkedHashMap<Permission, MenuNode> children;
+    //If "key" in user permission. then show it.
     //If a node has two ore more children.. then InputStrategy must be menu.
     //If a node has one or less children.. then InputStrategy must not be menu.
     private InputStrategy inputStrategy;
