@@ -27,7 +27,7 @@ public class MenuPresenter {
         List<String> categories = new ArrayList<>();
         for (Permission p: permissions) {
             if (!categories.contains(p.getCategory()))
-            categories.add(p.getCategory());
+            categories.add(p.getCategory().getrenderableText());
         }
         String options = "";
         for (String c: categories) {
