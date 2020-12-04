@@ -12,12 +12,13 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 
 public class SQLMapMessageFormTest {
     private static SQLConfiguration config;
     
-    private static SQLMap<String, MessageData> sqlMap;
+    private static PersistentMap<String, MessageData> sqlMap;
 
     @BeforeClass
     public static void setup() {
@@ -182,8 +183,8 @@ public class SQLMapMessageFormTest {
             sqlMap.save("b" + i, bData[i]);
         }
 
-        List<MessageData> jActual = sqlMap.retrieveByField("sender", "J");
-        List<MessageData> bActual = sqlMap.retrieveByField("sender", "B");
+        List<MessageData> jActual = sqlMap.retrieveByField("sender", "J", false);
+        List<MessageData> bActual = sqlMap.retrieveByField("sender", "B", false);
         
         for (int i = 0; i < jData.length; i++) {
             assertTrue("List should contain data with id: j" + i, jActual.contains(jData[i]));

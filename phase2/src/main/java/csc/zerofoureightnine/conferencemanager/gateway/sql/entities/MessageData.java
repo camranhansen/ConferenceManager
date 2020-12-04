@@ -28,10 +28,15 @@ public class MessageData implements Identifiable<String> {
     private Set<String> recipients = new HashSet<>();
 
     @Column(name = "read")
-    private boolean read;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> read = new HashSet<>();
 
     @Column(name = "archived")
-    private boolean archived;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> archived = new HashSet<>();
+
+    public MessageData() {
+    }
 
 
     public Set<String> getRecipients() {
@@ -70,21 +75,30 @@ public class MessageData implements Identifiable<String> {
         this.timeSent = timeSent;
     }
 
-    public boolean getRead(){
-        return read;
+    public Set<String> getRead(){
+        return this.read;
     }
 
-    public boolean getArchived(){
+    public Set<String> getArchived(){
         return archived;
     }
 
-    public void setRead(boolean status){
-        this.read = status;
+    public void addToRead(String username){
+        this.read.add(username);
     }
 
-    public void setArchived(boolean status){
-        this.archived = status;
+    public void removeFromRead(String username){
+        this.read.remove(username);
     }
+
+    public void addToArchived(String username){
+        this.archived.add(username);
+    }
+
+    public void removeFromArchived(String username){
+        this.archived.remove(username);
+    }
+
 
     @Override
     public boolean equals(Object o) {
