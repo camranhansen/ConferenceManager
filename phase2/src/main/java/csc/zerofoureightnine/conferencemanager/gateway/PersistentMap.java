@@ -25,7 +25,9 @@ public interface PersistentMap<K extends Serializable, V extends Identifiable<K>
      * Retrieves a list of records who all have the filter string in the given field.
      * @param field A field to query.
      * @param filter The value in the field to query for.
+     * @param strict If true, the entire string needs to exactly match the {@code filter}.
+     *               If false, will match anything that has {@code filter} at the beginning.             
      * @return A list of all the record objects that satisfy having the {@code filter} in the {@code field}.
      */
-    List<V> retrieveByField(String field, String filter);
+    List<V> retrieveByField(String field, String filter, boolean strict);
 }

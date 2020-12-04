@@ -130,15 +130,23 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
     }
 
     @Override
-    public List<V> retrieveByField(String field, String filter) {
+    public List<V> retrieveByField(String field, String filter, boolean strict) {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         StringBuilder sb = new StringBuilder();
         sb.append("select md from MessageData md where md.");
         sb.append(field);
-        sb.append(" like \'");
+        if (strict) {
+            sb.append(" = ");
+        } else {
+            sb.append(" like ");
+        }
+        sb.append('\'');
         sb.append(filter);
-        sb.append("%\'");
+
+        if (!strict) {
+            sb.append("%\'");
+        }
         Query q = session.createQuery(sb.toString());
         List<V> res = q.getResultList();
         tx.commit();

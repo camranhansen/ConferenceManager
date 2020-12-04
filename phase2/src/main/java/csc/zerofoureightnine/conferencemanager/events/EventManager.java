@@ -3,18 +3,23 @@ package csc.zerofoureightnine.conferencemanager.events;
 import java.time.Instant;
 import java.util.*;
 
+import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
+
 
 public class EventManager {
     /**
      * csc.zerofoureightnine.conferencemanager.events stores a hashmap that maps csc.zerofoureightnine.conferencemanager.events' IDs to an event.
      */
     private HashMap<String, Event> events;
+    private PersistentMap<String, EventData> pMap;
 
     /**
      * Instantiates EventManager
      */
-    public EventManager(){
+    public EventManager() {
         this.events = new HashMap<>();
+        this.pMap = pMap;
     }
 
 
