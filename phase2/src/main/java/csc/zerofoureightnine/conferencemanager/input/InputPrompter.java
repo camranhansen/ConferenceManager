@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Scanner;
 
-public class InputPrompter {
+public class InputPrompter implements Inputable{
     private Scanner scanner;
     private InputPresenter inputPresenter;
     private ArrayList<SubController> subControllers;//TODO remove this.
@@ -36,22 +36,26 @@ public class InputPrompter {
 
     }
 
-    public void addValidResponseToInputHistory(){
-        inputPresenter.presentPrompt(currentTraverser.getCurrent().getInputStrategy().getPrompt());
+    public String getValidResponse(InputStrategy inputStrategy) {
+        inputPresenter.presentPrompt(inputStrategy.getPrompt());
         String input = scanner.nextLine();
-        if (inputIsReservedKeyword(input)){
-            currentTraverser.addToInputHistory("");
-        }else{
-            while(!inputStrategyManager.validate(currentTraverser.getCurrent().getInputStrategy(), input)){
-                inputPresenter.invalidResponse();
-                //put runtimestats here....
-                inputPresenter.presentPrompt(currentTraverser.getCurrent().getInputStrategy().getPrompt());
+        if (inputIsReservedKeyword(input)) {
+            return "";
+        } else {
+            while (!inputStrategyManager.validate(inputStrategy, input)) {
+                inputPresenter.invalidResponse(inputStrategy.getErrorMessage());
+                //put run time stats here....
+                inputPresenter.presentPrompt(inputStrategy.getPrompt());
                 input = scanner.nextLine();
             }
-            currentTraverser.addToInputHistory(input);
         }
+        return input;
+    }
 
-
+    public void addValidResponseToInputHistory(){
+        InputStrategy strategy = currentTraverser.getCurrent().getInputStrategy();
+        String validInput = getValidResponse(strategy);
+        currentTraverser.addToInputHistory(validInput);
     }
 
     private boolean inputIsReservedKeyword(String userInput){
@@ -128,6 +132,7 @@ public class InputPrompter {
         return false;
     }
 
+    //TODO: Remove, if we are just using the validation one
     /**
      * Returns the user's response to a prompt prompt.
      *
@@ -143,4 +148,6 @@ public class InputPrompter {
     public void attach(SubController attached){
         this.subControllers.add(attached);
     }
+
+
 }

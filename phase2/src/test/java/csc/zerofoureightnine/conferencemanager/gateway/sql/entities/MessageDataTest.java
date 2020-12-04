@@ -43,11 +43,18 @@ public class MessageDataTest {
     @Test
     public void testArchivedAndReadStatus(){
         MessageData md = new MessageData();
-        assertFalse(md.getArchived());
-        assertFalse(md.getRead());
-        md.setArchived(true);
-        md.setRead(true);
-        assertTrue(md.getArchived());
-        assertTrue(md.getRead());
+        assertTrue(md.getArchived().isEmpty());
+        assertTrue(md.getRead().isEmpty());
+        md.setContent("hello");
+        md.setSender("sender");
+        md.addRecipients("recipient");
+        md.addToArchived("recipient");
+        md.addToRead("recipient");
+        assertTrue(md.getArchived().contains("recipient"));
+        assertTrue(md.getRead().contains("recipient"));
+        md.removeFromArchived("recipient");
+        md.removeFromRead("recipient");
+        assertFalse(md.getArchived().contains("recipient"));
+        assertFalse(md.getRead().contains("recipient"));
     }
 }
