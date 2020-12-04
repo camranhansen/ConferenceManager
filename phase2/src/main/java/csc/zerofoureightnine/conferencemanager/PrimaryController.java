@@ -36,7 +36,8 @@ public class PrimaryController {
         eventGateway = new EventCSVGateway();
         userGateway = new UserCSVGateway();
         messageManager = new MessageManager();
-        eventManager = new EventManager();
+        //TODO
+        //eventManager = new EventManager();
         messageCSVGateway = new MessageCSVGateway(messageManager);
         userManager = new UserManager(new HashMap<>());
         userController = new UserController(userManager);

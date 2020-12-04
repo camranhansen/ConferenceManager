@@ -1,4 +1,10 @@
 package csc.zerofoureightnine.conferencemanager.events;
+import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLConfiguration;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -9,11 +15,19 @@ import static java.time.Instant.*;
 import static org.junit.Assert.*;
 
 public class EventManagerTest {
+    private static SQLConfiguration config;
+    private static  PersistentMap<String, EventData> pMap;
+
+    @BeforeClass
+    public static void setup() {
+        config = new SQLConfiguration("testfiles/db/data");
+        pMap = new SQLMap<>(config, EventData.class);
+    }
 
     @Test
     public void getEventList() {
         Instant time = MAX;
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         // eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2); TODO: implement changes.
         List<String> aList = new ArrayList<>();
         aList.add("Meeting Room 1" + time.toString());
@@ -22,7 +36,7 @@ public class EventManagerTest {
 
     @Test
     public void getSpkEvents() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         Instant time = MAX;
         Instant time2 = time.minus(1, ChronoUnit.HOURS);
         //TODO: implement changes.
@@ -39,7 +53,7 @@ public class EventManagerTest {
 
     @Test
     public void createEvent() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         Instant time = MAX;
         // eventManager.createEvent("Bob Smithers", time,"Test Event", "Meeting Room 1",  2); TODO: implement changes.
         // assertEquals(1, eventManager.getEventList().size()); TODO: implement changes.
@@ -47,7 +61,7 @@ public class EventManagerTest {
 
     @Test
     public void deleteEvent() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         Instant time = MAX;
         // eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2); TODO: implement changes.
         // eventManager.createEvent("Roberto", time, "Test Event 2", "Meeting Room 2",  2); TODO: implement changes.
@@ -58,7 +72,7 @@ public class EventManagerTest {
 
     @Test
     public void getParticipants() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         List<String> aList = new ArrayList<>();
         aList.add("Daniel Tan");
         aList.add("Cameron Blom");
@@ -73,7 +87,7 @@ public class EventManagerTest {
 
     @Test
     public void enrollUser() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         String name = "Micheal";
         List<String> arr = new ArrayList<>();
         arr.add(name);
@@ -85,7 +99,7 @@ public class EventManagerTest {
 
     @Test
     public void dropUser() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         Instant time = MAX;
         // eventManager.createEvent( "Bob Smithers", time,"Test Event", "Meeting Room 1",  2); TODO: implement changes.
         eventManager.enrollUser("Meeting Room 1" + time.toString(), "Micheal");
@@ -97,7 +111,7 @@ public class EventManagerTest {
 
     @Test
     public void getAvailableEvents() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         Instant time = MAX;
         Instant time2 = time.minus(1, ChronoUnit.HOURS);
         // TODO: implement changes.
@@ -113,7 +127,7 @@ public class EventManagerTest {
 
     @Test
     public void isEventFull() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         Instant time = MAX;
         // eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2); TODO: implement changes.
         eventManager.enrollUser("Meeting Room 1" + time.toString(), "Sam");
@@ -124,7 +138,7 @@ public class EventManagerTest {
 
     @Test
     public void getUserEvents() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         Instant time = MAX;
         Instant time2 = time.minus(1, ChronoUnit.HOURS);
         Instant time3 = time2.minus(1, ChronoUnit.HOURS);
@@ -144,7 +158,7 @@ public class EventManagerTest {
 
     @Test
     public void editTime() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         Instant time = Instant.MAX;
         Instant time2 = time.minus(1, ChronoUnit.HOURS);
         // eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2); TODO: implement changes.
@@ -154,7 +168,7 @@ public class EventManagerTest {
 
     @Test
     public void editSpeakerName() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         Instant time = Instant.MAX;
         // eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2); TODO: implement changes.
         // eventManager.editSpeakerName("Meeting Room 1" + time.toString(), "Roberto"); TODO: implement changes.
@@ -163,7 +177,7 @@ public class EventManagerTest {
 
     @Test
     public void editEventName() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         Instant time = Instant.MAX;
         // eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2); TODO: implement changes.
         eventManager.editEventName("Meeting Room 1" + time.toString(), "Clean Architecture");
@@ -172,7 +186,7 @@ public class EventManagerTest {
 
     @Test
     public void editRoom() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         Instant time = Instant.MAX;
         // eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2); TODO: implement changes.
         eventManager.editRoom("Meeting Room 1" + time.toString(), "BH 101");
@@ -181,7 +195,7 @@ public class EventManagerTest {
 
     @Test
     public void editCapacity() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         Instant time = Instant.MAX;
         // eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2); TODO: implement changes.
         eventManager.editCapacity("Meeting Room 1" + time.toString(), 5);

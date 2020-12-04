@@ -80,6 +80,10 @@ public class EventData implements Identifiable<String> {
         this.participants.addAll(participants);
     }
 
+    public void removeParticipant(String participants){
+        this.participants.remove(participants);
+    }
+
     public String getRoom() {
         return room;
     }

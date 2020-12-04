@@ -1,6 +1,12 @@
 package csc.zerofoureightnine.conferencemanager;
 
+import csc.zerofoureightnine.conferencemanager.events.Event;
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
+import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLConfiguration;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
 import csc.zerofoureightnine.conferencemanager.users.*;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
@@ -48,7 +54,10 @@ public class BackendHolder {
         //TODO also have private helper functions loadUserData or createUserManager. this should not all be in the same file.
         //TODO also standardize construction of usecases. i.e. they should either all take in a hashmap,
         // or none at all and they have a function to take them in.
-        this.eventManager = new EventManager();
+        SQLConfiguration config = new SQLConfiguration("testfiles/db/data");
+        SQLMap<String, EventData> eventSqlMap = new SQLMap<>(config, EventData.class);
+
+        this.eventManager = new EventManager(eventSqlMap);
         HashMap<String, User> usermap = new HashMap<>();
         this.userManager = new UserManager(usermap);
         this.messageManager = new MessageManager();

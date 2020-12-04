@@ -1,5 +1,9 @@
 package csc.zerofoureightnine.conferencemanager.events;
 
+import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
+
 import java.time.Instant;
 import java.util.*;
 
@@ -9,12 +13,14 @@ public class EventManager {
      * csc.zerofoureightnine.conferencemanager.events stores a hashmap that maps csc.zerofoureightnine.conferencemanager.events' IDs to an event.
      */
     private HashMap<String, Event> events;
+    private PersistentMap<String, EventData> pMap;
 
     /**
      * Instantiates EventManager
      */
-    public EventManager(){
+    public EventManager(PersistentMap<String, EventData> pMap){
         this.events = new HashMap<>();
+        this.pMap = pMap;
     }
 
 
@@ -45,6 +51,17 @@ public class EventManager {
         return aList;
     }
 
+    public EventData ConvertEventToEventData(Event newEvent){
+        EventData ed = new EventData();
+        ed.setType(newEvent.getType());
+        ed.setEventName(newEvent.getEventName());
+        //ed.addParticipants(newEvent.getParticipants());
+        ed.setCapacity(newEvent.getCapacity());
+        ed.setRoom(newEvent.getRoom());
+        ed.setTime(newEvent.getEventTime());
+        ed.setId(newEvent.getId());
+        return ed;
+    }
     /**
      * Defines a new event with the details speaker's name, event time, event name, room, and capacity.
      * Adds this event to the collection of all csc.zerofoureightnine.conferencemanager.events.
@@ -57,6 +74,8 @@ public class EventManager {
     public void createEvent(List<String> speakerName, Instant eventTime, String eventName, String room, int capacity, EventType type){
         Event newEvent = new Event(speakerName, eventTime, eventName, room, capacity, type);
         this.events.put(newEvent.getId(), newEvent);
+        EventData ed = this.ConvertEventToEventData(newEvent);
+        this.pMap.save(ed.getId(), ed);
     }
 
 
@@ -71,8 +90,11 @@ public class EventManager {
      * @param capacity Maximum capacity of the event.
      */
     private void createEditedEvent(List<String> speakerName, Instant eventTime, String eventName, List<String> participants, String room, int capacity, EventType type){
-        Event newEvent = new Event(speakerName, participants,  eventTime, eventName, room, capacity, type);
+        Event newEvent = new Event(speakerName, participants, eventTime, eventName, room, capacity, type);
         this.events.put(newEvent.getId(), newEvent);
+        EventData ed = this.ConvertEventToEventData(newEvent);
+        ed.addParticipants(newEvent.getParticipants());
+        this.pMap.save(ed.getId(), ed);
     }
 
 
@@ -82,6 +104,7 @@ public class EventManager {
      */
     public void deleteEvent(String eventId){
         this.events.remove(eventId);
+        this.pMap.remove(eventId);
     }
 
     /**
@@ -93,6 +116,7 @@ public class EventManager {
     public void enrollUser(String eventID, String userName){
 
         this.events.get(eventID).addParticipant(userName);
+        this.pMap.get(eventID).addParticipants(userName);
     }
 
     /**
@@ -103,6 +127,7 @@ public class EventManager {
      */
     public void dropUser(String eventID, String userName){
         this.events.get(eventID).removeParticipant(userName);
+        this.pMap.get(eventID).removeParticipant(userName);
     }
 
     /**
@@ -143,7 +168,11 @@ public class EventManager {
         return availableEvents;
     }
 
-    //TODO make javadoc even though this is a private method! I don't want to lose marks LOL
+    /**
+     * Returns a list of time of csc.zerofoureightnine.conferencemanager.events from given a list of events' IDs.
+     * @param id A list of csc.zerofoureightnine.conferencemanager.events' IDs.
+     * @return A list of csc.zerofoureightnine.conferencemanager.events' time .
+     */
     private List<Instant> myEventTime(List<String> id){
         List<Instant> time = new ArrayList<>();
         for(int x=0; x<id.size(); x++) {
@@ -230,8 +259,10 @@ public class EventManager {
         Event value = this.events.get(id);
         createEditedEvent(newSpeaker, value.getEventTime(), value.getEventName(), value.getParticipants(),
                 value.getRoom(), value.getCapacity(), value.getType());
+        EventData ed = this.pMap.get(id);
+        ed.getSpeakers().clear();
+        ed.addSpeakers(newSpeaker);
     }
-
 
     /**
      * Changes the event name of an event to a new one.
@@ -242,6 +273,7 @@ public class EventManager {
         Event value = this.events.get(id);
         createEditedEvent(value.getSpeakerName(), value.getEventTime(), newEventName, value.getParticipants(),
                 value.getRoom(), value.getCapacity(), value.getType());
+        this.pMap.get(id).setEventName(newEventName);
     }
     /**
      * Changes the room of an event to a new one.
@@ -253,6 +285,10 @@ public class EventManager {
         createEditedEvent(value.getSpeakerName(), value.getEventTime(), value.getEventName(), value.getParticipants(),
                 newRoom, value.getCapacity(), value.getType());
         deleteEvent(id);
+
+        EventData ed = this.pMap.get(id);
+        ed.setRoom(newRoom);
+        ed.setId(newRoom+ed.getTime().toString());
     }
 
     /**
@@ -264,6 +300,10 @@ public class EventManager {
         Event value = this.events.get(id);
         createEditedEvent(value.getSpeakerName(), value.getEventTime(), value.getEventName(), value.getParticipants(),
                 value.getRoom(), newCapacity, value.getType());
+
+        EventData ed = this.pMap.get(id);
+        ed.setCapacity(newCapacity);
+
     }
     /**
      * Changes the starting time of an event to a new one.
@@ -275,6 +315,10 @@ public class EventManager {
         createEditedEvent(value.getSpeakerName(), newTime, value.getEventName(), value.getParticipants(),
                 value.getRoom(), value.getCapacity(), value.getType());
         deleteEvent(id);
+
+        EventData ed = this.pMap.get(id);
+        ed.setTime(newTime);
+        ed.setId(ed.getRoom()+newTime.toString());
     }
 
 
@@ -301,6 +345,7 @@ public class EventManager {
      * @return A String[] that contains information of one event stored in csc.zerofoureightnine.conferencemanager.events hashmap, including event id, speaker's
      * name, time, event name, participants, room number, and capacity.
      */
+    @Deprecated
     public String[] getSingleEventData(String id) {
         Event event = this.events.get(id);
         String speakerName = event.getSpeakerName().toString();
@@ -318,6 +363,7 @@ public class EventManager {
      * @param eventData A string containing all datas of one event including event id, speaker's
      * name, time, event name, participants, room number, and capacity.
      */
+    @Deprecated
     public void setEventData(String[] eventData){
         String id = eventData[0];
         String speakerName[] = eventData[1].split(",");
