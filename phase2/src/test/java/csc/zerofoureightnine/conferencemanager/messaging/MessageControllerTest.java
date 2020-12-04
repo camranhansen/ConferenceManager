@@ -52,7 +52,7 @@ public class MessageControllerTest {
 
     @Test
     public void performSelectedMessageAllAttTest() {
-        String input = "hello" + System.lineSeparator() + "1" + System.lineSeparator();
+        String input = "hello" + System.lineSeparator() + "0" + System.lineSeparator();
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
@@ -70,7 +70,7 @@ public class MessageControllerTest {
 
     @Test
     public void performSelectedMessageAllSpkTest() {
-        String input = "hello" + System.lineSeparator() + "2" + System.lineSeparator();
+        String input = "hello" + System.lineSeparator() + "1" + System.lineSeparator();
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
@@ -106,7 +106,7 @@ public class MessageControllerTest {
 
     @Test
     public void performSelectedMessageAllEventTest() {
-        String input = "hello" + System.lineSeparator() + "1" + System.lineSeparator();
+        String input = "hello" + System.lineSeparator() + "0" + System.lineSeparator();
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
@@ -131,7 +131,7 @@ public class MessageControllerTest {
     public void performSelectedMessageOneEventTest() {
         Instant time = Instant.now();
         String eventId = "23" + time;
-        String input = "hello" + System.lineSeparator() + "2" + System.lineSeparator() + eventId + System.lineSeparator();
+        String input = "hello" + System.lineSeparator() + "1" + System.lineSeparator() + eventId + System.lineSeparator();
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
@@ -151,7 +151,7 @@ public class MessageControllerTest {
 
     @Test
     public void performSelectedViewAllMessagesTest() {
-        String input = "1\n";
+        String input = "0\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
@@ -164,15 +164,15 @@ public class MessageControllerTest {
         messageManager.sendMessage("u2", "how are you?", "u1");
         messageManager.sendMessage("spk1", "hello", "u1");
         messageController.performSelectedAction("u1", Permission.VIEW_SELF_MESSAGES);
-        String out = "0. EXIT\n" + "1. View all your messages\n" +
-                "2. View messages from one user\n" + "3. View archived messages\n" + "4. View unread messages\n" +
+        String out = "0. View all your messages\n" +
+                "1. View messages from one user\n" + "2. View archived messages\n" + "3. View unread messages\n" +
                 "spk1: hello, \n"+"u2: hi, how are you?, \n\n";
         assertEquals(out, outContent.toString().replaceAll("\r\n", "\n"));
     }
 
     @Test
     public void performSelectedViewFromMessagesTest() {
-        String input = "2" + System.lineSeparator() + "u2" + System.lineSeparator();
+        String input = "1" + System.lineSeparator() + "u2" + System.lineSeparator();
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
@@ -185,8 +185,8 @@ public class MessageControllerTest {
         messageManager.sendMessage("u2", "how are you?", "u1");
         messageManager.sendMessage("spk1", "hello", "u1");
         messageController.performSelectedAction("u1", Permission.VIEW_SELF_MESSAGES);
-        String out = "0. EXIT\n" + "1. View all your messages\n" +
-                "2. View messages from one user\n" + "3. View archived messages\n" + "4. View unread messages\n" +
+        String out = "0. View all your messages\n" +
+                "1. View messages from one user\n" + "2. View archived messages\n" + "3. View unread messages\n" +
                 "Enter other username messages you'd like to see: \n"+
                 "u2: hi, how are you?, \n";
         assertEquals(out, outContent.toString().replaceAll("\r\n", "\n"));
@@ -194,7 +194,7 @@ public class MessageControllerTest {
 
     @Test
     public void performSelectedViewOtherMessageTest(){
-        String input = "u1"+ System.lineSeparator()+"1" + System.lineSeparator() + "u2" + System.lineSeparator();
+        String input = "u1"+ System.lineSeparator()+"0" + System.lineSeparator() + "u2" + System.lineSeparator();
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
@@ -207,8 +207,8 @@ public class MessageControllerTest {
         messageManager.sendMessage("u2", "how are you?", "u1");
         messageManager.sendMessage("spk1", "hello", "u1");
         messageController.performSelectedAction("u1", Permission.VIEW_OTHER_MESSAGES);
-        String out = "Enter username's messages you'd like to see: \n"+"0. EXIT\n" + "1. View all your messages\n" +
-                "2. View messages from one user\n"+ "3. View archived messages\n" + "4. View unread messages\n" +
+        String out = "Enter username's messages you'd like to see: \n" + "0. View all your messages\n" +
+                "1. View messages from one user\n"+ "2. View archived messages\n" + "3. View unread messages\n" +
                 "spk1: hello, \n" + "u2: hi, how are you?, \n\n";
         assertEquals(out, outContent.toString().replaceAll("\r\n", "\n"));
     }

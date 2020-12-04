@@ -1,16 +1,17 @@
 package csc.zerofoureightnine.conferencemanager.input;
 
-import csc.zerofoureightnine.conferencemanager.menu.Option;
-import csc.zerofoureightnine.conferencemanager.menu.SubController;
-import csc.zerofoureightnine.conferencemanager.users.UserManager;
+import csc.zerofoureightnine.conferencemanager.menu.*;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class InputPrompter {
     private Scanner scanner;
     private InputPresenter inputPresenter;
     private ArrayList<SubController> subControllers;
+    private InputStrategyManager inputStrategyManager;
 
     /**
      * Creates a new InputPrompter.
@@ -21,6 +22,45 @@ public class InputPrompter {
         this.subControllers = new ArrayList<>();
     }
 
+    //NEW CODE FOR INPUT WITH STRATEGY IN PLACE:
+    public InputPrompter(InputStrategyManager inputStrategyManager) {
+        this.scanner = new Scanner(System.in);
+        this.inputPresenter = new InputPresenter();
+        this.subControllers = new ArrayList<>();
+        this.inputStrategyManager = inputStrategyManager;
+    }
+
+    public String getValidResponse(MenuNode menuNode, LinkedHashMap<MenuNode, String> inputHistory,
+                                   MenuNodeTraverser menuNodeTraverser){
+        inputPresenter.printPrompt(menuNode.getInputStrategy().getPrompt());
+        String input = scanner.nextLine();
+        if (menuGoalCheck(menuNodeTraverser, input)){
+            return "";
+        }
+        while(!inputStrategyManager.validate(menuNode.getInputStrategy(), input)){
+            inputPresenter.invalidResponse();
+            inputPresenter.printPrompt(menuNode.getInputStrategy().getPrompt());
+            input = scanner.nextLine();
+        }
+        inputHistory.put(menuNode, input);
+        return input;
+    }
+
+    private boolean menuGoalCheck(MenuNodeTraverser menuNodeTraverser, String userInput){
+        switch (userInput.trim().toLowerCase()) {
+            case "back":
+                menuNodeTraverser.setMenuGoal(MenuGoal.BACK);
+                return true;
+            case "main":
+                menuNodeTraverser.setMenuGoal(MenuGoal.MAIN);
+                return true;
+            case "exit":
+                menuNodeTraverser.setMenuGoal(MenuGoal.LOGOUT);
+                return true;
+        }
+        return false;
+    }
+
     /**
      * Shows the user the options options and returns the user's
      * selected option out of the options options.
@@ -28,42 +68,54 @@ public class InputPrompter {
      * @param options Options to select from.
      * @return The option the user has selected.
      */
-    public Option menuOption(ArrayList<Option> options){
-        addExitOption(options);
+    public Option menuOption(List<Option> options){
         inputPresenter.printOptions(options);
-        int userInput = userInput(options);
-        if (userInput == 0){
-            exit();
-        }
+        int userInput = userOptionInput(options);
         return options.get(userInput);
     }
 
+    //NEW OPTION INPUT CODE. IF THIS WORKS TODO: DELETE OLD INPUT OPTION CODE
+    public Option selectMenuOption(List<Option> options, MenuNode menuNode, LinkedHashMap<MenuNode,
+            String> inputHistory, MenuNodeTraverser menuNodeTraverser){
+        inputPresenter.printOptions(options);
+        String optionSelected = usersInputOption(menuNodeTraverser);
+        if(optionSelected.isEmpty()){
+            return new Option("");
+        }
+        if(invalidOption(options, optionSelected)){
+            optionSelected = usersInputOption(menuNodeTraverser);
+        }
+        inputHistory.put(menuNode, optionSelected);
+        return options.get(Integer.parseInt(optionSelected));
+    }
 
-    private int userInput(ArrayList<Option> options){
+    private String usersInputOption(MenuNodeTraverser menuNodeTraverser){
         String userInput =  scanner.nextLine();
-
         String input = userInput.trim();
-        while (! optionInputCheck(options, input)) {
-            input = String.valueOf(userInput(options));
+        if (menuGoalCheck(menuNodeTraverser, input)){
+            return "";
+        }
+        return input;
+    }
+
+    //OLD OPTION INPUT CODE:
+    private int userOptionInput(List<Option> options){
+        String userInput =  scanner.nextLine();
+        String input = userInput.trim();
+        //TODO: Reserved input check
+        while (invalidOption(options, input)) {
+            input = String.valueOf(userOptionInput(options));
         }
         return Integer.parseInt(input);
     }
 
-    private boolean optionInputCheck(ArrayList<Option> options, String userInput){
+    //returns true if invalid selection.
+    private boolean invalidOption(List<Option> options, String userInput){
         if (!userInput.matches("^[0-9]+$") || Integer.parseInt(userInput) >= options.size()) {
             inputPresenter.errorMessageForOptions();
-            return false;
+            return true;
         }
-        return true;
-    }
-
-    private void addExitOption(ArrayList<Option> options){
-        Option exit = new Option("EXIT");
-        options.add(0, exit);
-    }
-
-    private void exit(){
-        //TODO: back to main csc.zerofoureightnine.conferencemanager.menu
+        return false;
     }
 
     /**
@@ -74,53 +126,11 @@ public class InputPrompter {
      */
     public String getResponse(String prompt){
         inputPresenter.printPrompt(prompt);
-        String in = scanner.nextLine();
-        if (in.equals("exit")||in.equals("EXIT")||in.equals("Exit")){
-            exitOut();
-            return null;
-        }
-        return in;
+        return scanner.nextLine();
     }
 
+    //TODO: Possible remove attach here and in subControllers
     public void attach(SubController attached){
         this.subControllers.add(attached);
     }
-
-    public void exitOut(){
-        for(SubController sub: this.subControllers){
-            sub.exitEarly();
-        }
-    }
-
-    public String loginIn(UserManager userManager){
-        String username = enterValidUsername(userManager);
-        passwordCheck(username, userManager);
-        return username;
-    }
-
-    public String enterValidUsername(UserManager userManager){
-        String username = getResponse("Please enter a username");
-        while(!userManager.userExists(username)){
-            doesNotExist("This username ");
-            username = getResponse("Please enter a username");
-        }
-        return username;
-    }
-
-    private void passwordCheck(String username, UserManager userManager){
-        String password = getResponse("Please enter your password");
-        while(!userManager.getPassword(username).equals(password)){
-            inputPresenter.incorrectPassword();
-            password = getResponse("Please enter your password");
-        }
-    }
-
-    public void checkPermission(){} //?
-
-    public void doesNotExist(String invalid){
-        inputPresenter.doesNotExist(invalid);
-    }
-
-    //TODO implement specific prompter methods... e.g. getExistingUsername, getExistingUsername(Template t), getValidTimeslot, getValidRoom.... etc.
-
 }
