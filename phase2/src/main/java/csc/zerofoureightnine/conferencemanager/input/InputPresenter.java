@@ -22,7 +22,7 @@ public class InputPresenter {
         System.out.println(prompt+": ");
     }
 
-    public void invalidResponse(){
-        System.out.println("Your input is invalid.");
+    public void invalidResponse(String errorMessage){
+        System.out.println(errorMessage);
     }
 }

@@ -5,6 +5,8 @@ import csc.zerofoureightnine.conferencemanager.input.validators.*;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 
+import java.util.LinkedHashMap;
+
 public class InputStrategyManager {
     private MessageManager messageManager;
     private UserManager userManager;
@@ -16,18 +18,20 @@ public class InputStrategyManager {
     private ExistingUserValidator existingUserValidator;
     private SpeakerValidator speakerValidator;
     private EventIdValidator eventIdValidator;
+    private LinkedHashMap<InputStrategy, String> inputHistory;
 
-    public InputStrategyManager(MessageManager mm, UserManager um, EventManager em){
+    public InputStrategyManager(MessageManager mm, UserManager um, EventManager em,
+                                LinkedHashMap<InputStrategy, String> inputHistory){
         messageManager = mm;
         userManager = um;
         eventManager = em;
         eventDayValidator = new EventDayValidator();
-        eventHourValidator = new EventHourValidator();
         capacityValidator = new CapacityValidator();
         messageContentValidator = new MessageContentValidator();
         existingUserValidator = new ExistingUserValidator(userManager);
         speakerValidator = new SpeakerValidator(userManager);
         eventIdValidator = new EventIdValidator(eventManager);
+        eventHourValidator = new EventHourValidator(eventManager, inputHistory);
     }
 
     public boolean validate(InputStrategy inputStrategy, String userInput){

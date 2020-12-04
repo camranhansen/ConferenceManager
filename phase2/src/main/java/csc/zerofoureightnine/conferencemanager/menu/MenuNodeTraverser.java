@@ -4,11 +4,11 @@ package csc.zerofoureightnine.conferencemanager.menu;
 import csc.zerofoureightnine.conferencemanager.input.InputPrompter;
 import csc.zerofoureightnine.conferencemanager.input.InputStrategy;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import javax.print.DocFlavor;
+import java.util.*;
+import java.util.function.BiConsumer;
 
 public class MenuNodeTraverser {
 
@@ -66,14 +66,14 @@ public class MenuNodeTraverser {
     private void goToNextNode(){
         //go to designated child node depending on input history.
         List<MenuNode> nodesByPosition = new ArrayList<>(current.getChildren().values());
-        if(this.current.getInputStrategy().equals(InputStrategy.MENU)){
+        if(this.current.getInputStrategy().equals(InputStrategy.CATEGORY_MENU)|
+                (this.current.getInputStrategy().equals(InputStrategy.PERMISSION_MENU))){
             //this RELIES on the invariant that
             //anything with inputSTrategy menu MUST give a single number.
             // list indices MUST start at 0
             current = nodesByPosition.get(Integer.parseInt(inputHistory.get(current)));
         }else{
             current = nodesByPosition.get(0); //
-
         }
     }
 
@@ -121,6 +121,12 @@ public class MenuNodeTraverser {
         }
     }
 
+    public HashMap<InputStrategy, String> getInputHistoryWithStrategyAsKey(){
+        HashMap<InputStrategy, String> inputStrategyHistory = new HashMap<>();
+        inputHistory.forEach((n, s) -> inputStrategyHistory.put(n.getInputStrategy(), s));
+        return inputStrategyHistory;
+    }
+
     /**
      * Go back to node's parent
      */
@@ -134,7 +140,9 @@ public class MenuNodeTraverser {
      * Go to menu node (by definition - top node)
      */
     private void goBackMenuNode(){
-        //go to to top node.
+        while(current.getParent() != null){
+            current = current.getParent();
+        }
     }
 
 }
