@@ -18,7 +18,7 @@ public class InputStrategyManager {
     private ExistingUserValidator existingUserValidator;
     private SpeakerValidator speakerValidator;
     private EventIdValidator eventIdValidator;
-    private LinkedHashMap<InputStrategy, String> inputHistory;
+    private EventRoomValidator eventRoomValidator;
 
     public InputStrategyManager(MessageManager mm, UserManager um, EventManager em,
                                 LinkedHashMap<InputStrategy, String> inputHistory){
@@ -26,12 +26,13 @@ public class InputStrategyManager {
         userManager = um;
         eventManager = em;
         eventDayValidator = new EventDayValidator();
+        eventHourValidator = new EventHourValidator();
         capacityValidator = new CapacityValidator();
         messageContentValidator = new MessageContentValidator();
         existingUserValidator = new ExistingUserValidator(userManager);
-        speakerValidator = new SpeakerValidator(userManager);
+        speakerValidator = new SpeakerValidator(userManager, eventManager, inputHistory);
         eventIdValidator = new EventIdValidator(eventManager);
-        eventHourValidator = new EventHourValidator(eventManager, inputHistory);
+        eventRoomValidator = new EventRoomValidator(eventManager, inputHistory);
     }
 
     public boolean validate(InputStrategy inputStrategy, String userInput){
@@ -50,6 +51,8 @@ public class InputStrategyManager {
                 return speakerValidator.validateInput(userInput);
             case VALID_EVENT_ID:
                 return eventIdValidator.validateInput(userInput);
+            case EVENT_ROOM:
+                return eventRoomValidator.validateInput(userInput);
         }
         return false;
     }
