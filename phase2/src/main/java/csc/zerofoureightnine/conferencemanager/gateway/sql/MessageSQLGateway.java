@@ -1,6 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql;
 
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 
 import java.util.Collection;
@@ -34,8 +35,8 @@ public class MessageSQLGateway implements PersistentMap<String, MessageData> {
 
     @Override
     public boolean containsKey(Object key) {
-
-        return false;
+        List<MessageData> result = this.retrieveByField("id", (String) key);
+        return !result.isEmpty();
     }
 
     @Override
@@ -46,21 +47,26 @@ public class MessageSQLGateway implements PersistentMap<String, MessageData> {
 
     @Override
     public MessageData get(Object key) {
-        // TODO Auto-generated method stub
-        return null;
+        return this.load((String)key);
     }
 
     @Override
     public MessageData put(String key, MessageData value) {
-        // TODO Auto-generated method stub
+        this.save(key, value);
         return null;
     }
 
     @Override
     public MessageData remove(Object key) {
-        // TODO Auto-generated method stub
-        return null;
+        MessageData ed = this.load((String) key);
+        Session session = mapping.getFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        session.delete(ed);
+        transaction.commit();
+        session.close();
+        return ed;
     }
+
 
     @Override
     public void putAll(Map<? extends String, ? extends MessageData> m) {
