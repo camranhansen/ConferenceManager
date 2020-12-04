@@ -1,10 +1,13 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -50,6 +53,21 @@ public class SQLMapMessageFormTest {
         }
 
         assertEquals(expected, sqlMap.size());
+    }
+
+    @Test
+    public void sizeCacheTest() {
+        int expectedBase = 100;
+        for (int i = 0; i < expectedBase; i++) {
+            MessageData msgData = new MessageData();
+            sqlMap.save(String.valueOf(i), msgData);
+        }
+
+        assertEquals(expectedBase, sqlMap.size());
+        assertEquals(expectedBase, sqlMap.size());
+
+        sqlMap.save("special", new MessageData());
+        assertEquals(expectedBase + 1, sqlMap.size());
     }
 
     @Test
@@ -147,6 +165,32 @@ public class SQLMapMessageFormTest {
 
         for (MessageData data : dataMap.values()) {
             assertTrue("Should contain data with ID: " + data.getId(), sqlMap.containsValue(data));
+        }
+    }
+
+    @Test
+    public void retrieveByFieldTest() {
+        MessageData[] jData = new MessageData[50];
+        MessageData[] bData = new MessageData[50];
+        for (int i = 0; i < jData.length; i++) {
+            jData[i] = new MessageData();
+            jData[i].setSender("John" + i);
+            sqlMap.save("j" + i, jData[i]);
+            
+            bData[i] = new MessageData();
+            bData[i].setSender("Bob" + i);
+            sqlMap.save("b" + i, bData[i]);
+        }
+
+        List<MessageData> jActual = sqlMap.retrieveByField("sender", "J");
+        List<MessageData> bActual = sqlMap.retrieveByField("sender", "B");
+        
+        for (int i = 0; i < jData.length; i++) {
+            assertTrue("List should contain data with id: j" + i, jActual.contains(jData[i]));
+            assertFalse("List should not contain data with id: b" + i, jActual.contains(bData[i]));
+
+            assertTrue("List should contain data with id: b" + i, bActual.contains(bData[i]));
+            assertFalse("List should not contain data with id: j" + i, bActual.contains(jData[i]));
         }
     }
 }
