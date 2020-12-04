@@ -1,8 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.input;
 
-import csc.zerofoureightnine.conferencemanager.menu.Option;
+import csc.zerofoureightnine.conferencemanager.options.Option;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class InputPresenter {

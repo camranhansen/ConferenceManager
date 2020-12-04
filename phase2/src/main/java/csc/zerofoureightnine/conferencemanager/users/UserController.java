@@ -1,7 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.users;
 
 import csc.zerofoureightnine.conferencemanager.input.InputPrompter;
-import csc.zerofoureightnine.conferencemanager.menu.Option;
+import csc.zerofoureightnine.conferencemanager.options.Option;
 import csc.zerofoureightnine.conferencemanager.menu.SubController;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;

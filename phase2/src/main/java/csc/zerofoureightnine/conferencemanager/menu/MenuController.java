@@ -1,6 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 
 import csc.zerofoureightnine.conferencemanager.input.InputPrompter;
+import csc.zerofoureightnine.conferencemanager.options.Option;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 import java.util.ArrayList;
