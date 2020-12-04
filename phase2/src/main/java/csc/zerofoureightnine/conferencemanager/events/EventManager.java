@@ -404,6 +404,24 @@ public class EventManager {
         return events.get(id).getType();
     }
 
+    public boolean validHourForEvent(String room, List<String> speakers, String dayOfMonth, String hour){
+        Instant time = parseTime(dayOfMonth, hour);
+        if (checkRoom(time, room)){
+            return false;
+        }
+        return !checkConflictSpeaker(time, speakers);
+    }
+
+    public Instant parseTime(String dayOfMonth, String hour){
+        if (dayOfMonth.length() == 1) {
+            dayOfMonth = "0" + dayOfMonth;
+        }
+        if (hour.length() == 1){
+            hour = "0" + hour;
+        }
+        return Instant.parse("2020-12-" + dayOfMonth.trim() + "T" + hour.trim() + ":00:00.00Z");
+    }
+
     //TODO write javadoc. mostly used for test cases.
     @Override
     public boolean equals(Object o) {
