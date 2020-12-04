@@ -20,7 +20,7 @@ public class SpecialRequestManager {
     }
 
     /**
-     * Returns a List of usernames corresponding Users have made SpecialRequest objects.
+     * Returns a List of usernames corresponding to Users that have made SpecialRequest objects.
      * @return the List of usernames of the User objects who made SpecialRequest objects
      */
     public List<String> getRequestingUsers(){

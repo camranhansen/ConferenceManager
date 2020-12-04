@@ -53,11 +53,9 @@ public enum Permission {
     VIEW_OTHER_REQUESTS(Category.SPECIAL_REQUEST), //Determine the user whose SpecialRequest should be viewed
     VIEW_SELF_STATISTICS(Category.DATA), //Show personal statistics. SUBJECT TO CHANGE!
     VIEW_ALL_STATISTICS(Category.DATA) //Show statistics for whole conference. SUBJECT TO CHANGE!
-
     ;
 
     private final Category category; //Use getCategory
-
 
     Permission(Category category){
         this.category = category;

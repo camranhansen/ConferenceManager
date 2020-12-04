@@ -1,6 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequest;
 
 import java.util.List;
 import java.util.Objects;
@@ -9,11 +10,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class UserData {
+public class UserData implements Identifiable<String>{
     @Id
-    public int id;
-
-    @Column(name = "userName")
     private String userName;
 
     @Column(name = "password")
@@ -23,17 +21,11 @@ public class UserData {
     @ElementCollection
     private List<Permission> permissions;
 
-    public int getId() {
-        return id;
-    }
-
-    public String getUserName() {
+    public String getId() {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+    public void setId(String id){ this.userName = id;}
 
     public String getPassword() {
         return password;
@@ -47,20 +39,17 @@ public class UserData {
         return permissions;
     }
 
-    public void setPermissions(List<Permission> permissions) {
-        this.permissions = permissions;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserData userData = (UserData) o;
-        return id == userData.id;
+        return userName.equals(userData.userName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(userName);
     }
 }
