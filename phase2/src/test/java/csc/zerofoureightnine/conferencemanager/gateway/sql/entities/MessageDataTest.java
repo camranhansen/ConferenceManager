@@ -38,4 +38,16 @@ public class MessageDataTest {
         
         assertEquals("Johnathan", messageData.getSender());
     }
+
+
+    @Test
+    public void testArchivedAndReadStatus(){
+        MessageData md = new MessageData();
+        assertFalse(md.getArchived());
+        assertFalse(md.getRead());
+        md.setArchived(true);
+        md.setRead(true);
+        assertTrue(md.getArchived());
+        assertTrue(md.getRead());
+    }
 }

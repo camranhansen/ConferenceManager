@@ -27,6 +27,12 @@ public class MessageData implements Identifiable<String> {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> recipients = new HashSet<>();
 
+    @Column(name = "read")
+    private boolean read;
+
+    @Column(name = "archived")
+    private boolean archived;
+
 
     public Set<String> getRecipients() {
         return recipients;
@@ -62,6 +68,22 @@ public class MessageData implements Identifiable<String> {
 
     public void setTimeSent(Instant timeSent) {
         this.timeSent = timeSent;
+    }
+
+    public boolean getRead(){
+        return read;
+    }
+
+    public boolean getArchived(){
+        return archived;
+    }
+
+    public void setRead(boolean status){
+        this.read = status;
+    }
+
+    public void setArchived(boolean status){
+        this.archived = status;
     }
 
     @Override

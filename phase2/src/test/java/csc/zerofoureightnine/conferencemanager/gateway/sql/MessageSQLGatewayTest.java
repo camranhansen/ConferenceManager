@@ -1,7 +1,5 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -9,6 +7,8 @@ import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 
 import java.time.Instant;
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class MessageSQLGatewayTest {
     private static SQLConfiguration config;
@@ -29,9 +29,59 @@ public class MessageSQLGatewayTest {
         expectedData.setSender("Bob");
         expectedData.getRecipients().add("John");
         mSqlGateway.save(key, expectedData);
+        assertTrue(mSqlGateway.containsKey(key));
         MessageData data = mSqlGateway.load(key);
-
         assertEquals(expectedData, data);
+
+    }
+
+    @Test
+    public void removeTest(){
+        MessageSQLGateway mSqlGateway = new MessageSQLGateway(config);
+        MessageData md = new MessageData();
+        String key = "1";
+        md.setContent("Hello");
+        md.setTimeSent(Instant.ofEpochMilli(1024));
+        md.setSender("sender");
+        md.getRecipients().add("recipient");
+        mSqlGateway.save(key, md);
+        assertTrue(mSqlGateway.containsKey(key));
+        mSqlGateway.remove(key);
+        assertFalse(mSqlGateway.containsKey(key));
+
+    }
+
+    @Test
+    public void changeDataTest(){
+        MessageSQLGateway mSqlGateway = new MessageSQLGateway(config);
+        MessageData md = new MessageData();
+        String key = "1";
+        md.setContent("Hello");
+        md.setTimeSent(Instant.ofEpochMilli(1024));
+        md.setSender("sender");
+        md.getRecipients().add("recipient");
+        mSqlGateway.save(key, md);
+        md.setContent("Hi");
+        assertEquals("Hi", md.getContent());
+        mSqlGateway.remove(key);
+        mSqlGateway.save(key, md);
+        MessageData md1 = mSqlGateway.load(key);
+        assertEquals(md.getContent(), md1.getContent());
+
+        md.setSender("sender2");
+        mSqlGateway.remove(key);
+        mSqlGateway.save(key, md);
+        MessageData md2 = mSqlGateway.load(key);
+        assertEquals(md.getSender(), md2.getSender());
+
+        md.setArchived(true);
+        mSqlGateway.remove(key);
+        mSqlGateway.save(key, md);
+        MessageData md3 = mSqlGateway.load(key);
+        assertTrue(md3.getArchived());
+        assertEquals(md.getArchived(), md3.getArchived());
+
+
     }
 
     @Test
