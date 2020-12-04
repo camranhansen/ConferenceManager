@@ -5,10 +5,9 @@ package csc.zerofoureightnine.conferencemanager.menu;
  * The names are self-explanatory. Can be called anywhere in the program.
  * Parsed in Menu.
  */
-public enum GoalFlag {
+public enum MenuGoal {
     CONTINUE,
     BACK,
     MAIN,
-    LOGIN,
-    EXIT,
+    LOGOUT,
 };
