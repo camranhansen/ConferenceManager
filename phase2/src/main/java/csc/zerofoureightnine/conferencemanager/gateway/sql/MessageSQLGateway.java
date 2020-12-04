@@ -14,9 +14,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class MessageSQLGateway implements PersistentMap<String, MessageData> {
-    SQLMapping mapping;
+    SQLConfiguration mapping;
 
-    public MessageSQLGateway(SQLMapping mapping) {
+    public MessageSQLGateway(SQLConfiguration mapping) {
         this.mapping = mapping;
     }
 

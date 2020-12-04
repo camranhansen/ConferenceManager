@@ -2,7 +2,6 @@ package csc.zerofoureightnine.conferencemanager.messaging;
 
 import org.junit.Test;
 
-import javax.xml.bind.SchemaOutputResolver;
 import java.util.HashMap;
 import java.util.List;
 

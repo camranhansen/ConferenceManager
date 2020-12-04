@@ -1,9 +1,12 @@
 package csc.zerofoureightnine.conferencemanager.gateway;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public interface PersistentMap<K, V> extends Map<K, V> {
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.Identifiable;
+
+public interface PersistentMap<K extends Serializable, V extends Identifiable<K>> extends Map<K, V> {
     /**
      * Saves the entity to the database with the associated key as the identifier.
      * @param key The identifier for the record.
@@ -26,9 +29,4 @@ public interface PersistentMap<K, V> extends Map<K, V> {
      * @return A list of all the record objects that satisfy having the {@code filter} in the {@code field}.
      */
     List<V> retrieveByField(String field, String filter);
-
-    /**
-     * Empties the table completely and fully.
-     */
-    void clear();
 }

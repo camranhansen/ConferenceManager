@@ -7,10 +7,10 @@ import org.hibernate.cfg.Configuration;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
 
-public class SQLMapping {
+public class SQLConfiguration {
     private SessionFactory factory;
 
-    public SQLMapping() {
+    public SQLConfiguration() {
         factory = new Configuration().
                 addAnnotatedClass(MessageData.class).
                 addAnnotatedClass(UserData.class).

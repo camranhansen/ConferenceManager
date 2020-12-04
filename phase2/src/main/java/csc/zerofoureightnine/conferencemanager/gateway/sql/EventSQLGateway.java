@@ -14,9 +14,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class EventSQLGateway implements PersistentMap<String, EventData> {
-    SQLMapping mapping;
+    SQLConfiguration mapping;
 
-    public EventSQLGateway(SQLMapping mapping) {
+    public EventSQLGateway(SQLConfiguration mapping) {
         this.mapping = mapping;
     }
 
@@ -68,7 +68,7 @@ public class EventSQLGateway implements PersistentMap<String, EventData> {
     @Override
     public boolean containsValue(Object value) {
         EventData ed = (EventData) value;
-        return this.containsKey(ed.getDataId());
+        return this.containsKey(ed.getId());
     }
 
     /**
@@ -135,7 +135,7 @@ public class EventSQLGateway implements PersistentMap<String, EventData> {
 
     @Override
     public String save(String key, EventData entity) {
-        //entity.setDataId();
+        entity.setId(key);
         Session session = mapping.getFactory().openSession();
         Transaction transaction = session.beginTransaction();
         String id = (String) session.save(entity);

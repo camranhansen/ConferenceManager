@@ -11,11 +11,11 @@ import java.time.Instant;
 import java.util.List;
 
 public class MessageSQLGatewayTest {
-    private static SQLMapping mapping;
+    private static SQLConfiguration mapping;
 
     @BeforeClass
     public static void setup() {
-        mapping = new SQLMapping();
+        mapping = new SQLConfiguration();
     }
 
     @Test
