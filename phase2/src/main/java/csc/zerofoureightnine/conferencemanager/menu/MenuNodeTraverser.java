@@ -54,6 +54,20 @@ public class MenuNodeTraverser {
 
     }
 
+    //TEMPORARY SET MENU GOAL
+    public void setMenuGoal(MenuGoal menuGoal){
+        switch(menuGoal){
+            case CONTINUE:
+                this.menuGoal = MenuGoal.CONTINUE;
+            case BACK:
+                this.menuGoal = MenuGoal.BACK;
+            case MAIN:
+                this.menuGoal = MenuGoal.MAIN;
+            case LOGOUT:
+                this.menuGoal = MenuGoal.LOGOUT;
+        }
+    }
+
     private void exploreNode(){
 
         //Dealing with InputStrategy

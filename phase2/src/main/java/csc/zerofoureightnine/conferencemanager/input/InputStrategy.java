@@ -7,21 +7,18 @@ public enum InputStrategy {
     //SPECIAL
 
     //Text-based
-        //Users
+        //Users related
     VALID_USERNAME("Enter an existing username", false),
-    //TODO:Idk about this one...
-    VALID_PASSWORD("Enter corresponding password", false),
-        //Events
+        //Events related
     VALID_EVENT_ID("Enter an existing event id", false),
     EVENT_DAY("Enter day of the event", false),
     EVENT_HOUR("Enter hour of the event", false),
     EVENT_CAPACITY("Enter the capacity for this event", false),
     EVENT_ROOM("Enter the room this event will be in", false),
     EVENT_SPEAKER_SINGLE("Enter speaker name", false),
-        //Messaging
+        //Messaging related
     MESSAGE_CONTENT("Enter the content for your message", false)
     ;
-
 
     private final String prompt; //Use getCategory
     private final boolean isMenu;
