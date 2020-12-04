@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -65,10 +66,9 @@ public class InputPrompterTest {
 
     @Test
     public void menuOption() {
-        String input = "1"+System.lineSeparator(); //The user is selecting option 1
+        String input = "0"+System.lineSeparator(); //The user is selecting 0.Option 1
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-
         InputPrompter prompter = new InputPrompter();
         Option option1 = new Option("Option 1"){
             @Override
@@ -76,31 +76,23 @@ public class InputPrompterTest {
                 redFruit();
             }
         };
-
         Option option2 = new Option("Option 2"){
             @Override
             public void run(){
                 orangeFruit();
             }
         };
-
-        ArrayList<Option> optionList = new ArrayList<>();
+        List<Option> optionList = new ArrayList<>();
         optionList.add(option1);
         optionList.add(option2);
-
         Option optionSelected = prompter.menuOption(optionList);
-
-
         assertEquals(optionSelected,option1);
-
+        assertEquals("0. Option 1\n1. Option 2\n", outContent.toString());
         //aha! cross-platform line separators!
         // You should thank me, mac and linux csc.zerofoureightnine.conferencemanager.users
         // For my mercy in not using \r\n which would cause this test to fail
         // ONLY for you, since newline is different in not-windows.
         // See the wikipedia page for more INFO
-        assertEquals(outContent.toString(),"0. EXIT"+System.lineSeparator()+
-                "1. Option 1"+System.lineSeparator()+
-                "2. Option 2"+System.lineSeparator());
 
     }
 
@@ -128,42 +120,13 @@ public class InputPrompterTest {
     }
 
     @Test
-    public void exitOptionTest(){
-        String input = "0"+System.lineSeparator();
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-
-        InputPrompter prompter = new InputPrompter();
-        ArrayList<Option> optionList = generateOptions();
-        Option optionSelected = prompter.menuOption(optionList);
-        assertEquals(optionSelected, optionList.get(0));
-    }
-
-    @Test
-    public void inputPrompterConstructTest(){
-        InputPrompter inputPrompter = new InputPrompter();
-    }
-
-    @Test
-    public void emptyOptionTest(){
-        String input = "0"+System.lineSeparator();
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-
-        ArrayList<Option> options = new ArrayList<>();
-        InputPrompter prompter = new InputPrompter();
-        Option optionSelected = prompter.menuOption(options);
-        assertEquals(optionSelected, options.get(0));
-    }
-
-    @Test
-    public void emptyOptionInvalidInputTest(){
+    public void optionInvalidInputTest(){
         String input = "7"+System.lineSeparator()+"0"+System.lineSeparator();
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-
-        ArrayList<Option> options = new ArrayList<>();
+        List<Option> options = new ArrayList<>();
         InputPrompter prompter = new InputPrompter();
+        options.add(new Option("option"));
         Option optionSelected = prompter.menuOption(options);
         assertEquals(optionSelected, options.get(0));
     }
@@ -189,11 +152,11 @@ public class InputPrompterTest {
         options.add(option);
         options.add(option);
         options.add(option);
+        options.add(option);
         InputPrompter prompter = new InputPrompter();
         Option optionSelected = prompter.menuOption(options);
         assertEquals(optionSelected, options.get(12));
     }
-
 
     private ArrayList<Option> generateOptions(){
         Option option1 = new Option("Option 1"){

@@ -21,7 +21,7 @@ public class MenuControllerTest {
 
     @Test
     public void selectSubController() {
-        String input = "2\n0";
+        String input = "1\n0";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
@@ -42,7 +42,7 @@ public class MenuControllerTest {
 
     @Test
     public void selectPermission() {
-        String input = "2";
+        String input = "1";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
@@ -63,7 +63,7 @@ public class MenuControllerTest {
 
     @Test
     public void selectPermissionInvalidInputTest(){
-        String input = "5\n1";
+        String input = "4\n0";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 

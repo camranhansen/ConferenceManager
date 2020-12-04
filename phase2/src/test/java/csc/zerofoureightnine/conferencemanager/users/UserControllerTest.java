@@ -32,7 +32,7 @@ public class UserControllerTest {
         //TODO: This test does not run because of some strange interaction
         //Between scanner and having it in another file.
         //It would work if a scanner object was instantiated inside usercontroller
-        String input = "1"+System.lineSeparator()+"1"+System.lineSeparator()+"1"+System.lineSeparator();
+        String input = "0"+System.lineSeparator()+"0"+System.lineSeparator()+"0"+System.lineSeparator();
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 

@@ -69,7 +69,6 @@ public class InputPrompter {
      * @return The option the user has selected.
      */
     public Option menuOption(List<Option> options){
-        //TODO: Change to list not arrayList
         inputPresenter.printOptions(options);
         int userInput = userOptionInput(options);
         return options.get(userInput);
