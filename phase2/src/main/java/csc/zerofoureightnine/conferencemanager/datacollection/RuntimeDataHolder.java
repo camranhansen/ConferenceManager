@@ -1,14 +1,15 @@
 package csc.zerofoureightnine.conferencemanager.datacollection;
 
-import java.util.HashMap;
+import java.util.EnumMap;
+import java.util.Map;
 
 public class RuntimeDataHolder {
 
-    private HashMap<RuntimeStats, Integer> statMap;
+    private EnumMap<RuntimeStats, Integer> statMap;
 
     public RuntimeDataHolder() {
         if (statMap == null) {
-            this.statMap = new HashMap<>();
+            this.statMap = new EnumMap<>(RuntimeStats.class);
             for (RuntimeStats x: RuntimeStats.values()) { statMap.put(x, 0); }
         }
     }
@@ -27,7 +28,7 @@ public class RuntimeDataHolder {
         return s;
     }
 
-    public HashMap<RuntimeStats, Integer> getStatMap() {
+    public Map<RuntimeStats, Integer> getStatMap() {
         return statMap;
     }
 

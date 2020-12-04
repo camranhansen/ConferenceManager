@@ -5,7 +5,7 @@ import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.List;
 
 @Deprecated
 public class EventCSVGateway extends CSVGateway {
@@ -24,7 +24,7 @@ public class EventCSVGateway extends CSVGateway {
     }
 
     public void saveEvents(EventManager eventManager) throws IOException {
-        ArrayList<String[]> eventList = eventManager.getAllEventData();
+        List<String[]> eventList = eventManager.getAllEventData();
         for (int i=0; i<eventList.size(); i++){
             this.updateRow(i, eventList.get(i));
         }

@@ -287,7 +287,7 @@ public class EventManager {
      * @return An arraylist of String[]. Each String[] contains information of one event stored in csc.zerofoureightnine.conferencemanager.events hashmap in
      * EventManager.
      */
-    public ArrayList<String[]> getAllEventData(){
+    public List<String[]> getAllEventData(){
         ArrayList<String[]> eventList = new ArrayList<>();
         for (String id: this.events.keySet()) {
             eventList.add(getSingleEventData(id));
@@ -321,8 +321,7 @@ public class EventManager {
     public void setEventData(String[] eventData){
         String id = eventData[0];
         String speakerName[] = eventData[1].split(",");
-        List<String> spk = new ArrayList<>();
-        spk = Arrays.asList(speakerName);
+        List<String> spk = Arrays.asList(speakerName);
         Instant time = Instant.parse(eventData[2]);
         String eventName = eventData[3];
         String participants = eventData[4];
