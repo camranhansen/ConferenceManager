@@ -54,6 +54,14 @@ public class MenuNodeTraverser {
 
     }
 
+    public MenuNode getCurrent(){
+        return this.current;
+    }
+
+    public void addToInputHistory(String inputToAdd){
+        this.inputHistory.put(current, inputToAdd);
+    }
+
     //TEMPORARY SET MENU GOAL
     public void setMenuGoal(MenuGoal menuGoal){
         switch(menuGoal){

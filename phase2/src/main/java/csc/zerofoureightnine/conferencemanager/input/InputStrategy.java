@@ -1,5 +1,9 @@
 package csc.zerofoureightnine.conferencemanager.input;
 
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+
+import java.util.List;
+
 public enum InputStrategy {
     //Not text based
     MENU("", true), //Special

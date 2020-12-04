@@ -10,8 +10,9 @@ import java.util.Scanner;
 public class InputPrompter {
     private Scanner scanner;
     private InputPresenter inputPresenter;
-    private ArrayList<SubController> subControllers;
+    private ArrayList<SubController> subControllers;//TODO remove this.
     private InputStrategyManager inputStrategyManager;
+    private MenuNodeTraverser currentTraverser;
 
     /**
      * Creates a new InputPrompter.
@@ -30,32 +31,40 @@ public class InputPrompter {
         this.inputStrategyManager = inputStrategyManager;
     }
 
-    public String getValidResponse(MenuNode menuNode, LinkedHashMap<MenuNode, String> inputHistory,
-                                   MenuNodeTraverser menuNodeTraverser){
-        inputPresenter.printPrompt(menuNode.getInputStrategy().getPrompt());
-        String input = scanner.nextLine();
-        if (menuGoalCheck(menuNodeTraverser, input)){
-            return "";
-        }
-        while(!inputStrategyManager.validate(menuNode.getInputStrategy(), input)){
-            inputPresenter.invalidResponse();
-            inputPresenter.printPrompt(menuNode.getInputStrategy().getPrompt());
-            input = scanner.nextLine();
-        }
-        inputHistory.put(menuNode, input);
-        return input;
+    public void attachCurrentTraverser(MenuNodeTraverser traverser){
+        this.currentTraverser = traverser;
     }
 
-    private boolean menuGoalCheck(MenuNodeTraverser menuNodeTraverser, String userInput){
+    public void addValidResponseToInputHistory(){
+        inputPresenter.presentPrompt(currentTraverser.getCurrent().getInputStrategy().getPrompt());
+        String input = scanner.nextLine();
+        if (inputIsReservedKeyword(input)){
+            currentTraverser.addToInputHistory("");
+        }else{
+            while(!inputStrategyManager.validate(currentTraverser.getCurrent().getInputStrategy(), input)){
+                inputPresenter.invalidResponse();
+                //put runtimestats here....
+                inputPresenter.presentPrompt(currentTraverser.getCurrent().getInputStrategy().getPrompt());
+                input = scanner.nextLine();
+            }
+            currentTraverser.addToInputHistory(input);
+        }
+
+
+    }
+
+    private boolean inputIsReservedKeyword(String userInput){
+        //TODO this later
         switch (userInput.trim().toLowerCase()) {
             case "back":
-                menuNodeTraverser.setMenuGoal(MenuGoal.BACK);
+                this.currentTraverser.setMenuGoal(MenuGoal.BACK);//todo change this to..
+                //setMenuGoal(MenuGoal.BACK). i.e. have a helper function here
                 return true;
             case "main":
-                menuNodeTraverser.setMenuGoal(MenuGoal.MAIN);
+                this.currentTraverser.setMenuGoal(MenuGoal.MAIN);
                 return true;
-            case "exit":
-                menuNodeTraverser.setMenuGoal(MenuGoal.LOGOUT);
+            case "logout":
+                this.currentTraverser.setMenuGoal(MenuGoal.LOGOUT);
                 return true;
         }
         return false;
@@ -88,11 +97,11 @@ public class InputPrompter {
         inputHistory.put(menuNode, optionSelected);
         return options.get(Integer.parseInt(optionSelected));
     }
-
+    //TODO change this as well to match current conception.
     private String usersInputOption(MenuNodeTraverser menuNodeTraverser){
         String userInput =  scanner.nextLine();
         String input = userInput.trim();
-        if (menuGoalCheck(menuNodeTraverser, input)){
+        if (inputIsReservedKeyword(input)){
             return "";
         }
         return input;
@@ -125,7 +134,7 @@ public class InputPrompter {
      * @return The user's response.
      */
     public String getResponse(String prompt){
-        inputPresenter.printPrompt(prompt);
+        inputPresenter.presentPrompt(prompt);
         return scanner.nextLine();
     }
 

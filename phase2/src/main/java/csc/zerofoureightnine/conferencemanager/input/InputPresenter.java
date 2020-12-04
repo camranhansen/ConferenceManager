@@ -18,7 +18,7 @@ public class InputPresenter {
         System.out.println("Please make a selection by typing the options' corresponding integer.");
     }
 
-    public void printPrompt(String prompt){
+    public void presentPrompt(String prompt){
         System.out.println(prompt+": ");
     }
 
