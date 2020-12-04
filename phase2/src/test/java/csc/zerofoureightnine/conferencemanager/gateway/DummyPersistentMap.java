@@ -42,6 +42,7 @@ public class DummyPersistentMap<K extends Serializable, V extends Identifiable<K
 
     @Override
     public V put(K key, V value) {
+        value.setId(key);
         return hashmap.put(key, value);
     }
 
