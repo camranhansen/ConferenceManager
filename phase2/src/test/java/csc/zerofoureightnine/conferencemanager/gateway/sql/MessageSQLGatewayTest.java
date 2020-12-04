@@ -11,16 +11,16 @@ import java.time.Instant;
 import java.util.List;
 
 public class MessageSQLGatewayTest {
-    private static SQLConfiguration mapping;
+    private static SQLConfiguration config;
 
     @BeforeClass
     public static void setup() {
-        mapping = new SQLConfiguration();
+        config = new SQLConfiguration("testfiles/db/data");
     }
 
     @Test
     public void SaveAndLoadTest() {
-        MessageSQLGateway mSqlGateway = new MessageSQLGateway(mapping);
+        MessageSQLGateway mSqlGateway = new MessageSQLGateway(config);
 
         String key = "absolutely.";
         MessageData expectedData = new MessageData();
@@ -36,7 +36,7 @@ public class MessageSQLGatewayTest {
 
     @Test
     public void retrieveByFieldTest() {
-        MessageSQLGateway mSqlGateway = new MessageSQLGateway(mapping);
+        MessageSQLGateway mSqlGateway = new MessageSQLGateway(config);
         MessageData expectedData = new MessageData();
         expectedData.getRecipients().add("Better John");
         String key = "A better key than the last one.";

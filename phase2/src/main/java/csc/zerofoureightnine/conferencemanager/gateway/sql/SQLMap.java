@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.naming.OperationNotSupportedException;
 import javax.persistence.Query;
-import javax.persistence.Table;
 
+import org.hibernate.CacheMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -18,19 +18,15 @@ import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.Identifiable;
 
 public class SQLMap<K extends Serializable, V extends Identifiable<K>> implements PersistentMap<K, V> {
-    private Table tableAnnotation;
     private int sizeCache = -1;
     private SQLConfiguration configuration;
     private SessionFactory sessionFactory;
-    private Class<V> vClass;
+    private Class<V> valClass;
 
     public SQLMap(SQLConfiguration sqlConfiguration, Class<V> valueClass) {
         this.configuration = sqlConfiguration;
         this.sessionFactory = configuration.getFactory();
-        this.vClass = valueClass;
-
-        tableAnnotation = vClass.getAnnotation(Table.class);
-        tableAnnotation.name();
+        this.valClass = valueClass;
     }
 
     @Override
@@ -38,11 +34,11 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
         if (sizeCache == -1) sizeCache = countRecords();
         return sizeCache;
     }
-
+    
     private int countRecords() {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        int res = (int) session.createQuery("select count(*) from "+ getTableName()).getSingleResult();
+        int res = ((Long) session.createQuery("select count(*) from "+ valClass.getSimpleName()).getSingleResult()).intValue();
         tx.commit();
         session.close();
         return res;
@@ -60,10 +56,7 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
 
     @Override
     public boolean containsValue(Object value) {
-        Session session = sessionFactory.openSession();
-        boolean res = session.contains(value);
-        session.close();
-        return res;
+        return load(((V) value).getId()) != null;
     }
 
     @Override
@@ -80,14 +73,18 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
     @Override
     public V remove(Object key) {
         Session session = sessionFactory.openSession();
-        V val = get(key);
+        Transaction transaction = session.beginTransaction();
+        V val = (V) session.get(valClass, (Serializable) key);
         session.delete(val);
+        transaction.commit();
+        session.close();
+        if (sizeCache != -1) sizeCache --;
         return val;
     }
 
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-        forEach((k, v) -> {
+        m.forEach((k, v) -> {
             save(k, v);
         });
     }
@@ -108,21 +105,25 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
     }
 
     @Override
-    public String save(K key, V entity) {
+    public void save(K key, V entity) {
         entity.setId(key);
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        String id = (String) session.save(entity);
+        if (!session.contains(entity)) {
+            session.save(entity);
+            if (sizeCache != -1) sizeCache ++;
+        } else {
+            session.update(entity);
+        }
         transaction.commit();
         session.close();
-        return id;
     }
 
     @Override
     public V load(K key) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        V messages = (V) session.get(vClass, key);
+        V messages = (V) session.get(valClass, key);
         transaction.commit();
         session.close();
         return messages;
@@ -149,13 +150,14 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
     public void clear() {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        session.createQuery("delete from " + getTableName()).executeUpdate();
+        ScrollableResults results = session.createQuery("select t from " + valClass.getSimpleName() + " t").setCacheMode(CacheMode.IGNORE).scroll();
+        while (results.next()) {
+            session.delete(results.get(0));
+        }
+        results.close();
         tx.commit();
         session.close();
-    }
-
-    private String getTableName() {
-        return (tableAnnotation.name().isEmpty()) ? vClass.getSimpleName() : tableAnnotation.name();
+        sizeCache = 0;
     }
     
 }

@@ -87,14 +87,13 @@ public class MessageSQLGateway implements PersistentMap<String, MessageData> {
     }
 
     @Override
-    public String save(String key, MessageData entity) {
+    public void save(String key, MessageData entity) {
         entity.setId(key);
         Session session = mapping.getFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        String id = (String) session.save(entity);
+        session.save(entity);
         transaction.commit();
         session.close();
-        return id;
     }
 
     @Override

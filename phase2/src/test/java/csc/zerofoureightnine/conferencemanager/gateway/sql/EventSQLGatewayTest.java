@@ -2,6 +2,8 @@ package csc.zerofoureightnine.conferencemanager.gateway.sql;
 
 import csc.zerofoureightnine.conferencemanager.events.EventType;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
+
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -17,7 +19,7 @@ public class EventSQLGatewayTest {
 
     @BeforeClass
     public static void setup() {
-        mapping = new SQLConfiguration();
+        mapping = new SQLConfiguration("testfiles/db/data");
     }
 
     @Test
@@ -39,14 +41,14 @@ public class EventSQLGatewayTest {
         expectedData.setType(EventType.SINGLE);
 
         String key = "AbetterID";
-        String id = eventSQLGateway.save(key, expectedData);
-        EventData data = eventSQLGateway.load(id);
+        eventSQLGateway.save(key, expectedData);
+        EventData data = eventSQLGateway.load(key);
         assertEquals(expectedData, data);
     }
 
     @Test
     public void SizeTest() {
-        mapping = new SQLConfiguration();
+        mapping = new SQLConfiguration("testfiles/db/data");
         EventSQLGateway eventSQLGateway = new EventSQLGateway(mapping);
 
         List<String> speaker = new ArrayList<>();
@@ -98,7 +100,7 @@ public class EventSQLGatewayTest {
 
     @Test
     public void isEmptyTest() {
-        mapping = new SQLConfiguration();
+        mapping = new SQLConfiguration("testfiles/db/data");
         EventSQLGateway eventSQLGateway = new EventSQLGateway(mapping);
         assertTrue(eventSQLGateway.isEmpty());
     }

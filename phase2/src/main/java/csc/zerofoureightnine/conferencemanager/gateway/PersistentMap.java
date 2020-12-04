@@ -11,9 +11,8 @@ public interface PersistentMap<K extends Serializable, V extends Identifiable<K>
      * Saves the entity to the database with the associated key as the identifier.
      * @param key The identifier for the record.
      * @param entity The field data for the record.
-     * @return The numerical ID.
      */
-    String save(K key, V entity);
+    void save(K key, V entity);
 
     /**
      * Loads a record given its associated key.

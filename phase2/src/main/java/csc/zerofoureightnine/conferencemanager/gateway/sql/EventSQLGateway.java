@@ -134,14 +134,13 @@ public class EventSQLGateway implements PersistentMap<String, EventData> {
     }
 
     @Override
-    public String save(String key, EventData entity) {
+    public void save(String key, EventData entity) {
         entity.setId(key);
         Session session = mapping.getFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        String id = (String) session.save(entity);
+        session.saveOrUpdate(entity);
         transaction.commit();
         session.close();
-        return id;
     }
 
     @Override

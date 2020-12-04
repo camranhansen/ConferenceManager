@@ -9,8 +9,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "messages")
+@Table(name = "messages") @Entity
 public class MessageData implements Identifiable<String> {
     @Id
     private String id;
