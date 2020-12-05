@@ -1,50 +1,20 @@
 package csc.zerofoureightnine.conferencemanager.events;
+
 import csc.zerofoureightnine.conferencemanager.gateway.DummyPersistentMap;
-import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLConfiguration;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
-import org.junit.BeforeClass;
 import org.junit.Test;
+
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static java.time.Instant.*;
+import static java.time.Instant.MAX;
 import static org.junit.Assert.*;
 
 public class EventManagerTest {
     private static DummyPersistentMap<String, EventData> pMap;
-
-
-    @Test
-    public void getEventList() {
-        Instant time = MAX;
-        EventManager eventManager = new EventManager(pMap);
-        // eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2); TODO: implement changes.
-        List<String> aList = new ArrayList<>();
-        aList.add("Meeting Room 1" + time.toString());
-        // assertEquals(aList, eventManager.getEventList()); TODO: implement changes.
-    }
-
-    @Test
-    public void getSpkEvents() {
-        EventManager eventManager = new EventManager(pMap);
-        Instant time = MAX;
-        Instant time2 = time.minus(1, ChronoUnit.HOURS);
-        //TODO: implement changes.
-        /*
-        eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2);
-        eventManager.createEvent("Bob Smithers", time2, "Test Event 2", "Meeting Room 1",  2);
-        eventManager.createEvent("Josh Smith", time2, "Test Event 3", "Meeting Room 2",  2);
-        */
-        List<String> aList = new ArrayList<>();
-        aList.add("Meeting Room 1" + time2.toString());
-        aList.add("Meeting Room 1" + time.toString());
-        assertEquals(aList, eventManager.getHostingEvents("Bob Smithers"));
-    }
 
     @Test
     public void createEvent() {
@@ -172,27 +142,33 @@ public class EventManagerTest {
 
     @Test
     public void editEventName() {
+        pMap = new DummyPersistentMap<>();
         EventManager eventManager = new EventManager(pMap);
         Instant time = Instant.MAX;
-        // eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2); TODO: implement changes.
+        List<String> list = Arrays.asList("Bob", "John");
+        eventManager.createEvent(list, time, "Test Event", "Meeting Room 1",  2);
         eventManager.editEventName("Meeting Room 1" + time.toString(), "Clean Architecture");
         assertEquals("Clean Architecture", eventManager.getEventName("Meeting Room 1" + time.toString()));
     }
 
     @Test
     public void editRoom() {
+        pMap = new DummyPersistentMap<>();
         EventManager eventManager = new EventManager(pMap);
         Instant time = Instant.MAX;
-        // eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2); TODO: implement changes.
+        List<String> list = Arrays.asList("Bob", "John");
+        eventManager.createEvent(list, time, "Test Event", "Meeting Room 1",  2);
         eventManager.editRoom("Meeting Room 1" + time.toString(), "BH 101");
         assertEquals("BH 101", eventManager.getRoom("BH 101" + time.toString()));
     }
 
     @Test
     public void editCapacity() {
+        pMap = new DummyPersistentMap<>();
         EventManager eventManager = new EventManager(pMap);
         Instant time = Instant.MAX;
-        // eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2); TODO: implement changes.
+        List<String> list = Arrays.asList("Bob", "John");
+        eventManager.createEvent(list, time, "Test Event", "Meeting Room 1",  2);
         eventManager.editCapacity("Meeting Room 1" + time.toString(), 5);
         assertEquals(5, eventManager.getCapacity("Meeting Room 1" + time.toString()));
     }
