@@ -55,7 +55,7 @@ public enum Template {
 
             Permission.MESSAGE_SINGLE_USER,
             Permission.MESSAGE_EVENT_USERS,
-            Permission.MESSAGE_ALL_USERS,
+//            Permission.MESSAGE_ALL_USERS, //TODO add more specific permissions for message_all_users
             Permission.MESSAGE_ARCHIVE, //New
             Permission.MESSAGE_DELETE, //New
             Permission.MESSAGE_UNREAD, //New
@@ -87,7 +87,7 @@ public enum Template {
 
             Permission.MESSAGE_SINGLE_USER,
             Permission.MESSAGE_EVENT_USERS,
-            Permission.MESSAGE_ALL_USERS,
+//            Permission.MESSAGE_ALL_USERS,
             Permission.MESSAGE_ARCHIVE, //New
             Permission.MESSAGE_DELETE, //New
             Permission.MESSAGE_UNREAD, //New
