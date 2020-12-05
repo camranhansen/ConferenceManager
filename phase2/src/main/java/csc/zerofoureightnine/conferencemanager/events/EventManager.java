@@ -1,5 +1,8 @@
 package csc.zerofoureightnine.conferencemanager.events;
 
+import java.time.Instant;
+import java.util.*;
+
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
@@ -41,7 +44,7 @@ public class EventManager {
      * @param userName Username of the speaker.
      * @return A list of csc.zerofoureightnine.conferencemanager.events' IDs.
      */
-    public List<String> getSpkEvents(String userName){
+    public List<String> getHostingEvents(String userName){
         List<String> aList = new ArrayList<>();
         for (Event value: events.values()){
             if(value.getSpeakerName().contains(userName)){
@@ -62,6 +65,11 @@ public class EventManager {
         ed.setId(newEvent.getId());
         return ed;
     }
+    public void createEvent(List<String> speakerName, Instant eventTime, String eventName, String room, int capacity){
+        Event newEvent = new Event(speakerName, eventTime, eventName, room, capacity, getEventTypeForCapacity(capacity));
+        this.events.put(newEvent.getId(), newEvent);
+    }
+
     /**
      * Defines a new event with the details speaker's name, event time, event name, room, and capacity.
      * Adds this event to the collection of all csc.zerofoureightnine.conferencemanager.events.
@@ -70,6 +78,7 @@ public class EventManager {
      * @param eventName Name of the event.
      * @param room Room which the event is being held in.
      * @param capacity Maximum capacity of the event.
+     * @param type The event type. see the {@link EventType} for more information.
      */
     public void createEvent(List<String> speakerName, Instant eventTime, String eventName, String room, int capacity, EventType type){
         Event newEvent = new Event(speakerName, eventTime, eventName, room, capacity, type);
@@ -90,7 +99,7 @@ public class EventManager {
      * @param capacity Maximum capacity of the event.
      */
     private void createEditedEvent(List<String> speakerName, Instant eventTime, String eventName, List<String> participants, String room, int capacity, EventType type){
-        Event newEvent = new Event(speakerName, participants, eventTime, eventName, room, capacity, type);
+        Event newEvent = new Event(speakerName, participants,  eventTime, eventName, room, capacity, type);
         this.events.put(newEvent.getId(), newEvent);
         EventData ed = this.ConvertEventToEventData(newEvent);
         ed.addParticipants(newEvent.getParticipants());
@@ -264,6 +273,7 @@ public class EventManager {
         ed.addSpeakers(newSpeaker);
     }
 
+
     /**
      * Changes the event name of an event to a new one.
      * @param id ID of the selected event.
@@ -392,14 +402,18 @@ public class EventManager {
      * @param id Event id
      * @return A string containing the given event's name time, room and capacity.
      */
-    public String getFormattedEvent(String id){
+    public LinkedHashMap<String,String> getFormattedEvent(String id){
         Event e = this.events.get(id);
-        String lineSep = ":" + System.lineSeparator();
-        String formatted = "Event Name: " + e.getEventName() + lineSep +
-                "Event Time: " + e.getEventTime() + lineSep +
-                "Room: " + e.getRoom() + lineSep +
-                "Capacity: " + e.getParticipants().size() + "/" + e.getCapacity() + lineSep;
-        return formatted;
+        LinkedHashMap<String,String> eventData = new LinkedHashMap<>();
+        eventData.put("Name",e.getEventName());
+        eventData.put("Speaker Name",e.getSpeakerName().toString());
+        eventData.put("Event Time",e.getEventTime().toString());
+        eventData.put("Room",e.getRoom());
+        eventData.put("Capacity", String.valueOf(e.getCapacity()));
+        eventData.put("Type",e.getType().toString());
+        eventData.put("ID", e.getId());
+
+        return eventData;
     }
 
     //New event data getters. Please only use these!
@@ -458,6 +472,9 @@ public class EventManager {
         return !checkConflictSpeaker(time, speakers);
     }
 
+
+
+    //TODO possible create class for string parsing?
     public Instant parseTime(String dayOfMonth, String hour){
         if (dayOfMonth.length() == 1) {
             dayOfMonth = "0" + dayOfMonth;
@@ -467,6 +484,18 @@ public class EventManager {
         }
         return Instant.parse("2020-12-" + dayOfMonth.trim() + "T" + hour.trim() + ":00:00.00Z");
     }
+
+    private EventType getEventTypeForCapacity(int capacity){
+        switch (capacity){
+            case 0:
+                return EventType.PARTY;
+            case 1:
+                return EventType.SINGLE;
+            default:
+                return EventType.MULTI;
+        }
+    }
+
 
     //TODO write javadoc. mostly used for test cases.
     @Override

@@ -19,6 +19,7 @@ public enum Permission {
 
     //Event
     EVENT_SELF_ENROLL(Category.EVENT), //Determine whether want to enroll or unenroll. Determine the specific event to either enroll or unenroll.
+    EVENT_SELF_DROP(Category.EVENT),
     EVENT_OTHER_ENROLL(Category.EVENT), //Likewise, except also determine the username of the other person in question.
     EVENT_CREATE(Category.EVENT), //Takes in event parameters.
     EVENT_DELETE(Category.EVENT), //Delete event by ID.
@@ -39,10 +40,9 @@ public enum Permission {
 
     //Viewing
     VIEW_HOSTING_EVENTS(Category.EVENT), //View the csc.zerofoureightnine.conferencemanager.events you are speaking at (i.e. where speakerName = your name)
-    VIEW_ALL_EVENTS(Category.EVENT), //Anyone can do this.
-    // Determine whether the user wants to see:
-    //TODO make this permission explicit. I.e. VIEW_ATTENDING_EVENTS, VIEW_AVAILABLE_EVENTS, VIEW_ALL_EVENTS
-
+    VIEW_ATTENDING_EVENTS(Category.EVENT), //Anyone can do this.
+    VIEW_AVAILABLE_EVENTS(Category.EVENT),
+    VIEW_ALL_EVENTS(Category.EVENT),
     // 1. All the csc.zerofoureightnine.conferencemanager.events they are attending.
     // 2. All available csc.zerofoureightnine.conferencemanager.events to them specifically.
     // 3. All csc.zerofoureightnine.conferencemanager.events regardless of availability.
@@ -53,11 +53,9 @@ public enum Permission {
     VIEW_OTHER_REQUESTS(Category.SPECIAL_REQUEST), //Determine the user whose SpecialRequest should be viewed
     VIEW_SELF_STATISTICS(Category.DATA), //Show personal statistics. SUBJECT TO CHANGE!
     VIEW_ALL_STATISTICS(Category.DATA) //Show statistics for whole conference. SUBJECT TO CHANGE!
-
     ;
 
     private final Category category; //Use getCategory
-
 
     Permission(Category category){
         this.category = category;

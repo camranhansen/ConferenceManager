@@ -42,6 +42,7 @@ public class DummyPersistentMap<K extends Serializable, V extends Identifiable<K
 
     @Override
     public V put(K key, V value) {
+        value.setId(key);
         return hashmap.put(key, value);
     }
 
@@ -86,7 +87,47 @@ public class DummyPersistentMap<K extends Serializable, V extends Identifiable<K
     }
 
     @Override
-    public List<V> retrieveByField(String field, String filter, boolean strict) {
+    public List<V> loadInCollection(String field, Object value) {
+        ArrayList<V> res = new ArrayList<>();
+
+        Iterator<V> vals = hashmap.values().iterator();
+        while (vals.hasNext()) {
+            V v = vals.next();
+            try {
+                Field selected = v.getClass().getDeclaredField(field);
+                Collection fieldVal = (Collection) selected.get(v);
+                if (fieldVal.contains(value)) {
+                    res.add(v);
+                }
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<V> loadForSame(String field, Object value) {
+        ArrayList<V> res = new ArrayList<>();
+
+        Iterator<V> vals = hashmap.values().iterator();
+        while (vals.hasNext()) {
+            V v = vals.next();
+            try {
+                Field selected = v.getClass().getDeclaredField(field);
+                Object fieldVal = selected.get(v);
+                if (fieldVal.equals(value)) {
+                    res.add(v);
+                }
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<V> search(String field, String search) {
         ArrayList<V> res = new ArrayList<>();
 
         Iterator<V> vals = hashmap.values().iterator();
@@ -95,14 +136,8 @@ public class DummyPersistentMap<K extends Serializable, V extends Identifiable<K
             try {
                 Field selected = v.getClass().getDeclaredField(field);
                 String fieldVal = selected.get(v).toString();
-                if (strict) {
-                    if (fieldVal.equals(filter)) {
-                        res.add(v);
-                    }
-                } else {
-                    if (fieldVal.contains(filter)) {
-                        res.add(v);
-                    }
+                if (fieldVal.contains(search)) {
+                    res.add(v);
                 }
             } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
                 e.printStackTrace();
@@ -110,5 +145,4 @@ public class DummyPersistentMap<K extends Serializable, V extends Identifiable<K
         }
         return res;
     }
-    
 }
