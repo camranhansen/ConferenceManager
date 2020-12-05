@@ -247,4 +247,24 @@ public class SQLMapMessageFormTest {
             assertFalse("List should not contain data with id: j" + i, bActual.contains(aData[i]));
         }
     }
+
+    @Test
+    public void batchModificationTest() {
+        MessageData[] data = new MessageData[100];
+        for (int i = 0; i < data.length; i++) {
+            data[i] = new MessageData();
+            data[i].setSender("Bob");
+            sqlMap.save(String.valueOf(i), data[i]);
+        }
+
+        sqlMap.beginInteraction();
+        for (int i = 0; i < data.length; i++) {
+            sqlMap.get(String.valueOf(i)).setContent("Dynamic saving?");
+        }
+        sqlMap.endInteraction();
+
+        for (int i = 0; i < data.length; i++) {
+            assertEquals("Dynamic saving?", sqlMap.get(String.valueOf(i)).getContent());
+        }
+    }
 }
