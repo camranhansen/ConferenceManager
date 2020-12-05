@@ -18,6 +18,9 @@ import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.Identifiable;
 
 public class SQLMap<K extends Serializable, V extends Identifiable<K>> implements PersistentMap<K, V> {
+    Session session;
+    Transaction transaction;
+    private int beginnings;
     private int sizeCache = -1;
     private SQLConfiguration configuration;
     private SessionFactory sessionFactory;
@@ -36,11 +39,9 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
     }
     
     private int countRecords() {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
+        beginInteraction();
         int res = ((Long) session.createQuery("select count(*) from "+ valClass.getSimpleName()).getSingleResult()).intValue();
-        tx.commit();
-        session.close();
+        endInteraction();
         return res;
     }
 
@@ -72,12 +73,10 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
 
     @Override
     public V remove(Object key) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        beginInteraction();
         V val = (V) session.get(valClass, (Serializable) key);
         session.delete(val);
-        transaction.commit();
-        session.close();
+        endInteraction();
         if (sizeCache != -1) sizeCache --;
         return val;
     }
@@ -104,33 +103,28 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
 
     @Override
     public void save(K key, V entity) {
+        beginInteraction();
         entity.setId(key);
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
         if (!session.contains(entity)) {
             session.save(entity);
             if (sizeCache != -1) sizeCache ++;
         } else {
             session.update(entity);
         }
-        transaction.commit();
-        session.close();
+        endInteraction();
     }
 
     @Override
     public V load(K key) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        beginInteraction();
         V messages = session.get(valClass, key);
-        transaction.commit();
-        session.close();
+        endInteraction();
         return messages;
     }
 
     @Override
     public List<V> loadForSame(String field, Object filter) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
+        beginInteraction();
         StringBuilder sb = new StringBuilder();
         sb.append("select d from ");
         sb.append(valClass.getSimpleName());
@@ -139,15 +133,13 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
         sb.append(" = :filter");
         TypedQuery<V> q = session.createQuery(sb.toString(), valClass).setParameter("filter", filter);
         List<V> res = q.getResultList();
-        tx.commit();
-        session.close();
+        endInteraction();
         return res;
     }
 
     @Override
     public List<V> loadInCollection(String field, Object value) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
+        beginInteraction();
         StringBuilder sb = new StringBuilder();
         sb.append("select d from ");
         sb.append(valClass.getSimpleName());
@@ -156,15 +148,13 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
         sb.append(" c where c = :value");
         TypedQuery<V> q = session.createQuery(sb.toString(), valClass).setParameter("value", value);
         List<V> res = q.getResultList();
-        tx.commit();
-        session.close();
+        endInteraction();
         return res;
     }
 
     @Override
     public List<V> search(String field, String search) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
+        beginInteraction();
         StringBuilder sb = new StringBuilder();
         sb.append("select d from ");
         sb.append(valClass.getSimpleName());
@@ -173,23 +163,41 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
         sb.append(" like :search");
         TypedQuery<V> q = session.createQuery(sb.toString(), valClass).setParameter("search", search);
         List<V> res = q.getResultList();
-        tx.commit();
-        session.close();
+        endInteraction();
         return res;
     }
 
     @Override
     public void clear() {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
+        beginInteraction();
         ScrollableResults results = session.createQuery("select t from " + valClass.getSimpleName() + " t").setCacheMode(CacheMode.IGNORE).scroll();
         while (results.next()) {
             session.delete(results.get(0));
         }
         results.close();
-        tx.commit();
-        session.close();
+        endInteraction();
         sizeCache = 0;
+    }
+
+    @Override
+    public void beginInteraction() {
+        if (beginnings == 0) {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+        }
+        
+        beginnings ++;
+    }
+
+    @Override
+    public void endInteraction() {
+        if (beginnings == 1) {
+            transaction.commit();
+            session.close();
+        }
+
+        beginnings --;
+        if (beginnings < 0) throw new IllegalStateException("Improper number of interaction beginnings and ends detected.");
     }
 
     

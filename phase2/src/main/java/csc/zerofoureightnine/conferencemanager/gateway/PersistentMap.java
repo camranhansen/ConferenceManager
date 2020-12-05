@@ -49,4 +49,23 @@ public interface PersistentMap<K extends Serializable, V extends Identifiable<K>
      * @return A {@see List} that satisfies the search {@See String} in the given {@code field}.
      */
     List<V> search(String field, String search);
+
+    /**
+     * Initiates everything needed to read and write data. Should be called if a group of read or 
+     * write operations are to be batched together. This includes opening any potential streams 
+     * required for IO.
+     * 
+     * Interactions can be nested in that one interaction can be started within another.
+     */
+    void beginInteraction();
+
+    /**
+     * Performs any operations required to end an operation.
+     * This includes closing any potential streams required for IO.
+     * Needs to be called explicitly if {@see PersistentMap#beginInteraction()} was
+     * explicitly called.
+     * 
+     * Interactions can be nested in that one interaction can be ended within another.
+     */
+    void endInteraction();
 }
