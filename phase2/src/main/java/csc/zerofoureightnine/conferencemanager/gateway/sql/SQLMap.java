@@ -193,10 +193,10 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
     public void endInteraction() {
         if (beginnings <= 0) throw new IllegalStateException("Improper number of interaction beginnings and ends detected.");
         transaction.commit();
-        session.close();
-        if (beginnings >= 1) {
-            session = sessionFactory.openSession();
+        if (beginnings > 1) {
             transaction = session.beginTransaction();
+        } else {
+            session.close();
         }
 
         beginnings --;

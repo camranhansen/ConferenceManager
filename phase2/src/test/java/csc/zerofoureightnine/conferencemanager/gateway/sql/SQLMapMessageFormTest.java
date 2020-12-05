@@ -254,7 +254,7 @@ public class SQLMapMessageFormTest {
         for (int i = 0; i < data.length; i++) {
             data[i] = new MessageData();
             data[i].setSender("Bob");
-            sqlMap.save(String.valueOf(i), data[i]); // First time storing everything, using the begin and end is optional. For efficiency, I do recommend adding a begin and end.
+            sqlMap.save(String.valueOf(i), data[i]); // First time storing everything, using the begin and end is optional. For increase in efficiency, I recommend adding a begin and end.
         }
 
         sqlMap.beginInteraction(); // Notice this method call. Essentially starts an "interaction" to persist things.
