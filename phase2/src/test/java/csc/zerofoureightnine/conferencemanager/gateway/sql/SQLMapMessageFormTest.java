@@ -254,17 +254,19 @@ public class SQLMapMessageFormTest {
         for (int i = 0; i < data.length; i++) {
             data[i] = new MessageData();
             data[i].setSender("Bob");
-            sqlMap.save(String.valueOf(i), data[i]);
+            sqlMap.save(String.valueOf(i), data[i]); // First time storing everything, using the begin and end is optional. For efficiency, I do recommend adding a begin and end.
         }
 
-        sqlMap.beginInteraction();
+        sqlMap.beginInteraction(); // Notice this method call. Essentially starts an "interaction" to persist things.
         for (int i = 0; i < data.length; i++) {
-            sqlMap.get(String.valueOf(i)).setContent("Dynamic saving?");
+            sqlMap.get(String.valueOf(i)).setContent("Dynamic saving?"); // Notice how i'm not modifying from the original array, 
+                                                                         // since those objects are technically different from those retrieved from the map.
         }
-        sqlMap.endInteraction();
+        sqlMap.endInteraction(); // Calling the end interaction forms a sort of block of code that is "monitored" which will allow for detection of changes, and saving said changes.
 
         for (int i = 0; i < data.length; i++) {
-            assertEquals("Dynamic saving?", sqlMap.get(String.valueOf(i)).getContent());
+            assertEquals("Dynamic saving?", sqlMap.get(String.valueOf(i)).getContent()); // Proving changes have occurred. Note the content changed from being empty, to the new string
+                                                                                         // without once calling any form of save or put functions.
         }
     }
 }
