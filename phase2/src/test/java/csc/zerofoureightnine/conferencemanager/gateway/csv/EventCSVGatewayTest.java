@@ -1,6 +1,8 @@
 package csc.zerofoureightnine.conferencemanager.gateway.csv;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
+import csc.zerofoureightnine.conferencemanager.gateway.DummyPersistentMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
 import org.junit.*;
 
 import java.io.File;
@@ -10,11 +12,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static org.junit.Assert.*;
-
+@Deprecated
 public class EventCSVGatewayTest {
     EventCSVGateway eGateway;
     private static final String testFilePath = "testfiles/event_data.csv";
     private EventManager eventManager;
+    private static DummyPersistentMap<String, EventData> pMap;
 
     @Before
     public void prepareGateway() throws NoSuchFieldException, IllegalAccessException {
@@ -22,7 +25,7 @@ public class EventCSVGatewayTest {
         Field filePath = eGateway.getClass().getSuperclass().getDeclaredField("filePath");
         filePath.setAccessible(true);
         filePath.set(eGateway, testFilePath);
-        eventManager = new EventManager();
+        eventManager = new EventManager(pMap);
         // TODO: implement changes.
         /*
         eventManager.createEvent("John", Instant.ofEpochSecond(1000), "CN Tower", "103", 10);
@@ -40,7 +43,7 @@ public class EventCSVGatewayTest {
 
     @Test
     public void testReadEvents() throws IOException {
-        EventManager cleanEventManager = new EventManager();
+        EventManager cleanEventManager = new EventManager(pMap);
         eGateway.saveEvents(eventManager);
         eGateway.clearAll();
         eGateway.readEventsFromGateway(cleanEventManager);
