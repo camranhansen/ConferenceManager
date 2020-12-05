@@ -6,11 +6,11 @@ import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 import java.util.*;
 
 public class MessageMover {
-    private HashMap<String, List<Message>> unreadInbox;
-    private HashMap<String, List<Message>> readInbox;
-    private List<Message> archivedInbox;
-    private HashMap<String, List<Message>> inbox;
-    private List<MessageData> messageData;
+//    private HashMap<String, List<Message>> unreadInbox;
+//    private HashMap<String, List<Message>> readInbox;
+//    private List<Message> archivedInbox;
+//    private HashMap<String, List<Message>> inbox;
+    private PersistentMap<String, MessageData> messageData;
     private String username;
 
 
@@ -20,11 +20,11 @@ public class MessageMover {
      * @param username username of the user accessing MessageMover
      */
     public MessageMover(MessageManager messageManager, String username){
-        this.unreadInbox = messageManager.getUnreadInbox(username);
-        this.readInbox = messageManager.getReadInbox(username);
-        this.archivedInbox = messageManager.getArchivedInbox(username);
-        this.inbox = messageManager.retrieveUserInbox(username);
-        this.messageData = messageManager.getMessageDataOf(username);
+//        this.unreadInbox = messageManager.getUnreadInbox(username);
+//        this.readInbox = messageManager.getReadInbox(username);
+//        this.archivedInbox = messageManager.getArchivedInbox(username);
+//        this.inbox = messageManager.retrieveUserInbox(username);
+        this.messageData = messageManager.getMessageData();
         this.username = username;
     }
 
@@ -57,12 +57,14 @@ public class MessageMover {
         String[] recipients = message.getRecipients();
         Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
 
-        for (MessageData m: this.messageData){
+        this.messageData.beginInteraction();
+        List<MessageData> md = this.messageData.loadInCollection("recipients", username);
+        for (MessageData m: md){
             if(sender.equals(m.getSender())&&content.equals(m.getContent())&&setOfRecipients.equals(m.getRecipients())){
                 m.removeFromRead(username);
-                //this.messageData.remove(m);
             }
         }
+        this.messageData.endInteraction();
     }
 
 
@@ -94,17 +96,36 @@ public class MessageMover {
         String sender = message.getSender();
         String content = message.getContent();
         String[] recipients = message.getRecipients();
-        Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
 
-        for (MessageData m: this.messageData){
-            if(sender.equals(m.getSender())&&content.equals(m.getContent())&&setOfRecipients.equals(m.getRecipients())){
+
+        this.messageData.beginInteraction();
+        List<MessageData> md = this.messageData.loadInCollection("recipients", username);
+        for (MessageData m: md){
+            if(sender.equals(m.getSender())&&content.equals(m.getContent())&& this.compareRecipients(recipients, m.getRecipients())){
                 if(!m.getRead().contains(this.username)){
                     m.addToRead(username);
                 }
             }
         }
+        this.messageData.endInteraction();
     }
 
+    private boolean compareRecipients(String[] recipients, Set<String> recipientsSet){
+        int i = 0;
+        if(recipients.length != recipientsSet.size()){
+            return false;
+        }
+        for(String r: recipients){
+            if (recipientsSet.contains(r)){
+                i+=1;
+            }
+        }
+        if(i==recipients.length){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     /**
      * Check if this message is in user's unread inbox, if not, add the given message to the this user's archived inbox.
@@ -126,7 +147,9 @@ public class MessageMover {
         String[] recipients = message.getRecipients();
         Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
 
-        for (MessageData m : this.messageData) {
+        this.messageData.beginInteraction();
+        List<MessageData> md = this.messageData.loadInCollection("recipients", username);
+        for (MessageData m : md) {
             if (sender.equals(m.getSender()) && content.equals(m.getContent()) && setOfRecipients.equals
                     (m.getRecipients())) {
                 if (!m.getArchived().contains(this.username)) {
@@ -134,6 +157,7 @@ public class MessageMover {
                 }
             }
         }
+        this.messageData.endInteraction();
     }
 
 
@@ -150,12 +174,15 @@ public class MessageMover {
         String[] recipients = message.getRecipients();
         Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
 
-        for (MessageData m : this.messageData) {
+        this.messageData.beginInteraction();
+        List<MessageData> md = this.messageData.loadInCollection("recipients", username);
+        for (MessageData m : md) {
             if (sender.equals(m.getSender()) && content.equals(m.getContent()) && setOfRecipients.equals
                     (m.getRecipients())) {
                 m.removeFromArchived(username);
             }
         }
+        this.messageData.endInteraction();
     }
 
 
@@ -181,15 +208,18 @@ public class MessageMover {
         String[] recipients = message.getRecipients();
         Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
 
-        for (MessageData m: this.messageData){
+        this.messageData.beginInteraction();
+        List<MessageData> md = this.messageData.loadInCollection("recipients", username);
+        for (MessageData m: md){
             if (sender.equals(m.getSender()) && content.equals(m.getContent()) && setOfRecipients.equals
                     (m.getRecipients())) {
                 m.getRecipients().remove(username);
                 if(m.getRecipients().isEmpty()){
-                    this.messageData.remove(m);
+                    md.remove(m);
                 }
             }
         }
+        this.messageData.endInteraction();
     }
 
 
@@ -204,14 +234,17 @@ public class MessageMover {
 //        inbox.remove(from);
 //        archivedInbox.removeIf(message -> message.getSender().equals(from));
 //    }
-        for (MessageData m : this.messageData) {
+        this.messageData.beginInteraction();
+        List<MessageData> md = this.messageData.loadInCollection("recipients", username);
+        for (MessageData m : md) {
             if (m.getSender().equals(from)) {
                 m.getRecipients().remove(username);
                 if (m.getRecipients().isEmpty()) {
-                    this.messageData.remove(m);
+                    md.remove(m);
                 }
             }
         }
+        this.messageData.endInteraction();
     }
 
 
@@ -223,11 +256,14 @@ public class MessageMover {
 //        readInbox.clear();
 //        inbox.clear();
 //        archivedInbox.clear();
-        for(MessageData m: this.messageData){
+        this.messageData.beginInteraction();
+        List<MessageData> md = this.messageData.loadInCollection("recipients", username);
+        for(MessageData m: md){
             m.getRecipients().remove(username);
             if(m.getRecipients().isEmpty()){
-                this.messageData.remove(m);
+                md.remove(m);
             }
         }
+        this.messageData.endInteraction();
     }
 }

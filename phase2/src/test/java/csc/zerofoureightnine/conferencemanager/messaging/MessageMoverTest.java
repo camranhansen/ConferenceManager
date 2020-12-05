@@ -27,8 +27,8 @@ public class MessageMoverTest {
         assertTrue(messageManager.getReadInbox(username).isEmpty());
         assertTrue(messageManager.retrieveUserInbox(username).containsKey("attendee2"));
         messageMover.moveUnreadToRead(messageManager.retrieveUserInbox(username).get("attendee2").get(0));
-        //assertFalse(messageManager.retrieveUserInbox(username).isEmpty());
-        //assertTrue(messageManager.getReadInbox(username).containsKey("attendee2"));
+        assertFalse(messageManager.retrieveUserInbox(username).isEmpty());
+        assertTrue(messageManager.getReadInbox(username).containsKey("attendee2"));
     }
 
     @Test
