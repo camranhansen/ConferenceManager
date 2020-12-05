@@ -268,5 +268,10 @@ public class SQLMapMessageFormTest {
             assertEquals("Dynamic saving?", sqlMap.get(String.valueOf(i)).getContent()); // Proving changes have occurred. Note the content changed from being empty, to the new string
                                                                                          // without once calling any form of save or put functions.
         }
+
+        sqlMap.beginInteraction();
+        data[0].addToRead("user");
+        sqlMap.endInteraction();
+        assertFalse(data[0].getRead().isEmpty());
     }
 }

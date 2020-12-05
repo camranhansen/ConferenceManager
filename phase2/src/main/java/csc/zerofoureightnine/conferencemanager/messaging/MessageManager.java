@@ -13,9 +13,9 @@ public class MessageManager {
 
 
     private HashMap<String, HashMap<String, List<Message>>> inboxes;
-    private HashMap<String, HashMap<String, List<Message>>> readInboxes;
-    private HashMap<String, HashMap<String, List<Message>>> unreadInboxes;
-    private HashMap<String, List<Message>> archivedMessages;
+//    private HashMap<String, HashMap<String, List<Message>>> readInboxes;
+//    private HashMap<String, HashMap<String, List<Message>>> unreadInboxes;
+//    private HashMap<String, List<Message>> archivedMessages;
     private PersistentMap<String, MessageData> messageData;
 
     /**
@@ -31,15 +31,20 @@ public class MessageManager {
      */
     public MessageManager(PersistentMap<String, MessageData> messageData) {
         inboxes = new HashMap<>();
-        readInboxes = new HashMap<>();
-        unreadInboxes = new HashMap<>();
-        archivedMessages = new HashMap<>();
+//        readInboxes = new HashMap<>();
+//        unreadInboxes = new HashMap<>();
+//        archivedMessages = new HashMap<>();
         this.messageData = messageData;
     }
 
+//
+//    public List<MessageData> getMessageDataOf(String username){
+//        this.messageData.beginInteraction();
+//        return this.messageData.loadInCollection("recipients", username);
+//    }
 
-    public List<MessageData> getMessageDataOf(String username){
-        return this.messageData.loadInCollection("recipients", username);
+    public PersistentMap<String, MessageData> getMessageData(){
+        return this.messageData;
     }
 
     /**
@@ -142,7 +147,7 @@ public class MessageManager {
                 String sender = m.getSender();
                 Instant time = m.getTimeSent();
                 Set<String> recipients = m.getRecipients();
-                String[] r = new String[]{String.valueOf(recipients)};
+                String[] r = recipients.toArray(new String[0]);
                 Message message = new Message(sender, r, content);
                 m.setTimeSent(time);
                 messages.add(message);
@@ -174,7 +179,9 @@ public class MessageManager {
         }
         for (String sender: senders){
             List<Message> messages = this.getUnreadFrom(username, sender);
-            unread.put(sender, messages);
+            if (!messages.isEmpty()) {
+                unread.put(sender, messages);
+            }
         }
         return unread;
     }
@@ -196,7 +203,7 @@ public class MessageManager {
                 String sender = m.getSender();
                 Instant time = m.getTimeSent();
                 Set<String> recipients = m.getRecipients();
-                String[] r = new String[]{String.valueOf(recipients)};
+                String[] r = recipients.toArray(new String[0]);
                 Message message = new Message(sender, r, content);
                 m.setTimeSent(time);
                 messages.add(message);
@@ -262,6 +269,7 @@ public class MessageManager {
 //        return retrieveUserInbox(user).get(from);
 //    }
         List<Message> messages = new ArrayList<>();
+        this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", user);
 
         for (MessageData message : md) {
@@ -274,11 +282,14 @@ public class MessageManager {
                 Message m = new Message(sender, r, content);
                 m.setTimeSent(time);
                 messages.add(m);
+
                 if(!message.getRead().contains(user)){
                     message.addToRead(user);
                 }
+
             }
         }
+        this.messageData.endInteraction();
         return messages;
 
     }
