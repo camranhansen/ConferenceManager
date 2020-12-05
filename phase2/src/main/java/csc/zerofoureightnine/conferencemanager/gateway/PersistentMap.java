@@ -20,14 +20,23 @@ public interface PersistentMap<K extends Serializable, V extends Identifiable<K>
      * @return The record object.
      */
     V load(K key);
+    
+    /**
+     * Loads the data that have the exact value.
+     * for the given {@code field}.
+     * @param field The field to check the {@code value} for.
+     * @param value The value to check for in the {@code field}.
+     * @return
+     */
+    List<V> loadForSame(String field, Object value);
 
     /**
-     * Retrieves a list of records who all have the filter string in the given field.
-     * @param field A field to query.
-     * @param filter The value in the field to query for.
-     * @param strict If true, the entire string needs to exactly match the {@code filter}.
-     *               If false, will match anything that has {@code filter} at the beginning.             
-     * @return A list of all the record objects that satisfy having the {@code filter} in the {@code field}.
+     * Loads the data that contains the exact {@code value} in {@code field}'s collection.
+     * @param field The field to check the collection for {@code value}.
+     * @param value The value to be looked for in {@code field}'s collection.
+     * @return
      */
-    List<V> retrieveByField(String field, String filter, boolean strict);
+    List<V> loadInCollection(String field, Object value);
+
+    List<V> search(String field, String search);
 }

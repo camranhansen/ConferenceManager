@@ -170,7 +170,7 @@ public class SQLMapMessageFormTest {
     }
 
     @Test
-    public void retrieveByFieldTest() {
+    public void searchTest() {
         MessageData[] jData = new MessageData[50];
         MessageData[] bData = new MessageData[50];
         for (int i = 0; i < jData.length; i++) {
@@ -183,8 +183,8 @@ public class SQLMapMessageFormTest {
             sqlMap.save("b" + i, bData[i]);
         }
 
-        List<MessageData> jActual = sqlMap.retrieveByField("sender", "J", false);
-        List<MessageData> bActual = sqlMap.retrieveByField("sender", "B", false);
+        List<MessageData> jActual = sqlMap.search("sender", "J%");
+        List<MessageData> bActual = sqlMap.search("sender", "B%");
         
         for (int i = 0; i < jData.length; i++) {
             assertTrue("List should contain data with id: j" + i, jActual.contains(jData[i]));
@@ -192,6 +192,59 @@ public class SQLMapMessageFormTest {
 
             assertTrue("List should contain data with id: b" + i, bActual.contains(bData[i]));
             assertFalse("List should not contain data with id: j" + i, bActual.contains(jData[i]));
+        }
+    }
+
+    @Test
+    public void loadForSameTest() {
+        MessageData[] aData = new MessageData[50];
+        MessageData[] bData = new MessageData[50];
+        for (int i = 0; i < aData.length; i++) {
+            aData[i] = new MessageData();
+            aData[i].setSender("John");
+            sqlMap.save("a" + i, aData[i]);
+            
+            bData[i] = new MessageData();
+            bData[i].setSender("Johny");
+            sqlMap.save("b" + i, bData[i]);
+        }
+
+        List<MessageData> aActual = sqlMap.loadForSame("sender", "John");
+        List<MessageData> bActual = sqlMap.loadForSame("sender", "Johny");
+        
+        for (int i = 0; i < aData.length; i++) {
+            assertTrue("List should contain data with id: a" + i, aActual.contains(aData[i]));
+            assertFalse("List should not contain data with id: b" + i, aActual.contains(bData[i]));
+
+            assertTrue("List should contain data with id: b" + i, bActual.contains(bData[i]));
+            assertFalse("List should not contain data with id: j" + i, bActual.contains(aData[i]));
+        }
+    }
+
+    @Test
+    public void loadInCollectionTest() {
+        MessageData[] aData = new MessageData[50];
+        MessageData[] bData = new MessageData[50];
+
+        for (int i = 0; i < aData.length; i++) {
+            aData[i] = new MessageData();
+            aData[i].addRecipients("John", "Bob");
+            sqlMap.save("a" + i, aData[i]);
+            
+            bData[i] = new MessageData();
+            bData[i].addRecipients("Johny");
+            sqlMap.save("b" + i, bData[i]);
+        }
+
+        List<MessageData> aActual = sqlMap.loadInCollection("recipients", "John");
+        List<MessageData> bActual = sqlMap.loadInCollection("recipients", "Johny");
+
+        for (int i = 0; i < aData.length; i++) {
+            assertTrue("List should contain data with id: a" + i, aActual.contains(aData[i]));
+            assertFalse("List should not contain data with id: b" + i, aActual.contains(bData[i]));
+
+            assertTrue("List should contain data with id: b" + i, bActual.contains(bData[i]));
+            assertFalse("List should not contain data with id: j" + i, bActual.contains(aData[i]));
         }
     }
 }

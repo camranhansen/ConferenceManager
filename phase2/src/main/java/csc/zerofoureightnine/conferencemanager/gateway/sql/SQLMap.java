@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.hibernate.CacheMode;
 import org.hibernate.ScrollableResults;
@@ -130,24 +130,50 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
     }
 
     @Override
-    public List<V> retrieveByField(String field, String filter, boolean strict) {
+    public List<V> loadForSame(String field, Object filter) {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         StringBuilder sb = new StringBuilder();
-        sb.append("select md from MessageData md where md.");
+        sb.append("select d from ");
+        sb.append(valClass.getSimpleName());
+        sb.append(" d where d.");
         sb.append(field);
-        if (strict) {
-            sb.append(" = ");
-        } else {
-            sb.append(" like ");
-        }
-        sb.append('\'');
-        sb.append(filter);
+        sb.append(" = :filter");
+        TypedQuery<V> q = session.createQuery(sb.toString(), valClass).setParameter("filter", filter);
+        List<V> res = q.getResultList();
+        tx.commit();
+        session.close();
+        return res;
+    }
 
-        if (!strict) {
-            sb.append("%\'");
-        }
-        Query q = session.createQuery(sb.toString());
+    @Override
+    public List<V> loadInCollection(String field, Object value) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        StringBuilder sb = new StringBuilder();
+        sb.append("select d from ");
+        sb.append(valClass.getSimpleName());
+        sb.append(" d join d.");
+        sb.append(field);
+        sb.append(" c where c = :value");
+        TypedQuery<V> q = session.createQuery(sb.toString(), valClass).setParameter("value", value);
+        List<V> res = q.getResultList();
+        tx.commit();
+        session.close();
+        return res;
+    }
+
+    @Override
+    public List<V> search(String field, String search) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        StringBuilder sb = new StringBuilder();
+        sb.append("select d from ");
+        sb.append(valClass.getSimpleName());
+        sb.append(" d where d.");
+        sb.append(field);
+        sb.append(" like :search");
+        TypedQuery<V> q = session.createQuery(sb.toString(), valClass).setParameter("search", search);
         List<V> res = q.getResultList();
         tx.commit();
         session.close();
@@ -167,5 +193,6 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
         session.close();
         sizeCache = 0;
     }
+
     
 }
