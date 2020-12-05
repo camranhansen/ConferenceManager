@@ -2,6 +2,8 @@ package csc.zerofoureightnine.conferencemanager.messaging;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.events.EventType;
+import csc.zerofoureightnine.conferencemanager.gateway.DummyPersistentMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 import csc.zerofoureightnine.conferencemanager.users.User;
@@ -23,6 +25,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class MessageControllerTest {
+    private static DummyPersistentMap<String, EventData> pMap;
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -44,7 +47,7 @@ public class MessageControllerTest {
     @Test
     public void controllerConstructTest() {
         MessageManager messageManager = new MessageManager();
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         HashMap<String, User> users = generateUserHash();
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
@@ -57,7 +60,7 @@ public class MessageControllerTest {
         System.setIn(in);
 
         MessageManager messageManager = new MessageManager();
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         HashMap<String, User> users = generateUserHash();
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
@@ -75,7 +78,7 @@ public class MessageControllerTest {
         System.setIn(in);
 
         MessageManager messageManager = new MessageManager();
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         HashMap<String, User> users = generateUserHash();
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
@@ -95,7 +98,7 @@ public class MessageControllerTest {
         System.setIn(in);
 
         MessageManager messageManager = new MessageManager();
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         HashMap<String, User> users = generateUserHash();
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
@@ -111,7 +114,7 @@ public class MessageControllerTest {
         System.setIn(in);
 
         MessageManager messageManager = new MessageManager();
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         Instant time = Instant.now();
         List<String> spk = new ArrayList<>();
         spk.add("apk1");
@@ -136,7 +139,7 @@ public class MessageControllerTest {
         System.setIn(in);
 
         MessageManager messageManager = new MessageManager();
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         List<String> spk = new ArrayList<>();
         spk.add("spk1");
         eventManager.createEvent(spk, time, "talk1", "23", 2, EventType.SINGLE);
@@ -156,7 +159,7 @@ public class MessageControllerTest {
         System.setIn(in);
 
         MessageManager messageManager = new MessageManager();
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         HashMap<String, User> users = generateUserHash();
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
@@ -177,7 +180,7 @@ public class MessageControllerTest {
         System.setIn(in);
 
         MessageManager messageManager = new MessageManager();
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         HashMap<String, User> users = generateUserHash();
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
@@ -199,7 +202,7 @@ public class MessageControllerTest {
         System.setIn(in);
 
         MessageManager messageManager = new MessageManager();
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         HashMap<String, User> users = generateUserHash();
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
@@ -220,7 +223,7 @@ public class MessageControllerTest {
         System.setIn(in);
 
         MessageManager messageManager = new MessageManager();
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         HashMap<String, User> users = generateUserHash();
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
@@ -233,7 +236,7 @@ public class MessageControllerTest {
     @Test
     public void sendMessageTestToAllSpk() {
         MessageManager messageManager = new MessageManager();
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         HashMap<String, User> users = generateUserHash();
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
@@ -244,7 +247,7 @@ public class MessageControllerTest {
     @Test
     public void testSendMessageToAllAtt(){
         MessageManager mm = new MessageManager();
-        EventManager em = new EventManager();
+        EventManager em = new EventManager(pMap);
         UserManager um = new UserManager(new HashMap<>());
         MessageController mc = new MessageController(mm, um, em);
         um.createUser("user", "123", Template.ORGANIZER.getPermissions());
@@ -259,7 +262,7 @@ public class MessageControllerTest {
     @Test()
     public void viewAllTest() {
         MessageManager messageManager = new MessageManager();
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         HashMap<String, User> users = generateUserHash();
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
@@ -271,7 +274,7 @@ public class MessageControllerTest {
     @Test
     public void viewFromTest() {
         MessageManager messageManager = new MessageManager();
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         HashMap<String, User> users = generateUserHash();
         UserManager userManager = new UserManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, eventManager);
@@ -302,7 +305,7 @@ public class MessageControllerTest {
         System.setIn(in);
 
         MessageManager mm = new MessageManager();
-        EventManager em = new EventManager();
+        EventManager em = new EventManager(pMap);
         UserManager um = new UserManager(new HashMap<>());
         MessageController mc = new MessageController(mm, um, em);
         um.createUser("user", "123", Template.ATTENDEE.getPermissions());
@@ -316,7 +319,7 @@ public class MessageControllerTest {
     @Test
     public void testWriteEvents(){
         MessageManager mm = new MessageManager();
-        EventManager em = new EventManager();
+        EventManager em = new EventManager(pMap);
         UserManager um = new UserManager(new HashMap<>());
         MessageController mc = new MessageController(mm, um, em);
         ArrayList<String> participants = new ArrayList<>();

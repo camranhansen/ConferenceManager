@@ -3,6 +3,12 @@ package csc.zerofoureightnine.conferencemanager.events;
 // import Users.User;
 // import Users.UserManager;
 
+import csc.zerofoureightnine.conferencemanager.gateway.DummyPersistentMap;
+import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLConfiguration;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.Instant;
@@ -15,10 +21,11 @@ import static java.time.Instant.MAX;
 import static org.junit.Assert.*;
 
 public class EventControllerTest {
+    private static DummyPersistentMap<String, EventData> pMap;
 
     @Test
     public void enroll() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         EventController control = new EventController(eventManager);
         Instant time = MAX;
         // eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1", 2); TODO: implement changes.
@@ -28,7 +35,7 @@ public class EventControllerTest {
 
     @Test
     public void drop() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         EventController control = new EventController(eventManager);
         List<String> arr = new ArrayList<>();
         arr.add("John Smith");
@@ -42,7 +49,7 @@ public class EventControllerTest {
 
     @Test
     public void viewAllEvents() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         EventController control = new EventController(eventManager);
         Instant time = MAX;
         control.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1", 2);
@@ -55,7 +62,7 @@ public class EventControllerTest {
 
     @Test
     public void checkMyEvents() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         EventController control = new EventController(eventManager);
         Instant time = Instant.MAX;
         // eventManager.createEvent("Bob Smithers", time, "Test Event",  "Meeting Room 1",  2); TODO: implement changes.
@@ -68,7 +75,7 @@ public class EventControllerTest {
 
     @Test
     public void viewAvailableEvents() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         EventController control = new EventController(eventManager);
         Instant time = MAX;
         Instant time2 = time.minus(1, ChronoUnit.HOURS);
@@ -81,7 +88,7 @@ public class EventControllerTest {
 
     @Test
     public void createEvent() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         EventController control = new EventController(eventManager);
         String speakerName = "Olivia";
         Instant time = MAX;
@@ -94,7 +101,7 @@ public class EventControllerTest {
 
     @Test
     public void deleteEvent() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         EventController control = new EventController(eventManager);
         Instant time =MAX;
         // eventManager.createEvent("Bob Smithers", time, "Test Event", "Meeting Room 1",  2); TODO: implement changes.
@@ -106,7 +113,7 @@ public class EventControllerTest {
 
     @Test
     public void testViewHostingEvent() {
-        EventManager eventManager = new EventManager();
+        EventManager eventManager = new EventManager(pMap);
         EventController eventController = new EventController(eventManager);
         eventController.createEvent("John", Instant.ofEpochSecond(1000), "Debugggggg", "BAH", 4);
 

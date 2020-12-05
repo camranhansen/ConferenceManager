@@ -1,4 +1,5 @@
 package csc.zerofoureightnine.conferencemanager.events;
+import csc.zerofoureightnine.conferencemanager.gateway.DummyPersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLConfiguration;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
@@ -15,14 +16,8 @@ import static java.time.Instant.*;
 import static org.junit.Assert.*;
 
 public class EventManagerTest {
-    private static SQLConfiguration config;
-    private static  PersistentMap<String, EventData> pMap;
+    private static DummyPersistentMap<String, EventData> pMap;
 
-    @BeforeClass
-    public static void setup() {
-        config = new SQLConfiguration("testfiles/db/data");
-        pMap = new SQLMap<>(config, EventData.class);
-    }
 
     @Test
     public void getEventList() {
