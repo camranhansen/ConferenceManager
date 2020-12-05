@@ -1,6 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.input;
 
 import csc.zerofoureightnine.conferencemanager.menu.*;
+import csc.zerofoureightnine.conferencemanager.options.Option;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -52,9 +53,31 @@ public class InputPrompter implements Inputable{
         return input;
     }
 
+    public String getValidMenuResponse(InputStrategy inputStrategy){
+        inputPresenter.presentPrompt(inputStrategy.getPrompt());
+        inputPresenter.printOptions(inputStrategyManager.getOptions(inputStrategy));
+        String input = scanner.nextLine();
+        if (inputIsReservedKeyword(input)) {
+            return "";
+        } else {
+            while (!inputStrategyManager.validate(inputStrategy, input)) {
+                inputPresenter.invalidResponse(inputStrategy.getErrorMessage());
+                inputPresenter.presentPrompt(inputStrategy.getPrompt());
+                inputPresenter.printOptions(inputStrategyManager.getOptions(inputStrategy));
+                input = scanner.nextLine();
+            }
+        }
+        return input;
+
+    }
     public void addValidResponseToInputHistory(){
         InputStrategy strategy = currentTraverser.getCurrent().getInputStrategy();
-        String validInput = getValidResponse(strategy);
+        String validInput = "";
+        if (strategy.isMenu()){
+            validInput = getValidMenuResponse(strategy);
+        }
+        else{
+            validInput = getValidResponse(strategy);}
         currentTraverser.addToInputHistory(validInput);
     }
 

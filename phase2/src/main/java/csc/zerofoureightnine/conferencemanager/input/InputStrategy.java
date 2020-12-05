@@ -1,14 +1,27 @@
 package csc.zerofoureightnine.conferencemanager.input;
 
-import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import csc.zerofoureightnine.conferencemanager.options.Option;
 
 import java.util.List;
 
 public enum InputStrategy {
-    //Not text based
+
+    //Menus
     CATEGORY_MENU("Enter corresponding number", true, "Invalid selection. Please try again"), //This means that the only job of this node is to do a menu choice.
-    PERMISSION_MENU("Enter corresponding number", true, "Invalid selection. Please try again"), //TODO make prompts for these
-    OPTION("Enter corresponding number", true, "Invalid selection. Please try again"), //Also special
+    PERMISSION_MENU("Enter corresponding number", true, "Invalid selection. Please try again"),
+        //Events related
+    ENROLL_OPTIONS("Enter corresponding number", true, "Invalid selection. Please try again"),
+    VIEWING_EVENT_OPTIONS("Enter corresponding number", true,
+            "Invalid selection. Please try again"),
+        //Messaging related
+    VIEWING_MESSAGE_OPTIONS("Enter corresponding number", true, "Invalid selection. Please try again"),
+    SEND_ALL_OPTIONS("Enter corresponding number", true, "Invalid selection. Please try again"),
+    MESSAGE_EVENT_OPTIONS("Enter corresponding number", true, "Invalid selection. Please try again"),
+    //Options that return text...
+        //Users related
+    USER_TEMPLATE_OPTIONS("Enter corresponding number", true,
+            "Invalid selection. Please try again"),
+
 
     //Text-based
         //Users related
