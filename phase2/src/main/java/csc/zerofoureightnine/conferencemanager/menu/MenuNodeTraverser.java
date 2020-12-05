@@ -4,35 +4,32 @@ package csc.zerofoureightnine.conferencemanager.menu;
 import csc.zerofoureightnine.conferencemanager.input.InputPrompter;
 import csc.zerofoureightnine.conferencemanager.input.InputStrategy;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
-import javax.print.DocFlavor;
 import java.util.*;
-import java.util.function.BiConsumer;
 
 public class MenuNodeTraverser {
 
     private InputPrompter prompter;
     private String username;
     private List<Permission> userpermissionList;
-    private LinkedHashMap<MenuNode, String> inputHistory;
+    private LinkedHashMap<MenuNode, String> nodeInputHistory;
     private MenuNode current;
-    private HashMap<Permission, MenuAction> actionHolder;
+    private SubControllerDecider controllerDecider;
     private MenuGoal menuGoal;
 
 
     public MenuNodeTraverser(InputPrompter prompter,
                              String username,
                              List<Permission> userpermissionList,
-                             LinkedHashMap<MenuNode, String> inputHistory,
+                             LinkedHashMap<MenuNode, String> nodeInputHistory,
                              MenuNode current,
-                             HashMap<Permission, MenuAction> actionHolder) {
+                             SubControllerDecider controllerDecider) {
         this.prompter = prompter;
         this.username = username;
         this.userpermissionList = userpermissionList;
-        this.inputHistory = inputHistory;
+        this.nodeInputHistory = nodeInputHistory;
         this.current = current;
-        this.actionHolder = actionHolder;
+        this.controllerDecider = controllerDecider;
         this.menuGoal = MenuGoal.CONTINUE;
         //attach the inputPrompter to this.
         //And then MenuGoal
@@ -71,7 +68,7 @@ public class MenuNodeTraverser {
             //this RELIES on the invariant that
             //anything with inputSTrategy menu MUST give a single number.
             // list indices MUST start at 0
-            current = nodesByPosition.get(Integer.parseInt(inputHistory.get(current)));
+            current = nodesByPosition.get(Integer.parseInt(nodeInputHistory.get(current)));
         }else{
             current = nodesByPosition.get(0); //
         }
@@ -89,8 +86,12 @@ public class MenuNodeTraverser {
 
     private void doNodeAction() {
         if (current.getTaskPermission() != null){
-            //
-            actionHolder.get(current.getTaskPermission()).run(inputHistory, username);
+
+
+            controllerDecider.DecideSubControllerAndRunMethod(
+                    username,
+                    current.getTaskPermission(),
+                    this.getInputHistory());
         }
     }
 
@@ -100,7 +101,7 @@ public class MenuNodeTraverser {
     }
 
     public void addToInputHistory(String inputToAdd){
-        this.inputHistory.put(current, inputToAdd);
+        this.nodeInputHistory.put(current, inputToAdd);
     }
 
     //TEMPORARY SET MENU GOAL
@@ -121,10 +122,10 @@ public class MenuNodeTraverser {
         }
     }
 
-    public HashMap<InputStrategy, String> getInputHistoryWithStrategyAsKey(){
-        HashMap<InputStrategy, String> inputStrategyHistory = new HashMap<>();
-        inputHistory.forEach((n, s) -> inputStrategyHistory.put(n.getInputStrategy(), s));
-        return inputStrategyHistory;
+    public HashMap<InputStrategy, String> getInputHistory(){
+        HashMap<InputStrategy, String> inputHistory = new HashMap<>();
+        nodeInputHistory.forEach((n, s) -> inputHistory.put(n.getInputStrategy(), s));
+        return inputHistory;
     }
 
     /**

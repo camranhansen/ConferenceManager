@@ -1,5 +1,9 @@
 package csc.zerofoureightnine.conferencemanager.events;
 
+import javax.print.DocFlavor;
+import java.sql.SQLOutput;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class EventPresenter {
@@ -19,9 +23,11 @@ public class EventPresenter {
         System.out.println("List of csc.zerofoureightnine.conferencemanager.events that you are hosting:");
     }
 
-    public void renderEvents(List<String> eventData){
-        for (String s: eventData){
-            System.out.println("Here's an event for you!" + System.lineSeparator() + s);
+    public void renderEvents(List<LinkedHashMap<String,String>> eventData){
+        for (HashMap<String, String> eventInfo: eventData){
+            System.out.println("***********************************");
+            eventInfo.forEach((category, dataPoint) ->
+                    System.out.println(category + ": " + dataPoint));
         }
     }
 

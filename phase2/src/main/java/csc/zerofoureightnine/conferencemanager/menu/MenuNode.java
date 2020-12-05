@@ -19,20 +19,17 @@ public class MenuNode {
     private InputStrategy inputStrategy;
     //Must exist no matter what when
     //MenuNode is instantiated.
-    private String prompt;
     private Permission taskPermission;
 
     public MenuNode(MenuNode parent,
                     LinkedHashMap<Permission, MenuNode> children,
                     InputStrategy inputStrategy,
-                    String prompt,
                     Permission taskPermission) {
         //For this constructor, it is the case that you have to go bottom-up
         //i.e. create terminating nodes first.
         this.parent = parent;
         this.children = children;
         this.inputStrategy = inputStrategy;
-        this.prompt = prompt;
         this.taskPermission = taskPermission;
     }
 
@@ -46,10 +43,6 @@ public class MenuNode {
 
     public InputStrategy getInputStrategy() {
         return inputStrategy;
-    }
-
-    public String getPrompt() {
-        return prompt;
     }
 
     public Permission getTaskPermission() {

@@ -2,10 +2,12 @@ package csc.zerofoureightnine.conferencemanager.messaging;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.input.InputPrompter;
+import csc.zerofoureightnine.conferencemanager.input.InputStrategy;
 import csc.zerofoureightnine.conferencemanager.menu.Option;
 import csc.zerofoureightnine.conferencemanager.menu.SubController;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
@@ -132,7 +134,7 @@ public class MessageController implements SubController {
             Option allEvents = new Option("Send to all your events") {
                 @Override
                 public void run() {
-                    writeToEvents(from, content, eventManager.getSpkEvents(from));
+                    writeToEvents(from, content, eventManager.getHostingEvents(from));
                 }
             };
             Option oneEvent = new Option("Send to one of your events") {
@@ -334,5 +336,10 @@ public class MessageController implements SubController {
         String[] res = new String[list.size()];
         list.toArray(res);
         return res;
+    }
+
+    @Override
+    public void performSelectedAction(String username, Permission permissionSelected, HashMap<InputStrategy, String> inputHistory) {
+
     }
 }

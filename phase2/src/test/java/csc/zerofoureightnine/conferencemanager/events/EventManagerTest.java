@@ -34,7 +34,7 @@ public class EventManagerTest {
         List<String> aList = new ArrayList<>();
         aList.add("Meeting Room 1" + time2.toString());
         aList.add("Meeting Room 1" + time.toString());
-        assertEquals(aList, eventManager.getSpkEvents("Bob Smithers"));
+        assertEquals(aList, eventManager.getHostingEvents("Bob Smithers"));
     }
 
     @Test

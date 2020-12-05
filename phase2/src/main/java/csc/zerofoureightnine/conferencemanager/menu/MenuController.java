@@ -56,15 +56,15 @@ public class MenuController {
                 return false;
             }
             Permission permissionSelected = optionSelected.getPermissionHeld();
-            subcontrollers.get(permissionSelected.getCategory()).performSelectedAction(username, permissionSelected);
+//            subcontrollers.get(permissionSelected.getCategory()).performSelectedAction(username, permissionSelected);
 
         }
         else{
             List<String> categories = new ArrayList<>();
-//            for (Permission p: permissions) {
-//                if (!categories.contains(p.getCategory()))
-//                    categories.add(p.getCategory());
-//            }
+            for (Permission p: permissions) {
+                if (!categories.contains(p.getCategory()))
+                    categories.add(p.getCategory().getrenderableText());
+            }
 
             ArrayList<Option> categoryOptions = new ArrayList<>();
             for (String category: categories){
@@ -77,14 +77,14 @@ public class MenuController {
             }
             String categoryChoice = choice.toString();
             List<Permission> selectedPermissions = new ArrayList<>();
-//            for (Permission p: permissions) {
-//                if (p.getCategory().equals(categoryChoice)){
-//                    selectedPermissions.add(p);
-//                }
-//            }
+            for (Permission p: permissions) {
+                if (p.getCategory().equals(categoryChoice)){
+                    selectedPermissions.add(p);
+                }
+            }
 
             Permission permissionSelected = selectPermission(selectedPermissions).getPermissionHeld();
-            this.subcontrollers.get(categoryChoice).performSelectedAction(this.username, permissionSelected);
+//            this.subcontrollers.get(categoryChoice).performSelectedAction(this.username, permissionSelected);
 
         }
         return true;
