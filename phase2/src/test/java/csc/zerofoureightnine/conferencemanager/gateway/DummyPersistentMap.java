@@ -13,6 +13,7 @@ import java.util.Set;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.Identifiable;
 
 public class DummyPersistentMap<K extends Serializable, V extends Identifiable<K>> implements PersistentMap<K, V> {
+    private int interactions = 0;
     private HashMap<K, V> hashmap = new HashMap<>();
 
     @Override
@@ -144,5 +145,16 @@ public class DummyPersistentMap<K extends Serializable, V extends Identifiable<K
             }
         }
         return res;
+    }
+
+    @Override
+    public void beginInteraction() {
+        interactions++;
+    }
+
+    @Override
+    public void endInteraction() {
+        interactions--;
+        if (interactions < 0) throw new IllegalStateException("Improper number of interaction beginnings and ends detected.");;
     }
 }
