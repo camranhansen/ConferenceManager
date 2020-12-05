@@ -1,10 +1,8 @@
 package csc.zerofoureightnine.conferencemanager.events;
 
-import java.lang.invoke.SwitchPoint;
 import java.time.Instant;
 import java.util.*;
 
-import com.sun.org.apache.bcel.internal.generic.SWITCH;
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
 
