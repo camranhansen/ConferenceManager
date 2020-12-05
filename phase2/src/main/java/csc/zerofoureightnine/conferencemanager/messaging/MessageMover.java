@@ -258,10 +258,10 @@ public class MessageMover {
 //        archivedInbox.clear();
         this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
-        for(MessageData m: md){
+        for(MessageData m: md) {
             m.getRecipients().remove(username);
             if(m.getRecipients().isEmpty()){
-                md.remove(m);
+                messageData.remove(m.getId());
             }
         }
         this.messageData.endInteraction();

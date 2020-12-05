@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -171,7 +172,7 @@ public class MessageMoverTest {
     }
 
     @Test
-    public void deleteConversationFromUnread(){
+    public void deleteConversationFromUnread() {
         String[] users = {"attendee1"};
         String username = "attendee1";
         String from = "attendee2";
@@ -194,30 +195,28 @@ public class MessageMoverTest {
     }
 
     @Test
-    public void clearAllInboxes(){
-        String[] users = {"attendee1"};
-        String username = "attendee1";
-        String from = "attendee2";
+    public void clearAllInboxes() {
+        String username = "Johny";
         config = new SQLConfiguration("testfiles/db/data");
         sqlMap = new SQLMap<>(config, MessageData.class);
         MessageManager messageManager = new MessageManager(sqlMap);
-        Message message = new Message(from, users, "hello");
-        ArrayList<Message> messages = new ArrayList<>();
-        messages.add(message);
-        HashMap<String, List<Message>> unread = messageManager.getUnreadInbox(username);
-        HashMap<String, List<Message>> read = messageManager.getReadInbox(username);
-        List<Message> archived = messageManager.getArchivedInbox(username);
-        unread.put(from, messages);
-        read.put(from, messages);
-        archived.add(message);
         MessageMover messageMover = new MessageMover(messageManager, username);
-        assertTrue(unread.containsKey(from));
-        assertTrue(read.containsKey(from));
-        assertTrue(archived.contains(message));
+
+        MessageData messageData = new MessageData();
+        messageData.setSender("Timmy");
+        messageData.addRecipients(username, "John");
+        messageData.addToRead(username);
+        messageData.addToArchived(username);
+
+        String key = UUID.randomUUID().toString();
+        sqlMap.put(key, messageData);
+
+        assertTrue(sqlMap.loadInCollection("recipients", username).get(0).equals(messageData));
         messageMover.clearAllInboxes();
-        //assertTrue(unread.isEmpty());
-        //assertTrue(read.isEmpty());
-        //assertTrue(archived.isEmpty());
+        assertTrue(sqlMap.loadInCollection("recipients", username).size() == 0);
+        assertTrue(messageManager.getArchivedInbox(username).isEmpty());
+        assertTrue(messageManager.getReadInbox(username).isEmpty());
+        assertTrue(messageManager.getUnreadFrom(username, "Timmy").isEmpty());
     }
 
     @Test
