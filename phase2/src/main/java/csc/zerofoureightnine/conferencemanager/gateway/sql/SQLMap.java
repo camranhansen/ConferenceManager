@@ -121,7 +121,7 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
     public V load(K key) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        V messages = (V) session.get(valClass, key);
+        V messages = session.get(valClass, key);
         transaction.commit();
         session.close();
         return messages;
