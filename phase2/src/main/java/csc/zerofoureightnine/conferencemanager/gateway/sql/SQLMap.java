@@ -84,9 +84,7 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
 
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-        m.forEach((k, v) -> {
-            save(k, v);
-        });
+        m.forEach(this::save);
     }
 
     @Override
