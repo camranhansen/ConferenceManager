@@ -124,9 +124,11 @@ public class MessageManager {
                 senders.add(message.getSender());
             }
         }
-        for (String sender: senders){
+        for (String sender: senders) {
             List<Message> messages = this.getReadInboxFrom(username, sender);
-            read.put(sender, messages);
+            if (!messages.isEmpty()) {
+                read.put(sender, messages);
+            }
         }
         return read;
     }
@@ -263,8 +265,7 @@ public class MessageManager {
         List<MessageData> md = this.messageData.loadInCollection("recipients", user);
 
         for (MessageData message : md) {
-            if (message.getSender().equals(from)) ;
-            {
+            if (message.getSender().equals(from)){
                 String content = message.getContent();
                 String sender = message.getSender();
                 Instant time = message.getTimeSent();
@@ -274,7 +275,7 @@ public class MessageManager {
                 m.setTimeSent(time);
                 messages.add(m);
                 if(!message.getRead().contains(user)){
-
+                    message.addToRead(user);
                 }
             }
         }
@@ -297,14 +298,29 @@ public class MessageManager {
             return "You have no messages from this username.";
         }
         List<Message> inboxFrom = retrieveUserInboxFor(username, from);
+        List<Message> inboxFromSortByTime = this.sortByTime(inboxFrom);
         StringBuilder inbox = new StringBuilder(from);
         inbox.append(": ");
-        for (Message message: inboxFrom){
+        for (Message message: inboxFromSortByTime){
             inbox.append(message.getContent());
             inbox.append(", ");
         }
         return inbox.toString();
     }
+
+    private List<Message> sortByTime(List<Message> messages) {
+        for (int i = 0; i < messages.size(); i++) {
+            for (int j = 0; j < messages.size(); j++) {
+                if ((j > i)) {
+                    if (messages.get(i).getTimeSent().compareTo(messages.get(j).getTimeSent()) > 0) {
+                        Collections.swap(messages, i, j);
+                    }
+                }
+            }
+        }
+        return messages;
+    }
+
 
     /**
      * Returns the string representation of all the message sent to the user. If no one has sent to the given user before
@@ -340,7 +356,8 @@ public class MessageManager {
         if(getArchivedInbox(username).isEmpty()){
             return "You have no archived messages";
         }
-        List<Message> messages = getArchivedInbox(username);
+        List<Message> message = getArchivedInbox(username);
+        List<Message> messages = this.sortByTime(message);
         StringBuilder string = new StringBuilder();
         for (Message m: messages){
             string.append(m.getSender());
@@ -387,7 +404,8 @@ public class MessageManager {
         if (!unread.containsKey(from)){
             return "You have no unread messages from "+from;
         }
-        List<Message> unreadFrom = getUnreadFrom(username, from);
+        List<Message> unreadFrom1 = getUnreadFrom(username, from);
+        List<Message> unreadFrom = this.sortByTime(unreadFrom1);
         StringBuilder string = new StringBuilder(from);
         string.append(": ");
         for (Message message: unreadFrom){
