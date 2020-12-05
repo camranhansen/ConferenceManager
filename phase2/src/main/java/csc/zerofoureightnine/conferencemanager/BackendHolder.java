@@ -1,18 +1,17 @@
 package csc.zerofoureightnine.conferencemanager;
 
-import csc.zerofoureightnine.conferencemanager.events.Event;
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
-import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLConfiguration;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
 import csc.zerofoureightnine.conferencemanager.users.*;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequest;
 import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestManager;
+import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +23,9 @@ public class BackendHolder {
     private MessageManager messageManager;
     private PermissionManager permissionManager;
     private SpecialRequestManager specialRequestManager;
+    private static SQLConfiguration config;
+    private static PersistentMap<String, MessageData> sqlMap;
+    private static PersistentMap<String, EventData> pMap;
 
     public BackendHolder(){
 
@@ -54,13 +56,14 @@ public class BackendHolder {
         //TODO also have private helper functions loadUserData or createUserManager. this should not all be in the same file.
         //TODO also standardize construction of usecases. i.e. they should either all take in a hashmap,
         // or none at all and they have a function to take them in.
-        SQLConfiguration config = new SQLConfiguration("testfiles/db/data");
-        SQLMap<String, EventData> eventSqlMap = new SQLMap<>(config, EventData.class);
-
-        this.eventManager = new EventManager(eventSqlMap);
+        config = new SQLConfiguration("testfiles/db/data");
+        pMap = new SQLMap<>(config, EventData.class);
+        this.eventManager = new EventManager(pMap);
         HashMap<String, User> usermap = new HashMap<>();
         this.userManager = new UserManager(usermap);
-        this.messageManager = new MessageManager();
+        config = new SQLConfiguration("testfiles/db/data");
+        sqlMap = new SQLMap<>(config, MessageData.class);
+        this.messageManager = new MessageManager(sqlMap);
         HashMap<String, List<Permission>> permissionHashMap = new HashMap<>();
         this.permissionManager = new PermissionManager(permissionHashMap);
         HashMap<String, List<SpecialRequest>> specialRequestMap = new HashMap<>();

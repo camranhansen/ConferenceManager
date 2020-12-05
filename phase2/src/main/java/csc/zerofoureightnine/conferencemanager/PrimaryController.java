@@ -2,9 +2,13 @@ package csc.zerofoureightnine.conferencemanager;
 
 import csc.zerofoureightnine.conferencemanager.events.EventController;
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
+import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.csv.EventCSVGateway;
 import csc.zerofoureightnine.conferencemanager.gateway.csv.MessageCSVGateway;
 import csc.zerofoureightnine.conferencemanager.gateway.csv.UserCSVGateway;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLConfiguration;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 import csc.zerofoureightnine.conferencemanager.menu.MenuController;
 import csc.zerofoureightnine.conferencemanager.menu.SubController;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageController;
@@ -30,12 +34,16 @@ public class PrimaryController {
     private UserManager userManager;
     private EventManager eventManager;
     private MessageManager messageManager;
+    private static SQLConfiguration config;
+    private static PersistentMap<String, MessageData> sqlMap;
     // private InputPrompter inputPrompter; //TODO: Maybe this + add InputPrompter parameter to individual controllers so it doesn't need to keep getting instantiated?
 
     public PrimaryController() {
         eventGateway = new EventCSVGateway();
         userGateway = new UserCSVGateway();
-        messageManager = new MessageManager();
+        config = new SQLConfiguration("testfiles/db/data");
+        sqlMap = new SQLMap<>(config, MessageData.class);
+        messageManager = new MessageManager(sqlMap);
         //TODO
         //eventManager = new EventManager();
         messageCSVGateway = new MessageCSVGateway(messageManager);
