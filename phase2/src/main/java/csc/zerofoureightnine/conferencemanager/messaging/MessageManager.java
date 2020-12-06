@@ -18,16 +18,21 @@ public class MessageManager {
 //    private HashMap<String, List<Message>> archivedMessages;
     private PersistentMap<String, MessageData> messageData;
 
+//    /**
+//     * Instantiates the messageManager that stores four hashmaps
+//     * {@code inboxes} stores a hashmap that maps recipients' usernames to a hashmap that maps the senders' usernames
+//     * to a list of Message sent by the sender to the recipient.
+//     * {@code readInboxes} stores a hashmap that maps recipients' usernames to a hashmap that maps the senders'
+//     * usernames to a list of read Message from the sender to the recipient.
+//     * {@code unreadInboxes} stores a hashmap that maps recipients' usernames to a hashmap that maps the senders'
+//     * usernames to a list of unread Message from the sender to the recipient.
+//     * {@code archivedMessages} stores a hashmap that maps the recipients' usernames to a list of their archived
+//     * Messages.
+//     */
+
     /**
-     * Instantiates the messageManager that stores four hashmaps
-     * {@code inboxes} stores a hashmap that maps recipients' usernames to a hashmap that maps the senders' usernames
-     * to a list of Message sent by the sender to the recipient.
-     * {@code readInboxes} stores a hashmap that maps recipients' usernames to a hashmap that maps the senders'
-     * usernames to a list of read Message from the sender to the recipient.
-     * {@code unreadInboxes} stores a hashmap that maps recipients' usernames to a hashmap that maps the senders'
-     * usernames to a list of unread Message from the sender to the recipient.
-     * {@code archivedMessages} stores a hashmap that maps the recipients' usernames to a list of their archived
-     * Messages.
+     * Instantiates the messageManager
+     * @param messageData hashmap storing ids as keys and their associating messageDatas as values
      */
     public MessageManager(PersistentMap<String, MessageData> messageData) {
         inboxes = new HashMap<>();
@@ -43,12 +48,16 @@ public class MessageManager {
 //        return this.messageData.loadInCollection("recipients", username);
 //    }
 
+    /**
+     * Returns a sqlMap that maps the message ids to the messageData objects.
+     * @return hashmap storing ids as keys and their associating messageDatas as values
+     */
     public PersistentMap<String, MessageData> getMessageData(){
         return this.messageData;
     }
 
     /**
-     * User sends a message to one or more csc.zerofoureightnine.conferencemanager.users. This message is stored in inboxes.
+     * User sends a message to one or more csc.zerofoureightnine.conferencemanager.users.
      * @param from username of the sender of this message
      * @param content content of the message
      * @param to usernames of one or a list of recipients to this message
@@ -214,7 +223,7 @@ public class MessageManager {
 
     //ADDED:
     /**
-     * Returns the archived inbox of the given user
+     * Returns the archived inbox of the given user.
      * @param username username of the user
      * @return a list of archived Message of the given user
      */
@@ -242,10 +251,10 @@ public class MessageManager {
     }
 
     /**
-     * Returns the messages sent from one user to another user.
+     * Returns the unread inbox of the user from a specific sender.
      * @param user Username of the recipient.
      * @param from Username of the sender.
-     * @return A list of Message.
+     * @return A list of Message that the sender has sent to the user.
      */
     // only retrieveUserInboxFor move read message to unread
     public List<Message> retrieveUserInboxFor(String user, String from) {

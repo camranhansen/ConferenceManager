@@ -32,166 +32,104 @@ public class MessageMoverTest {
         assertTrue(messageManager.getReadInbox(username).containsKey("attendee2"));
     }
 
-    @Test
-    public void moveToUnreadTest(){
-        String username = "attendee1";
-        String from = "attendee2";
-        config = new SQLConfiguration("testfiles/db/data");
-        sqlMap = new SQLMap<>(config, MessageData.class);
-        MessageManager messageManager = new MessageManager(sqlMap);
-        messageManager.sendMessage(from, "Hi", username);
-        HashMap<String, List<Message>> unread = messageManager.getUnreadInbox(username);
-        HashMap<String, List<Message>> read = messageManager.getReadInbox(username);
-        MessageMover messageMover = new MessageMover(messageManager, username);
-        assertTrue(unread.containsKey(from));
-        Message message = unread.get(from).get(0);
-        messageMover.moveUnreadToRead(message);
-        //assertTrue(read.containsKey(from));
-        //assertTrue(read.get(from).contains(message));
-        //assertFalse(unread.get(from).contains(message));
-        messageMover.moveReadToUnread(message);
-        assertTrue(unread.containsKey(from));
-        assertTrue(unread.get(from).contains(message));
-        assertEquals("Hi", messageManager.retrieveUserInbox(username).get(from).get(0).getContent());
-    }
-
-    @Test
-    public void moveToArchived(){
-        String username = "attendee1";
-        String from = "attendee2";
-        config = new SQLConfiguration("testfiles/db/data");
-        sqlMap = new SQLMap<>(config, MessageData.class);
-        MessageManager messageManager = new MessageManager(sqlMap);
-        messageManager.sendMessage(from, "Hi", username);
-        HashMap<String, List<Message>> unread = messageManager.retrieveUserInbox(username);
-        HashMap<String, List<Message>> read = messageManager.getReadInbox(username);
-        List<Message> archived = messageManager.getArchivedInbox(username);
-        MessageMover messageMover = new MessageMover(messageManager, username);
-        Message message = unread.get(from).get(0);
-        messageMover.moveUnreadToRead(message);
-        //assertEquals(1, read.get(from).size());
-        assertTrue(archived.isEmpty());
-        //messageMover.moveToArchived(message);
-        //assertTrue(archived.contains(message));
-    }
 
     @Test
     public void deleteOneMessageFromReadTest(){
-        String[] users = {"attendee1"};
-        String username = "attendee1";
-        String from = "attendee2";
+        Message message = new Message("sender", new String[]{"recipient"}, "hello");
         config = new SQLConfiguration("testfiles/db/data");
         sqlMap = new SQLMap<>(config, MessageData.class);
-        MessageManager messageManager = new MessageManager(sqlMap);
-        Message message = new Message(from, users, "hello");
-        ArrayList<Message> messages = new ArrayList<>();
-        messages.add(message);
-        HashMap<String, List<Message>> read = messageManager.getReadInbox(username);
-        read.put(from, messages);
-        MessageMover messageMover = new MessageMover(messageManager, username);
-        assertEquals(message, read.get(from).get(0));
-        messageMover.deleteOneMessage(from, message);
-        //assertTrue(read.get(from).isEmpty());
+        MessageManager mm = new MessageManager(sqlMap);
+        mm.sendMessage("sender", "hello", "recipient");
+        MessageMover messageMover = new MessageMover(mm, "recipient");
+        assertFalse(mm.getUnreadInbox("recipient").isEmpty());
+        assertEquals("hello", mm.getUnreadInbox("recipient").get("sender").get(0).getContent());
+        messageMover.moveUnreadToRead(message);
+        assertFalse(mm.getReadInbox("recipient").isEmpty());
+        assertTrue(mm.getUnreadInbox("recipient").isEmpty());
+        messageMover.deleteOneMessage("sender", message);
+        assertTrue(mm.getReadInbox("recipient").isEmpty());
     }
 
     @Test
     public void deleteOneMessageFromArchived(){
-        String[] users = {"attendee1"};
-        String username = "attendee1";
-        String from = "attendee2";
+        Message message = new Message("sender", new String[]{"recipient"}, "hello");
         config = new SQLConfiguration("testfiles/db/data");
         sqlMap = new SQLMap<>(config, MessageData.class);
-        MessageManager messageManager = new MessageManager(sqlMap);
-        Message message = new Message(from, users, "hello");
-        List<Message> archived = messageManager.getArchivedInbox(username);
-        archived.add(message);
-        MessageMover messageMover = new MessageMover(messageManager, username);
-        assertEquals(message, archived.get(0));
-        messageMover.deleteOneMessage(username, message);
-        //assertTrue(archived.isEmpty());
+        MessageManager mm = new MessageManager(sqlMap);
+        mm.sendMessage("sender", "hello", "recipient");
+        MessageMover messageMover = new MessageMover(mm, "recipient");
+        assertFalse(mm.getUnreadInbox("recipient").isEmpty());
+        assertEquals("hello", mm.getUnreadInbox("recipient").get("sender").get(0).getContent());
+        messageMover.moveToArchived(message);
+        assertFalse(mm.getArchivedInbox("recipient").isEmpty());
+        messageMover.deleteOneMessage("sender", message);
+        assertTrue(mm.getArchivedInbox("recipient").isEmpty());
     }
 
     @Test
     public void deleteOneMessageFromUnread(){
-        String[] users = {"attendee1"};
-        String username = "attendee1";
-        String from = "attendee2";
+        Message message = new Message("sender", new String[]{"recipient"}, "hello");
         config = new SQLConfiguration("testfiles/db/data");
         sqlMap = new SQLMap<>(config, MessageData.class);
-        MessageManager messageManager = new MessageManager(sqlMap);
-        Message message = new Message(from, users, "hello");
-        ArrayList<Message> messages = new ArrayList<>();
-        messages.add(message);
-        HashMap<String, List<Message>> unread = messageManager.getUnreadInbox(username);
-        unread.put(from, messages);
-        MessageMover messageMover = new MessageMover(messageManager, username);
-        assertEquals(message, unread.get(from).get(0));
-        messageMover.deleteOneMessage(from, message);
-        //assertTrue(unread.get(from).isEmpty());
-        //assertTrue(messageManager.getUnreadInbox(username).get(from).isEmpty());
+        MessageManager mm = new MessageManager(sqlMap);
+        mm.sendMessage("sender", "hello", "recipient");
+        MessageMover messageMover = new MessageMover(mm, "recipient");
+        assertFalse(mm.getUnreadInbox("recipient").isEmpty());
+        assertEquals("hello", mm.getUnreadInbox("recipient").get("sender").get(0).getContent());
+        assertTrue(mm.getUnreadInbox("recipient").containsKey("sender"));
+        assertEquals("sender",  mm.getUnreadInbox("recipient").get("sender").get(0).getSender());
+        messageMover.deleteOneMessage("sender", message);
+        assertTrue(mm.getUnreadInbox("recipient").isEmpty());
     }
 
     @Test
     public void deleteConversationFromRead(){
-        String[] users = {"attendee1"};
-        String username = "attendee1";
-        String from = "attendee2";
+        Message message = new Message("sender", new String[]{"recipient"}, "hello");
         config = new SQLConfiguration("testfiles/db/data");
         sqlMap = new SQLMap<>(config, MessageData.class);
-        MessageManager messageManager = new MessageManager(sqlMap);
-        Message message = new Message(from, users, "hello");
-        ArrayList<Message> messages = new ArrayList<>();
-        messages.add(message);
-        HashMap<String, List<Message>> read = messageManager.getReadInbox(username);
-        read.put(from, messages);
-        MessageMover messageMover = new MessageMover(messageManager, username);
-        assertTrue(read.containsKey(from));
-        messageMover.deleteConversation(from);
-        //assertFalse(read.containsKey(from));
-        //assertFalse(messageManager.getReadInbox(username).containsKey(from));
+        MessageManager mm = new MessageManager(sqlMap);
+        mm.sendMessage("sender", "hello", "recipient");
+        MessageMover messageMover = new MessageMover(mm, "recipient");
+        mm.retrieveUserInbox("recipient");
+        assertEquals("hello", mm.getReadInbox("recipient").get("sender").get(0).getContent());
+        assertEquals("sender",  mm.getReadInbox("recipient").get("sender").get(0).getSender());
+        messageMover.deleteConversation("sender");
+        assertTrue(mm.getReadInbox("recipient").isEmpty());
+        assertTrue(mm.retrieveUserInbox("recipient").isEmpty());
     }
 
     @Test
     public void deleteConversationFromArchived(){
-        String[] users = {"attendee1"};
-        String username = "attendee1";
-        String from = "attendee2";
+        Message message = new Message("sender", new String[]{"recipient"}, "hello");
         config = new SQLConfiguration("testfiles/db/data");
         sqlMap = new SQLMap<>(config, MessageData.class);
-        MessageManager messageManager = new MessageManager(sqlMap);
-        Message message = new Message(from, users, "hello");
-        messageManager.sendMessage(from, "hello", username);
-        List<Message> archived = messageManager.getArchivedInbox(username);
-        assertFalse(archived.contains(message));
+        MessageManager mm = new MessageManager(sqlMap);
+        mm.sendMessage("sender", "hello", "recipient");
+        List<Message> archived = mm.getArchivedInbox("recipient");
         assertTrue(archived.isEmpty());
-        MessageMover messageMover = new MessageMover(messageManager, username);
+        MessageMover messageMover = new MessageMover(mm, "recipient");
         messageMover.moveToArchived(message);
-        //assertTrue(archived.contains(message));
-        //messageMover.deleteConversation(from);
-        //assertFalse(archived.contains(message));
+        assertEquals("hello", mm.getArchivedInbox("recipient").get(0).getContent());
+        messageMover.deleteConversation("sender");
+        assertEquals(0, mm.getArchivedInbox("recipient").size());
+        assertTrue(mm.getArchivedInbox("recipient").isEmpty());
     }
 
     @Test
     public void deleteConversationFromUnread() {
-        String[] users = {"attendee1"};
-        String username = "attendee1";
-        String from = "attendee2";
+        Message message = new Message("sender", new String[]{"recipient"}, "hello");
         config = new SQLConfiguration("testfiles/db/data");
         sqlMap = new SQLMap<>(config, MessageData.class);
-        MessageManager messageManager = new MessageManager(sqlMap);
-        Message message = new Message(from, users, "hello");
-        ArrayList<Message> messages = new ArrayList<>();
-        messages.add(message);
-        HashMap<String, List<Message>> unread = messageManager.getUnreadInbox(username);
-        List<Message> archived = messageManager.getArchivedInbox(username);
-        unread.put(from, messages);
-        MessageMover messageMover = new MessageMover(messageManager, username);
-        messageMover.moveToArchived(message);
-        assertTrue(unread.containsKey(from));
-        //assertTrue(archived.contains(message));
-        //messageMover.deleteConversation(from);
-        //assertFalse(unread.containsKey(from));
-        //assertFalse(archived.contains(message));
+        MessageManager mm = new MessageManager(sqlMap);
+        mm.sendMessage("sender", "hello", "recipient");
+        MessageMover messageMover = new MessageMover(mm, "recipient");
+        assertFalse(mm.getUnreadInbox("recipient").isEmpty());
+        assertEquals("hello", mm.getUnreadInbox("recipient").get("sender").get(0).getContent());
+        assertTrue(mm.getUnreadInbox("recipient").containsKey("sender"));
+        assertEquals("sender",  mm.getUnreadInbox("recipient").get("sender").get(0).getSender());
+        messageMover.deleteConversation("sender");
+        assertTrue(mm.getUnreadInbox("recipient").isEmpty());
+
     }
 
     @Test
@@ -213,7 +151,7 @@ public class MessageMoverTest {
 
         assertTrue(sqlMap.loadInCollection("recipients", username).get(0).equals(messageData));
         messageMover.clearAllInboxes();
-        assertTrue(sqlMap.loadInCollection("recipients", username).size() == 0);
+        assertEquals(0, sqlMap.loadInCollection("recipients", username).size());
         assertTrue(messageManager.getArchivedInbox(username).isEmpty());
         assertTrue(messageManager.getReadInbox(username).isEmpty());
         assertTrue(messageManager.getUnreadFrom(username, "Timmy").isEmpty());
@@ -232,8 +170,8 @@ public class MessageMoverTest {
         assertEquals("hello", mm.getUnreadInbox("recipient").get("sender").get(0).getContent());
         assertTrue( mm.getReadInbox("recipient").isEmpty());
         messageMover.moveUnreadToRead(message);
-        //assertEquals("hello", mm.getReadInbox("recipient").get("sender").get(0).getContent());
-        //assertEquals(0, mm.getUnreadInbox("recipient").get("sender").size());
+        assertEquals("hello", mm.getReadInbox("recipient").get("sender").get(0).getContent());
+        assertTrue(mm.getUnreadInbox("recipient").isEmpty());
 
     }
 
@@ -247,7 +185,7 @@ public class MessageMoverTest {
         mm.sendMessage("sender", "hello", "recipient");
         MessageMover messageMover = new MessageMover(mm, "recipient");
         messageMover.moveToArchived(message);
-        //assertEquals("hello", mm.getArchivedInbox("recipient").get(0).getContent());
+        assertEquals("hello", mm.getArchivedInbox("recipient").get(0).getContent());
         messageMover.removeFromArchived(message);
         assertEquals(0, mm.getArchivedInbox("recipient").size());
     }

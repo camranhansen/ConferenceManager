@@ -128,7 +128,7 @@ public class MessageMover {
     }
 
     /**
-     * Check if this message is in user's unread inbox, if not, add the given message to the this user's archived inbox.
+     * Check if this message is in user's unread inbox, if not, add the given message to this user's archived inbox.
      * @param message Message object
      */
     public void moveToArchived(Message message) {
@@ -187,7 +187,7 @@ public class MessageMover {
 
 
     /**
-     * Delete the given message from user's inbox, unread inbox, read inbox and archived inbox.
+     * Delete the given message from user's inbox.
      * @param from username of the sender of the message
      * @param message Message object
      */
@@ -215,7 +215,7 @@ public class MessageMover {
                     (m.getRecipients())) {
                 m.getRecipients().remove(username);
                 if(m.getRecipients().isEmpty()){
-                    md.remove(m);
+                    messageData.remove(m.getId());
                 }
             }
         }
@@ -224,8 +224,7 @@ public class MessageMover {
 
 
         /**
-         * Delete all conversations between the user and the given sender from user's inbox, unread inbox,read inbox and
-         * archived inbox.
+         * Delete all conversations between the user and the given sender from user's inbox.
          * @param from username of the sender
          */
     public void deleteConversation(String from) {
@@ -240,7 +239,7 @@ public class MessageMover {
             if (m.getSender().equals(from)) {
                 m.getRecipients().remove(username);
                 if (m.getRecipients().isEmpty()) {
-                    md.remove(m);
+                    messageData.remove(m.getId());
                 }
             }
         }
@@ -249,7 +248,7 @@ public class MessageMover {
 
 
     /**
-     * Clear this user's inbox, unread inbox, read inbox and archived inbox.
+     * Clear this user's inbox.
      */
     public void clearAllInboxes(){
 //        unreadInbox.clear();
