@@ -1,5 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.users;
 
+import csc.zerofoureightnine.conferencemanager.gateway.DummyPersistentMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
@@ -13,11 +15,17 @@ import static org.junit.Assert.*;
 
 public class PermissionManagerTest {
 
-    public HashMap<String, List<Permission>> populatePermissions(){
-        HashMap<String, List<Permission>> map = new HashMap<>();
-        map.put("falcon", Template.ATTENDEE.getPermissions());
-        map.put("raven", Template.SPEAKER.getPermissions());
-        map.put("robin", Template.ORGANIZER.getPermissions());
+    public DummyPersistentMap<String, UserData> populatePermissions(){
+        DummyPersistentMap<String, UserData> map = new DummyPersistentMap<>();
+        UserData falcon = new UserData();
+        falcon.getPermissions().addAll(Template.ATTENDEE.getPermissions());
+        map.put("falcon", falcon);
+        UserData raven = new UserData();
+        raven.getPermissions().addAll(Template.SPEAKER.getPermissions());
+        map.put("raven", raven);
+        UserData robin = new UserData();
+        robin.getPermissions().addAll(Template.ORGANIZER.getPermissions());
+        map.put("robin", robin);
         return map;
     }
 
@@ -28,9 +36,8 @@ public class PermissionManagerTest {
         assertEquals(Template.ATTENDEE.getPermissions(), pm.getPermissions("falcon"));
         assertEquals(Template.SPEAKER.getPermissions(), pm.getPermissions("raven"));
         assertEquals(Template.ORGANIZER.getPermissions(), pm.getPermissions("robin"));
-        //Test for non-existent username and incorrect List of Permissions
+        //Test for incorrect List of Permissions
         assertNotEquals(Template.SPEAKER.getPermissions(), pm.getPermissions("falcon"));
-        assertNotEquals(Template.SPEAKER.getPermissions(), pm.getPermissions("eagle"));
     }
 
     @Test

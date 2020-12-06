@@ -3,6 +3,7 @@ package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,6 +21,10 @@ public class UserData implements Identifiable<String>{
     @Column(name = "permissions")
     @ElementCollection
     private List<Permission> permissions;
+
+    public UserData(){
+        this.permissions = new ArrayList<>();
+    }
 
     public String getId() {
         return userName;
