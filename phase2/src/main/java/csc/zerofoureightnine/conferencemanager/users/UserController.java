@@ -157,7 +157,7 @@ public class UserController implements SubController {
     public String getNewUsername() {
         String userName = prompter.getResponse("Enter username");
 
-        while (um.uNameExists(userName) && !this.exiting) {
+        while (um.userExists(userName) && !this.exiting) {
             userName = prompter.getResponse("The username you entered already exists." + System.lineSeparator()
                     + "Please enter a new username");
         }
@@ -172,7 +172,7 @@ public class UserController implements SubController {
      */
     public String getExistingUsername() {
         String userName = prompter.getResponse("Enter username");
-        while (!um.uNameExists(userName) && !this.exiting) {
+        while (!um.userExists(userName) && !this.exiting) {
             userName = prompter.getResponse("The username you entered does not exist." + System.lineSeparator()
                     + "Please enter a new username");
         }

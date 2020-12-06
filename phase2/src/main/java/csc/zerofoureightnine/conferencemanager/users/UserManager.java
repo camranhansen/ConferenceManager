@@ -12,6 +12,7 @@ public class UserManager {
      * csc.zerofoureightnine.conferencemanager.users stores a hashmap where the keys are usernames and the corresponding value is a User object.
      */
     private HashMap<String, User> users;
+    //TODO: Add persistentMap here, just like permissions and specialRequests
 
     /**
      * Instantiates the UserManager
@@ -55,6 +56,7 @@ public class UserManager {
 
 
     //Permission Methods
+    @Deprecated
     public List<Permission> getPermissions(String username){
         return this.users.get(username).getPermissions();
     }
@@ -64,6 +66,7 @@ public class UserManager {
      * @param username the username of the User object who's permissions should be set
      * @param permissions a new list of permissions to set for this user
      */
+    @Deprecated
     public void setPermission(String username, List<Permission> permissions){
         //TODO: Validate username
         this.users.get(username).setPermissions(permissions);
@@ -74,6 +77,7 @@ public class UserManager {
      * @param username the username of the User object who's permissions should be extended
      * @param permission the permission to add
      */
+    @Deprecated
     public void addPermission(String username, Permission permission){
         //TODO: Validate username
         this.users.get(username).addPermission(permission);
@@ -84,6 +88,7 @@ public class UserManager {
      * @param username the username of the User object who's permissions should be reduced
      * @param permission the permission to remove
      */
+    @Deprecated
     public void removePermission(String username, Permission permission){
         //TODO: Validate username
         this.users.get(username).removePermission(permission);
@@ -95,6 +100,7 @@ public class UserManager {
      * @param template a Template that refers to a type of user
      * @return a list of usernames that meet (or exceed) the criteria defined by the template
      */
+    @Deprecated
     public List<String> getUserByPermissionTemplate(Template template){
         List<String> fullFillingUsers = new ArrayList<>();
 
@@ -169,6 +175,7 @@ public class UserManager {
      * @param permission a string that corresponds to existing Permissions
      * @return a list of Permissions
      */
+    @Deprecated
     public List<Permission> StringToPermissions(String permission){
         String[] strList = permission.split(", ");
         ArrayList<Permission> permissions = new ArrayList<>();
@@ -183,14 +190,9 @@ public class UserManager {
      * @param permissions a list of Permissions
      * @return a string with each string of a Permission separated by a comma
      */
+    @Deprecated
     public String PermissionsToString(List<Permission> permissions){
         return permissions.toString().replace("[", "").replace("]", "");
-    }
-
-    //TODO: this is duplicate code... remove.
-    //Validation methods
-    public boolean uNameExists(String uname){
-        return users.containsKey(uname);
     }
 
 

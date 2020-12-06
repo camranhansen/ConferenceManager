@@ -29,7 +29,7 @@ public class LoginController {
 
     public String loginUser(){
         String username = prompter.getResponse("Please enter your username");
-        while(!um.uNameExists(username)){
+        while(!um.userExists(username)){
             username = prompter.getResponse("That username does not exist." +
                     System.lineSeparator() + "Please enter a username that exists, or create an account");
         }
