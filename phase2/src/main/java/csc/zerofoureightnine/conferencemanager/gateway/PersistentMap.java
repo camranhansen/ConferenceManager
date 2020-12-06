@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.Identifiable;
 
 public interface PersistentMap<K extends Serializable, V extends Identifiable<K>> extends Map<K, V> {
@@ -44,6 +45,9 @@ public interface PersistentMap<K extends Serializable, V extends Identifiable<K>
      * For example, if field "sender" has value "Jayden", to search for it:
      * {@code persistentMap.search("sender", "Jay%")} which will match for anything that has a 
      * value string value starting with "Jay".
+     * 
+     * <b>Note that modifications to the returned list itself (ex. adding or removing) does not reflect modifications to the {@see SQLMap}.</b>
+     * 
      * @param field The field to perform the search on.
      * @param search The {@see String} to search for.
      * @return A {@see List} that satisfies the search {@See String} in the given {@code field}.
