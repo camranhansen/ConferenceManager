@@ -161,7 +161,7 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
         sb.append(" d where d.");
         sb.append(field);
         sb.append(" like :search");
-        TypedQuery<V> q = session.createQuery(sb.toString(), valClass).setParameter("search", search);
+        TypedQuery<V> q = session.createQuery(sb.toString(), valClass).setParameter("search", search.replace('*', '%'));
         List<V> res = q.getResultList();
         endInteraction();
         return res;

@@ -52,7 +52,7 @@ public interface PersistentMap<K extends Serializable, V extends Identifiable<K>
      * Loads the data that has {@code search} within the {@code field} value.
      * Use '%' to denote a wildcard.
      * For example, if field "sender" has value "Jayden", to search for it:
-     * {@code persistentMap.search("sender", "Jay%")} which will match for anything that has a 
+     * {@code persistentMap.search("sender", "Jay*")} which will match for anything that has a 
      * value string value starting with "Jay".
      * 
      * <b>Note that modifications to the returned list itself (ex. adding or removing) does not necessarily reflect modifications to the {@see SQLMap}.</b>
