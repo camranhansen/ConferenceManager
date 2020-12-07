@@ -62,13 +62,15 @@ public class MessageManager {
      * @param content content of the message
      * @param to usernames of one or a list of recipients to this message
      */
-    public void sendMessage(String from, String content, String... to) {
+    public MessageData sendMessage(String from, String content, String... to) {
         //Message msg = new Message(from, to, content);
         MessageData md = new MessageData();
         md.setSender(from);
         md.setContent(content);
         md.addRecipients(to);
-        this.messageData.save(UUID.randomUUID().toString(), md);
+        String id = UUID.randomUUID().toString();
+        this.messageData.save(id, md);
+        return this.messageData.load(id);
 //        for (int i = 0; i < to.length; i++) {
 //            HashMap<String, List<Message>> userInbox = retrieveUserInbox(to[i]);
 //            HashMap<String, List<Message>> unreadUserInbox = getUnreadInbox(to[i]);
@@ -319,11 +321,14 @@ public class MessageManager {
         }
         List<Message> inboxFrom = retrieveUserInboxFor(username, from);
         List<Message> inboxFromSortByTime = this.sortByTime(inboxFrom);
-        StringBuilder inbox = new StringBuilder(from);
-        inbox.append(": ");
+        StringBuilder inbox = new StringBuilder();
         for (Message message: inboxFromSortByTime){
+            inbox.append(from);
+            inbox.append(": ");
             inbox.append(message.getContent());
             inbox.append(", ");
+            inbox.append(message.getTimeSent().toString());
+            inbox.append("\n");
         }
         return inbox.toString();
     }
@@ -358,7 +363,6 @@ public class MessageManager {
         String[] from = inbox.keySet().toArray(new String[0]);
         for (String other:from){
             allMessages.append(singleInboxToString(username, other));
-            allMessages.append("\n");
         }
         return allMessages.toString();
     }
@@ -383,6 +387,8 @@ public class MessageManager {
             string.append(m.getSender());
             string.append(": ");
             string.append(m.getContent());
+            string.append(", ");
+            string.append(m.getTimeSent().toString());
             string.append("\n");
         }
         return string.toString();
@@ -426,13 +432,16 @@ public class MessageManager {
         }
         List<Message> unreadFrom1 = getUnreadFrom(username, from);
         List<Message> unreadFrom = this.sortByTime(unreadFrom1);
-        StringBuilder string = new StringBuilder(from);
-        string.append(": ");
+        StringBuilder inbox = new StringBuilder();
         for (Message message: unreadFrom){
-            string.append(message.getContent());
-            string.append(", ");
+            inbox.append(from);
+            inbox.append(": ");
+            inbox.append(message.getContent());
+            inbox.append(", ");
+            inbox.append(message.getTimeSent().toString());
+            inbox.append("\n");
         }
-        return string.substring(0, string.length()-2);
+        return inbox.toString();
     }
 
 

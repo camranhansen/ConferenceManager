@@ -23,11 +23,11 @@ public class MessageMoverTest {
         config = new SQLConfiguration("testfiles/db/data");
         sqlMap = new SQLMap<>(config, MessageData.class);
         MessageManager messageManager = new MessageManager(sqlMap);
-        messageManager.sendMessage("attendee2", "Hi", username);
+        MessageData md = messageManager.sendMessage("attendee2", "Hi", username);
         MessageMover messageMover = new MessageMover(messageManager, username);
         assertTrue(messageManager.getReadInbox(username).isEmpty());
         assertTrue(messageManager.retrieveUserInbox(username).containsKey("attendee2"));
-        messageMover.moveUnreadToRead(messageManager.retrieveUserInbox(username).get("attendee2").get(0));
+        messageMover.moveUnreadToRead(md.getSender(), md.getContent(), md.getTimeSent().toString());
         assertFalse(messageManager.retrieveUserInbox(username).isEmpty());
         assertTrue(messageManager.getReadInbox(username).containsKey("attendee2"));
     }
@@ -39,14 +39,14 @@ public class MessageMoverTest {
         config = new SQLConfiguration("testfiles/db/data");
         sqlMap = new SQLMap<>(config, MessageData.class);
         MessageManager mm = new MessageManager(sqlMap);
-        mm.sendMessage("sender", "hello", "recipient");
+        MessageData md = mm.sendMessage("sender", "hello", "recipient");
         MessageMover messageMover = new MessageMover(mm, "recipient");
         assertFalse(mm.getUnreadInbox("recipient").isEmpty());
         assertEquals("hello", mm.getUnreadInbox("recipient").get("sender").get(0).getContent());
-        messageMover.moveUnreadToRead(message);
+        messageMover.moveUnreadToRead(md.getSender(), md.getContent(), md.getTimeSent().toString());
         assertFalse(mm.getReadInbox("recipient").isEmpty());
         assertTrue(mm.getUnreadInbox("recipient").isEmpty());
-        messageMover.deleteOneMessage("sender", message);
+        messageMover.deleteOneMessage(md.getSender(), md.getContent(), md.getTimeSent().toString());
         assertTrue(mm.getReadInbox("recipient").isEmpty());
     }
 
@@ -56,13 +56,13 @@ public class MessageMoverTest {
         config = new SQLConfiguration("testfiles/db/data");
         sqlMap = new SQLMap<>(config, MessageData.class);
         MessageManager mm = new MessageManager(sqlMap);
-        mm.sendMessage("sender", "hello", "recipient");
+        MessageData md = mm.sendMessage("sender", "hello", "recipient");
         MessageMover messageMover = new MessageMover(mm, "recipient");
         assertFalse(mm.getUnreadInbox("recipient").isEmpty());
         assertEquals("hello", mm.getUnreadInbox("recipient").get("sender").get(0).getContent());
-        messageMover.moveToArchived(message);
+        messageMover.moveToArchived(md.getSender(), md.getContent(), md.getTimeSent().toString());
         assertFalse(mm.getArchivedInbox("recipient").isEmpty());
-        messageMover.deleteOneMessage("sender", message);
+        messageMover.deleteOneMessage(md.getSender(), md.getContent(), md.getTimeSent().toString());
         assertTrue(mm.getArchivedInbox("recipient").isEmpty());
     }
 
@@ -72,13 +72,13 @@ public class MessageMoverTest {
         config = new SQLConfiguration("testfiles/db/data");
         sqlMap = new SQLMap<>(config, MessageData.class);
         MessageManager mm = new MessageManager(sqlMap);
-        mm.sendMessage("sender", "hello", "recipient");
+        MessageData md = mm.sendMessage("sender", "hello", "recipient");
         MessageMover messageMover = new MessageMover(mm, "recipient");
         assertFalse(mm.getUnreadInbox("recipient").isEmpty());
         assertEquals("hello", mm.getUnreadInbox("recipient").get("sender").get(0).getContent());
         assertTrue(mm.getUnreadInbox("recipient").containsKey("sender"));
         assertEquals("sender",  mm.getUnreadInbox("recipient").get("sender").get(0).getSender());
-        messageMover.deleteOneMessage("sender", message);
+        messageMover.deleteOneMessage(md.getSender(), md.getContent(), md.getTimeSent().toString());
         assertTrue(mm.getUnreadInbox("recipient").isEmpty());
     }
 
@@ -104,11 +104,11 @@ public class MessageMoverTest {
         config = new SQLConfiguration("testfiles/db/data");
         sqlMap = new SQLMap<>(config, MessageData.class);
         MessageManager mm = new MessageManager(sqlMap);
-        mm.sendMessage("sender", "hello", "recipient");
+        MessageData md = mm.sendMessage("sender", "hello", "recipient");
         List<Message> archived = mm.getArchivedInbox("recipient");
         assertTrue(archived.isEmpty());
         MessageMover messageMover = new MessageMover(mm, "recipient");
-        messageMover.moveToArchived(message);
+        messageMover.moveToArchived(md.getSender(), md.getContent(), md.getTimeSent().toString());
         assertEquals("hello", mm.getArchivedInbox("recipient").get(0).getContent());
         messageMover.deleteConversation("sender");
         assertEquals(0, mm.getArchivedInbox("recipient").size());
@@ -163,13 +163,13 @@ public class MessageMoverTest {
         config = new SQLConfiguration("testfiles/db/data");
         sqlMap = new SQLMap<>(config, MessageData.class);
         MessageManager mm = new MessageManager(sqlMap);
-        mm.sendMessage("sender", "hello", "recipient");
+        MessageData md = mm.sendMessage("sender", "hello", "recipient");
         mm.retrieveUserInboxFor("recipient", "sender");
         MessageMover messageMover = new MessageMover(mm, "recipient");
-        messageMover.moveReadToUnread(message);
+        messageMover.moveReadToUnread(md.getSender(), md.getContent(), md.getTimeSent().toString());
         assertEquals("hello", mm.getUnreadInbox("recipient").get("sender").get(0).getContent());
-        assertTrue( mm.getReadInbox("recipient").isEmpty());
-        messageMover.moveUnreadToRead(message);
+        assertTrue(mm.getReadInbox("recipient").isEmpty());
+        messageMover.moveUnreadToRead(md.getSender(), md.getContent(), md.getTimeSent().toString());
         assertEquals("hello", mm.getReadInbox("recipient").get("sender").get(0).getContent());
         assertTrue(mm.getUnreadInbox("recipient").isEmpty());
 
@@ -182,11 +182,11 @@ public class MessageMoverTest {
         config = new SQLConfiguration("testfiles/db/data");
         sqlMap = new SQLMap<>(config, MessageData.class);
         MessageManager mm = new MessageManager(sqlMap);
-        mm.sendMessage("sender", "hello", "recipient");
+        MessageData md = mm.sendMessage("sender", "hello", "recipient");
         MessageMover messageMover = new MessageMover(mm, "recipient");
-        messageMover.moveToArchived(message);
+        messageMover.moveToArchived(md.getSender(), md.getContent(), md.getTimeSent().toString());
         assertEquals("hello", mm.getArchivedInbox("recipient").get(0).getContent());
-        messageMover.removeFromArchived(message);
+        messageMover.removeFromArchived(md.getSender(), md.getContent(), md.getTimeSent().toString());
         assertEquals(0, mm.getArchivedInbox("recipient").size());
     }
 }

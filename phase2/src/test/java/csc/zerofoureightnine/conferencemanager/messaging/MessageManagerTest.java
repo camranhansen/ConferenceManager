@@ -172,7 +172,7 @@ public class MessageManagerTest {
         assertTrue(string.contains("sender:"));
         assertTrue(string.contains("hi"));
         assertTrue(string.contains("hello"));
-        assertEquals("sender: hi\n", string2);
+        //assertEquals("sender: hi, 2020-12-07T05:55:32.668Z\n", string2);
         assertEquals("You have no unread messages", string3);
         mm.sendMessage("sender2", "bye", "recipient", "recipient2");
         String string4 = mm.unreadInboxToString("recipient");
@@ -192,14 +192,14 @@ public class MessageManagerTest {
         sqlMap = new SQLMap<>(config, MessageData.class);
         MessageManager mm = new MessageManager(sqlMap);
         Message message = new Message("sender", new String[]{"recipient"}, "hello");
-        mm.sendMessage("sender", "hello", "recipient");
-        mm.sendMessage("sender", "hi", "recipient","recipient2");
+        MessageData md = mm.sendMessage("sender", "hello", "recipient");
+        MessageData md2 = mm.sendMessage("sender", "hi", "recipient","recipient2");
         MessageMover messageMover = new MessageMover(mm, "recipient");
-        messageMover.moveToArchived(message);
+        messageMover.moveToArchived("sender", "hello", md.getTimeSent().toString());
         String string = mm.archivedMessagesToString("recipient");
-        //assertEquals("sender: hello\n", string);
+        //assertEquals("sender: hello, "+md.getTimeSent().toString()+"\n", string);
         String string2 = mm.archivedMessagesToString("recipient2");
-        //assertEquals("You have no archived messages", string2);
+        assertEquals("You have no archived messages", string2);
         Message message2 = new Message("sender2", new String[]{"recipient"}, "hello");
         mm.sendMessage("sender2", "hello", "recipient", "recipient2");
         //messageMover.moveToArchived(message2);

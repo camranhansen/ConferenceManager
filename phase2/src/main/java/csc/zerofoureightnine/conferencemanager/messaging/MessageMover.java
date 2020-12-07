@@ -32,9 +32,11 @@ public class MessageMover {
     /**
      * Check if the message is in user's read inbox, if so, move the given message from user's read inbox to unread
      * inbox.
-     * @param message Message object
+     * @param from username of sender
+     * @param content message content
+     * @param timeSent sent time of the message
      */
-    public void moveReadToUnread(Message message){
+    public void moveReadToUnread(String from, String content, String timeSent){
 //        String from = message.getSender();
 //        List<Message> messages = new ArrayList<>();
 //        for(Message m: readInbox.get(from)){
@@ -52,15 +54,15 @@ public class MessageMover {
 //            List<Message> m = unreadInbox.get(from);
 //            m.add(message);
 //        }
-        String sender = message.getSender();
-        String content = message.getContent();
-        String[] recipients = message.getRecipients();
-        Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
+//        String sender = message.getSender();
+//        String content = message.getContent();
+//        String[] recipients = message.getRecipients();
+//        Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
 
         this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         for (MessageData m: md){
-            if(sender.equals(m.getSender())&&content.equals(m.getContent())&&setOfRecipients.equals(m.getRecipients())){
+            if(from.equals(m.getSender())&&content.equals(m.getContent())&&timeSent.equals(m.getTimeSent().toString())){
                 m.removeFromRead(username);
             }
         }
@@ -69,11 +71,12 @@ public class MessageMover {
 
 
     /**
-     * Check if the message is in user's unread inbox, if so, move the given message from user's unread inbox to read
-     * inbox.
-     * @param message Message object
+     * Check if the message is in user's unread inbox, if so, move the given message from user's unread inbox to read.
+     * @param from username of sender
+     * @param content message content
+     * @param timeSent sent time of the message
      */
-    public void moveUnreadToRead(Message message){
+    public void moveUnreadToRead(String from, String content, String timeSent){
 //        String from = message.getSender();
 //        List<Message> messages1 = new ArrayList<>();
 //        for(Message m: unreadInbox.get(from)){
@@ -93,15 +96,13 @@ public class MessageMover {
 //            readInbox.get(from).add(message);
 //        }
 //    }
-        String sender = message.getSender();
-        String content = message.getContent();
-        String[] recipients = message.getRecipients();
-
-
+//        String sender = message.getSender();
+//        String content = message.getContent();
+//        String[] recipients = message.getRecipients();
         this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         for (MessageData m: md){
-            if(sender.equals(m.getSender())&&content.equals(m.getContent())&& this.compareRecipients(recipients, m.getRecipients())){
+            if(from.equals(m.getSender())&&content.equals(m.getContent())&&timeSent.equals(m.getTimeSent().toString())){
                 if(!m.getRead().contains(this.username)){
                     m.addToRead(username);
                 }
@@ -129,9 +130,11 @@ public class MessageMover {
 
     /**
      * Check if this message is in user's unread inbox, if not, add the given message to this user's archived inbox.
-     * @param message Message object
+     * @param from username of the sender
+     * @param content message content
+     * @param timeSent sent time of the message
      */
-    public void moveToArchived(Message message) {
+    public void moveToArchived(String from, String content, String timeSent) {
 //        String from = message.getSender();
 //        if (unreadInbox.containsKey(from)) {
 //            if (unreadInbox.get(from).contains(message)) {
@@ -142,16 +145,16 @@ public class MessageMover {
 //            archivedInbox.add(message);
 //        }
 //    }
-        String sender = message.getSender();
-        String content = message.getContent();
-        String[] recipients = message.getRecipients();
-        Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
+//        String sender = message.getSender();
+//        String content = message.getContent();
+//        String[] recipients = message.getRecipients();
+//        Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
 
         this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         for (MessageData m : md) {
-            if (sender.equals(m.getSender()) && content.equals(m.getContent()) && setOfRecipients.equals
-                    (m.getRecipients())) {
+            if (from.equals(m.getSender()) && content.equals(m.getContent()) && timeSent.equals
+                    (m.getTimeSent().toString())) {
                 if (!m.getArchived().contains(this.username)) {
                     m.addToArchived(username);
                 }
@@ -161,24 +164,25 @@ public class MessageMover {
     }
 
 
-
     /**
-     * Remove the given message from user's archived inbox
-     * @param message Message object
+     * Remove the given message from user's archived inbox.
+     * @param from username of the sender
+     * @param content message content
+     * @param timeSent sent time of the message
      */
-    public void removeFromArchived(Message message){
+    public void removeFromArchived(String from, String content, String timeSent){
 //        archivedInbox.remove(message);
 //    }
-        String sender = message.getSender();
-        String content = message.getContent();
-        String[] recipients = message.getRecipients();
-        Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
+//        String sender = message.getSender();
+//        String content = message.getContent();
+//        String[] recipients = message.getRecipients();
+//        Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
 
         this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         for (MessageData m : md) {
-            if (sender.equals(m.getSender()) && content.equals(m.getContent()) && setOfRecipients.equals
-                    (m.getRecipients())) {
+            if (from.equals(m.getSender()) && content.equals(m.getContent()) && timeSent.equals
+                    (m.getTimeSent().toString())) {
                 m.removeFromArchived(username);
             }
         }
@@ -188,10 +192,11 @@ public class MessageMover {
 
     /**
      * Delete the given message from user's inbox.
-     * @param from username of the sender of the message
-     * @param message Message object
+     * @param from username of the sender
+     * @param content message content
+     * @param timeSent sent time of the message
      */
-    public void deleteOneMessage(String from, Message message){
+    public void deleteOneMessage(String from, String content, String timeSent){
 //        if (unreadInbox.containsKey((from))){
 //            unreadInbox.get(from).remove(message);
 //        }
@@ -203,16 +208,16 @@ public class MessageMover {
 //        }
 //        archivedInbox.remove(message);
 //    }
-        String sender = message.getSender();
-        String content = message.getContent();
-        String[] recipients = message.getRecipients();
-        Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
+//        String sender = message.getSender();
+//        String content = message.getContent();
+//        String[] recipients = message.getRecipients();
+//        Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
 
         this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         for (MessageData m: md){
-            if (sender.equals(m.getSender()) && content.equals(m.getContent()) && setOfRecipients.equals
-                    (m.getRecipients())) {
+            if (from.equals(m.getSender()) && content.equals(m.getContent()) && timeSent.equals
+                    (m.getTimeSent().toString())) {
                 m.getRecipients().remove(username);
                 if(m.getRecipients().isEmpty()){
                     messageData.remove(m.getId());

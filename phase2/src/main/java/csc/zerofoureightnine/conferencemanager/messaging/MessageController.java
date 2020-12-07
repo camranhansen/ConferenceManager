@@ -251,14 +251,24 @@ public class MessageController implements SubController {
         messageMover.deleteConversation(from);
     }
 
-    public void moveToArchived(String username, Message message) {
+    public void moveToArchived(String username, String from, String content, String timeSent) {
         MessageMover messageMover = new MessageMover(messageManager, username);
-        messageMover.moveToArchived(message);
+        messageMover.moveToArchived(from, content, timeSent);
     }
 
-    public void moveToUnread(String username, Message message) {
+    public void removeFromArchived(String username, String from, String content, String timeSent){
         MessageMover messageMover = new MessageMover(messageManager, username);
-        messageMover.moveReadToUnread(message);
+        messageMover.removeFromArchived(from, content, timeSent);
+    }
+
+    public void moveToUnread(String username, String from, String content, String timeSent) {
+        MessageMover messageMover = new MessageMover(messageManager, username);
+        messageMover.moveReadToUnread(from, content, timeSent);
+    }
+
+    public void removeFromUnread(String username, String from, String content, String timeSent){
+        MessageMover messageMover = new MessageMover(messageManager, username);
+        messageMover.moveUnreadToRead(from, content, timeSent);
     }
 
     /**
