@@ -1,10 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 
-import csc.zerofoureightnine.conferencemanager.events.EventController;
 import csc.zerofoureightnine.conferencemanager.input.InputStrategy;
-import csc.zerofoureightnine.conferencemanager.input.validators.MessageContentValidator;
-import csc.zerofoureightnine.conferencemanager.messaging.MessageController;
-import csc.zerofoureightnine.conferencemanager.users.UserController;
 import csc.zerofoureightnine.conferencemanager.users.permission.Category;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
