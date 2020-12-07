@@ -1,8 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
-import csc.zerofoureightnine.conferencemanager.events.EventType;
-import csc.zerofoureightnine.conferencemanager.gateway.DummyPersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLConfiguration;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
