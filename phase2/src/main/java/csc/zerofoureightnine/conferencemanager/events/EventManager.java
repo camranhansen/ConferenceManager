@@ -1,10 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.events;
 
-import java.time.Instant;
-import java.util.*;
-
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
 
 import java.time.Instant;
@@ -33,7 +29,7 @@ public class EventManager {
      * @return A list of all csc.zerofoureightnine.conferencemanager.events' IDs.
      */
     public List<String> getAllEventIds(){
-        ArrayList<String> allIDS = new ArrayList<>(this.events.keySet());
+        List<String> allIDS = new ArrayList<>(this.events.keySet());
         return allIDS;
     }
 
@@ -54,7 +50,7 @@ public class EventManager {
         return aList;
     }
 
-    public EventData ConvertEventToEventData(Event newEvent){
+    public EventData convertEventToEventData(Event newEvent){
         EventData ed = new EventData();
         ed.setType(newEvent.getType());
         ed.setEventName(newEvent.getEventName());
@@ -65,9 +61,12 @@ public class EventManager {
         ed.setId(newEvent.getId());
         return ed;
     }
+
     public void createEvent(List<String> speakerName, Instant eventTime, String eventName, String room, int capacity){
         Event newEvent = new Event(speakerName, eventTime, eventName, room, capacity, getEventTypeForCapacity(capacity));
         this.events.put(newEvent.getId(), newEvent);
+        EventData e = convertEventToEventData(newEvent);
+        this.pMap.put(newEvent.getId(), e);
     }
 
     /**
@@ -83,7 +82,7 @@ public class EventManager {
     public void createEvent(List<String> speakerName, Instant eventTime, String eventName, String room, int capacity, EventType type){
         Event newEvent = new Event(speakerName, eventTime, eventName, room, capacity, type);
         this.events.put(newEvent.getId(), newEvent);
-        EventData ed = this.ConvertEventToEventData(newEvent);
+        EventData ed = this.convertEventToEventData(newEvent);
         this.pMap.save(ed.getId(), ed);
     }
 
@@ -101,7 +100,7 @@ public class EventManager {
     private void createEditedEvent(List<String> speakerName, Instant eventTime, String eventName, List<String> participants, String room, int capacity, EventType type){
         Event newEvent = new Event(speakerName, participants,  eventTime, eventName, room, capacity, type);
         this.events.put(newEvent.getId(), newEvent);
-        EventData ed = this.ConvertEventToEventData(newEvent);
+        EventData ed = this.convertEventToEventData(newEvent);
         ed.addParticipants(newEvent.getParticipants());
         this.pMap.save(ed.getId(), ed);
     }
@@ -294,7 +293,6 @@ public class EventManager {
         Event value = this.events.get(id);
         createEditedEvent(value.getSpeakerName(), value.getEventTime(), value.getEventName(), value.getParticipants(),
                 newRoom, value.getCapacity(), value.getType());
-        deleteEvent(id);
 
         EventData ed = this.pMap.get(id);
         ed.setRoom(newRoom);
@@ -324,7 +322,6 @@ public class EventManager {
         Event value = this.events.get(id);
         createEditedEvent(value.getSpeakerName(), newTime, value.getEventName(), value.getParticipants(),
                 value.getRoom(), value.getCapacity(), value.getType());
-        deleteEvent(id);
 
         EventData ed = this.pMap.get(id);
         ed.setTime(newTime);
