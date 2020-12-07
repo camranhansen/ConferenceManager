@@ -96,6 +96,7 @@ public class DummyPersistentMap<K extends Serializable, V extends Identifiable<K
             V v = vals.next();
             try {
                 Field selected = v.getClass().getDeclaredField(field);
+                selected.setAccessible(true);
                 Collection fieldVal = (Collection) selected.get(v);
                 if (fieldVal.contains(value)) {
                     res.add(v);
@@ -116,6 +117,7 @@ public class DummyPersistentMap<K extends Serializable, V extends Identifiable<K
             V v = vals.next();
             try {
                 Field selected = v.getClass().getDeclaredField(field);
+                selected.setAccessible(true);
                 Object fieldVal = selected.get(v);
                 if (fieldVal.equals(value)) {
                     res.add(v);
@@ -136,6 +138,7 @@ public class DummyPersistentMap<K extends Serializable, V extends Identifiable<K
             V v = vals.next();
             try {
                 Field selected = v.getClass().getDeclaredField(field);
+                selected.setAccessible(true);
                 String fieldVal = selected.get(v).toString();
                 if (fieldVal.contains(search)) {
                     res.add(v);
