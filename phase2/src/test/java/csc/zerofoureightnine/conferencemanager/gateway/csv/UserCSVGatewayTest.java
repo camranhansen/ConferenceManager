@@ -22,7 +22,7 @@ public class UserCSVGatewayTest {
         Field path = ug.getClass().getSuperclass().getDeclaredField("filePath");
         path.setAccessible(true);
         path.set(ug, "testfiles/user_data.csv");
-        UserManager um = new UserManagerTest().createUserManager();
+        UserManager um = new UserManager(new UserManagerTest().createUserManager());
         um.createUser("newTester", "test123", Template.ORGANIZER.getPermissions());
         ug.saveAllUsers(um);
     }
