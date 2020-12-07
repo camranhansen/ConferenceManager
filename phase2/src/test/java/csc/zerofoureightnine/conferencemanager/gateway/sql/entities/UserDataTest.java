@@ -1,10 +1,10 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 
-import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
-import static csc.zerofoureightnine.conferencemanager.users.permission.Permission.MESSAGE_ALL_USERS;
-import static org.junit.Assert.assertEquals;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 public class UserDataTest {
     @Test

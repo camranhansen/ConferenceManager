@@ -1,7 +1,5 @@
 package csc.zerofoureightnine.conferencemanager.options;
 
-import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
-
 import java.util.ArrayList;
 import java.util.List;
 

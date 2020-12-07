@@ -1,17 +1,19 @@
 package csc.zerofoureightnine.conferencemanager.users;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
 import csc.zerofoureightnine.conferencemanager.gateway.DummyPersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class PermissionManagerTest {
 

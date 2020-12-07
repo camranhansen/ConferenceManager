@@ -1,7 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
-import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequest;
 
 import java.util.ArrayList;
 import java.util.List;

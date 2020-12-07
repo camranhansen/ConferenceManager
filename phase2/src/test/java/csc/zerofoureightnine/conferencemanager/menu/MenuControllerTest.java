@@ -1,22 +1,5 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 
-import csc.zerofoureightnine.conferencemanager.events.EventController;
-import csc.zerofoureightnine.conferencemanager.events.EventManager;
-import csc.zerofoureightnine.conferencemanager.messaging.MessageController;
-import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
-import csc.zerofoureightnine.conferencemanager.users.*;
-import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
-import csc.zerofoureightnine.conferencemanager.users.permission.Template;
-import org.junit.Test;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import static org.junit.Assert.*;
-
 public class MenuControllerTest {
 
 //    @Test

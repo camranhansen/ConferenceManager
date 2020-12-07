@@ -2,10 +2,8 @@ package csc.zerofoureightnine.conferencemanager.users.permission;
 
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
-import csc.zerofoureightnine.conferencemanager.users.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class PermissionManager {

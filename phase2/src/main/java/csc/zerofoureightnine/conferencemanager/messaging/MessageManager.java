@@ -1,7 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 
 import java.time.Instant;

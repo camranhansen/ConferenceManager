@@ -9,7 +9,6 @@ import java.util.List;
 public class StoredDataGetter {
     private EventManager eventManager;
     private MessageManager messageManager;
-    private UserManager userManager;
     private String name;
 
     public StoredDataGetter(EventManager em, MessageManager mm ,UserManager um, String username){

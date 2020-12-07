@@ -1,9 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 
-import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
-
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
