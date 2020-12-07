@@ -1,9 +1,5 @@
 package csc.zerofoureightnine.conferencemanager.input;
 
-import csc.zerofoureightnine.conferencemanager.options.Option;
-
-import java.util.List;
-
 public enum InputStrategy {
 
     //Menus
@@ -17,6 +13,7 @@ public enum InputStrategy {
     VIEWING_MESSAGE_OPTIONS("Enter corresponding number", true, "Invalid selection. Please try again"),
     SEND_ALL_OPTIONS("Enter corresponding number", true, "Invalid selection. Please try again"),
     MESSAGE_EVENT_OPTIONS("Enter corresponding number", true, "Invalid selection. Please try again"),
+    MOVE_MESSAGE("Enter corresponding number", true, "Invalid selection. Please try again"),
     //Options that return text...
         //Users related
     USER_TEMPLATE_OPTIONS("Enter corresponding number", true,
@@ -24,6 +21,10 @@ public enum InputStrategy {
 
 
     //Text-based
+    LONG_TEXT("Enter text", false,
+            "Text exceeds character limit. Please try again"),
+    SHORT_TEXT("Enter text", false,
+            "Text exceeds character limit. Please try again"),
         //Users related
     VALID_USERNAME("Enter an existing username", false, "Invalid username. Please try again"),
         //Events related

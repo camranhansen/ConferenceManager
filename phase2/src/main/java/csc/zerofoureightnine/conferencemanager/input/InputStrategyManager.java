@@ -11,13 +11,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class InputStrategyManager {
-    private MessageManager messageManager;
     private UserManager userManager;
     private EventManager eventManager;
     private EventDayValidator eventDayValidator;
     private EventHourValidator eventHourValidator;
     private CapacityValidator capacityValidator;
-    private MessageContentValidator messageContentValidator;
+    private LongTextValidator longTextValidator;
     private ExistingUserValidator existingUserValidator;
     private SpeakerValidator speakerValidator;
     private EventIdValidator eventIdValidator;
@@ -30,16 +29,18 @@ public class InputStrategyManager {
     private MessageAllOption messageAllOption;
     private PermissionMenuOption permissionMenuOption;
     private UserTemplateOption userTemplateOption;
+    private ShortTextValidator shortTextValidator;
+    private MessageMoveOption messageMoveOption;
 
     public InputStrategyManager(MessageManager mm, UserManager um, EventManager em,
                                 LinkedHashMap<InputStrategy, String> inputHistory, String username){
-        messageManager = mm;
         userManager = um;
         eventManager = em;
         eventDayValidator = new EventDayValidator();
         eventHourValidator = new EventHourValidator();
         capacityValidator = new CapacityValidator();
-        messageContentValidator = new MessageContentValidator();
+        longTextValidator = new LongTextValidator();
+        shortTextValidator = new ShortTextValidator();
         existingUserValidator = new ExistingUserValidator(userManager);
         speakerValidator = new SpeakerValidator(userManager, eventManager, inputHistory);
         eventIdValidator = new EventIdValidator(eventManager);
@@ -48,9 +49,12 @@ public class InputStrategyManager {
         eventViewOptions = new EventViewOptions();
         menuCategoryOption = new MenuCategoryOption();
         messageEventOption = new MessageEventOption();
+        messageViewOptions = new MessageViewOption();
         permissionMenuOption = new PermissionMenuOption(inputHistory, userManager, username);
         userTemplateOption = new UserTemplateOption();
         messageAllOption = new MessageAllOption();
+        messageMoveOption = new MessageMoveOption();
+
     }
 
     public boolean validate(InputStrategy inputStrategy, String userInput){
@@ -70,8 +74,10 @@ public class InputStrategyManager {
                 return eventHourValidator.validateInput(userInput);
             case EVENT_CAPACITY:
                 return capacityValidator.validateInput(userInput);
-            case MESSAGE_CONTENT:
-                return messageContentValidator.validateInput(userInput);
+            case LONG_TEXT:
+                return longTextValidator.validateInput(userInput);
+            case SHORT_TEXT:
+                return shortTextValidator.validateInput(userInput);
             case EVENT_SPEAKER_SINGLE:
                 return speakerValidator.validateInput(userInput);
             case VALID_EVENT_ID:
@@ -100,6 +106,8 @@ public class InputStrategyManager {
                 return validOptionSelection(messageViewOptions.generateOptions(), userInput);
             case MESSAGE_EVENT_OPTIONS:
                 return validOptionSelection(messageEventOption.generateOptions(), userInput);
+            case MOVE_MESSAGE:
+                return validOptionSelection(messageMoveOption.generateOptions(), userInput);
         }
         return false;
     }
@@ -122,6 +130,8 @@ public class InputStrategyManager {
                 return messageViewOptions.generateOptions();
             case MESSAGE_EVENT_OPTIONS:
                 return messageEventOption.generateOptions();
+            case MOVE_MESSAGE:
+                return messageMoveOption.generateOptions();
         }
         List<Option> noOptions = new ArrayList<>();
         noOptions.add(new Option("no options"));
