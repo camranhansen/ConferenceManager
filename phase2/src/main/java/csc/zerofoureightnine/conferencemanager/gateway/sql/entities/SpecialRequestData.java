@@ -33,6 +33,10 @@ public class SpecialRequestData implements Identifiable<UUID>{
         this.requestID = UUID.randomUUID();
     }
 
+    public SpecialRequestData(){
+        this.requestID = UUID.randomUUID();
+    }
+
     public UUID getId() {
         return requestID;
     }

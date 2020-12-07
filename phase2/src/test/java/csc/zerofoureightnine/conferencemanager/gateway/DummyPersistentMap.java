@@ -140,7 +140,7 @@ public class DummyPersistentMap<K extends Serializable, V extends Identifiable<K
                 Field selected = v.getClass().getDeclaredField(field);
                 selected.setAccessible(true);
                 String fieldVal = selected.get(v).toString();
-                if (fieldVal.contains(search)) {
+                if (fieldVal.matches(search.replace("*", ".*"))) {
                     res.add(v);
                 }
             } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {

@@ -1,5 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import org.junit.Test;
 
 import static csc.zerofoureightnine.conferencemanager.users.permission.Permission.MESSAGE_ALL_USERS;
@@ -23,8 +24,8 @@ public class UserDataTest {
     @Test
     public void testPermissionsData() {
         UserData userData = new UserData();
-        userData.getPermissions().add(MESSAGE_ALL_USERS);
-        assertEquals(MESSAGE_ALL_USERS, userData.getPermissions());
+        userData.getPermissions().add(Permission.MESSAGE_ALL_USERS);
+        assertEquals(Permission.MESSAGE_ALL_USERS, userData.getPermissions().get(0));
     }
 
 }
