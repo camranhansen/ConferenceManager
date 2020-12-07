@@ -1,22 +1,23 @@
 package csc.zerofoureightnine.conferencemanager.users.specialrequest;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
-import java.util.List;
+import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.SpecialRequestData;
+
+import java.util.*;
 
 public class SpecialRequestManager {
     /**
      * requestMap stores a hashmap where the keys are usernames and the corresponding value is a list of SpecialRequests.
      */
-    HashMap<String, List<SpecialRequest>> requestMap;
+//    HashMap<String, List<SpecialRequest>> requestMap;
+    PersistentMap<UUID, SpecialRequestData> requestDataMap;
 
     /**
-     * Instantiates the SpecialRequestManager
+     * Instantiates the SpecialRequestManager. Mostly for testing.
      * @param requestMap an empty or pre-constructed hashmap that relates a username to the appropriate entity.
      */
-    public SpecialRequestManager(HashMap<String, List<SpecialRequest>> requestMap) {
-        this.requestMap = requestMap;
+    public SpecialRequestManager(PersistentMap<UUID, SpecialRequestData> requestMap) {
+        this.requestDataMap = requestMap;
     }
 
     /**
@@ -24,7 +25,14 @@ public class SpecialRequestManager {
      * @return the List of usernames of the User objects who made SpecialRequest objects
      */
     public List<String> getRequestingUsers(){
-        return new ArrayList<>(requestMap.keySet());
+        List<String> usernames = new ArrayList<>();
+        for (SpecialRequestData request: this.requestDataMap.values()) {
+            String username = request.getRequestingUser();
+            if (!usernames.contains(username)){
+                usernames.add(username);
+            }
+        }
+        return usernames;
     }
 
     /**
@@ -34,31 +42,21 @@ public class SpecialRequestManager {
      */
     public List<UUID> getRequests(String username){
         List<UUID> lst = new ArrayList<>();
-        for (SpecialRequest s: this.requestMap.get(username)) {
-            lst.add(s.getRequestID());
+        for (SpecialRequestData requestData: this.getRequestDataAsList(username)) {
+            lst.add(requestData.getId());
         }
         return lst;
     }
 
     /**
-     * FOR TESTING: Returns a List of SpecialRequest objects, for a given username.
+     * For Testing! Returns a List of SpecialRequest objects, for a given username.
      * @param username the username of the User object whose SpecialRequests should be retrieved
      * @return the SpecialRequest objects corresponding to the username
      */
-    public List<SpecialRequest> getRequestsList(String username){
-        return this.requestMap.get(username);
+    public List<SpecialRequestData> getRequestDataAsList(String username){
+        return this.requestDataMap.loadForSame("requestingUser", username);
     }
 
-    /**
-     * Takes in a List of SpecialRequests to replace the current list of SpecialRequests a user has.
-     * If user exists in requestMap, replaces value to input specialRequests.
-     * Otherwise, creates new key and sets value to input specialRequests.
-     * @param username the username of the User object who's SpecialRequests should be set
-     * @param specialRequests a new list of SpecialRequests to set for this user
-     */
-    public void setRequests(String username, List<SpecialRequest> specialRequests){
-        this.requestMap.put(username, specialRequests);
-    }
 
     /**
      * Adds a new SpecialRequest object to the list corresponding to the requestingUser
@@ -68,37 +66,20 @@ public class SpecialRequestManager {
      * @param addressed flags whether the SpecialRequest has been taken care of.
      */
     public void addRequest(String requestingUser, String header, String description, boolean addressed){
-        SpecialRequest specialRequest = new SpecialRequest(requestingUser, header, description, addressed);
-        this.addRequest(requestingUser, specialRequest);
-    }
-
-    /**
-     * Adds a new SpecialRequest object to the list corresponding to the requestingUser.
-     * @param username the username of the User to tie the SpecialRequest to
-     * @param specialRequest the SpecialRequest object to add
-     */
-    public void addRequest(String username, SpecialRequest specialRequest){
-        List<SpecialRequest> lst = new ArrayList<>();
-        if (this.requestMap.containsKey(username)){
-            lst.addAll(this.requestMap.get(username));
-        }
-        lst.add(specialRequest);
-        this.setRequests(username, lst);
+        this.requestDataMap.beginInteraction();
+        SpecialRequestData sr = new SpecialRequestData(requestingUser, header, description, addressed);
+        this.requestDataMap.put(sr.getId(), sr);
+        this.requestDataMap.endInteraction();
     }
 
     /**
      * Takes in a single SpecialRequest to remove from the current list of SpecialRequests a user has.
      * Does nothing if no more items can be removed or if the username does not exist
-     * @param username the username of the User object who's SpecialRequest should be removed
+     * the username of the User object who's SpecialRequest should be removed
      * @param request the SpecialRequest to remove
      */
-    public void removeRequest(String username, SpecialRequest request){
-        List<SpecialRequest> lst = new ArrayList<>();
-        if (this.requestMap.containsKey(username)) {
-            lst.addAll(this.requestMap.get(username));
-        }
-        lst.remove(request);
-        this.setRequests(username, lst);
+    public void removeRequest(SpecialRequestData request){
+        this.removeRequest(request.getId());
     }
 
     /**
@@ -107,11 +88,9 @@ public class SpecialRequestManager {
      * @param requestID the username of the User object who's SpecialRequest should be removed
      */
     public void removeRequest(UUID requestID){
-        SpecialRequest request = getRequestFromID(requestID);
-        if (request != null){
-            this.removeRequest(request.getRequestingUser(), request);
-        }
-
+        this.requestDataMap.beginInteraction();
+        this.requestDataMap.remove(requestID);
+        this.requestDataMap.endInteraction();
     }
 
     /**
@@ -120,10 +99,9 @@ public class SpecialRequestManager {
      * @param requestID the username of the User object who's SpecialRequest should be addressed
      */
     public void addressRequest(UUID requestID){
-        SpecialRequest request = getRequestFromID(requestID);
-        if (request != null){
-            request.setAddressed(true);
-        }
+        this.requestDataMap.beginInteraction();
+        this.requestDataMap.get(requestID).setAddressed(true);
+        this.requestDataMap.endInteraction();
     }
 
     /**
@@ -131,13 +109,12 @@ public class SpecialRequestManager {
      * @return the List of UUIDs corresponding to pending SpecialRequests
      */
     public List<UUID> getPendingRequests(){
-        List<UUID> lst = new ArrayList<>();
-        for (List<SpecialRequest> requests: this.requestMap.values()) {
-            for (SpecialRequest r : requests) {
-                if (!r.isAddressed()) lst.add(r.getRequestID());
-            }
+        List<SpecialRequestData> data = this.requestDataMap.loadForSame("addressed", false);
+        List<UUID> ids = new ArrayList<>();
+        for (SpecialRequestData request: data) {
+            ids.add(request.getId());
         }
-        return lst;
+        return ids;
     }
 
     /**
@@ -145,13 +122,12 @@ public class SpecialRequestManager {
      * @return the List of UUIDs corresponding to addressed SpecialRequests
      */
     public List<UUID> getAddressedRequests(){
-        List<UUID> lst = new ArrayList<>();
-        for (List<SpecialRequest> requests: this.requestMap.values()) {
-            for (SpecialRequest r : requests) {
-                if (r.isAddressed()) lst.add(r.getRequestID());
-            }
+        List<SpecialRequestData> data = this.requestDataMap.loadForSame("addressed", true);
+        List<UUID> ids = new ArrayList<>();
+        for (SpecialRequestData request: data) {
+            ids.add(request.getId());
         }
-        return lst;
+        return ids;
     }
 
     /**
@@ -160,33 +136,32 @@ public class SpecialRequestManager {
      * @param requestID a UUID corresponding to a SpecialRequest
      * @return the required SpecialRequest, or if it does not exist, null
      */
-    public SpecialRequest getRequestFromID(UUID requestID) {
-        for (List<SpecialRequest> requests: this.requestMap.values()) {
-            for (SpecialRequest r : requests) {
-                if (r.getRequestID().equals(requestID)) return r;
-            }
-        }
-        return null;
+    public SpecialRequestData getRequestFromID(UUID requestID) {
+        return this.requestDataMap.get(requestID);
     }
 
     /**
      * Returns a List of strings where:
-     * index 0 = requestID of the SpecialRequest
-     * index 1 = username of the requesting User
-     * index 2 = header of the SpecialRequest (e.g. "Dietary", "Physical", etc.)
-     * index 3 = specific details of the SpecialRequest (e.g. "i am lactose intolerant", etc.)
+     * index 0 (id) = requestID of the SpecialRequest
+     * index 1 (requestingUser) = username of the requesting User
+     * index 2 (header) = header of the SpecialRequest (e.g. "Dietary", "Physical", etc.)
+     * index 3 (description) = specific details of the SpecialRequest (e.g. "i am lactose intolerant", etc.)
+     * index 4 (addressed) = the status of this SpecialRequest (i.e pending if false, addressed if true)
      * @param requestID the UUID of the SpecialRequest
-     * @return a List of Strings with the contents defined above
+     * @return a LinkedHashMap with Strings as keys and the corresponding String values
+     * with the contents defined above
      */
-    public List<String> getRequestDetails(UUID requestID){
-        List<String> details = new ArrayList<>();
-        SpecialRequest r = this.getRequestFromID(requestID);
-        details.add(r.getRequestID().toString());
-        details.add(r.getRequestingUser());
-        details.add(r.getHeader());
-        details.add(r.getDescription());
+    public LinkedHashMap<String, String> getRequestDetails(UUID requestID){
+        LinkedHashMap<String, String> details = new LinkedHashMap<>();
+        SpecialRequestData r = this.getRequestFromID(requestID);
+        details.put("id", r.getId().toString());
+        details.put("requestingUser", r.getRequestingUser());
+        details.put("header", r.getHeader());
+        details.put("description", r.getDescription());
+        details.put("addressed", String.valueOf(r.getAddressed()));
         return details;
     }
+
 
 
 }

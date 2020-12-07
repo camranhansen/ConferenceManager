@@ -105,7 +105,7 @@ public class DummyPersistentMap<K extends Serializable, V extends Identifiable<K
                 e.printStackTrace();
             }
         }
-        return null;
+        return res;
     }
 
     @Override
@@ -126,7 +126,7 @@ public class DummyPersistentMap<K extends Serializable, V extends Identifiable<K
                 e.printStackTrace();
             }
         }
-        return null;
+        return res;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.users;
 
+import csc.zerofoureightnine.conferencemanager.gateway.DummyPersistentMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.SpecialRequestData;
 import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequest;
 import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestManager;
 import org.junit.Test;
@@ -10,46 +12,37 @@ import static org.junit.Assert.*;
 
 public class SpecialRequestManagerTest {
 
-    private HashMap<String, List<SpecialRequest>> generateRequestMap(){
-        HashMap<String,List<SpecialRequest>> populator = new HashMap<>();
-        SpecialRequest request1 = new SpecialRequest("bob","Dietary","I can't eat water or air", false);
-        SpecialRequest request2 = new SpecialRequest("bob","Physical","My brazilian macaw, Pringles, must attend events with me", false);
-        SpecialRequest request3 = new SpecialRequest("tim","Dietary","I only eat orange foods", false);
-        SpecialRequest request4 = new SpecialRequest("linda","Physical","I can only sit at chairs 90 degrees or less", true);
+    private DummyPersistentMap<UUID, SpecialRequestData> generateRequestMap(){
+        DummyPersistentMap<UUID, SpecialRequestData> populator = new DummyPersistentMap<>();
 
-        List<SpecialRequest> bobrequests = new ArrayList<>();
-        bobrequests.add(request1);
-        bobrequests.add(request2);
+        SpecialRequestData request1 = new SpecialRequestData("bob","Dietary","I can't eat water or air", false);
+        SpecialRequestData request2 = new SpecialRequestData("bob","Physical","My brazilian macaw, Pringles, must attend events with me", false);
+        SpecialRequestData request3 = new SpecialRequestData("tim","Dietary","I only eat orange foods", false);
+        SpecialRequestData request4 = new SpecialRequestData("linda","Physical","I can only sit at chairs 90 degrees or less", true);
 
-        List<SpecialRequest> timrequests = new ArrayList<>();
-        timrequests.add(request3);
-
-        List<SpecialRequest> lindarequests = new ArrayList<>();
-        lindarequests.add(request4);
-
-        populator.put("bob",bobrequests);
-        populator.put("tim",timrequests);
-        populator.put("linda",lindarequests);
-
+        populator.put(request1.getId(), request1);
+        populator.put(request2.getId(), request2);
+        populator.put(request3.getId(), request3);
+        populator.put(request4.getId(), request4);
         return populator;
     }
 
     @Test
     public void getRequests() {
-        HashMap<String, List<SpecialRequest>> map = this.generateRequestMap();
+        DummyPersistentMap<UUID, SpecialRequestData> map = generateRequestMap();
         SpecialRequestManager srm = new SpecialRequestManager(map);
         //Populate bobList with the UUIDs of the SpecialRequests
         List<UUID> bobList = new ArrayList<>();
-        for (SpecialRequest s: map.get("bob")) {
-            bobList.add(s.getRequestID());
+        for (SpecialRequestData s: map.loadForSame("requestingUser", "bob")) {
+            bobList.add(s.getId());
         }
         //Proved equal since both are subsets of each other
         assertTrue(bobList.containsAll(srm.getRequests("bob")));
         assertTrue(srm.getRequests("bob").containsAll(bobList));
-        //Populate timList with single UUID of the SpecialRequest
+        //Populate timList with single UUID of the SpecialRequestData
         List<UUID> timList = new ArrayList<>();
-        for (SpecialRequest s: map.get("tim")) {
-            timList.add(s.getRequestID());
+        for (SpecialRequestData s: map.loadForSame("requestingUser", "tim")) {
+            timList.add(s.getId());
         }
         assertEquals(1, timList.size());
         //Proved equal since both are subsets of each other
@@ -61,31 +54,13 @@ public class SpecialRequestManagerTest {
     public void getRequestingUsers() {
         SpecialRequestManager srm = new SpecialRequestManager(this.generateRequestMap());
         List<String> lst = Arrays.asList("bob", "tim", "linda");
-        assertEquals(lst, srm.getRequestingUsers());
-    }
-
-    @Test
-    public void setRequests() {
-        HashMap<String, List<SpecialRequest>> map = this.generateRequestMap();
-        SpecialRequestManager srm = new SpecialRequestManager(map);
-        //Set for a new user
-        assertFalse(srm.getRequestingUsers().contains("toby"));
-        SpecialRequest r1 = new SpecialRequest("toby", "Misc.", "I am scared of clowns", false);
-        List<SpecialRequest> l1 = new ArrayList<>();
-        l1.add(r1);
-        srm.setRequests("toby", l1);
-        assertEquals(l1.get(0).getRequestID(), srm.getRequests("toby").get(0));
-        //Set for existing user. Use bob's SpecialRequests for toby
-        assertTrue(srm.getRequestingUsers().contains("toby"));
-        List<SpecialRequest> l2 = srm.getRequestsList("bob");
-        srm.setRequests("toby", l2);
-        assertNotEquals(l1.get(0).getRequestID(), srm.getRequests("toby").get(0));
-        assertEquals(srm.getRequests("bob"), srm.getRequests("toby"));
+        assertTrue(lst.containsAll(srm.getRequestingUsers()));
+        assertTrue(srm.getRequestingUsers().containsAll(lst));
     }
 
     @Test
     public void addRequest() {
-        HashMap<String, List<SpecialRequest>> map = this.generateRequestMap();
+        DummyPersistentMap<UUID, SpecialRequestData> map = generateRequestMap();
         SpecialRequestManager srm = new SpecialRequestManager(map);
         //Set for a new user
         assertFalse(srm.getRequestingUsers().contains("tammy"));
@@ -98,18 +73,19 @@ public class SpecialRequestManagerTest {
 
     @Test
     public void removeRequest() {
-        HashMap<String, List<SpecialRequest>> map = this.generateRequestMap();
+        DummyPersistentMap<UUID, SpecialRequestData> map = generateRequestMap();
         SpecialRequestManager srm = new SpecialRequestManager(map);
         //Ensure the correct initial SpecialRequests are in place
-        assertEquals(2, srm.getRequests("bob").size());
+        List<UUID> boblist = srm.getRequests("bob");
+        assertEquals(2, boblist.size());
         //Remove all SpecialRequests
-        UUID r1 = map.get("bob").get(0).getRequestID();
-        UUID r2 = map.get("bob").get(1).getRequestID();
+        UUID r1 = boblist.get(0);
+        UUID r2 = boblist.get(1);
         srm.removeRequest(r1);
         assertEquals(1, srm.getRequests("bob").size());
         srm.removeRequest(r2);
         assertEquals(0, srm.getRequests("bob").size());
-        //Remove non-existent SpecialRequest. The number of items in each of the
+        //Remove non-existent SpecialRequests. The number of items in each of the
         //SpecialRequest lists should remain the same since no changes is performed.
         UUID r3 = UUID.randomUUID();
         srm.removeRequest(r3);
@@ -120,25 +96,25 @@ public class SpecialRequestManagerTest {
 
     @Test
     public void addressRequest() {
-        HashMap<String, List<SpecialRequest>> map = this.generateRequestMap();
+        DummyPersistentMap<UUID, SpecialRequestData> map = generateRequestMap();
         SpecialRequestManager srm = new SpecialRequestManager(map);
         //Check current status
-        SpecialRequest r1 = srm.getRequestsList("tim").get(0);
-        assertFalse(r1.isAddressed());
+        SpecialRequestData r1 = srm.getRequestDataAsList("tim").get(0);
+        assertFalse(r1.getAddressed());
         //Change to true
-        srm.addressRequest(r1.getRequestID());
-        assertTrue(r1.isAddressed());
+        srm.addressRequest(r1.getId());
+        assertTrue(r1.getAddressed());
     }
 
 
     @Test
     public void getPendingRequests() {
-        HashMap<String, List<SpecialRequest>> map = this.generateRequestMap();
+        DummyPersistentMap<UUID, SpecialRequestData> map = generateRequestMap();
         SpecialRequestManager srm = new SpecialRequestManager(map);
         //Ensures all UUIDs correspond to Pending Requests
         for (UUID id: srm.getPendingRequests()) {
-            SpecialRequest sr = srm.getRequestFromID(id);
-            assertFalse(sr.isAddressed());
+            SpecialRequestData sr = srm.getRequestFromID(id);
+            assertFalse(sr.getAddressed());
         }
         assertEquals(3, srm.getPendingRequests().size());
         //Addressing a Request reduces size of list of Pending Requests
@@ -148,12 +124,12 @@ public class SpecialRequestManagerTest {
 
     @Test
     public void getAddressedRequests() {
-        HashMap<String, List<SpecialRequest>> map = this.generateRequestMap();
+        DummyPersistentMap<UUID, SpecialRequestData> map = generateRequestMap();
         SpecialRequestManager srm = new SpecialRequestManager(map);
         //Ensures all UUIDs correspond to Addressed Requests
         for (UUID id: srm.getAddressedRequests()) {
-            SpecialRequest sr = srm.getRequestFromID(id);
-            assertTrue(sr.isAddressed());
+            SpecialRequestData sr = srm.getRequestFromID(id);
+            assertTrue(sr.getAddressed());
         }
         assertEquals(1, srm.getAddressedRequests().size());
         //Addressing a Request increases size of list of Addressed Requests
@@ -163,15 +139,16 @@ public class SpecialRequestManagerTest {
 
     @Test
     public void getRequestDetails(){
-        HashMap<String, List<SpecialRequest>> map = this.generateRequestMap();
+        DummyPersistentMap<UUID, SpecialRequestData> map = generateRequestMap();
         SpecialRequestManager srm = new SpecialRequestManager(map);
-        SpecialRequest timRequest = map.get("tim").get(0);
-        List<String> test= new ArrayList<>();
-        test.add(timRequest.getRequestID().toString());
-        test.add(timRequest.getRequestingUser());
-        test.add(timRequest.getHeader());
-        test.add(timRequest.getDescription());
-        assertEquals(test, srm.getRequestDetails(srm.getRequests("tim").get(0)));
+        List<UUID> timList = srm.getRequests("tim");
+        UUID requestID = timList.get(0);
+        LinkedHashMap<String, String> timData = srm.getRequestDetails(requestID);
+        assertEquals(requestID.toString(), timData.get("id"));
+        assertEquals("tim", timData.get("requestingUser"));
+        assertEquals("Dietary", timData.get("header"));
+        assertEquals("I only eat orange foods", timData.get("description"));
+        assertEquals("false", timData.get("addressed"));
     }
 
 }

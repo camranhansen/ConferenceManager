@@ -1,6 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.users.specialrequest;
 import java.util.UUID;
 
+@Deprecated
 public class SpecialRequest {
     private String requestingUser;
     private UUID requestID;
