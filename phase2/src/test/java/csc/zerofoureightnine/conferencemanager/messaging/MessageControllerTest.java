@@ -288,16 +288,18 @@ public class MessageControllerTest {
     public void testSendMessageToAllAtt(){
         config = new SQLConfiguration("testfiles/db/data");
         mMap = new SQLMap<>(config, MessageData.class);
+        PersistentMap<String, UserData> uMap = new DummyPersistentMap<>();
+
         MessageManager mm = new MessageManager(mMap);
         EventManager em = new EventManager(pMap);
-        UserManager um = new UserManager(new DummyPersistentMap<>());
-        PermissionManager pm = new PermissionManager(new DummyPersistentMap<>());
+        UserManager um = new UserManager(uMap);
+        PermissionManager pm = new PermissionManager(uMap);
         MessageController mc = new MessageController(mm, um, pm, em);
         um.createUser("user", "123", Template.ORGANIZER.getPermissions());
         um.createUser("user2", "123", Template.ATTENDEE.getPermissions());
         um.createUser("user3", "123", Template.ATTENDEE.getPermissions());
         mc.orgSendToAllAtt("user", "hello");
-        assertEquals(mm.retrieveUserInboxFor("user2", "user").get(0).getContent(), "hello");
+        assertEquals("hello", mm.retrieveUserInboxFor("user2", "user").get(0).getContent());
         assertEquals("[user2, user3]",
                 Arrays.deepToString(mm.retrieveUserInboxFor("user3", "user").get(0).getRecipients()));
     }

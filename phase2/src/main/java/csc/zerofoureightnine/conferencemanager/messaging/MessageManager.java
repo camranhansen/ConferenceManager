@@ -259,25 +259,6 @@ public class MessageManager {
      */
     // only retrieveUserInboxFor move read message to unread
     public List<Message> retrieveUserInboxFor(String user, String from) {
-//        List<Message> messages = retrieveUserInbox(user).get(from);
-//        HashMap<String, List<Message>> readInbox = getReadInbox(user);
-//        HashMap<String, List<Message>> unreadInbox = getUnreadInbox(user);
-//        if (readInbox.containsKey(from)){
-//            for(Message m: messages) {
-//                if(!readInbox.get(from).contains(m)){
-//                    readInbox.get(from).add(m);
-//                }
-//            }
-//        }else{
-//            readInbox.put(from, messages);
-//        }
-//        if(unreadInbox.containsKey(from)){
-//            for (Message m: messages){
-//                unreadInbox.get(from).remove(m);
-//            }
-//        }
-//        return retrieveUserInbox(user).get(from);
-//    }
         List<Message> messages = new ArrayList<>();
         this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", user);
