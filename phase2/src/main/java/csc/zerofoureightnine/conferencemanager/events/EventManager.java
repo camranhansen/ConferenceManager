@@ -52,6 +52,7 @@ public class EventManager {
 
     public EventData convertEventToEventData(Event newEvent){
         EventData ed = new EventData();
+        ed.addSpeakers(newEvent.getSpeakerName());
         ed.setType(newEvent.getType());
         ed.setEventName(newEvent.getEventName());
         //ed.addParticipants(newEvent.getParticipants());
@@ -66,7 +67,9 @@ public class EventManager {
         Event newEvent = new Event(speakerName, eventTime, eventName, room, capacity, getEventTypeForCapacity(capacity));
         this.events.put(newEvent.getId(), newEvent);
         EventData e = convertEventToEventData(newEvent);
+        this.pMap.beginInteraction();
         this.pMap.put(newEvent.getId(), e);
+        this.pMap.endInteraction();
     }
 
     /**
@@ -83,7 +86,9 @@ public class EventManager {
         Event newEvent = new Event(speakerName, eventTime, eventName, room, capacity, type);
         this.events.put(newEvent.getId(), newEvent);
         EventData ed = this.convertEventToEventData(newEvent);
+        this.pMap.beginInteraction();
         this.pMap.save(ed.getId(), ed);
+        this.pMap.endInteraction();
     }
 
 
@@ -97,12 +102,14 @@ public class EventManager {
      * @param room Room which the event is being held in.
      * @param capacity Maximum capacity of the event.
      */
-    private void createEditedEvent(List<String> speakerName, Instant eventTime, String eventName, List<String> participants, String room, int capacity, EventType type){
+    public void createEditedEvent(List<String> speakerName, Instant eventTime, String eventName, List<String> participants, String room, int capacity, EventType type){
         Event newEvent = new Event(speakerName, participants,  eventTime, eventName, room, capacity, type);
         this.events.put(newEvent.getId(), newEvent);
         EventData ed = this.convertEventToEventData(newEvent);
         ed.addParticipants(newEvent.getParticipants());
+        this.pMap.beginInteraction();
         this.pMap.save(ed.getId(), ed);
+        this.pMap.endInteraction();
     }
 
 
@@ -112,7 +119,9 @@ public class EventManager {
      */
     public void deleteEvent(String eventId){
         this.events.remove(eventId);
+        this.pMap.beginInteraction();
         this.pMap.remove(eventId);
+        this.pMap.endInteraction();
     }
 
     /**
@@ -124,7 +133,9 @@ public class EventManager {
     public void enrollUser(String eventID, String userName){
 
         this.events.get(eventID).addParticipant(userName);
+        this.pMap.beginInteraction();
         this.pMap.get(eventID).addParticipants(userName);
+        this.pMap.endInteraction();
     }
 
     /**
@@ -135,7 +146,9 @@ public class EventManager {
      */
     public void dropUser(String eventID, String userName){
         this.events.get(eventID).removeParticipant(userName);
+        this.pMap.beginInteraction();
         this.pMap.get(eventID).removeParticipant(userName);
+        this.pMap.endInteraction();
     }
 
     /**
@@ -267,9 +280,11 @@ public class EventManager {
         Event value = this.events.get(id);
         createEditedEvent(newSpeaker, value.getEventTime(), value.getEventName(), value.getParticipants(),
                 value.getRoom(), value.getCapacity(), value.getType());
+        this.pMap.beginInteraction();
         EventData ed = this.pMap.get(id);
         ed.getSpeakers().clear();
         ed.addSpeakers(newSpeaker);
+        this.pMap.endInteraction();
     }
 
 
@@ -282,7 +297,10 @@ public class EventManager {
         Event value = this.events.get(id);
         createEditedEvent(value.getSpeakerName(), value.getEventTime(), newEventName, value.getParticipants(),
                 value.getRoom(), value.getCapacity(), value.getType());
+
+        this.pMap.beginInteraction();
         this.pMap.get(id).setEventName(newEventName);
+        this.pMap.endInteraction();
     }
     /**
      * Changes the room of an event to a new one.
@@ -293,10 +311,11 @@ public class EventManager {
         Event value = this.events.get(id);
         createEditedEvent(value.getSpeakerName(), value.getEventTime(), value.getEventName(), value.getParticipants(),
                 newRoom, value.getCapacity(), value.getType());
-
+        this.pMap.beginInteraction();
         EventData ed = this.pMap.get(id);
         ed.setRoom(newRoom);
         ed.setId(newRoom+ed.getTime().toString());
+        this.pMap.endInteraction();
     }
 
     /**
@@ -308,10 +327,10 @@ public class EventManager {
         Event value = this.events.get(id);
         createEditedEvent(value.getSpeakerName(), value.getEventTime(), value.getEventName(), value.getParticipants(),
                 value.getRoom(), newCapacity, value.getType());
-
+        this.pMap.beginInteraction();
         EventData ed = this.pMap.get(id);
         ed.setCapacity(newCapacity);
-
+        this.pMap.endInteraction();
     }
     /**
      * Changes the starting time of an event to a new one.
@@ -323,9 +342,11 @@ public class EventManager {
         createEditedEvent(value.getSpeakerName(), newTime, value.getEventName(), value.getParticipants(),
                 value.getRoom(), value.getCapacity(), value.getType());
 
+        this.pMap.beginInteraction();
         EventData ed = this.pMap.get(id);
         ed.setTime(newTime);
         ed.setId(ed.getRoom()+newTime.toString());
+        this.pMap.endInteraction();
     }
 
 
@@ -338,6 +359,7 @@ public class EventManager {
      * @return An arraylist of String[]. Each String[] contains information of one event stored in csc.zerofoureightnine.conferencemanager.events hashmap in
      * EventManager.
      */
+    @Deprecated
     public List<String[]> getAllEventData(){
         ArrayList<String[]> eventList = new ArrayList<>();
         for (String id: this.events.keySet()) {
@@ -482,7 +504,7 @@ public class EventManager {
         return Instant.parse("2020-12-" + dayOfMonth.trim() + "T" + hour.trim() + ":00:00.00Z");
     }
 
-    private EventType getEventTypeForCapacity(int capacity){
+    public EventType getEventTypeForCapacity(int capacity){
         switch (capacity){
             case 0:
                 return EventType.PARTY;
@@ -491,6 +513,30 @@ public class EventManager {
             default:
                 return EventType.MULTI;
         }
+    }
+
+    /**
+     * Returns the record of event data from the database.
+     * @param id Event id
+     * @return A record of event data.
+     */
+    public EventData getDataById(String id){
+        return this.pMap.get(id);
+    }
+
+    /**
+     * Returns the number of records in the event database.
+     * @return The size of the database.
+     */
+    public int size(){
+        return this.pMap.size();
+    }
+    
+    /**
+     * Clear all the records in the database.
+     */
+    public void clear(){
+        this.pMap.clear();
     }
 
 
