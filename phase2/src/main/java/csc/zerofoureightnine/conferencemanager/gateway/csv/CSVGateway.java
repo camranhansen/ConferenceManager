@@ -142,15 +142,11 @@ public abstract class CSVGateway {
                     bufferedWriter.write("\n");
                 }
             }
-        } catch (IOException e) {
-            throw e;
         } finally {
             try {
                 if (bufferedWriter != null) {
                     bufferedWriter.close();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }
@@ -191,15 +187,11 @@ public abstract class CSVGateway {
 
                 buffer.add(cells);
             }
-        } catch (IOException e) {
-            throw e;
         } finally {
             try {
                 if (bufferedReader != null) {
                     bufferedReader.close();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }

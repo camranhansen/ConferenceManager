@@ -74,7 +74,7 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
     @Override
     public V remove(Object key) {
         beginInteraction();
-        V val = (V) session.get(valClass, (Serializable) key);
+        V val = session.get(valClass, (Serializable) key);
         session.delete(val);
         endInteraction();
         if (sizeCache != -1) sizeCache --;

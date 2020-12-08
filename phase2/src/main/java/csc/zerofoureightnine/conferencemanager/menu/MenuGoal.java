@@ -10,4 +10,4 @@ public enum MenuGoal {
     BACK,
     MAIN,
     LOGOUT,
-};
+}

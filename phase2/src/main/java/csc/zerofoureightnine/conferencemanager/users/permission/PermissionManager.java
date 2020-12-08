@@ -101,7 +101,7 @@ public class PermissionManager {
      * @return a list of Permissions
      */
     @Deprecated
-    public List<Permission> StringToPermissions(String permission){
+    public List<Permission> stringToPermissions(String permission){
         String[] strList = permission.split(", ");
         ArrayList<Permission> permissions = new ArrayList<>();
         for (String s: strList) {
@@ -116,7 +116,7 @@ public class PermissionManager {
      * @return a string with each string of a Permission separated by a comma
      */
     @Deprecated
-    public String PermissionsToString(List<Permission> permissions){
+    public String permissionsToString(List<Permission> permissions){
         return permissions.toString().replace("[", "").replace("]", "");
     }
 

@@ -95,7 +95,7 @@ public class MessageManager {
      * @param user username of the user whose inbox will be retrieved
      * @return a hashmap that maps the username of sender to a list of Message sent to the given user
      */
-    public HashMap<String, List<Message>> retrieveUserInbox(String user) {
+    public Map<String, List<Message>> retrieveUserInbox(String user) {
 //        if (!inboxes.containsKey(user)) {
 //            HashMap<String, List<Message>> hashmap = new HashMap<>();
 //            inboxes.put(user, hashmap);
@@ -124,7 +124,7 @@ public class MessageManager {
      * given user
      */
 
-    public HashMap<String, List<Message>> getReadInbox(String username) {
+    public Map<String, List<Message>> getReadInbox(String username) {
 //        if (!readInboxes.containsKey(username)) {
 //            HashMap<String, List<Message>> hashmap = new HashMap<>();
 //            readInboxes.put(username, hashmap);
@@ -173,7 +173,7 @@ public class MessageManager {
      * given user
      */
 
-    public HashMap<String, List<Message>> getUnreadInbox(String username){
+    public Map<String, List<Message>> getUnreadInbox(String username){
 //        if(!unreadInboxes.containsKey(username)){
 //            HashMap<String, List<Message>> hashmap = new HashMap<>();
 //            unreadInboxes.put(username, hashmap);

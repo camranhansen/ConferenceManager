@@ -29,8 +29,7 @@ public class EventManager {
      * @return A list of all csc.zerofoureightnine.conferencemanager.events' IDs.
      */
     public List<String> getAllEventIds(){
-        List<String> allIDS = new ArrayList<>(this.events.keySet());
-        return allIDS;
+        return new ArrayList<>(this.events.keySet());
     }
 
 
@@ -373,7 +372,7 @@ public class EventManager {
     @Deprecated
     public void setEventData(String[] eventData){
         String id = eventData[0];
-        String speakerName[] = eventData[1].split(",");
+        String[] speakerName = eventData[1].split(",");
         List<String> spk = Arrays.asList(speakerName);
         Instant time = Instant.parse(eventData[2]);
         String eventName = eventData[3];
@@ -399,7 +398,7 @@ public class EventManager {
      * @param id Event id
      * @return A string containing the given event's name time, room and capacity.
      */
-    public LinkedHashMap<String,String> getFormattedEvent(String id){
+    public Map<String,String> getFormattedEvent(String id){
         Event e = this.events.get(id);
         LinkedHashMap<String,String> eventData = new LinkedHashMap<>();
         eventData.put("Name",e.getEventName());

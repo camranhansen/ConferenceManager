@@ -8,22 +8,22 @@ import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SpeakerValidator implements Validator{
     private PermissionManager pm;
     private EventManager eventManager;
-    private LinkedHashMap<InputStrategy, String> inputHistory;
+    private Map<InputStrategy, String> inputHistory;
 
-    public SpeakerValidator(PermissionManager pm, EventManager em,  LinkedHashMap<InputStrategy, String> inputHistory){
+    public SpeakerValidator(PermissionManager pm, EventManager em,  Map<InputStrategy, String> inputHistory){
         this.pm = pm;
         this.eventManager = em;
         this.inputHistory = inputHistory;
     }
 
     public boolean validateInput(String userInput) {
-        if (userInput.trim().toLowerCase().equals("party")){
+        if (userInput.trim().equalsIgnoreCase("party")){
             return true;
         }
         String[] inputSpeakers = userInput.split("[,]*");

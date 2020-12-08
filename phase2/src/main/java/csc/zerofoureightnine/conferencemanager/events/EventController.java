@@ -38,7 +38,7 @@ public class EventController implements SubController {
      * @param inputHistory The input history
      */
     @Override
-    public void performSelectedAction(String username, Permission permissionSelected, HashMap<InputStrategy, String> inputHistory) {
+    public void performSelectedAction(String username, Permission permissionSelected, Map<InputStrategy, String> inputHistory) {
         switch(permissionSelected){
             case EVENT_SELF_ENROLL:
                 enrollUser(username, inputHistory);
@@ -79,7 +79,7 @@ public class EventController implements SubController {
      * Registers the inputted user into the event specified in InputHistory.
      * @param inputHistory the input history to be parsed.
      */
-    private void enrollOtherUser(HashMap<InputStrategy, String> inputHistory){
+    private void enrollOtherUser(Map<InputStrategy, String> inputHistory){
         eventManager.enrollUser(inputHistory.get(InputStrategy.VALID_EVENT_ID), inputHistory.get(InputStrategy.VALID_USERNAME));
     }
 
@@ -89,7 +89,7 @@ public class EventController implements SubController {
      * @param inputHistory the input history to be parsed.
      * @param username Username of the current user.
      */
-    private void enrollUser(String username, HashMap<InputStrategy, String> inputHistory){
+    private void enrollUser(String username, Map<InputStrategy, String> inputHistory){
         eventManager.enrollUser(inputHistory.get(InputStrategy.VALID_EVENT_ID), username);
     }
 
@@ -158,7 +158,7 @@ public class EventController implements SubController {
      * Removes the event identified by String eventID from data storage
      * @param inputHistory the input history to be parsed
      */
-    public void deleteEvent(HashMap<InputStrategy, String> inputHistory) {
+    public void deleteEvent(Map<InputStrategy, String> inputHistory) {
         this.eventManager.deleteEvent(inputHistory.get(InputStrategy.VALID_EVENT_ID));
     }
     /**
@@ -167,7 +167,7 @@ public class EventController implements SubController {
      *
      * @param inputHistory the input history to be parsed.
      */
-    public void createEvent(HashMap<InputStrategy, String> inputHistory) {
+    public void createEvent(Map<InputStrategy, String> inputHistory) {
         // TODO implement changes once allows for multiple users in event creation
 
         this.eventManager.createEvent(
