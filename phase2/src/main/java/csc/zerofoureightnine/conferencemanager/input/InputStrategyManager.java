@@ -5,14 +5,13 @@ import csc.zerofoureightnine.conferencemanager.input.validators.*;
 import csc.zerofoureightnine.conferencemanager.options.*;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
+import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 public class InputStrategyManager {
-    private UserManager userManager;
-    private EventManager eventManager;
     private EventDayValidator eventDayValidator;
     private EventHourValidator eventHourValidator;
     private CapacityValidator capacityValidator;
@@ -32,25 +31,23 @@ public class InputStrategyManager {
     private ShortTextValidator shortTextValidator;
     private MessageMoveOption messageMoveOption;
 
-    public InputStrategyManager(MessageManager mm, UserManager um, EventManager em,
+    public InputStrategyManager(MessageManager mm, UserManager um, EventManager em, PermissionManager pm,
                                 LinkedHashMap<InputStrategy, String> inputHistory, String username){
-        userManager = um;
-        eventManager = em;
         eventDayValidator = new EventDayValidator();
         eventHourValidator = new EventHourValidator();
         capacityValidator = new CapacityValidator();
         longTextValidator = new LongTextValidator();
         shortTextValidator = new ShortTextValidator();
-        existingUserValidator = new ExistingUserValidator(userManager);
-        speakerValidator = new SpeakerValidator(userManager, eventManager, inputHistory);
-        eventIdValidator = new EventIdValidator(eventManager);
-        eventRoomValidator = new EventRoomValidator(eventManager, inputHistory);
+        existingUserValidator = new ExistingUserValidator(um);
+        speakerValidator = new SpeakerValidator(pm, em, inputHistory);
+        eventIdValidator = new EventIdValidator(em);
+        eventRoomValidator = new EventRoomValidator(em, inputHistory);
         eventEnrollOption = new EventEnrollOption();
         eventViewOptions = new EventViewOptions();
         menuCategoryOption = new MenuCategoryOption();
         messageEventOption = new MessageEventOption();
         messageViewOptions = new MessageViewOption();
-        permissionMenuOption = new PermissionMenuOption(inputHistory, userManager, username);
+        permissionMenuOption = new PermissionMenuOption(inputHistory, um, username);
         userTemplateOption = new UserTemplateOption();
         messageAllOption = new MessageAllOption();
         messageMoveOption = new MessageMoveOption();

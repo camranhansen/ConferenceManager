@@ -10,6 +10,7 @@ import org.junit.Test;
 import csc.zerofoureightnine.conferencemanager.gateway.DummyPersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
+import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 
 public class UserManagerTest {
 
@@ -37,7 +38,7 @@ public class UserManagerTest {
     @Test
     public void createUser() {
         UserManager um = new UserManager(createUserManager());
-        um.createUser("timmy","asdf1234");
+        um.createUser("timmy","asdf1234", Template.ATTENDEE.getPermissions());
         assertTrue(um.userExists("timmy"));
         assertEquals("asdf1234", um.getPassword("timmy"));
     }

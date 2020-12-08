@@ -2,7 +2,7 @@ package csc.zerofoureightnine.conferencemanager.input.validators;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.input.InputStrategy;
-import csc.zerofoureightnine.conferencemanager.users.UserManager;
+import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 
 import java.time.Instant;
@@ -12,12 +12,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class SpeakerValidator implements Validator{
-    private UserManager userManager;
+    private PermissionManager pm;
     private EventManager eventManager;
     private LinkedHashMap<InputStrategy, String> inputHistory;
 
-    public SpeakerValidator(UserManager um, EventManager em,  LinkedHashMap<InputStrategy, String> inputHistory){
-        this.userManager = um;
+    public SpeakerValidator(PermissionManager pm, EventManager em,  LinkedHashMap<InputStrategy, String> inputHistory){
+        this.pm = pm;
         this.eventManager = em;
         this.inputHistory = inputHistory;
     }
@@ -35,7 +35,7 @@ public class SpeakerValidator implements Validator{
     }
 
     private boolean allSpeakersExist(String[] inputSpeakers){
-        List<String> speakers = userManager.getUserByPermissionTemplate(Template.SPEAKER);
+        List<String> speakers = pm.getUserByPermissionTemplate(Template.SPEAKER);
         for (String speaker: inputSpeakers){
             if(!speakers.contains(speaker)){
                 return false;
