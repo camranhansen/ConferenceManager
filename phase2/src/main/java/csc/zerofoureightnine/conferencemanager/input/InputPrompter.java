@@ -31,11 +31,12 @@ public class InputPrompter implements Inputable{
     }
 
     //NEW CODE FOR INPUT WITH STRATEGY IN PLACE:
-    public InputPrompter(InputStrategyManager inputStrategyManager) {
+    public InputPrompter(InputStrategyManager inputStrategyManager, RuntimeDataHolder runtimeDataHolder) {
         this.scanner = new Scanner(System.in);
         this.inputPresenter = new InputPresenter();
         this.subControllers = new ArrayList<>();
         this.inputStrategyManager = inputStrategyManager;
+        this.runtimeDataHolder = runtimeDataHolder;
     }
 
     public void attachCurrentTraverser(MenuNodeTraverser traverser){
@@ -50,7 +51,7 @@ public class InputPrompter implements Inputable{
         if (inputIsReservedKeyword(input)) {
             return "";
         } else {
-            while (!inputStrategyManager.validate(inputStrategy, input)) {
+            while (!inputStrategyManager.validate(inputStrategy, input) || input.isEmpty()) {
                 inputPresenter.invalidResponse(inputStrategy.getErrorMessage());
                 runtimeDataHolder.incrementStat(RuntimeStats.BAD_INPUT);
                 inputPresenter.presentPrompt(inputStrategy.getPrompt());
@@ -58,7 +59,7 @@ public class InputPrompter implements Inputable{
                 runtimeDataHolder.incrementStat(RuntimeStats.LINES_INPUTTED);
             }
         }
-        return input;
+        return input.trim();
     }
 
     public String getValidMenuResponse(InputStrategy inputStrategy){
@@ -70,7 +71,7 @@ public class InputPrompter implements Inputable{
         if (inputIsReservedKeyword(input)) {
             return "";
         } else {
-            while (!inputStrategyManager.validate(inputStrategy, input)) {
+            while (!inputStrategyManager.validate(inputStrategy, input)|| input.isEmpty()) {
                 inputPresenter.invalidResponse(inputStrategy.getErrorMessage());
                 runtimeDataHolder.incrementStat(RuntimeStats.BAD_INPUT);
                 inputPresenter.presentPrompt(inputStrategy.getPrompt());
@@ -79,7 +80,7 @@ public class InputPrompter implements Inputable{
                 runtimeDataHolder.incrementStat(RuntimeStats.LINES_INPUTTED);
             }
         }
-        return input;
+        return input.trim();
 
     }
     public void addValidResponseToInputHistory(){

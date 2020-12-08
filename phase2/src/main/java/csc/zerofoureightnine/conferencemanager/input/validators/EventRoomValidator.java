@@ -4,7 +4,6 @@ import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.input.InputStrategy;
 
 import java.time.Instant;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class EventRoomValidator implements Validator{
@@ -17,12 +16,8 @@ public class EventRoomValidator implements Validator{
     }
 
     public boolean validateInput(String userInput) {
-        return eventManager.checkRoom(getTime(), userInput);
-    }
-
-    private Instant getTime(){
-        return eventManager.parseTime(inputHistory.get(InputStrategy.EVENT_DAY),
+        Instant time = eventManager.parseTime(inputHistory.get(InputStrategy.EVENT_DAY),
                 inputHistory.get(InputStrategy.EVENT_HOUR));
+        return !eventManager.checkRoom(time, userInput);
     }
-
 }

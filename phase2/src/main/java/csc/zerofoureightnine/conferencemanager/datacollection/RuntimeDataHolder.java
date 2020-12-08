@@ -14,9 +14,17 @@ public class RuntimeDataHolder {
     }
 
     public void incrementStat(RuntimeStats runtimeStat) {
+        usernameCheck();
         int runtimeStatValue = pMap.get(username).getStatValue(runtimeStat) + 1;
         pMap.get(username).setStatValue(runtimeStat, runtimeStatValue);
     }
 
     public PersistentMap<String, RuntimeData> getMap() { return pMap; }
+
+    private void usernameCheck(){
+        if (!pMap.containsKey(username)){
+        RuntimeData runtimeData = new RuntimeData();
+        pMap.put(username, runtimeData);
+        }
+    }
 }

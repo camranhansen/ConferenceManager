@@ -26,12 +26,13 @@ public class SpeakerValidator implements Validator{
         if (userInput.trim().equalsIgnoreCase("party")){
             return true;
         }
-        String[] inputSpeakers = userInput.split("[,]*");
+        String[] speakers = userInput.split(",");
+        String[] inputSpeakers = trimSpeakerNames(speakers);
         if (!allSpeakersExist(inputSpeakers)){
             return false;
         }
         List<String> validSpeakers = new ArrayList<>(Arrays.asList(inputSpeakers));
-        return eventManager.checkConflictSpeaker(getTime(), validSpeakers);
+        return !eventManager.checkConflictSpeaker(getTime(), validSpeakers);
     }
 
     private boolean allSpeakersExist(String[] inputSpeakers){
@@ -47,5 +48,14 @@ public class SpeakerValidator implements Validator{
     private Instant getTime(){
        return eventManager.parseTime(inputHistory.get(InputStrategy.EVENT_DAY),
                inputHistory.get(InputStrategy.EVENT_HOUR));
+    }
+
+    private String[] trimSpeakerNames(String[] inputSpeakers){
+        List<String> speakersTrimmed = new ArrayList<>();
+        for (String speaker: inputSpeakers){
+            speakersTrimmed.add(speaker.trim());
+        }
+        String[] speakers = new String[speakersTrimmed.size()];
+        return speakersTrimmed.toArray(speakers);
     }
 }

@@ -3,7 +3,6 @@ package csc.zerofoureightnine.conferencemanager.input;
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.input.validators.*;
 import csc.zerofoureightnine.conferencemanager.options.*;
-import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 
@@ -31,7 +30,7 @@ public class InputStrategyManager {
     private ShortTextValidator shortTextValidator;
     private MessageMoveOption messageMoveOption;
 
-    public InputStrategyManager(MessageManager mm, UserManager um, EventManager em, PermissionManager pm,
+    public InputStrategyManager(UserManager um, EventManager em, PermissionManager pm,
                                 Map<InputStrategy, String> inputHistory, String username){
         eventDayValidator = new EventDayValidator();
         eventHourValidator = new EventHourValidator();
@@ -136,6 +135,6 @@ public class InputStrategyManager {
     }
 
     private boolean validOptionSelection(List<Option> options, String userInput){
-        return userInput.matches("^[0-9]+$") || Integer.parseInt(userInput) >= options.size();
+        return userInput.matches("^[0-9]+$") && Integer.parseInt(userInput) < options.size();
     }
 }
