@@ -19,7 +19,7 @@ public class UserManager {
      * @param userData an empty or pre-constructed PersistentMap that relates a username to the appropriate entity.
      */
     public UserManager(PersistentMap<String, UserData> userData) {
-        this.users = new HashMap<>();
+//        this.users = new HashMap<>();
         this.userData = userData;
     }
 
@@ -56,6 +56,18 @@ public class UserManager {
 //        this.users.remove(username);
         this.userData.remove(username);
         this.userData.endInteraction();
+    }
+
+    /**
+     * Generates a UserData object and stores it into the map
+     * @param username the username of the new user
+     * @param password the password of the new user
+     * @param permissions the list of permissions the user has access to
+     */
+    public void createUser(String username, String password, List<Permission> permissions){
+
+        UserData u = new UserData(username, password, permissions);
+        this.userData.put(username, u);
     }
 
     /**
@@ -156,18 +168,6 @@ public class UserManager {
         this.users = users;
     }
 
-    /**
-     * Generates a user object and stores it into the hashmap
-     * @param username the username of the new user
-     * @param password the password of the new user
-     * @param permissions the list of permissions the user has access to
-     */
-    @Deprecated
-    public void createUser(String username, String password, List<Permission> permissions){
-
-        User u = new User(username, password, permissions);
-        this.users.put(username, u);
-    }
 
     /**
      * Convert a string corresponding to permissions into the appropriate Permissions

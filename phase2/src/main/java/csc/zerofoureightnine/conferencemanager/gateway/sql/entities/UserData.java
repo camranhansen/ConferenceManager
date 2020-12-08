@@ -25,6 +25,12 @@ public class UserData implements Identifiable<String>{
         this.permissions = new ArrayList<>();
     }
 
+    public UserData(String username, String password, List<Permission> permissions){
+        this.userName = username;
+        this.password = password;
+        this.permissions = permissions;
+    }
+
     public String getId() {
         return userName;
     }

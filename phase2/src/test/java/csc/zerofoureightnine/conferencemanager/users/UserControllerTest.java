@@ -13,8 +13,7 @@ public class UserControllerTest {
 
     public UserController createUserController(){
         UserManager um = new UserManager(new UserManagerTest().createUserManager());
-        UserController uc = new UserController(um);
-        return uc;
+        return new UserController(um);
     }
 
     @Test
