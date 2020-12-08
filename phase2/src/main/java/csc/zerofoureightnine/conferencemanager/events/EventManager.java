@@ -50,6 +50,11 @@ public class EventManager {
         return aList;
     }
 
+    /**
+     * Returns a record of event data with given information from an Event type object.
+     * @param newEvent A new event.
+     * @return A record of event data.
+     */
     public EventData convertEventToEventData(Event newEvent){
         EventData ed = new EventData();
         ed.addSpeakers(newEvent.getSpeakerName());
@@ -478,6 +483,7 @@ public class EventManager {
     public int getCapacity(String id){
         return events.get(id).getCapacity();
     }
+
 
     public EventType getEventType(String id){
         return events.get(id).getType();
