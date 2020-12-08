@@ -15,8 +15,13 @@ public class RuntimeData implements Identifiable<String>{
     @Id
     private String id;
 
-    @Column(name = "statMap")
+    @Column(name = "statMap") // TODO: Probably do away with the map and store each stat/enum individually since it works better for non-Integers
     private EnumMap<RuntimeStats, Integer> statMap;
+
+    public RuntimeData() {
+        statMap = new EnumMap<RuntimeStats, Integer>(RuntimeStats.class);
+        for (RuntimeStats x: RuntimeStats.values()) { statMap.put(x, 0); }
+    }
 
     public String getId() {
         return id;
