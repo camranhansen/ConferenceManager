@@ -1,5 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.input;
 
+import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeDataHolder;
+import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeStats;
 import csc.zerofoureightnine.conferencemanager.menu.*;
 import csc.zerofoureightnine.conferencemanager.options.Option;
 
@@ -14,6 +16,7 @@ public class InputPrompter implements Inputable{
     private ArrayList<SubController> subControllers;//TODO remove this.
     private InputStrategyManager inputStrategyManager;
     private MenuNodeTraverser currentTraverser;
+    private RuntimeDataHolder runtimeDataHolder;
 
     /**
      * Creates a new InputPrompter.
@@ -45,7 +48,7 @@ public class InputPrompter implements Inputable{
         } else {
             while (!inputStrategyManager.validate(inputStrategy, input)) {
                 inputPresenter.invalidResponse(inputStrategy.getErrorMessage());
-                //put run time stats here....
+                runtimeDataHolder.incrementStat(RuntimeStats.BAD_INPUT);
                 inputPresenter.presentPrompt(inputStrategy.getPrompt());
                 input = scanner.nextLine();
             }
@@ -62,6 +65,7 @@ public class InputPrompter implements Inputable{
         } else {
             while (!inputStrategyManager.validate(inputStrategy, input)) {
                 inputPresenter.invalidResponse(inputStrategy.getErrorMessage());
+                runtimeDataHolder.incrementStat(RuntimeStats.BAD_INPUT);
                 inputPresenter.presentPrompt(inputStrategy.getPrompt());
                 inputPresenter.printOptions(inputStrategyManager.getOptions(inputStrategy));
                 input = scanner.nextLine();
