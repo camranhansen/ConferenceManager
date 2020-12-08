@@ -10,6 +10,7 @@ import java.util.*;
 
 import static java.time.Instant.MAX;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class EventManagerTest {
     private static DummyPersistentMap<String, EventData> pMap = new DummyPersistentMap<>();
@@ -20,7 +21,13 @@ public class EventManagerTest {
         Instant time = MAX;
         List<String> list = Arrays.asList("Bob", "John");
         eventManager.createEvent(list, time,"Test Event", "Meeting Room 1",  2);
-        assertTrue(eventManager.getAllEventIds().size() == 1);
+        assertEquals(1, eventManager.getAllEventIds().size());
+
+        Event newEvent = new Event(list, time, "Test Event", "Meeting Room 1", 2,
+                eventManager.getEventTypeForCapacity(2));
+        EventData expectedData = eventManager.convertEventToEventData(newEvent);
+        EventData actual = eventManager.getDataById("Meeting Room 1"+time.toString());
+        assertEquals(expectedData, actual);
     }
 
     @Test
@@ -29,33 +36,57 @@ public class EventManagerTest {
         Instant time = MAX;
         List<String> list = Arrays.asList("Bob", "John");
         eventManager.createEvent(list, time,"Test Event", "Meeting Room 1",  2, EventType.MULTI);
-        assertTrue(eventManager.getAllEventIds().size() == 1);
+        eventManager.createEvent(list, time,"Test Event", "Meeting Room 2",  2, EventType.MULTI);
+
+        assertEquals(2, eventManager.getAllEventIds().size());
+
+        Event newEvent = new Event(list, time, "Test Event", "Meeting Room 1", 2,
+                EventType.MULTI);
+        EventData expectedData = eventManager.convertEventToEventData(newEvent);
+
+        EventData actual = eventManager.getDataById("Meeting Room 1"+time.toString());
+        assertEquals(expectedData, actual);
     }
 
     @Test
     public void createEditedEvent() {
-        // Did not do this because functionality is pretty much all database?
-        // TODO: Implement test
+        EventManager eventManager = new EventManager(pMap);
+        Instant time = MAX;
+        List<String> speakerList = Arrays.asList("Bob", "John");
+        List<String> participantsList = Arrays.asList("Cool", "Mike");
+        eventManager.createEditedEvent(speakerList, time,"Test Event", participantsList,
+                "Meeting Room 1", 2, EventType.MULTI);
+
+        Event newEvent = new Event(speakerList, participantsList, time, "Test Event", "Meeting Room 1", 2,
+                EventType.MULTI);
+        EventData expectedData = eventManager.convertEventToEventData(newEvent);
+        expectedData.addParticipants(participantsList);
+        EventData actual = eventManager.getDataById("Meeting Room 1"+time.toString());
+        assertEquals(expectedData, actual);
     }
 
     @Test
     public void deleteEvent() {
         EventManager eventManager = new EventManager(pMap);
-        Instant time = MAX;
+        eventManager.clear();
+        Instant time1 = MAX;
+        Instant time2 = Instant.ofEpochMilli(1024);
         List<String> list = Arrays.asList("Bob Smithers");
         List<String> list2 = Arrays.asList("Roger");
-        eventManager.createEvent(list, time, "Test Event", "Meeting Room 1",  2);
-        eventManager.createEvent(list2, time, "Test Event 2", "Meeting Room 2",  2);
-        // assertEquals(2, eventManager.getEventList().size());
-        eventManager.deleteEvent("Meeting Room 2" + time.toString());
-        // assertEquals(1,eventManager.getEventList().size());
+        eventManager.createEvent(list, time1, "Test Event", "Meeting Room 1",  2);
+        eventManager.createEvent(list2, time2, "Test Event 2", "Meeting Room 2",  2);
+
+        Event newEvent1 = new Event(list, time1, "Test Event", "Meeting Room 1",  2,
+                eventManager.getEventTypeForCapacity(2));
+        EventData expectedData = eventManager.convertEventToEventData(newEvent1);
+        assertEquals(2, eventManager.getAllEventIds().size());
+
+        eventManager.deleteEvent("Meeting Room 2" + time2.toString());
+        assertEquals(1, eventManager.getAllEventIds().size());
+        assertEquals(1, eventManager.size());
+        assertEquals(null, eventManager.getDataById("Meeting Room 2" + time2.toString()));
     }
 
-    @Test
-    public void getAllEventData() {
-        // Did not implement because it relies on a deprecated function
-        // TODO: Implement test or remove test + function
-    }
 
     @Test
     public void getAllEventIds() { // Don't know if this will be a problem, but two lists are not equal if items are ordered differently
@@ -104,6 +135,9 @@ public class EventManagerTest {
         eventManager.createEvent(list, time,"Test Event", "Meeting Room 1",  2);
         eventManager.enrollUser("Meeting Room 1" + time.toString(), "Micheal");
         assertEquals(arr, eventManager.getParticipants("Meeting Room 1" + time.toString()));
+
+        EventData ed = eventManager.getDataById("Meeting Room 1" + time.toString());
+        assertTrue(ed.getParticipants().contains(arr.get(0)));
     }
 
     @Test
@@ -113,9 +147,14 @@ public class EventManagerTest {
         List<String> list = Arrays.asList("Bob", "John");
         eventManager.createEvent( list, time,"Test Event", "Meeting Room 1",  2);
         eventManager.enrollUser("Meeting Room 1" + time.toString(), "Micheal");
-        assertEquals(1, eventManager.getParticipants("Meeting Room 1" + time.toString()).size());
+        eventManager.enrollUser("Meeting Room 1" + time.toString(), "David");
+        assertEquals(2, eventManager.getParticipants("Meeting Room 1" + time.toString()).size());
         eventManager.dropUser("Meeting Room 1" + time.toString(), "Micheal");
-        assertEquals(0, eventManager.getParticipants("Meeting Room 1" + time.toString()).size());
+        assertEquals(1, eventManager.getParticipants("Meeting Room 1" + time.toString()).size());
+
+        EventData ed = eventManager.getDataById("Meeting Room 1" + time.toString());
+        assertFalse(ed.getParticipants().contains("Micheal"));
+        assertTrue(ed.getParticipants().contains("David"));
     }
 
 
@@ -185,6 +224,9 @@ public class EventManagerTest {
         eventManager.createEvent(list, time, "Test Event", "Meeting Room 1",  2);
         eventManager.editTime("Meeting Room 1" + time.toString(), time2);
         assertEquals(time2, eventManager.getEventTime("Meeting Room 1" + time2.toString()));
+
+        EventData ed = eventManager.getDataById("Meeting Room 1" + time.toString());
+        assertEquals(time2, ed.getTime());
     }
 
     @Test
@@ -195,8 +237,11 @@ public class EventManagerTest {
         eventManager.createEvent(list, time, "Test Event", "Meeting Room 1",  2);
         List<String> list2 = Arrays.asList("Roberto");
         List<String> list3 = Arrays.asList("Roberto");
-        eventManager.editSpeakerName("Meeting Room 1" + time.toString(), list2); TODO:
+        eventManager.editSpeakerName("Meeting Room 1" + time.toString(), list2);
         assertEquals(list3, eventManager.getEventSpeakerName("Meeting Room 1" + time.toString()));
+
+        EventData ed = eventManager.getDataById("Meeting Room 1" + time.toString());
+        assertTrue(ed.getSpeakers().contains(list3.get(0)));
     }
 
     @Test
@@ -208,6 +253,9 @@ public class EventManagerTest {
         eventManager.createEvent(list, time, "Test Event", "Meeting Room 1",  2);
         eventManager.editEventName("Meeting Room 1" + time.toString(), "Clean Architecture");
         assertEquals("Clean Architecture", eventManager.getEventName("Meeting Room 1" + time.toString()));
+
+        EventData ed = eventManager.getDataById("Meeting Room 1" + time.toString());
+        assertEquals("Clean Architecture", ed.getEventName());
     }
 
     @Test
@@ -218,6 +266,9 @@ public class EventManagerTest {
         eventManager.createEvent(list, time, "Test Event", "Meeting Room 1",  2);
         eventManager.editRoom("Meeting Room 1" + time.toString(), "BH 101");
         assertEquals("BH 101", eventManager.getRoom("BH 101" + time.toString()));
+
+        EventData ed = eventManager.getDataById("Meeting Room 1" + time.toString());
+        assertEquals("BH 101", ed.getRoom());
     }
 
     @Test
@@ -228,6 +279,9 @@ public class EventManagerTest {
         eventManager.createEvent(list, time, "Test Event", "Meeting Room 1",  2);
         eventManager.editCapacity("Meeting Room 1" + time.toString(), 5);
         assertEquals(5, eventManager.getCapacity("Meeting Room 1" + time.toString()));
+
+        EventData ed = eventManager.getDataById("Meeting Room 1" + time.toString());
+        assertEquals(5, ed.getCapacity());
     }
 
     @Test
@@ -237,6 +291,7 @@ public class EventManagerTest {
         List<String> list = Arrays.asList("Bob", "John");
         Event e1 = new Event(list, time, "Test Event", "Meeting Room 1", 2, EventType.MULTI);
         EventData e = new EventData();
+        e.addSpeakers(list);
         e.setCapacity(2);
         e.setEventName("Test Event");
         e.setId("Meeting Room 1" + time.toString());
