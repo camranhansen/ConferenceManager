@@ -24,7 +24,7 @@ public class MessageManager {
 
     /**
      * Instantiates the messageManager
-     * @param messageData {@see PersistentMap} storing ids as keys and their associating messageDatas as values
+     * @param messageData @see PersistentMap storing ids as keys and their associating messageDatas as values
      */
     public MessageManager(PersistentMap<String, MessageData> messageData) {
         inboxes = new HashMap<>();
