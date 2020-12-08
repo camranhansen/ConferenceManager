@@ -137,6 +137,7 @@ public class MessageControllerTest {
 
         config = new SQLConfiguration("testfiles/db/data");
         mMap = new SQLMap<>(config, MessageData.class);
+        pMap = new SQLMap<>(config, EventData.class);
         MessageManager messageManager = new MessageManager(mMap);
         EventManager eventManager = new EventManager(pMap);
         Instant time = Instant.now();
@@ -165,6 +166,7 @@ public class MessageControllerTest {
 
         config = new SQLConfiguration("testfiles/db/data");
         mMap = new SQLMap<>(config, MessageData.class);
+        pMap = new SQLMap<>(config, EventData.class);
         MessageManager messageManager = new MessageManager(mMap);
         EventManager eventManager = new EventManager(pMap);
         List<String> spk = new ArrayList<>();

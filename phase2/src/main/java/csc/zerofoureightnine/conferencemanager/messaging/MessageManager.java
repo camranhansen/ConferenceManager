@@ -67,6 +67,7 @@ public class MessageManager {
         md.setSender(from);
         md.setContent(content);
         md.addRecipients(to);
+        md.setTimeSent(Instant.now());
         String id = UUID.randomUUID().toString();
         this.messageData.save(id, md);
         return this.messageData.load(id);
