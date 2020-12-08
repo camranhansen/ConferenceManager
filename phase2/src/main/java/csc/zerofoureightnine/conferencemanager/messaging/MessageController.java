@@ -353,4 +353,15 @@ public class MessageController implements SubController {
         list.toArray(res);
         return res;
     }
+
+    private List<String> getMessageInfo (String message) {
+        List<String> list = new ArrayList<>();
+        String sender = message.substring(0, message.indexOf(":"));
+        String content = message.substring(message.indexOf(":")+2, message.lastIndexOf(","));
+        String timeSent = message.substring(message.lastIndexOf(",") + 2);
+        list.add(sender);
+        list.add(content);
+        list.add(timeSent);
+        return list;
+    }
 }

@@ -59,22 +59,7 @@ public class MessageMover {
         this.messageData.endInteraction();
     }
 
-    private boolean compareRecipients(String[] recipients, Set<String> recipientsSet){
-        int i = 0;
-        if(recipients.length != recipientsSet.size()){
-            return false;
-        }
-        for(String r: recipients){
-            if (recipientsSet.contains(r)){
-                i+=1;
-            }
-        }
-        if(i==recipients.length){
-            return true;
-        }else{
-            return false;
-        }
-    }
+
 
     /**
      * Check if this message is in user's unread inbox, if not, add the given message to this user's archived inbox.

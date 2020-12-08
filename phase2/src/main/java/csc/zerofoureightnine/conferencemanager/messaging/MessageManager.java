@@ -19,7 +19,7 @@ import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 public class MessageManager {
 
 
-    private HashMap<String, HashMap<String, List<Message>>> inboxes;
+    //private HashMap<String, HashMap<String, List<Message>>> inboxes;
     private PersistentMap<String, MessageData> messageData;
 
     /**
@@ -27,7 +27,7 @@ public class MessageManager {
      * @param messageData @see PersistentMap storing ids as keys and their associating messageDatas as values
      */
     public MessageManager(PersistentMap<String, MessageData> messageData) {
-        inboxes = new HashMap<>();
+        //inboxes = new HashMap<>();
         this.messageData = messageData;
     }
 
@@ -106,6 +106,12 @@ public class MessageManager {
         return read;
     }
 
+    /**
+     * Returns the read inbox of the user from a specific sender.
+     * @param username username of the user
+     * @param from username of the sender
+     * @return a list of read Message that the sender has sent to the user
+     */
     public List<Message> getReadInboxFrom(String username, String from) {
         List<Message> messages = new ArrayList<>();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
@@ -395,36 +401,36 @@ public class MessageManager {
         return res;
     }
 
-    /**
-     * Create a new Message sent to the given user from a row storing all information about that Message. Put the
-     * message into the user inbox.
-     * @param user Username of the recipient.
-     * @param row A String[] with sender's username at index 0, sent time at index 1, message content at index 2, and
-     * String[] of recipients' usernames at index 3.
-     */
-    public void putMessageFromArray(String user, String[] row) {
-        Map<String, List<Message>> inbox = retrieveUserInbox(user);
-        String sender = row[0];
-        Message curMessage = new Message(sender, row[3].split(", "), row[2]);
-        curMessage.setTimeSent(Instant.parse(row[1]));
-        if (!inbox.containsKey(sender)) {
-            List<Message> list = new ArrayList<>();
-            list.add(curMessage);
-            inbox.put(sender, list);
-        } else{
-            List<Message> senderMessage = inbox.get(sender);
-            senderMessage.add(curMessage);
-        }
-    }
-
-    /**
-     * Returns an iterator over all csc.zerofoureightnine.conferencemanager.users of the inbox.
-     * @return An iterator that iterates through the keys, which represent the username of the recipients, in a hashmap,
-     * which is the inboxes.
-     */
-    public Iterator<String> getAllUsersWithInboxes() {
-
-        return inboxes.keySet().iterator();
-    }
+//    /**
+//     * Create a new Message sent to the given user from a row storing all information about that Message. Put the
+//     * message into the user inbox.
+//     * @param user Username of the recipient.
+//     * @param row A String[] with sender's username at index 0, sent time at index 1, message content at index 2, and
+//     * String[] of recipients' usernames at index 3.
+//     */
+//    public void putMessageFromArray(String user, String[] row) {
+//        Map<String, List<Message>> inbox = retrieveUserInbox(user);
+//        String sender = row[0];
+//        Message curMessage = new Message(sender, row[3].split(", "), row[2]);
+//        curMessage.setTimeSent(Instant.parse(row[1]));
+//        if (!inbox.containsKey(sender)) {
+//            List<Message> list = new ArrayList<>();
+//            list.add(curMessage);
+//            inbox.put(sender, list);
+//        } else{
+//            List<Message> senderMessage = inbox.get(sender);
+//            senderMessage.add(curMessage);
+//        }
+//    }
+//
+//    /**
+//     * Returns an iterator over all csc.zerofoureightnine.conferencemanager.users of the inbox.
+//     * @return An iterator that iterates through the keys, which represent the username of the recipients, in a hashmap,
+//     * which is the inboxes.
+//     */
+//    public Iterator<String> getAllUsersWithInboxes() {
+//
+//        return inboxes.keySet().iterator();
+//    }
 
 }
