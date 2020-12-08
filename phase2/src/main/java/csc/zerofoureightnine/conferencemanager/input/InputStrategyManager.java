@@ -8,8 +8,8 @@ import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InputStrategyManager {
     private EventDayValidator eventDayValidator;
@@ -32,7 +32,7 @@ public class InputStrategyManager {
     private MessageMoveOption messageMoveOption;
 
     public InputStrategyManager(MessageManager mm, UserManager um, EventManager em, PermissionManager pm,
-                                LinkedHashMap<InputStrategy, String> inputHistory, String username){
+                                Map<InputStrategy, String> inputHistory, String username){
         eventDayValidator = new EventDayValidator();
         eventHourValidator = new EventHourValidator();
         capacityValidator = new CapacityValidator();

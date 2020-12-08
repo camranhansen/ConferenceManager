@@ -29,11 +29,11 @@ public class RuntimeDataHolder {
     @Override
     //TODO get rid of this function.
     public String toString() {
-        String s = "";
+        StringBuilder sb = new StringBuilder();
         for (RuntimeStats x: RuntimeStats.values()) {
-            s += x.toString() + ": " + statMap.get(x).toString() + System.lineSeparator();
+            sb.append(x.toString() + ": " + statMap.get(x).toString() + System.lineSeparator());
         }
-        return s;
+        return sb.toString();
     }
 
     public Map<RuntimeStats, Integer> getStatMap() {

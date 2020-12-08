@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserController implements SubController {
     private UserManager um;
@@ -41,7 +42,8 @@ public class UserController implements SubController {
      * @param permissionSelected a Permission corresponding to an action that the
      *                           user intends to perform
      */
-    public void performSelectedAction(String username, Permission permissionSelected) {
+    @Override
+    public void performSelectedAction(String username, Permission permissionSelected, Map<InputStrategy, String> inputHistory) {
         if (permissionSelected == Permission.USER_CREATE_ACCOUNT) {
             this.createAccount(this.selectTemplate());
         } else if (permissionSelected == Permission.USER_CREATE_SPEAKER_ACCOUNT) {
@@ -177,13 +179,6 @@ public class UserController implements SubController {
                     + "Please enter a new username");
         }
         return userName;
-    }
-
-    @Override
-    public void performSelectedAction(String username, Permission permissionSelected,
-            HashMap<InputStrategy, String> inputHistory) {
-        // TODO Auto-generated method stub
-
     }
 
 }

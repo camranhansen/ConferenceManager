@@ -52,7 +52,6 @@ public class UserManager {
      */
     public void removeUser(String username){
         this.userData.beginInteraction();
-//        this.users.remove(username);
         this.userData.remove(username);
         this.userData.endInteraction();
     }
@@ -65,7 +64,6 @@ public class UserManager {
      * @return the password
      */
     public String getPassword(String username){
-//        return this.users.get(username).getPassword();
         return this.userData.load(username).getPassword();
     }
 
@@ -76,7 +74,6 @@ public class UserManager {
      */
     public void setPassword(String username, String newPassword){
         this.userData.beginInteraction();
-//        this.users.get(username).setPassword(newPassword);
         this.userData.load(username).setPassword(newPassword);
         this.userData.endInteraction();
     }

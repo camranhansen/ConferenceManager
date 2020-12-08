@@ -7,16 +7,16 @@ import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PermissionMenuOption implements Optionable{
-    private LinkedHashMap<InputStrategy, String> inputHistory;
+    private Map<InputStrategy, String> inputHistory;
     private UserManager userManager;
     private PermissionManager pm;
     private String username;
     
-    public PermissionMenuOption(LinkedHashMap<InputStrategy, String> inputHistory, UserManager userManager, String username) {
+    public PermissionMenuOption(Map<InputStrategy, String> inputHistory, UserManager userManager, String username) {
         this.userManager = userManager;
         this.inputHistory = inputHistory;
         this.username = username;

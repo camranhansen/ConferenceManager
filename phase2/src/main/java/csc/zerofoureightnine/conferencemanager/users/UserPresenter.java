@@ -19,14 +19,15 @@ public class UserPresenter {
     // and then call their respective toString()
     public void promptTemplate(List<Template> templates){
         String prompt = "Which action would you like to perform?";
-        String options = "";
+        StringBuilder sb = new StringBuilder();
         for (Template p: templates) {
-            options += templates.indexOf(p)+ ": " +
-                    p.toString().replace("_", " ") + "\n";
+            sb.append(templates.indexOf(p)+ ": " +
+                    p.toString().replace("_", " ") + "\n");
         }
 
         System.out.println(prompt);
-        System.out.println(options);;}
+        System.out.println(sb.toString());
+    }
 
 }
 

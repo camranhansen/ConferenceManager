@@ -12,7 +12,7 @@ public class MenuNodeTraverser {
     private InputPrompter prompter;
     private String username;
     private List<Permission> userpermissionList;
-    private LinkedHashMap<MenuNode, String> nodeInputHistory;
+    private Map<MenuNode, String> nodeInputHistory;
     private MenuNode current;
     private SubControllerDecider controllerDecider;
     private MenuGoal menuGoal;
@@ -21,7 +21,7 @@ public class MenuNodeTraverser {
     public MenuNodeTraverser(InputPrompter prompter,
                              String username,
                              List<Permission> userpermissionList,
-                             LinkedHashMap<MenuNode, String> nodeInputHistory,
+                             Map<MenuNode, String> nodeInputHistory,
                              MenuNode current,
                              SubControllerDecider controllerDecider) {
         this.prompter = prompter;
@@ -88,7 +88,7 @@ public class MenuNodeTraverser {
         if (current.getTaskPermission() != null){
 
 
-            controllerDecider.DecideSubControllerAndRunMethod(
+            controllerDecider.decideSubControllerAndRunMethod(
                     username,
                     current.getTaskPermission(),
                     this.getInputHistory());
@@ -122,8 +122,8 @@ public class MenuNodeTraverser {
         }
     }
 
-    public HashMap<InputStrategy, String> getInputHistory(){
-        HashMap<InputStrategy, String> inputHistory = new HashMap<>();
+    public Map<InputStrategy, String> getInputHistory(){
+        EnumMap<InputStrategy, String> inputHistory = new EnumMap<>(InputStrategy.class);
         nodeInputHistory.forEach((n, s) -> inputHistory.put(n.getInputStrategy(), s));
         return inputHistory;
     }

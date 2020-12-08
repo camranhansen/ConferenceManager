@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -40,9 +41,9 @@ public class MessageManagerTest {
         MessageManager messageManager = new MessageManager(sqlMap);
         messageManager.sendMessage("potter", "stupefy", "snape");
         messageManager.sendMessage("snape", "detention", "potter", "weasley", "granger");
-        HashMap<String, List<Message>> i1 = messageManager.retrieveUserInbox("potter");
-        HashMap<String, List<Message>> i2 = messageManager.retrieveUserInbox("granger");
-        HashMap<String, List<Message>> i3 = messageManager.retrieveUserInbox("snape");
+        Map<String, List<Message>> i1 = messageManager.retrieveUserInbox("potter");
+        Map<String, List<Message>> i2 = messageManager.retrieveUserInbox("granger");
+        Map<String, List<Message>> i3 = messageManager.retrieveUserInbox("snape");
         assertTrue(i1.containsKey("snape"));
         assertTrue(i3.containsKey("potter"));
         String i2Content = i2.get("snape").get(0).getContent();

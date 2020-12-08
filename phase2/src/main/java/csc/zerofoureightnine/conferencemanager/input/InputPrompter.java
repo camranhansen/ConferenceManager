@@ -8,6 +8,7 @@ import csc.zerofoureightnine.conferencemanager.options.Option;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class InputPrompter implements Inputable{
@@ -116,7 +117,7 @@ public class InputPrompter implements Inputable{
     }
 
     //NEW OPTION INPUT CODE. IF THIS WORKS TODO: DELETE OLD INPUT OPTION CODE
-    public Option selectMenuOption(List<Option> options, MenuNode menuNode, LinkedHashMap<MenuNode,
+    public Option selectMenuOption(List<Option> options, MenuNode menuNode, Map<MenuNode,
             String> inputHistory, MenuNodeTraverser menuNodeTraverser){
         inputPresenter.printOptions(options);
         String optionSelected = usersInputOption(menuNodeTraverser);

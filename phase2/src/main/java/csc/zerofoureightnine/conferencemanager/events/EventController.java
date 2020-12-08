@@ -12,7 +12,6 @@ import java.util.*;
 public class EventController implements SubController {
     private EventManager eventManager;
     private EventPresenter eventPresenter;
-    private UserManager userManager;
 
     /**
      * Creates a new EventController with event manager eventManager and user
@@ -24,10 +23,9 @@ public class EventController implements SubController {
      *                     csc.zerofoureightnine.conferencemanager.events.
      */
 
-    public EventController(EventManager eventManager, UserManager userManager) {
+    public EventController(EventManager eventManager) {
         this.eventManager = eventManager;
         this.eventPresenter = new EventPresenter();
-        this.userManager = userManager;
     }
 
     /**
@@ -38,8 +36,8 @@ public class EventController implements SubController {
      * @param inputHistory The input history
      */
     @Override
-    public void performSelectedAction(String username, Permission permissionSelected, HashMap<InputStrategy, String> inputHistory) {
-        switch(permissionSelected){
+    public void performSelectedAction(String username, Permission permissionSelected, Map<InputStrategy, String> inputHistory) {
+        switch(permissionSelected) {
             case EVENT_SELF_ENROLL:
                 enrollUser(username, inputHistory);
                 break;
@@ -79,7 +77,7 @@ public class EventController implements SubController {
      * Registers the inputted user into the event specified in InputHistory.
      * @param inputHistory the input history to be parsed.
      */
-    private void enrollOtherUser(HashMap<InputStrategy, String> inputHistory){
+    private void enrollOtherUser(Map<InputStrategy, String> inputHistory){
         eventManager.enrollUser(inputHistory.get(InputStrategy.VALID_EVENT_ID), inputHistory.get(InputStrategy.VALID_USERNAME));
     }
 
@@ -89,7 +87,7 @@ public class EventController implements SubController {
      * @param inputHistory the input history to be parsed.
      * @param username Username of the current user.
      */
-    private void enrollUser(String username, HashMap<InputStrategy, String> inputHistory){
+    private void enrollUser(String username, Map<InputStrategy, String> inputHistory){
         eventManager.enrollUser(inputHistory.get(InputStrategy.VALID_EVENT_ID), username);
     }
 
@@ -132,7 +130,7 @@ public class EventController implements SubController {
      * @param eventIDList the list of event IDs to render.
      */
     private void renderEventIDList(List<String> eventIDList) {
-        List<LinkedHashMap<String, String>> eventData = new ArrayList<>();
+        List<Map<String, String>> eventData = new ArrayList<>();
         for (String EventID : eventIDList) {
             eventData.add(eventManager.getFormattedEvent(EventID));
         }
@@ -158,7 +156,7 @@ public class EventController implements SubController {
      * Removes the event identified by String eventID from data storage
      * @param inputHistory the input history to be parsed
      */
-    public void deleteEvent(HashMap<InputStrategy, String> inputHistory) {
+    public void deleteEvent(Map<InputStrategy, String> inputHistory) {
         this.eventManager.deleteEvent(inputHistory.get(InputStrategy.VALID_EVENT_ID));
     }
     /**
@@ -167,7 +165,7 @@ public class EventController implements SubController {
      *
      * @param inputHistory the input history to be parsed.
      */
-    public void createEvent(HashMap<InputStrategy, String> inputHistory) {
+    public void createEvent(Map<InputStrategy, String> inputHistory) {
         // TODO implement changes once allows for multiple users in event creation
 
         this.eventManager.createEvent(
@@ -198,7 +196,7 @@ public class EventController implements SubController {
      * @param inputHistory the input history to parse
      * @return the Instant time constructed
      */
-    private Instant parseTimeFromInputHistory(HashMap<InputStrategy, String> inputHistory){
+    private Instant parseTimeFromInputHistory(Map<InputStrategy, String> inputHistory){
         return eventManager.parseTime(
                 inputHistory.get(InputStrategy.EVENT_DAY),
                 inputHistory.get(InputStrategy.EVENT_HOUR));

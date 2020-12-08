@@ -3,7 +3,7 @@ package csc.zerofoureightnine.conferencemanager.menu;
 import csc.zerofoureightnine.conferencemanager.input.InputStrategy;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public interface SubController {
     /**
@@ -12,7 +12,7 @@ public interface SubController {
      * @param permissionSelected the permission that corresponds to an action, that will be performed in the subcontroller.
      * @param inputHistory the hashmap representing the input history of the user, with {@link InputStrategy} key and {@link String} value
      */
-    void performSelectedAction(String username, Permission permissionSelected, HashMap<InputStrategy, String> inputHistory);
+    void performSelectedAction(String username, Permission permissionSelected, Map<InputStrategy, String> inputHistory);
 
 }
 

@@ -3,6 +3,7 @@ package csc.zerofoureightnine.conferencemanager.events;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EventPresenter {
 
@@ -21,8 +22,8 @@ public class EventPresenter {
         System.out.println("List of csc.zerofoureightnine.conferencemanager.events that you are hosting:");
     }
 
-    public void renderEvents(List<LinkedHashMap<String,String>> eventData){
-        for (HashMap<String, String> eventInfo: eventData){
+    public void renderEvents(List<Map<String,String>> eventData){
+        for (Map<String, String> eventInfo: eventData){
             System.out.println("***********************************");
             eventInfo.forEach((category, dataPoint) ->
                     System.out.println(category + ": " + dataPoint));

@@ -29,8 +29,7 @@ public class EventManager {
      * @return A list of all csc.zerofoureightnine.conferencemanager.events' IDs.
      */
     public List<String> getAllEventIds(){
-        List<String> allIDS = new ArrayList<>(this.events.keySet());
-        return allIDS;
+        return new ArrayList<>(this.events.keySet());
     }
 
 
@@ -60,7 +59,6 @@ public class EventManager {
         ed.addSpeakers(newEvent.getSpeakerName());
         ed.setType(newEvent.getType());
         ed.setEventName(newEvent.getEventName());
-        //ed.addParticipants(newEvent.getParticipants());
         ed.setCapacity(newEvent.getCapacity());
         ed.setRoom(newEvent.getRoom());
         ed.setTime(newEvent.getEventTime());
@@ -234,10 +232,10 @@ public class EventManager {
      */
     public boolean checkConflictSpeaker(Instant timeSlot, List<String> username) {
 
-        for (String id: this.events.keySet()){
-            if(this.events.get(id).getEventTime().equals(timeSlot)){
+        for (Event event: this.events.values()){
+            if(event.getEventTime().equals(timeSlot)){
                 for(String str: username){
-                    if(this.events.get(id).getSpeakerName().contains(str)){
+                    if(event.getSpeakerName().contains(str)){
                         return true;
                     }
                 }
@@ -354,79 +352,12 @@ public class EventManager {
         this.pMap.endInteraction();
     }
 
-
-
-
-    //csc.zerofoureightnine.conferencemanager.gateway method
-
-    /**
-     * Returns all information about all csc.zerofoureightnine.conferencemanager.events stored in csc.zerofoureightnine.conferencemanager.events hashmap in EventManager.
-     * @return An arraylist of String[]. Each String[] contains information of one event stored in csc.zerofoureightnine.conferencemanager.events hashmap in
-     * EventManager.
-     */
-    @Deprecated
-    public List<String[]> getAllEventData(){
-        ArrayList<String[]> eventList = new ArrayList<>();
-        for (String id: this.events.keySet()) {
-            eventList.add(getSingleEventData(id));
-        }
-        return eventList;
-    }
-
-    /**
-     * Returns all information of the given event that's stored in csc.zerofoureightnine.conferencemanager.events hashmap in EventManager.
-     * @param id event id
-     * @return A String[] that contains information of one event stored in csc.zerofoureightnine.conferencemanager.events hashmap, including event id, speaker's
-     * name, time, event name, participants, room number, and capacity.
-     */
-    @Deprecated
-    public String[] getSingleEventData(String id) {
-        Event event = this.events.get(id);
-        String speakerName = event.getSpeakerName().toString();
-        String time = event.getEventTime().toString();
-        String eventName = event.getEventName();
-        String participants = event.getParticipants().toString();
-        String room = event.getRoom();
-        String capacity = String.valueOf(event.getCapacity());
-        String type = event.getType().toString();
-        return new String[]{id, speakerName, time, eventName, participants, room, capacity, type};
-    }
-
-    /**
-     * Store the event data of an event in EventManager.
-     * @param eventData A string containing all datas of one event including event id, speaker's
-     * name, time, event name, participants, room number, and capacity.
-     */
-    @Deprecated
-    public void setEventData(String[] eventData){
-        String id = eventData[0];
-        String speakerName[] = eventData[1].split(",");
-        List<String> spk = Arrays.asList(speakerName);
-        Instant time = Instant.parse(eventData[2]);
-        String eventName = eventData[3];
-        String participants = eventData[4];
-        String room = eventData[5];
-        int capacity = Integer.parseInt(eventData[6]);
-        EventType type = EventType.valueOf(eventData[7]);
-        if (!participants.equals("[]")) {
-            String participants1 = participants.substring(1, participants.length()-1);
-            String[] list = participants1.split(",");
-            if (!this.events.containsKey(id)){
-                Event event = new Event(spk, Arrays.asList(list), time, eventName, room, capacity, type);
-                this.events.put(id, event);
-            }
-        }else{
-            this.createEvent(spk, time, eventName, room, capacity, type);
-        }
-
-    }
-
     /**
      * Returns a string representation of an event.
      * @param id Event id
      * @return A string containing the given event's name time, room and capacity.
      */
-    public LinkedHashMap<String,String> getFormattedEvent(String id){
+    public Map<String,String> getFormattedEvent(String id){
         Event e = this.events.get(id);
         LinkedHashMap<String,String> eventData = new LinkedHashMap<>();
         eventData.put("Name",e.getEventName());

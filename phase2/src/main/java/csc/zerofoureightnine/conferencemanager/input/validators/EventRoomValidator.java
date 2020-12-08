@@ -5,12 +5,13 @@ import csc.zerofoureightnine.conferencemanager.input.InputStrategy;
 
 import java.time.Instant;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class EventRoomValidator implements Validator{
     private EventManager eventManager;
-    private LinkedHashMap<InputStrategy, String> inputHistory;
+    private Map<InputStrategy, String> inputHistory;
 
-    public EventRoomValidator(EventManager eventManager, LinkedHashMap<InputStrategy, String> inputHistory){
+    public EventRoomValidator(EventManager eventManager, Map<InputStrategy, String> inputHistory){
         this.eventManager = eventManager;
         this.inputHistory = inputHistory;
     }

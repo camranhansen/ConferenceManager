@@ -151,7 +151,7 @@ public class SpecialRequestManager {
      * @return a LinkedHashMap with Strings as keys and the corresponding String values
      * with the contents defined above
      */
-    public LinkedHashMap<String, String> getRequestDetails(UUID requestID){
+    public Map<String, String> getRequestDetails(UUID requestID){
         LinkedHashMap<String, String> details = new LinkedHashMap<>();
         SpecialRequestData r = this.getRequestFromID(requestID);
         details.put("id", r.getId().toString());
