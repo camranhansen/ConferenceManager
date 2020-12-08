@@ -12,7 +12,6 @@ import java.util.*;
 public class EventController implements SubController {
     private EventManager eventManager;
     private EventPresenter eventPresenter;
-    private UserManager userManager;
 
     /**
      * Creates a new EventController with event manager eventManager and user
@@ -24,10 +23,9 @@ public class EventController implements SubController {
      *                     csc.zerofoureightnine.conferencemanager.events.
      */
 
-    public EventController(EventManager eventManager, UserManager userManager) {
+    public EventController(EventManager eventManager) {
         this.eventManager = eventManager;
         this.eventPresenter = new EventPresenter();
-        this.userManager = userManager;
     }
 
     /**

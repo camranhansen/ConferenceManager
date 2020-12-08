@@ -6,10 +6,6 @@ import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 import java.util.*;
 
 public class MessageMover {
-//    private HashMap<String, List<Message>> unreadInbox;
-//    private HashMap<String, List<Message>> readInbox;
-//    private List<Message> archivedInbox;
-//    private HashMap<String, List<Message>> inbox;
     private PersistentMap<String, MessageData> messageData;
     private String username;
 
@@ -20,10 +16,6 @@ public class MessageMover {
      * @param username username of the user accessing MessageMover
      */
     public MessageMover(MessageManager messageManager, String username){
-//        this.unreadInbox = messageManager.getUnreadInbox(username);
-//        this.readInbox = messageManager.getReadInbox(username);
-//        this.archivedInbox = messageManager.getArchivedInbox(username);
-//        this.inbox = messageManager.retrieveUserInbox(username);
         this.messageData = messageManager.getMessageData();
         this.username = username;
     }
@@ -37,28 +29,6 @@ public class MessageMover {
      * @param timeSent sent time of the message
      */
     public void moveReadToUnread(String from, String content, String timeSent){
-//        String from = message.getSender();
-//        List<Message> messages = new ArrayList<>();
-//        for(Message m: readInbox.get(from)){
-//            if (m.getContent().equals(message.getContent()) && m.getTimeSent().toString().substring(0,19).equals(message.getTimeSent().toString().substring(0,19))){
-//                messages.add(m);
-//            }
-//        }
-//        for (Message m: messages){
-//            readInbox.get(from).remove(m);
-//        }
-//        if(!unreadInbox.containsKey(from)) {
-//            List<Message> m = new ArrayList<>();
-//            unreadInbox.put(from, m);
-//        } else{
-//            List<Message> m = unreadInbox.get(from);
-//            m.add(message);
-//        }
-//        String sender = message.getSender();
-//        String content = message.getContent();
-//        String[] recipients = message.getRecipients();
-//        Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
-
         this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         for (MessageData m: md){
@@ -77,28 +47,6 @@ public class MessageMover {
      * @param timeSent sent time of the message
      */
     public void moveUnreadToRead(String from, String content, String timeSent){
-//        String from = message.getSender();
-//        List<Message> messages1 = new ArrayList<>();
-//        for(Message m: unreadInbox.get(from)){
-//            if (m.getContent().equals(message.getContent()) && m.getTimeSent().toString().substring(0,19).equals(message.getTimeSent().toString().substring(0,19))){
-//                messages1.add(m);
-//            }
-//        }
-//        for (Message m: messages1){
-//            unreadInbox.get(from).remove(m);
-//        }
-//        if (!readInbox.containsKey(from)){
-//            List<Message> messages = new ArrayList<>();
-//            messages.add(message);
-//            readInbox.put(from, messages);
-//        }
-//        else{
-//            readInbox.get(from).add(message);
-//        }
-//    }
-//        String sender = message.getSender();
-//        String content = message.getContent();
-//        String[] recipients = message.getRecipients();
         this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         for (MessageData m: md){
@@ -135,21 +83,6 @@ public class MessageMover {
      * @param timeSent sent time of the message
      */
     public void moveToArchived(String from, String content, String timeSent) {
-//        String from = message.getSender();
-//        if (unreadInbox.containsKey(from)) {
-//            if (unreadInbox.get(from).contains(message)) {
-//                this.moveUnreadToRead(message);
-//            }
-//        }
-//        if (!archivedInbox.contains(message)){
-//            archivedInbox.add(message);
-//        }
-//    }
-//        String sender = message.getSender();
-//        String content = message.getContent();
-//        String[] recipients = message.getRecipients();
-//        Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
-
         this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         for (MessageData m : md) {
@@ -171,13 +104,6 @@ public class MessageMover {
      * @param timeSent sent time of the message
      */
     public void removeFromArchived(String from, String content, String timeSent){
-//        archivedInbox.remove(message);
-//    }
-//        String sender = message.getSender();
-//        String content = message.getContent();
-//        String[] recipients = message.getRecipients();
-//        Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
-
         this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         for (MessageData m : md) {
@@ -197,22 +123,6 @@ public class MessageMover {
      * @param timeSent sent time of the message
      */
     public void deleteOneMessage(String from, String content, String timeSent){
-//        if (unreadInbox.containsKey((from))){
-//            unreadInbox.get(from).remove(message);
-//        }
-//        if (readInbox.containsKey(from)){
-//            readInbox.get(from).remove(message);
-//        }
-//        if (inbox.containsKey(from)){
-//            inbox.get(from).remove(message);
-//        }
-//        archivedInbox.remove(message);
-//    }
-//        String sender = message.getSender();
-//        String content = message.getContent();
-//        String[] recipients = message.getRecipients();
-//        Set<String> setOfRecipients = new HashSet<>(Arrays.asList(recipients));
-
         this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         for (MessageData m: md){
@@ -233,11 +143,6 @@ public class MessageMover {
          * @param from username of the sender
          */
     public void deleteConversation(String from) {
-//        unreadInbox.remove(from);
-//        readInbox.remove(from);
-//        inbox.remove(from);
-//        archivedInbox.removeIf(message -> message.getSender().equals(from));
-//    }
         this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         for (MessageData m : md) {
@@ -256,10 +161,6 @@ public class MessageMover {
      * Clear this user's inbox.
      */
     public void clearAllInboxes(){
-//        unreadInbox.clear();
-//        readInbox.clear();
-//        inbox.clear();
-//        archivedInbox.clear();
         this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         for(MessageData m: md) {

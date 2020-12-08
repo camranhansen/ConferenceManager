@@ -100,14 +100,6 @@ public class EventData implements Identifiable<String> {
         this.capacity = capacity;
     }
 
-//    public String getEventId() {
-//        return eventId;
-//    }
-//
-//    public void setEventId() {
-//        this.eventId = this.room + this.time.toString();
-//    }
-
     public EventType getType() {
         return type;
     }
