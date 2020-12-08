@@ -17,4 +17,6 @@ public class RuntimeDataHolder {
         int runtimeStatValue = pMap.get(username).getStatValue(runtimeStat) + 1;
         pMap.get(username).setStatValue(runtimeStat, runtimeStatValue);
     }
+
+    public PersistentMap<String, RuntimeData> getMap() { return pMap; }
 }
