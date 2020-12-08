@@ -1,10 +1,18 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
-
-import java.time.Instant;
-import java.util.*;
 
 //TODO: add a constructor for inboxes that already exist
 
@@ -234,8 +242,8 @@ public class MessageManager {
          * "You have no messages from this username." if this user's inbox doesn't contain the sender's username as a key.
          */
     public String singleInboxToString(String username, String from){
-        Map<String, List<Message>> inboxes = retrieveUserInbox(username);
-        if (!inboxes.containsKey(from)){
+        Map<String, List<Message>> usersInbox = retrieveUserInbox(username);
+        if (!usersInbox.containsKey(from)){
             return "You have no messages from this username.";
         }
         List<Message> inboxFrom = retrieveUserInboxFor(username, from);
@@ -255,10 +263,8 @@ public class MessageManager {
     private List<Message> sortByTime(List<Message> messages) {
         for (int i = 0; i < messages.size(); i++) {
             for (int j = 0; j < messages.size(); j++) {
-                if ((j > i)) {
-                    if (messages.get(i).getTimeSent().compareTo(messages.get(j).getTimeSent()) > 0) {
-                        Collections.swap(messages, i, j);
-                    }
+                if ((j > i) && messages.get(i).getTimeSent().compareTo(messages.get(j).getTimeSent()) > 0) {
+                    Collections.swap(messages, i, j);
                 }
             }
         }
@@ -373,18 +379,18 @@ public class MessageManager {
      * usernames at index 3, of a single message sent to the given user.
      */
     public List<String[]> getInboxAsArray(String user) {
-        HashMap<String, List<Message>> inbox = inboxes.get(user);
+        Map<String, List<Message>> inbox = retrieveUserInbox(user);
 
         List<String[]> res = new ArrayList<>();
         for (List<Message> fromUser : inbox.values()) {
-            String[] messageData = new String[4];
+            String[] text = new String[4];
             for (Message message : fromUser) {
-                messageData[0] = message.getSender();
-                messageData[1] = message.getTimeSent().toString();
-                messageData[2] = message.getContent();
-                messageData[3] = Arrays.toString(message.getRecipients()).replaceAll("[\\[\\]]", "");
+                text[0] = message.getSender();
+                text[1] = message.getTimeSent().toString();
+                text[2] = message.getContent();
+                text[3] = Arrays.toString(message.getRecipients()).replaceAll("[\\[\\]]", "");
             }
-            res.add(messageData);
+            res.add(text);
         }
         return res;
     }

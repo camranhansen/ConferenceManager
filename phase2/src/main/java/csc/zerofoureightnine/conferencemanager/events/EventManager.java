@@ -232,10 +232,10 @@ public class EventManager {
      */
     public boolean checkConflictSpeaker(Instant timeSlot, List<String> username) {
 
-        for (String id: this.events.keySet()){
-            if(this.events.get(id).getEventTime().equals(timeSlot)){
+        for (Event event: this.events.values()){
+            if(event.getEventTime().equals(timeSlot)){
                 for(String str: username){
-                    if(this.events.get(id).getSpeakerName().contains(str)){
+                    if(event.getSpeakerName().contains(str)){
                         return true;
                     }
                 }
