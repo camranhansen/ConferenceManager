@@ -1,6 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
+import csc.zerofoureightnine.conferencemanager.events.EventType;
 import csc.zerofoureightnine.conferencemanager.gateway.DummyPersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLConfiguration;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
@@ -141,14 +142,15 @@ public class MessageControllerTest {
         Instant time = Instant.now();
         List<String> spk = new ArrayList<>();
         spk.add("apk1");
-        //eventManager.createEvent(spk, time, "talk1", "23", 2, EventType.SINGLE);
-        //String eventId = "23" + time;
-        //eventManager.enrollUser(eventId, "u2");
-        //HashMap<String, User> users = generateUserHash();
-        //UserManager userManager = new UserManager(users);
-        //MessageController messageController = new MessageController(messageManager, userManager, eventManager);
-        //messageController.performSelectedAction("spk1", Permission.MESSAGE_EVENT_USERS);
-        //String messages = messageManager.wholeInboxToString("u2");
+        eventManager.createEvent(spk, time, "talk1", "23", 2, EventType.SINGLE);
+        String eventId = "23" + time;
+        eventManager.enrollUser(eventId, "u2");
+        PersistentMap<String, UserData> users = generateUserMap();
+        UserManager userManager = new UserManager(users);
+        PermissionManager permissionManager = new PermissionManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, permissionManager, eventManager);
+        messageController.performSelectedAction("spk1", Permission.MESSAGE_EVENT_USERS);
+        String messages = messageManager.wholeInboxToString("u2");
         //assertTrue(messages.contains("hello") && messages.contains("spk1"));
         // TODO: fix this test.
     }
@@ -167,13 +169,14 @@ public class MessageControllerTest {
         EventManager eventManager = new EventManager(pMap);
         List<String> spk = new ArrayList<>();
         spk.add("spk1");
-        //eventManager.createEvent(spk, time, "talk1", "23", 2, EventType.SINGLE);
-        //eventManager.enrollUser(eventId, "u2");
-        //HashMap<String, User> users = generateUserHash();
-        //UserManager userManager = new UserManager(users);
-        //MessageController messageController = new MessageController(messageManager, userManager, eventManager);
-        //messageController.performSelectedAction("spk1", Permission.MESSAGE_EVENT_USERS);
-        //String messages = messageManager.wholeInboxToString("u2");
+        eventManager.createEvent(spk, time, "talk1", "23", 2, EventType.SINGLE);
+        eventManager.enrollUser(eventId, "u2");
+        PersistentMap<String, UserData> users = generateUserMap();
+        UserManager userManager = new UserManager(users);
+        PermissionManager permissionManager = new PermissionManager(users);
+        MessageController messageController = new MessageController(messageManager, userManager, permissionManager, eventManager);
+        messageController.performSelectedAction("spk1", Permission.MESSAGE_EVENT_USERS);
+        String messages = messageManager.wholeInboxToString("u2");
         //assertTrue(messages.contains("hello") && messages.contains("spk1"));
     }
 
@@ -290,15 +293,16 @@ public class MessageControllerTest {
         mMap = new SQLMap<>(config, MessageData.class);
         MessageManager mm = new MessageManager(mMap);
         EventManager em = new EventManager(pMap);
-        UserManager um = new UserManager(new DummyPersistentMap<>());
-        PermissionManager pm = new PermissionManager(new DummyPersistentMap<>());
+        PersistentMap<String, UserData> users = generateUserMap();
+        UserManager um = new UserManager(users);
+        PermissionManager pm = new PermissionManager(users);
         MessageController mc = new MessageController(mm, um, pm, em);
         um.createUser("user", "123", Template.ORGANIZER.getPermissions());
         um.createUser("user2", "123", Template.ATTENDEE.getPermissions());
         um.createUser("user3", "123", Template.ATTENDEE.getPermissions());
         mc.orgSendToAllAtt("user", "hello");
         assertEquals(mm.retrieveUserInboxFor("user2", "user").get(0).getContent(), "hello");
-        assertEquals("[user2, user3]",
+        assertEquals("[spk2, user2, spk1, u1, u2, user3]",
                 Arrays.deepToString(mm.retrieveUserInboxFor("user3", "user").get(0).getRecipients()));
     }
 
