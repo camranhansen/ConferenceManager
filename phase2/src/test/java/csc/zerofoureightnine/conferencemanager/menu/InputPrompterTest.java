@@ -1,19 +1,5 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 
-import csc.zerofoureightnine.conferencemanager.input.InputPrompter;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
-
 public class InputPrompterTest {
 
 //    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();

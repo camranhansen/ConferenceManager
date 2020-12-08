@@ -11,12 +11,14 @@ import csc.zerofoureightnine.conferencemanager.input.InputStrategy;
 import csc.zerofoureightnine.conferencemanager.menu.SubController;
 import csc.zerofoureightnine.conferencemanager.options.Option;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 
 public class MessageController implements SubController {
     private MessageManager messageManager;
     private UserManager userManager;
+    private PermissionManager permissionManager;
     private EventManager eventManager;
     private MessagePresenter messagePresenter;
     private InputPrompter inputPrompter;
@@ -30,9 +32,11 @@ public class MessageController implements SubController {
      * @param userManager    Manger of the users.
      * @param eventManager   Manger of the events.
      */
-    public MessageController(MessageManager messageManager, UserManager userManager, EventManager eventManager) {
+    public MessageController(MessageManager messageManager, UserManager userManager, PermissionManager permissionManager,
+                             EventManager eventManager) {
         this.messageManager = messageManager;
         this.userManager = userManager;
+        this.permissionManager = permissionManager;
         this.eventManager = eventManager;
         this.messagePresenter = new MessagePresenter();
         this.inputPrompter = new InputPrompter();
@@ -298,7 +302,7 @@ public class MessageController implements SubController {
      * @param message Content of the message.
      */
     public void orgSendToAllAtt(String from, String message) {
-        String[] attendees = getStringArray(userManager.getUserByPermissionTemplate(Template.ATTENDEE));
+        String[] attendees = getStringArray(permissionManager.getUserByPermissionTemplate(Template.ATTENDEE));
         List<String> list = new ArrayList<>(Arrays.asList(attendees));
         list.remove(from);
         attendees = list.toArray(new String[0]);
@@ -316,7 +320,7 @@ public class MessageController implements SubController {
      * @param message Content of the message.
      */
     public void orgSendToAllSpeakers(String from, String message) {
-        String[] speakers = getStringArray(userManager.getUserByPermissionTemplate(Template.SPEAKER));
+        String[] speakers = getStringArray(permissionManager.getUserByPermissionTemplate(Template.SPEAKER));
         List<String> list = new ArrayList<>(Arrays.asList(speakers));
         list.remove(from);
         speakers = list.toArray(new String[0]);

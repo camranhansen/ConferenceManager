@@ -1,11 +1,5 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 
-import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
-import csc.zerofoureightnine.conferencemanager.users.permission.Template;
-import org.junit.Test;
-
-import java.util.List;
-
 public class MenuPresenterTest {
 
 //    @Test

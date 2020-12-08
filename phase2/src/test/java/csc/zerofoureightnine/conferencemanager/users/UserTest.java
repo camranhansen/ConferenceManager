@@ -1,12 +1,8 @@
 package csc.zerofoureightnine.conferencemanager.users;
 
-import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
 public class UserTest {
 
     @Test

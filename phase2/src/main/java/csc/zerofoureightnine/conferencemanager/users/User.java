@@ -4,6 +4,7 @@ import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 import java.util.List;
 
+@Deprecated
 public class User {
     private final String username;
     private String password;

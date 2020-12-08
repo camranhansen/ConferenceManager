@@ -1,9 +1,5 @@
 package csc.zerofoureightnine.conferencemanager.menu;
 
-import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
-import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
-import csc.zerofoureightnine.conferencemanager.users.UserManager;
-
 import java.util.LinkedHashMap;
 
 public interface MenuAction {

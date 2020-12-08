@@ -4,7 +4,6 @@ package csc.zerofoureightnine.conferencemanager.menu;
 import csc.zerofoureightnine.conferencemanager.input.InputStrategy;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
-import java.util.EnumMap;
 import java.util.LinkedHashMap;
 
 public class MenuNode {

@@ -1,6 +1,5 @@
 package csc.zerofoureightnine.conferencemanager.input.validators;
 
-import csc.zerofoureightnine.conferencemanager.events.Event;
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.input.InputStrategy;
 

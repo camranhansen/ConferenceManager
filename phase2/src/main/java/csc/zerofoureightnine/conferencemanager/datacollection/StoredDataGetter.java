@@ -2,20 +2,17 @@ package csc.zerofoureightnine.conferencemanager.datacollection;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
-import csc.zerofoureightnine.conferencemanager.users.UserManager;
 
 import java.util.List;
 
 public class StoredDataGetter {
     private EventManager eventManager;
     private MessageManager messageManager;
-    private UserManager userManager;
     private String name;
 
-    public StoredDataGetter(EventManager em, MessageManager mm ,UserManager um, String username){
+    public StoredDataGetter(EventManager em, MessageManager mm, String username){
         this.eventManager = em;
         this.messageManager = mm;
-        this.userManager = um;
         this.name = username;
     }
 

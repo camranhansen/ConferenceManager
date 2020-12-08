@@ -1,7 +1,5 @@
 package csc.zerofoureightnine.conferencemanager.events;
 
-import javax.print.DocFlavor;
-import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;

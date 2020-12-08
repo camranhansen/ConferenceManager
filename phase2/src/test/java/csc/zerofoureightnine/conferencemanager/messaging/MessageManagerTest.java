@@ -202,15 +202,15 @@ public class MessageManagerTest {
         assertEquals("You have no archived messages", string2);
         Message message2 = new Message("sender2", new String[]{"recipient"}, "hello");
         mm.sendMessage("sender2", "hello", "recipient", "recipient2");
-        //messageMover.moveToArchived(message2);
+        messageMover.moveToArchived(md2.getSender(), md2.getContent(), md2.getTimeSent().toString());
         String string3 = mm.archivedMessagesToString("recipient");
         //assertEquals("sender: hello\n" + "sender2: hello\n", string3);
-        //messageMover.removeFromArchived(message);
+        messageMover.removeFromArchived(md.getSender(), md.getContent(), md.getTimeSent().toString());
         String string4 = mm.archivedMessagesToString("recipient");
         //assertEquals("sender2: hello\n", string4);
-        //messageMover.removeFromArchived(message2);
+        messageMover.removeFromArchived(md2.getSender(), md2.getContent(), md2.getTimeSent().toString());
         String string5 = mm.archivedMessagesToString("recipient");
-        //assertEquals("You have no archived messages", string5);
+        assertEquals("You have no archived messages", string5);
 
 
     }
