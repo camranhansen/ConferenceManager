@@ -147,6 +147,8 @@ public abstract class CSVGateway {
                 if (bufferedWriter != null) {
                     bufferedWriter.close();
                 }
+            } catch(IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -192,6 +194,8 @@ public abstract class CSVGateway {
                 if (bufferedReader != null) {
                     bufferedReader.close();
                 }
+            } catch(IOException e) {
+                e.printStackTrace();
             }
         }
     }

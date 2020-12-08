@@ -80,7 +80,7 @@ public class MessageControllerTest {
         UserManager userManager = new UserManager(users);
         PermissionManager permissionManager = new PermissionManager((users));
         MessageController messageController = new MessageController(messageManager, userManager, permissionManager, eventManager);
-        messageController.performSelectedAction("org1", Permission.MESSAGE_ALL_USERS);
+        messageController.performSelectedAction("org1", Permission.MESSAGE_ALL_USERS, null);
         String messages = messageManager.wholeInboxToString("u1");
         String message = messageManager.singleInboxToString("u1", "org1");
         assertTrue(messages.contains("hello"));
@@ -101,7 +101,7 @@ public class MessageControllerTest {
         UserManager userManager = new UserManager(users);
         PermissionManager permissionManager = new PermissionManager((users));
         MessageController messageController = new MessageController(messageManager, userManager, permissionManager, eventManager);
-        messageController.performSelectedAction("org1", Permission.MESSAGE_ALL_USERS);
+        messageController.performSelectedAction("org1", Permission.MESSAGE_ALL_USERS, null);
         String messages = messageManager.wholeInboxToString("spk1");
         String message = messageManager.singleInboxToString("spk1", "org1");
         String attendee = messageManager.wholeInboxToString("u1");
@@ -124,7 +124,7 @@ public class MessageControllerTest {
         UserManager userManager = new UserManager(users);
         PermissionManager permissionManager = new PermissionManager((users));
         MessageController messageController = new MessageController(messageManager, userManager, permissionManager, eventManager);
-        messageController.performSelectedAction("u1", Permission.MESSAGE_SINGLE_USER);
+        messageController.performSelectedAction("u1", Permission.MESSAGE_SINGLE_USER, null);
         String messages = messageManager.wholeInboxToString("u2");
         assertTrue(messages.contains("hello") && messages.contains("u1"));
     }
@@ -150,7 +150,7 @@ public class MessageControllerTest {
         UserManager userManager = new UserManager(users);
         PermissionManager permissionManager = new PermissionManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, permissionManager, eventManager);
-        messageController.performSelectedAction("spk1", Permission.MESSAGE_EVENT_USERS);
+        messageController.performSelectedAction("spk1", Permission.MESSAGE_EVENT_USERS, null);
         String messages = messageManager.wholeInboxToString("u2");
         //assertTrue(messages.contains("hello") && messages.contains("spk1"));
         // TODO: fix this test.
@@ -177,7 +177,7 @@ public class MessageControllerTest {
         UserManager userManager = new UserManager(users);
         PermissionManager permissionManager = new PermissionManager(users);
         MessageController messageController = new MessageController(messageManager, userManager, permissionManager, eventManager);
-        messageController.performSelectedAction("spk1", Permission.MESSAGE_EVENT_USERS);
+        messageController.performSelectedAction("spk1", Permission.MESSAGE_EVENT_USERS, null);
         String messages = messageManager.wholeInboxToString("u2");
         //assertTrue(messages.contains("hello") && messages.contains("spk1"));
     }
@@ -199,7 +199,7 @@ public class MessageControllerTest {
         messageManager.sendMessage("u2", "hi", "u1");
         messageManager.sendMessage("u2", "how are you?", "u1");
         messageManager.sendMessage("spk1", "hello", "u1");
-        messageController.performSelectedAction("u1", Permission.VIEW_SELF_MESSAGES);
+        messageController.performSelectedAction("u1", Permission.VIEW_SELF_MESSAGES, null);
         String out = "0. View all your messages\n" +
                 "1. View messages from one user\n" + "2. View archived messages\n" + "3. View unread messages\n" +
                 "spk1: hello, \n"+"u2: hi, how are you?, \n\n";
@@ -223,7 +223,7 @@ public class MessageControllerTest {
         messageManager.sendMessage("u2", "hi", "u1");
         messageManager.sendMessage("u2", "how are you?", "u1");
         messageManager.sendMessage("spk1", "hello", "u1");
-        messageController.performSelectedAction("u1", Permission.VIEW_SELF_MESSAGES);
+        messageController.performSelectedAction("u1", Permission.VIEW_SELF_MESSAGES, null);
         String out = "0. View all your messages\n" +
                 "1. View messages from one user\n" + "2. View archived messages\n" + "3. View unread messages\n" +
                 "Enter other username messages you'd like to see: \n"+
@@ -248,7 +248,7 @@ public class MessageControllerTest {
         messageManager.sendMessage("u2", "hi", "u1");
         messageManager.sendMessage("u2", "how are you?", "u1");
         messageManager.sendMessage("spk1", "hello", "u1");
-        messageController.performSelectedAction("u1", Permission.VIEW_OTHER_MESSAGES);
+        messageController.performSelectedAction("u1", Permission.VIEW_OTHER_MESSAGES, null);
         String out = "Enter username's messages you'd like to see: \n" + "0. View all your messages\n" +
                 "1. View messages from one user\n"+ "2. View archived messages\n" + "3. View unread messages\n" +
                 "spk1: hello, \n" + "u2: hi, how are you?, \n\n";

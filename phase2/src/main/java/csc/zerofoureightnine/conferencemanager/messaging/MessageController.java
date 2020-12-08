@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.input.InputPrompter;
@@ -51,7 +52,8 @@ public class MessageController implements SubController {
      * @param username           Username of the current user.
      * @param permissionSelected Permission the user would like to pursue.
      */
-    public void performSelectedAction(String username, Permission permissionSelected) {
+    @Override
+    public void performSelectedAction(String username, Permission permissionSelected, Map<InputStrategy, String> inputHistory) {
         if (permissionSelected == Permission.MESSAGE_ALL_USERS) {
             orgSendToAll(username);
         } else if (permissionSelected == Permission.MESSAGE_SINGLE_USER) {
@@ -350,10 +352,5 @@ public class MessageController implements SubController {
         String[] res = new String[list.size()];
         list.toArray(res);
         return res;
-    }
-
-    @Override
-    public void performSelectedAction(String username, Permission permissionSelected, HashMap<InputStrategy, String> inputHistory) {
-
     }
 }

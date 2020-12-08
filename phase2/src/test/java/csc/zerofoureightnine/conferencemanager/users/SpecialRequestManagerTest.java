@@ -142,7 +142,7 @@ public class SpecialRequestManagerTest {
         SpecialRequestManager srm = new SpecialRequestManager(map);
         List<UUID> timList = srm.getRequests("tim");
         UUID requestID = timList.get(0);
-        LinkedHashMap<String, String> timData = srm.getRequestDetails(requestID);
+        Map<String, String> timData = srm.getRequestDetails(requestID);
         assertEquals(requestID.toString(), timData.get("id"));
         assertEquals("tim", timData.get("requestingUser"));
         assertEquals("Dietary", timData.get("header"));

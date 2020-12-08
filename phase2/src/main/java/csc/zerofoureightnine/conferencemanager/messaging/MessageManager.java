@@ -296,7 +296,7 @@ public class MessageManager {
          * "You have no messages from this username." if this user's inbox doesn't contain the sender's username as a key.
          */
     public String singleInboxToString(String username, String from){
-        HashMap<String, List<Message>> inboxes = retrieveUserInbox(username);
+        Map<String, List<Message>> inboxes = retrieveUserInbox(username);
         if (!inboxes.containsKey(from)){
             return "You have no messages from this username.";
         }
@@ -337,7 +337,7 @@ public class MessageManager {
      */
     public String wholeInboxToString(String username) {
         StringBuilder allMessages = new StringBuilder();
-        HashMap<String, List<Message>> inbox = retrieveUserInbox(username);
+        Map<String, List<Message>> inbox = retrieveUserInbox(username);
         if (inbox.isEmpty()){
             return "You have no messages";
         }
@@ -387,7 +387,7 @@ public class MessageManager {
         if (getUnreadInbox(username).isEmpty()){
             return "You have no unread messages";
         }
-        HashMap<String, List<Message>> unread = getUnreadInbox(username);
+        Map<String, List<Message>> unread = getUnreadInbox(username);
         StringBuilder string = new StringBuilder();
         for (String from: unread.keySet()){
             string.append(singleUnreadInboxToString(username, from));
@@ -407,7 +407,7 @@ public class MessageManager {
      * sender is empty.
      */
     public String singleUnreadInboxToString(String username, String from){
-        HashMap<String, List<Message>> unread = getUnreadInbox(username);
+        Map<String, List<Message>> unread = getUnreadInbox(username);
         if (!unread.containsKey(from)){
             return "You have no unread messages from "+from;
         }
@@ -459,7 +459,7 @@ public class MessageManager {
      * String[] of recipients' usernames at index 3.
      */
     public void putMessageFromArray(String user, String[] row) {
-        HashMap<String, List<Message>> inbox = retrieveUserInbox(user);
+        Map<String, List<Message>> inbox = retrieveUserInbox(user);
         String sender = row[0];
         Message curMessage = new Message(sender, row[3].split(", "), row[2]);
         curMessage.setTimeSent(Instant.parse(row[1]));

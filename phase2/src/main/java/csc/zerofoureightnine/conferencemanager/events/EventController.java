@@ -39,7 +39,7 @@ public class EventController implements SubController {
      */
     @Override
     public void performSelectedAction(String username, Permission permissionSelected, Map<InputStrategy, String> inputHistory) {
-        switch(permissionSelected){
+        switch(permissionSelected) {
             case EVENT_SELF_ENROLL:
                 enrollUser(username, inputHistory);
                 break;
@@ -132,7 +132,7 @@ public class EventController implements SubController {
      * @param eventIDList the list of event IDs to render.
      */
     private void renderEventIDList(List<String> eventIDList) {
-        List<LinkedHashMap<String, String>> eventData = new ArrayList<>();
+        List<Map<String, String>> eventData = new ArrayList<>();
         for (String EventID : eventIDList) {
             eventData.add(eventManager.getFormattedEvent(EventID));
         }
@@ -198,7 +198,7 @@ public class EventController implements SubController {
      * @param inputHistory the input history to parse
      * @return the Instant time constructed
      */
-    private Instant parseTimeFromInputHistory(HashMap<InputStrategy, String> inputHistory){
+    private Instant parseTimeFromInputHistory(Map<InputStrategy, String> inputHistory){
         return eventManager.parseTime(
                 inputHistory.get(InputStrategy.EVENT_DAY),
                 inputHistory.get(InputStrategy.EVENT_HOUR));
