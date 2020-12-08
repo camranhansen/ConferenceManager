@@ -6,6 +6,6 @@ public enum RuntimeStats {
     LINES_INPUTTED,
     MOST_INVOKED_PERMISSION,
     TIME_SPENT,
-
+    MESSAGES_SENT
 
 }

@@ -28,6 +28,11 @@ public class RuntimeData implements Identifiable<String>{
 
     public void setStatValue(RuntimeStats runtimeStats, Integer num) { statMap.put(runtimeStats, num); }
 
+    /*
+    public void setStatValue(RuntimeStats runtimeStats, Instant time) {
+        statMap.put(runtimeStats, num);
+    }*/
+
     public Map<RuntimeStats, Integer> getStatMap() {
         return statMap;
     }

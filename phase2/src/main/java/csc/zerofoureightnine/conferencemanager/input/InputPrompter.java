@@ -2,11 +2,13 @@ package csc.zerofoureightnine.conferencemanager.input;
 
 import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeDataHolder;
 import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeStats;
-import csc.zerofoureightnine.conferencemanager.menu.*;
+import csc.zerofoureightnine.conferencemanager.menu.MenuGoal;
+import csc.zerofoureightnine.conferencemanager.menu.MenuNode;
+import csc.zerofoureightnine.conferencemanager.menu.MenuNodeTraverser;
+import csc.zerofoureightnine.conferencemanager.menu.SubController;
 import csc.zerofoureightnine.conferencemanager.options.Option;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -44,6 +46,7 @@ public class InputPrompter implements Inputable{
     public String getValidResponse(InputStrategy inputStrategy) {
         inputPresenter.presentPrompt(inputStrategy.getPrompt());
         String input = scanner.nextLine();
+        runtimeDataHolder.incrementStat(RuntimeStats.LINES_INPUTTED);
         if (inputIsReservedKeyword(input)) {
             return "";
         } else {
@@ -52,6 +55,7 @@ public class InputPrompter implements Inputable{
                 runtimeDataHolder.incrementStat(RuntimeStats.BAD_INPUT);
                 inputPresenter.presentPrompt(inputStrategy.getPrompt());
                 input = scanner.nextLine();
+                runtimeDataHolder.incrementStat(RuntimeStats.LINES_INPUTTED);
             }
         }
         return input;
@@ -61,6 +65,8 @@ public class InputPrompter implements Inputable{
         inputPresenter.presentPrompt(inputStrategy.getPrompt());
         inputPresenter.printOptions(inputStrategyManager.getOptions(inputStrategy));
         String input = scanner.nextLine();
+        runtimeDataHolder.incrementStat(RuntimeStats.MENUS_VISITED);
+        runtimeDataHolder.incrementStat(RuntimeStats.LINES_INPUTTED);
         if (inputIsReservedKeyword(input)) {
             return "";
         } else {
@@ -70,6 +76,7 @@ public class InputPrompter implements Inputable{
                 inputPresenter.presentPrompt(inputStrategy.getPrompt());
                 inputPresenter.printOptions(inputStrategyManager.getOptions(inputStrategy));
                 input = scanner.nextLine();
+                runtimeDataHolder.incrementStat(RuntimeStats.LINES_INPUTTED);
             }
         }
         return input;
