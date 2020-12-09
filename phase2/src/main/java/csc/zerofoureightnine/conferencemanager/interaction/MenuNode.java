@@ -41,29 +41,26 @@ public class MenuNode { //UI
 
     public MenuNode executeNode(String username, Scanner scanner, List<Permission> userPermissions, MenuNode mainMenu) {
         List<MenuNode> available = availableOptions(mainMenu, userPermissions);
-        Map<Integer, MenuNode> selectableOptions = new HashMap<>();
         List<Presentable> presentables = new ArrayList<>();
-        available.forEach(m -> presentables.add(m.presentable));
+        available.forEach(m -> presentables.add(m == null ? null : m.presentable));
         String presentation = presentable.getPresentation(presentables);
         if (presentation != null) System.out.println(presentation);
-        System.out.println(presentable.getPrompt());
-        for (int i = 0; i < available.size(); i++) {
-            selectableOptions.put(i, available.get(0));
-        }
+        System.out.println(presentable.getPrompt() + ": ");
         Map<Permission, MenuNode> selectablePermissions = new HashMap<>();
         for (MenuNode menuNode : available) {
-            if (menuNode.permission != null) selectablePermissions.put(menuNode.permission, menuNode);
+            if (menuNode != null && menuNode.permission != null) selectablePermissions.put(menuNode.permission, menuNode);
         }
         
         String input = scanner.nextLine();
         while (validatable != null && !validatable.validateInput(input, available)) {
             String retryMsg = presentable.getRetryMessage();
             if (retryMsg != null && !retryMsg.isEmpty()) {
-                System.out.println(retryMsg);
+                System.out.println(retryMsg + ": ");
             }
             input = scanner.nextLine();
         }
-        MenuNode next = action.complete(username, input, selectableOptions, selectablePermissions);
+        MenuNode next = action.complete(username, input, available, selectablePermissions);
+        if (next == null) throw new IllegalStateException("Cannot move to null node.");
         if (presentable.getCompleteMessage() != null && !presentable.getCompleteMessage().isEmpty()) System.out.println(presentable.getCompleteMessage());
         return next;
     }
@@ -75,14 +72,16 @@ public class MenuNode { //UI
         for (MenuNode menuNode : options) {
             available.add(menuNode);
         }
-        for (Permission permission : userPermissions) {
-            if (permissionOptions.containsKey(permission)) available.add(permissionOptions.get(permission));
+        if (userPermissions != null) {
+            for (Permission permission : userPermissions) {
+                if (permissionOptions.containsKey(permission)) available.add(permissionOptions.get(permission));
+            }
         }
         return available;
     }
 
     public static class MenuNodeBuilder {
-        private Set<MenuNode> options;
+        private Set<MenuNode> options = new HashSet<>();
         private MenuNode parent;
         private Action action;
         private Validatable validatable;

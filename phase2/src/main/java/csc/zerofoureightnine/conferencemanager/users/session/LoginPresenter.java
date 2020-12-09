@@ -19,7 +19,7 @@ public class LoginPresenter implements Presentable, SessionObserver {
 
     @Override
     public String getPrompt() {
-        return "Please enter your " + (collect ? "username" : "password") + ": ";
+        return "Please enter your " + (collect ? "username" : "password");
     }
 
     @Override

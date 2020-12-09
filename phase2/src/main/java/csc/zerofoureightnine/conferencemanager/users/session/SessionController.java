@@ -18,7 +18,6 @@ public class SessionController implements SectionController { //UI
     private UserManager userManager;
     private Set<SessionObserver> observers = new HashSet<>();
     private List<MenuNode> entryNodes = new ArrayList<>();
-    private MenuNode mainMenu;
     private MenuNode authenticate;
     private MenuNode collectUsername;
     private String currentUser;
@@ -27,27 +26,29 @@ public class SessionController implements SectionController { //UI
 
     public SessionController(PersistentMap<String, UserData> userData) {
         this.userManager = new UserManager(userData);
+
+        setupAuthenticate();
+        setupCollectUsername();
     }
 
     public boolean validationPass(String username, List<MenuNode> options) {
         return true;
     }
 
-    public MenuNode attemptAuthentication(String username, String input, Map<Integer, MenuNode> selectableOptions, Map<Permission, MenuNode> selectablePermissions) {
+    public MenuNode attemptAuthentication(String username, String input, List<MenuNode> selectableOptions, Map<Permission, MenuNode> selectablePermissions) {
         if (userManager.userExists(currentUser) && userManager.getPassword(currentUser).equals(input)) {
             loggedIn = true;
         }
         onAuthAttempted();
-        return mainMenu;
+        return selectableOptions.get(0);
     }
 
-    public MenuNode collectUsername(String username, String input, Map<Integer, MenuNode> selectableOptions, Map<Permission, MenuNode> selectablePermissions) {
+    public MenuNode collectUsername(String username, String input, List<MenuNode> selectableOptions, Map<Permission, MenuNode> selectablePermissions) {
         this.currentUser = input;
         return authenticate;
     }
 
     private void setupAuthenticate() {
-        //Build username auth.
         MenuNodeBuilder builder = new MenuNodeBuilder();
         LoginPresenter loginPresenter = new LoginPresenter(false);
         this.addObserver(loginPresenter);
