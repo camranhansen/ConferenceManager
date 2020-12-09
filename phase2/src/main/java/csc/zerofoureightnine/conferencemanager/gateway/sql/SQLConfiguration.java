@@ -5,6 +5,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.RuntimeData;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.SpecialRequestData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
 
 public class SQLConfiguration {
@@ -15,6 +17,8 @@ public class SQLConfiguration {
                 addAnnotatedClass(MessageData.class).
                 addAnnotatedClass(UserData.class).
                 addAnnotatedClass(EventData.class).
+                addAnnotatedClass(SpecialRequestData.class).
+                addAnnotatedClass(RuntimeData.class).
                 setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect").
                 setProperty("hibernate.connection.driver_class", "org.hsqldb.jdbc.JDBCDriver").
                 setProperty("hibernate.connection.url", "jdbc:hsqldb:file:" + path).
