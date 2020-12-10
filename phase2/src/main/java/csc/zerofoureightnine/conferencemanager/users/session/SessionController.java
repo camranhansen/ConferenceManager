@@ -29,7 +29,7 @@ public class SessionController implements SectionController { //UI
         this.userManager = new UserManager(userData);
     }
 
-    public MenuNode attemptAuthentication(String username, String input, List<MenuNode> selectableOptions, Map<Permission, MenuNode> selectablePermissions) {
+    public MenuNode attemptAuthentication(String username, String input, List<MenuNode> selectableOptions) {
         if (userManager.userExists(currentUser) && userManager.getPassword(currentUser).equals(input)) {
             loggedIn = true;
             loginEntryNode.setDisabled(true);
@@ -39,12 +39,12 @@ public class SessionController implements SectionController { //UI
         return selectableOptions.get(0);
     }
 
-    public MenuNode collectUsername(String username, String input, List<MenuNode> selectableOptions, Map<Permission, MenuNode> selectablePermissions) {
+    public MenuNode collectUsername(String username, String input, List<MenuNode> selectableOptions) {
         this.currentUser = input;
         return selectableOptions.get(2);
     }
 
-    public MenuNode logout(String username, String input, List<MenuNode> selectableOptions, Map<Permission, MenuNode> selectablePermissions) {
+    public MenuNode logout(String username, String input, List<MenuNode> selectableOptions) {
         loggedIn = false;
         username = null;
         onLogout();

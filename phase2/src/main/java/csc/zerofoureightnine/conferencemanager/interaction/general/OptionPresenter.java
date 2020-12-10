@@ -2,8 +2,14 @@ package csc.zerofoureightnine.conferencemanager.interaction.general;
 
 import java.util.List;
 
+import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.Presentable;
 
+/**
+ * A general {@link Presentable} that lists the children of the {@link MenuNode}. Prompts
+ * user for an integer to select one of the listed children options. Does not have a
+ * completion message.
+ */
 public class OptionPresenter implements Presentable {
     private final String identifier;
     private final String prompt = "Select by entering the associated integer";

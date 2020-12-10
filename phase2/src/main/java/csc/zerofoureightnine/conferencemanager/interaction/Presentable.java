@@ -13,7 +13,8 @@ public interface Presentable { //Presenter
 
     /**
      * The prompt the user recieves when landing on the {@link MenuNode} associated with this presenter.
-     * If the prompt is null or empty, input will not be taken, and {@link Action#complete(String, String, List, java.util.Map)} will be called directly.
+     * If the prompt is null or empty, input will not be taken, and 
+     * {@link Action#complete(String, String, List, java.util.Map)} will be called directly.
      * @return A string containing the prompt for the user.
      */
     String getPrompt();
