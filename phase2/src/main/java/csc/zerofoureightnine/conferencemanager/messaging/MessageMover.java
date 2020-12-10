@@ -6,7 +6,7 @@ import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 import java.util.*;
 
 public class MessageMover {
-    private PersistentMap<String, MessageData> messageData;
+    private MessageManager messageManager;
     private String username;
 
 
@@ -16,7 +16,7 @@ public class MessageMover {
      * @param username username of the user accessing MessageMover
      */
     public MessageMover(MessageManager messageManager, String username){
-        this.messageData = messageManager.getMessageData();
+        this.messageManager = messageManager;
         this.username = username;
     }
 
@@ -29,14 +29,14 @@ public class MessageMover {
      * @param timeSent sent time of the message
      */
     public void moveReadToUnread(String from, String content, String timeSent){
-        this.messageData.beginInteraction();
-        List<MessageData> md = this.messageData.loadInCollection("recipients", username);
+        this.messageManager.getMessageData().beginInteraction();
+        List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m: md){
             if(from.equals(m.getSender())&&content.equals(m.getContent())&&timeSent.equals(m.getTimeSent().toString())){
                 m.removeFromRead(username);
             }
         }
-        this.messageData.endInteraction();
+        this.messageManager.getMessageData().endInteraction();
     }
 
 
@@ -47,8 +47,8 @@ public class MessageMover {
      * @param timeSent sent time of the message
      */
     public void moveUnreadToRead(String from, String content, String timeSent){
-        this.messageData.beginInteraction();
-        List<MessageData> md = this.messageData.loadInCollection("recipients", username);
+        this.messageManager.getMessageData().beginInteraction();
+        List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m: md){
             if(from.equals(m.getSender())&&content.equals(m.getContent())&&timeSent.equals(m.getTimeSent().toString())){
                 if(!m.getRead().contains(this.username)){
@@ -56,7 +56,7 @@ public class MessageMover {
                 }
             }
         }
-        this.messageData.endInteraction();
+        this.messageManager.getMessageData().endInteraction();
     }
 
 
@@ -68,8 +68,8 @@ public class MessageMover {
      * @param timeSent sent time of the message
      */
     public void moveToArchived(String from, String content, String timeSent) {
-        this.messageData.beginInteraction();
-        List<MessageData> md = this.messageData.loadInCollection("recipients", username);
+        this.messageManager.getMessageData().beginInteraction();
+        List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m : md) {
             if (from.equals(m.getSender()) && content.equals(m.getContent()) && timeSent.equals
                     (m.getTimeSent().toString())) {
@@ -78,7 +78,7 @@ public class MessageMover {
                 }
             }
         }
-        this.messageData.endInteraction();
+        this.messageManager.getMessageData().endInteraction();
     }
 
 
@@ -89,15 +89,15 @@ public class MessageMover {
      * @param timeSent sent time of the message
      */
     public void removeFromArchived(String from, String content, String timeSent){
-        this.messageData.beginInteraction();
-        List<MessageData> md = this.messageData.loadInCollection("recipients", username);
+        this.messageManager.getMessageData().beginInteraction();
+        List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m : md) {
             if (from.equals(m.getSender()) && content.equals(m.getContent()) && timeSent.equals
                     (m.getTimeSent().toString())) {
                 m.removeFromArchived(username);
             }
         }
-        this.messageData.endInteraction();
+        this.messageManager.getMessageData().endInteraction();
     }
 
 
@@ -108,18 +108,18 @@ public class MessageMover {
      * @param timeSent sent time of the message
      */
     public void deleteOneMessage(String from, String content, String timeSent){
-        this.messageData.beginInteraction();
-        List<MessageData> md = this.messageData.loadInCollection("recipients", username);
+        this.messageManager.getMessageData().beginInteraction();
+        List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m: md){
             if (from.equals(m.getSender()) && content.equals(m.getContent()) && timeSent.equals
                     (m.getTimeSent().toString())) {
                 m.getRecipients().remove(username);
                 if(m.getRecipients().isEmpty()){
-                    messageData.remove(m.getId());
+                    this.messageManager.getMessageData().remove(m.getId());
                 }
             }
         }
-        this.messageData.endInteraction();
+        this.messageManager.getMessageData().endInteraction();
     }
 
 
@@ -128,17 +128,17 @@ public class MessageMover {
          * @param from username of the sender
          */
     public void deleteConversation(String from) {
-        this.messageData.beginInteraction();
-        List<MessageData> md = this.messageData.loadInCollection("recipients", username);
+        this.messageManager.getMessageData().beginInteraction();
+        List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m : md) {
             if (m.getSender().equals(from)) {
                 m.getRecipients().remove(username);
                 if (m.getRecipients().isEmpty()) {
-                    messageData.remove(m.getId());
+                    this.messageManager.getMessageData().remove(m.getId());
                 }
             }
         }
-        this.messageData.endInteraction();
+        this.messageManager.getMessageData().endInteraction();
     }
 
 
@@ -146,14 +146,14 @@ public class MessageMover {
      * Clear this user's inbox.
      */
     public void clearAllInboxes(){
-        this.messageData.beginInteraction();
-        List<MessageData> md = this.messageData.loadInCollection("recipients", username);
+        this.messageManager.getMessageData().beginInteraction();
+        List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for(MessageData m: md) {
             m.getRecipients().remove(username);
             if(m.getRecipients().isEmpty()){
-                messageData.remove(m.getId());
+                this.messageManager.getMessageData().remove(m.getId());
             }
         }
-        this.messageData.endInteraction();
+        this.messageManager.getMessageData().endInteraction();
     }
 }

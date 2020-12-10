@@ -13,7 +13,6 @@ import java.util.UUID;
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 
-//TODO: add a constructor for inboxes that already exist
 
 public class MessageManager {
 

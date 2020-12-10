@@ -31,11 +31,6 @@
             <version>2.5.1</version>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>com.googlecode.lanterna</groupId>
-            <artifactId>lanterna</artifactId>
-            <version>3.0.4</version>
-        </dependency>
     </dependencies>
 
 </project>
