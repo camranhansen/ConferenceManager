@@ -39,7 +39,7 @@ public class SessionController implements SectionController { // UI
         MenuNode authEnd = authenticationBuilder.build();
 
         LinkedMenuNodeBuilder linkedMenuNodeBuilder = new LinkedMenuNodeBuilder("Login", inputMap);
-        linkedMenuNodeBuilder.addStep("user", () -> "Username", null, "");
+        linkedMenuNodeBuilder.addStep("user", () -> "Username", null, () -> "");
         entryNodes.add(linkedMenuNodeBuilder.build(authEnd));
         return entryNodes;
     }
