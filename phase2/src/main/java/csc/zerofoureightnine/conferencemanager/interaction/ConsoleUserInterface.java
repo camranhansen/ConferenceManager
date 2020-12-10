@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import csc.zerofoureightnine.conferencemanager.users.session.SessionObserver;
 
-public class ConsoleUserInterface { //UI
+public class ConsoleUserInterface implements SessionObserver { //UI
     private MenuNode mainMenu;
     private MenuNode currentNode;
     private String currentUser;
@@ -26,5 +27,15 @@ public class ConsoleUserInterface { //UI
 
     public void stop() {
         scanner.close();
+    }
+
+    @Override
+    public void authenticationAttempted(String username, boolean success) {
+        if (success) this.currentUser = username;
+    }
+
+    @Override
+    public void loggedOut(String username) {
+        this.currentUser = null;
     }
 }

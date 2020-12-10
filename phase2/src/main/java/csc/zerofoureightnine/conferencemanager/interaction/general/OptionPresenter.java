@@ -1,6 +1,8 @@
-package csc.zerofoureightnine.conferencemanager.interaction;
+package csc.zerofoureightnine.conferencemanager.interaction.general;
 
 import java.util.List;
+
+import csc.zerofoureightnine.conferencemanager.interaction.Presentable;
 
 public class OptionPresenter implements Presentable {
     private final String identifier;
@@ -27,7 +29,11 @@ public class OptionPresenter implements Presentable {
         for (int i = 0; i < options.size(); i++) {
             sb.append(i + ") ");
             Presentable presentable = options.get(i);
-            sb.append(presentable == null ? "No back available." : options.get(i).getIdentifier());
+            if (i == 1) {
+                sb.append(presentable == null ? "Cannot go back." : "back (" + presentable.getIdentifier() + ")");
+            } else {
+                sb.append(presentable.getIdentifier());
+            }
             sb.append("\n");
         }
         return sb.toString();

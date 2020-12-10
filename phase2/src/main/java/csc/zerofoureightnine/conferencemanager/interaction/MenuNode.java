@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import csc.zerofoureightnine.conferencemanager.interaction.general.OptionPresenter;
+import csc.zerofoureightnine.conferencemanager.interaction.general.OptionSelector;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 public class MenuNode { //UI
@@ -21,18 +23,18 @@ public class MenuNode { //UI
     private Action action; //!null
     private Validatable validatable; //may be null, in which case any input is accepted.
     private Presentable presentable; //!null
+    private boolean disabled = false;
     
-    private MenuNode(MenuNode parent, Set<MenuNode> children, Action action, Permission permission, Validatable validatable, Presentable presentable) {
+    private MenuNode(Set<MenuNode> children, Action action, Permission permission, Validatable validatable, Presentable presentable) {
         this.permissionOptions = new EnumMap<>(Permission.class);
         this.options = new HashSet<>();
         for (MenuNode menuNode : children) {
             if (menuNode.permission != null) {
                 this.permissionOptions.put(menuNode.permission, menuNode);
-            } else {
-                this.options.add(menuNode);
             }
+            this.options.add(menuNode);
+            menuNode.parent = this;
         }
-        this.parent = parent;
         this.action = action;
         this.permission = permission;
         this.validatable = validatable;
@@ -61,6 +63,7 @@ public class MenuNode { //UI
         }
         MenuNode next = action.complete(username, input, available, selectablePermissions);
         if (next == null) throw new IllegalStateException("Cannot move to null node.");
+        if (!(options.contains(next) || mainMenu == next || permissionOptions.containsValue(next))) throw new IllegalStateException("Cannot move to node that is not an option child of this node.");
         if (presentable.getCompleteMessage() != null && !presentable.getCompleteMessage().isEmpty()) System.out.println(presentable.getCompleteMessage());
         return next;
     }
@@ -70,7 +73,9 @@ public class MenuNode { //UI
         available.add(mainMenu);
         available.add(parent);
         for (MenuNode menuNode : options) {
-            available.add(menuNode);
+            if (!menuNode.disabled) {
+                available.add(menuNode);
+            }
         }
         if (userPermissions != null) {
             for (Permission permission : userPermissions) {
@@ -80,9 +85,16 @@ public class MenuNode { //UI
         return available;
     }
 
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
     public static class MenuNodeBuilder {
         private Set<MenuNode> options = new HashSet<>();
-        private MenuNode parent;
         private Action action;
         private Validatable validatable;
         private OptionSelector optionSelector = new OptionSelector();
@@ -97,11 +109,12 @@ public class MenuNode { //UI
             options.addAll(children);
         }
 
-        public void setParent(MenuNode parent) {
-            this.parent = parent;
-        }
-
-        public void setAction(Action action, Validatable validatable) {
+        /**
+         * 
+         * @param action
+         * @param validatable
+         */
+        public void setActionAndValidator(Action action, Validatable validatable) {
             if (action == null && validatable != null) throw new IllegalArgumentException("If action is null, validatable must be null.");
             this.action = action;
             this.validatable = validatable;
@@ -123,18 +136,17 @@ public class MenuNode { //UI
          * Builds the {@link MenuNode}.
          * 
          * @throws IllegalStateException if {@link MenuNodeBuilder#setPresentable(Presentable)} or {@link MenuNodeBuilder#setBasicPresentation(String, String, String)} has not been called.
-         * @throws IllegalStateException if the {@link Presentable#getPrompt()} or {@link Presentable#getIdentifier()} is empty or null.
+         * @throws IllegalStateException {@link Presentable#getIdentifier()} is empty or null.
          * @return the built {@link MenuNode}.
          */
         public MenuNode build() {
             if (presentable == null) throw new IllegalStateException("Presentable cannot be null.");
-            if (presentable.getPrompt() == null || presentable.getPrompt().isEmpty()) throw new IllegalStateException("Presentable cannot have a null or empty prompt.");
             if (presentable.getIdentifier() == null || presentable.getIdentifier().isEmpty()) throw new IllegalStateException("Presentable cannot have a null or empty listing.");
             if (action == null) {
                 action = optionSelector;
                 validatable = optionSelector;
             }
-            return new MenuNode(parent, options, action, permission, validatable, presentable);
+            return new MenuNode(options, action, permission, validatable, presentable);
         }
     }
 }

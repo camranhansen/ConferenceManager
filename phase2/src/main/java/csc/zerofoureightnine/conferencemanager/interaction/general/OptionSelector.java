@@ -1,8 +1,11 @@
-package csc.zerofoureightnine.conferencemanager.interaction;
+package csc.zerofoureightnine.conferencemanager.interaction.general;
 
 import java.util.List;
 import java.util.Map;
 
+import csc.zerofoureightnine.conferencemanager.interaction.Action;
+import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
+import csc.zerofoureightnine.conferencemanager.interaction.Validatable;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 public class OptionSelector implements Action, Validatable {
