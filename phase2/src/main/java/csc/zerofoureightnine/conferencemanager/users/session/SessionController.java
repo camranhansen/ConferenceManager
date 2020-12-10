@@ -37,6 +37,11 @@ public class SessionController { // UI
         return selectableOptions.get(0);
     }
 
+    public MenuNode logOutUser(String username, String input, List<MenuNode> selectableOptions){
+        onAuthenticationStateChange(username, false);
+        return selectableOptions.get(0);
+    }
+
     public boolean checkUserNotExist(String input, List<MenuNode> opts) {
         return !userManager.userExists(input);
     }

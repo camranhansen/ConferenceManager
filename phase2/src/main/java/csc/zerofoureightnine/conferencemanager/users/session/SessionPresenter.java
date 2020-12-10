@@ -38,5 +38,8 @@ public class SessionPresenter implements SessionObserver {
         }
     }
 
+    public String loggedOut(MenuNode n){
+        return "Logged out successfully!!!!!!!!!";
+    }
 
 }

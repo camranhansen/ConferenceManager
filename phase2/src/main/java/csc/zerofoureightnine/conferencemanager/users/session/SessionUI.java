@@ -14,6 +14,7 @@ public class SessionUI implements UISection, SessionObserver {
     private List<MenuNode> entryNodes;
     private MenuNode loginUserNode;
     private MenuNode CreateUserNode;
+    private MenuNode logoutUserNode;
 
 
     public SessionUI(SessionController sessionController) {
@@ -38,6 +39,12 @@ public class SessionUI implements UISection, SessionObserver {
         userCreationSeq.addStep("password", sessionController.getPresenter()::requestPassword, null, null);
         MenuNodeBuilder createUserEnd = new MenuNodeBuilder(userCreation, sessionController::createUser, sessionController.getPresenter()::accountCreated);
         entryNodes.add((CreateUserNode = userCreationSeq.build(createUserEnd.build())));
+
+
+        MenuNodeBuilder logoutNode = new MenuNodeBuilder("Logout", sessionController::logOutUser, sessionController.getPresenter()::loggedOut);
+        entryNodes.add((logoutUserNode = logoutNode.build()));
+        logoutUserNode.setDisabled(true);
+
         return entryNodes;
     }
 
@@ -53,9 +60,11 @@ public class SessionUI implements UISection, SessionObserver {
         if (loggedIn) {
             loginUserNode.setDisabled(true);
             CreateUserNode.setDisabled(true);
+            logoutUserNode.setDisabled(false);
         } else {
             loginUserNode.setDisabled(false);
             CreateUserNode.setDisabled(false);
+            logoutUserNode.setDisabled(true);
         }
     }
 
