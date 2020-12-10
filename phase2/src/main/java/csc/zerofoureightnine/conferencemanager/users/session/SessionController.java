@@ -1,53 +1,83 @@
 package csc.zerofoureightnine.conferencemanager.users.session;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
-import csc.zerofoureightnine.conferencemanager.interaction.LinkedMenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
-import csc.zerofoureightnine.conferencemanager.interaction.MenuNode.MenuNodeBuilder;
-import csc.zerofoureightnine.conferencemanager.interaction.control.SectionController;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
+import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
+import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 
-public class SessionController implements SectionController { // UI
-    private List<MenuNode> entryNodes;
+public class SessionController { // UI
+    private Set<SessionObserver> observers = new HashSet<>();
+    private Map<String, String> inputMap = new HashMap<>();
+    private SessionPresenter presenter;
     private UserManager userManager;
+    private PermissionManager permissionManager;
     private String loggedInUser;
 
-    public SessionController(PersistentMap<String, UserData> userData) {
-        this.userManager = new UserManager(userData);
+    public SessionController(SessionPresenter presenter, UserManager userManager, PermissionManager permissionManager) {
+        this.presenter = presenter;
+        this.userManager = userManager;
+        this.permissionManager = permissionManager;
+        addObserver(presenter);
     }
 
-    @Override
-    public List<MenuNode> getEntryMenuNodes() {
-        if (entryNodes != null) return entryNodes;
-        entryNodes = new ArrayList<>();
-        final HashMap<String, String> inputMap = new HashMap<>();
-        //Login sequence
-        String name = "Login";
-        MenuNodeBuilder authenticationBuilder = new MenuNodeBuilder(name, (u, in, o) -> {
-            String user = inputMap.get("user");
-            if (userManager.userExists(user) && userManager.getPassword(user).equals(in)) loggedInUser = user;
-            return o.get(0);
-        }, (n) -> {
-            return loggedInUser != null ? "Login success. Welcome " + loggedInUser : "Login failed. Please try again.";
-        });
-        authenticationBuilder.setPromptable(() -> "Password");
-        MenuNode authEnd = authenticationBuilder.build();
-
-        LinkedMenuNodeBuilder linkedMenuNodeBuilder = new LinkedMenuNodeBuilder("Login", inputMap);
-        linkedMenuNodeBuilder.addStep("user", () -> "Username", null, () -> "");
-        entryNodes.add(linkedMenuNodeBuilder.build(authEnd));
-        return entryNodes;
+    public MenuNode loginUser(String username, String input, List<MenuNode> selectableOptions) {
+        String attemptingUser = inputMap.get("user");
+        String attemptingPassword = inputMap.get("password");
+        if (userManager.userExists(attemptingUser) && userManager.getPassword(attemptingUser).equals(attemptingPassword)) {
+            onAuthenticationStateChange(attemptingUser, true);
+        } else {
+            onAuthenticationStateChange(attemptingUser, false);
+        }
+        return selectableOptions.get(0);
     }
 
-    @Override
-    public String getSectionListing() {
-        if (loggedInUser != null)
-            return loggedInUser + "'s Account";
-        return "Create Account / Login";
+    public boolean checkUserNotExist(String input, List<MenuNode> opts) {
+        return !userManager.userExists(input);
     }
+
+    public MenuNode createUser(String username, String input, List<MenuNode> selectableOptions) {
+        String attemptingUser = inputMap.get("user");
+        String attemptingPassword = inputMap.get("password");
+        userManager.createUser(attemptingUser, attemptingPassword, Template.ATTENDEE.getPermissions());
+        return selectableOptions.get(0);
+    }
+
+
+    public void addObserver(SessionObserver observer) {
+        this.observers.add(observer);
+    }
+
+    public void removeObserver(SessionObserver observer) {
+        this.observers.remove(observer);
+    }
+
+    private void onAuthenticationStateChange(String username, boolean loggedIn) {
+        for (SessionObserver sessionObserver : observers) {
+            sessionObserver.authenticationStateChanged(username, permissionManager.getPermissions(username), loggedIn);
+        }
+        if (loggedIn) {
+            this.loggedInUser = username;
+        } else {
+            this.loggedInUser = null;
+        }
+    }
+
+    public Map<String, String> getInputMap() {
+        return inputMap;
+    }
+
+    public SessionPresenter getPresenter() {
+        return presenter;
+    }
+
+    public String getLoggedInUser() {
+        return loggedInUser;
+    }
+
 }

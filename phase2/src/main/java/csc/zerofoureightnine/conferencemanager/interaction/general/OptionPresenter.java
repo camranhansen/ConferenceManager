@@ -2,6 +2,7 @@ package csc.zerofoureightnine.conferencemanager.interaction.general;
 
 import java.util.List;
 
+import csc.zerofoureightnine.conferencemanager.interaction.GeneralMenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.Completable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.Listable;
@@ -10,7 +11,7 @@ import csc.zerofoureightnine.conferencemanager.interaction.presentation.Promptab
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.Reattemptable;
 
 /**
- * A general {@link Presentable} that lists the children of the {@link MenuNode}. Prompts
+ * A general {@link Presentable} that lists the children of the {@link GeneralMenuNode}. Prompts
  * user for an integer to select one of the listed children options. Does not have a
  * completion message.
  */

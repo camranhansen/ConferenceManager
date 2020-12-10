@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import csc.zerofoureightnine.conferencemanager.interaction.MenuNode.MenuNodeBuilder;
+import csc.zerofoureightnine.conferencemanager.interaction.GeneralMenuNode.MenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.control.Validatable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.Promptable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.Reattemptable;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 public class LinkedMenuNodeBuilder {
     private Map<String, String> inputMap = new HashMap<>();
@@ -30,8 +31,8 @@ public class LinkedMenuNodeBuilder {
         retryMessages.add(retryMessage);
     }
 
-    public MenuNode build(MenuNode tail) {
-        MenuNode previous = tail;
+    public MenuNode build(MenuNode terminator, Permission permission) {
+        MenuNode previous = terminator;
         for (int i = inputTags.size() - 1; i >= 0; i--) {
             final String tag = inputTags.get(i);
             final MenuNode nextStep = previous;
@@ -43,9 +44,15 @@ public class LinkedMenuNodeBuilder {
             builder.setValidatable(validatables.get(i));
             builder.setReattemptable(retryMessages.get(i));
             builder.addChildren(nextStep);
+
+            if (i == 0) builder.setPermission(permission);
             previous = builder.build();
         }
 
         return previous;
+    }
+
+    public MenuNode build(MenuNode tail) {
+        return build(tail, null);
     }
 }

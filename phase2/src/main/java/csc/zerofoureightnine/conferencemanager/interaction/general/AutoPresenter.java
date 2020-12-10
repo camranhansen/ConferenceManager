@@ -1,12 +1,13 @@
 package csc.zerofoureightnine.conferencemanager.interaction.general;
 
+import csc.zerofoureightnine.conferencemanager.interaction.GeneralMenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.Completable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.Nameable;
 
 /**
  * A {@link Presentable} that doesn't have a prompt, retry, completion, or presentation
- * message. By not having a prompt, {@link MenuNode} will skip asking for input.
+ * message. By not having a prompt, {@link GeneralMenuNode} will skip asking for input.
  */
 public class AutoPresenter implements Nameable, Completable {
     private final String identifier;

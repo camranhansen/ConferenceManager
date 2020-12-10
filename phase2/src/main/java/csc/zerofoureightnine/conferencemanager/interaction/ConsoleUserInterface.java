@@ -30,12 +30,15 @@ public class ConsoleUserInterface implements SessionObserver { //UI
     }
 
     @Override
-    public void authenticationAttempted(String username, boolean success) {
-        if (success) this.currentUser = username;
+    public void authenticationStateChanged(String username, List<Permission> permissions, boolean loggedIn) {
+        if (loggedIn) {
+            this.userPermissions = permissions;
+            this.currentUser = username;
+        } else {
+            this.currentUser = null;
+            this.userPermissions = null;
+        }
     }
 
-    @Override
-    public void loggedOut(String username) {
-        this.currentUser = null;
-    }
+    
 }
