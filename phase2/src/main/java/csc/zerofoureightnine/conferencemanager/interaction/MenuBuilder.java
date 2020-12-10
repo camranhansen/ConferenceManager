@@ -2,8 +2,8 @@ package csc.zerofoureightnine.conferencemanager.interaction;
 
 import java.util.ArrayList;
 
-import csc.zerofoureightnine.conferencemanager.interaction.MenuNode.MenuNodeBuilder;
-import csc.zerofoureightnine.conferencemanager.interaction.control.SectionController;
+import csc.zerofoureightnine.conferencemanager.interaction.GeneralMenuNode.MenuNodeBuilder;
+import csc.zerofoureightnine.conferencemanager.interaction.control.UISection;
 
 public class MenuBuilder {
     private MenuNodeBuilder mainMenu;
@@ -14,8 +14,8 @@ public class MenuBuilder {
 
     }
 
-    public void addSectionControllers(SectionController... sectionControllers) {
-        for (SectionController sectionController : sectionControllers) {
+    public void addSectionUI(UISection... sectionControllers) {
+        for (UISection sectionController : sectionControllers) {
             MenuNodeBuilder sectionNode = new MenuNodeBuilder(sectionController::getSectionListing);
             sectionNode.addChildren(sectionController.getEntryMenuNodes());
             sectionNodes.add(sectionNode.build());

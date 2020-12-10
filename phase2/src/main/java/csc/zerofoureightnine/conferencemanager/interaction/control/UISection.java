@@ -4,7 +4,7 @@ import java.util.List;
 
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 
-public interface SectionController {
+public interface UISection {
 
     /**
      * 

@@ -4,16 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import csc.zerofoureightnine.conferencemanager.interaction.MenuNode.MenuNodeBuilder;
+import csc.zerofoureightnine.conferencemanager.interaction.GeneralMenuNode.MenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.control.Validatable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.Promptable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.Reattemptable;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 public class LinkedMenuNodeBuilder {
     private Map<String, String> inputMap = new HashMap<>();
     private ArrayList<String> inputTags = new ArrayList<>();
     private ArrayList<Promptable> prompts = new ArrayList<>();
     private ArrayList<Validatable> validatables = new ArrayList<>();
-    private ArrayList<String> retryMessages = new ArrayList<>();
+    private ArrayList<Reattemptable> retryMessages = new ArrayList<>();
 
     private final String goalName;
 
@@ -22,15 +24,15 @@ public class LinkedMenuNodeBuilder {
         this.inputMap = inputMap;
     }
 
-    public void addStep(String inputTag, Promptable prompt, Validatable validatable, String retryMessage) {
+    public void addStep(String inputTag, Promptable prompt, Validatable validatable, Reattemptable retryMessage) {
         inputTags.add(inputTag);
         prompts.add(prompt);
         validatables.add(validatable);
         retryMessages.add(retryMessage);
     }
 
-    public MenuNode build(MenuNode tail) {
-        MenuNode previous = tail;
+    public MenuNode build(MenuNode terminator, Permission permission) {
+        MenuNode previous = terminator;
         for (int i = inputTags.size() - 1; i >= 0; i--) {
             final String tag = inputTags.get(i);
             final MenuNode nextStep = previous;
@@ -40,12 +42,17 @@ public class LinkedMenuNodeBuilder {
             }, (n) -> "");
             builder.setPromptable(prompts.get(i));
             builder.setValidatable(validatables.get(i));
-            final String retryMessage = retryMessages.get(i);
-            builder.setReattemptable(() -> retryMessage);
+            builder.setReattemptable(retryMessages.get(i));
             builder.addChildren(nextStep);
+
+            if (i == 0) builder.setPermission(permission);
             previous = builder.build();
         }
 
         return previous;
+    }
+
+    public MenuNode build(MenuNode tail) {
+        return build(tail, null);
     }
 }

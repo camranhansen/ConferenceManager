@@ -18,8 +18,8 @@ public class UserData implements Identifiable<String>{
     private String password;
 
     @Column(name = "permissions")
-    @ElementCollection
-    private List<Permission> permissions;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Permission> permissions = new ArrayList<>();
 
     public UserData(){
         this.permissions = new ArrayList<>();

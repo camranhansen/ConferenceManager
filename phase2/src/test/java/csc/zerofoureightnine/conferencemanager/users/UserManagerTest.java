@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import csc.zerofoureightnine.conferencemanager.gateway.DummyPersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLConfiguration;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 
@@ -38,6 +40,14 @@ public class UserManagerTest {
     @Test
     public void createUser() {
         UserManager um = new UserManager(createUserManager());
+        um.createUser("timmy","asdf1234", Template.ATTENDEE.getPermissions());
+        assertTrue(um.userExists("timmy"));
+        assertEquals("asdf1234", um.getPassword("timmy"));
+    }
+
+    @Test
+    public void createUserSQLTest() {
+        UserManager um = new UserManager(new SQLMap<>(new SQLConfiguration("testfiles/db/data"), UserData.class));
         um.createUser("timmy","asdf1234", Template.ATTENDEE.getPermissions());
         assertTrue(um.userExists("timmy"));
         assertEquals("asdf1234", um.getPassword("timmy"));
