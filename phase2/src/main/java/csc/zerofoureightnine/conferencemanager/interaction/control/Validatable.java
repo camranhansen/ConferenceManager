@@ -1,11 +1,14 @@
-package csc.zerofoureightnine.conferencemanager.interaction;
+package csc.zerofoureightnine.conferencemanager.interaction.control;
 
 import java.util.List;
+
+import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.Reattemptable;
 
 public interface Validatable { //Generally, controllers are responsible for their own validation of input.
     /**
      * Checks if the input is considered valid. If the input is invalid,
-     * {@link Presentable#getRetryMessage()} is presented to the user, and 
+     * {@link Reattemptable#getRetryMessage()} is presented to the user, and 
      * they are given requested to input something valid.
      * @param input the raw input from the user.
      * @param options the options the user has available to them.

@@ -1,15 +1,14 @@
 package csc.zerofoureightnine.conferencemanager.interaction.general;
 
-import java.util.List;
-
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
-import csc.zerofoureightnine.conferencemanager.interaction.Presentable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.Completable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.Nameable;
 
 /**
  * A {@link Presentable} that doesn't have a prompt, retry, completion, or presentation
  * message. By not having a prompt, {@link MenuNode} will skip asking for input.
  */
-public class AutoPresenter implements Presentable {
+public class AutoPresenter implements Nameable, Completable {
     private final String identifier;
     private final String completionMsg;
     public AutoPresenter(String identifier, String completionMessage) {
@@ -24,23 +23,8 @@ public class AutoPresenter implements Presentable {
     }
 
     @Override
-    public String getPrompt() {
-        return null;
-    }
-
-    @Override
-    public String getRetryMessage() {
-        return null;
-    }
-
-    @Override
-    public String getCompleteMessage() {
+    public String getCompleteMessage(MenuNode menuNode) {
         return completionMsg;
-    }
-
-    @Override
-    public String getPresentation(List<Presentable> options) {
-        return null;
     }
     
 }

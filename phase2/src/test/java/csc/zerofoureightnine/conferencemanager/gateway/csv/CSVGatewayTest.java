@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
+@Deprecated
 public class CSVGatewayTest {
     private static String testFilePath = "testfiles/test.csv";
     private CSVGateway CSVGateway;

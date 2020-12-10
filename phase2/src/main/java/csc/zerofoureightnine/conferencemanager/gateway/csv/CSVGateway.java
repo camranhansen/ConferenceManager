@@ -3,9 +3,12 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//TODO: if we plan on handling excessively large files, this system will need to change.
-// But We'll be switching to a database then.
+import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
 
+/**
+ * Does not automatically rotate buffers. Use {@link SQLMap} instead.
+ */
+@Deprecated
 public abstract class CSVGateway {
     private ArrayList<String[]> buffer;
     private int colWidth;

@@ -1,6 +1,8 @@
-package csc.zerofoureightnine.conferencemanager.interaction;
+package csc.zerofoureightnine.conferencemanager.interaction.control;
 
 import java.util.List;
+
+import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 
 public interface Action {
 

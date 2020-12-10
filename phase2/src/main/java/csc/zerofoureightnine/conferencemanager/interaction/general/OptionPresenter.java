@@ -3,14 +3,18 @@ package csc.zerofoureightnine.conferencemanager.interaction.general;
 import java.util.List;
 
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
-import csc.zerofoureightnine.conferencemanager.interaction.Presentable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.Completable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.Listable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.Nameable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.Promptable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.Reattemptable;
 
 /**
  * A general {@link Presentable} that lists the children of the {@link MenuNode}. Prompts
  * user for an integer to select one of the listed children options. Does not have a
  * completion message.
  */
-public class OptionPresenter implements Presentable {
+public class OptionPresenter implements Nameable, Promptable, Listable, Reattemptable, Completable {
     private final String identifier;
     private final String prompt = "Select by entering the associated integer";
     private final String retryMsg = "Please enter a valid option";
@@ -30,11 +34,11 @@ public class OptionPresenter implements Presentable {
     }
 
     @Override
-    public String getPresentation(List<Presentable> options) {
+    public String getOptionsPresentation(List<Nameable> options) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < options.size(); i++) {
             sb.append(i + ") ");
-            Presentable presentable = options.get(i);
+            Nameable presentable = options.get(i);
             if (i == 1) {
                 sb.append(presentable == null ? "Cannot go back." : "back (" + presentable.getIdentifier() + ")");
             } else {
@@ -51,8 +55,7 @@ public class OptionPresenter implements Presentable {
     }
 
     @Override
-    public String getCompleteMessage() {
-        return null;
+    public String getCompleteMessage(MenuNode menuNode) {
+        return "";
     }
-    
 }

@@ -2,9 +2,9 @@ package csc.zerofoureightnine.conferencemanager.interaction.general;
 
 import java.util.List;
 
-import csc.zerofoureightnine.conferencemanager.interaction.Action;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
-import csc.zerofoureightnine.conferencemanager.interaction.Validatable;
+import csc.zerofoureightnine.conferencemanager.interaction.control.Action;
+import csc.zerofoureightnine.conferencemanager.interaction.control.Validatable;
 
 /**
  * A general {@link Action} and {@link Validatable} meant for choosing between the children
