@@ -21,6 +21,7 @@ public enum Permission {
     EVENT_SELF_ENROLL(Category.EVENT), //Determine whether want to enroll or unenroll. Determine the specific event to either enroll or unenroll.
     EVENT_SELF_DROP(Category.EVENT),
     EVENT_OTHER_ENROLL(Category.EVENT), //Likewise, except also determine the username of the other person in question.
+    EVENT_OTHER_DROP(Category.EVENT),
     EVENT_CREATE(Category.EVENT), //Takes in event parameters.
     EVENT_DELETE(Category.EVENT), //Delete event by ID.
     EVENT_EDIT(Category.EVENT), //The capacity for a user to edit an event

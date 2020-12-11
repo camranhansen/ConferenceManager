@@ -6,6 +6,8 @@ import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
+import org.hibernate.type.IntegerType;
+import org.jvnet.staxex.BinaryText;
 
 import javax.print.DocFlavor;
 import java.time.Instant;
@@ -27,6 +29,11 @@ public class EventController {
         this.userManager = userManager;
         this.permissionManager = permissionManager;
         this.inputMap = inputMap;
+    }
+
+    public int editCapacity(String username, String input, List<TopicPresentable> selectableOptions){
+        eventManager.editCapacity(inputMap.get("event_id)"), Integer.parseInt(inputMap.get("capacity")));
+        return 0;
     }
 
     public int createEvent(String username, String input, List<TopicPresentable> selectableOptions) {
@@ -81,7 +88,12 @@ public class EventController {
     }
 
     public boolean isValidCapacity(String capacity, List<TopicPresentable> options) {
+
         return capacity.matches("[0-9]+");
+    }
+
+    public boolean isValidEditCapacity(String capacity, List<TopicPresentable> options){
+        return eventManager.getCapacity(inputMap.get("event_id")) > Integer.parseInt(inputMap.get("capacity"));
     }
 
     public boolean isValidRoom(String room, List<TopicPresentable> options) {

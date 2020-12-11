@@ -26,9 +26,9 @@ public class UserController {
 
     /**
      * check if the input name is a existed username
-     * @param input String that represents username
-     * @param options
-     * @return true if the username existed otherwise false
+     * @param input Input specifically in to this node. In this case, it is not relevant.
+     * @param options Options available at this node. In this case, it is not relevant.
+     * @return the node to return to. See {@link MenuNode} for clarification
      */
     public boolean isValidUser(String input, List<TopicPresentable> options){
         return um.userExists(input);
@@ -36,44 +36,44 @@ public class UserController {
 
     /**
      * check if the input name is not a existed username
-     * @param input String that represents username
-     * @param options
-     * @return false if the username does not existed otherwise false
+     * @param input Input specifically in to this node. In this case, it is not relevant.
+     * @param options Options available at this node. In this case, it is not relevant.
+     * @return the node to return to. See {@link MenuNode} for clarification
      */
     public boolean isNotValidUser(String input, List<TopicPresentable> options){
         return !um.userExists(input);
     }
 
     /**
-     * Allow user to change password
+     * Calls {@link UserManager#setPassword(String, String)} to change password
      * @param username user who is using the program.
-     * @param input
-     * @param opts
-     * @return
+     * @param input Input specifically in to this node. In this case, it is not relevant.
+     * @param options Options available at this node. In this case, it is not relevant.
+     * @return the node to return to. See {@link MenuNode} for clarification
      */
-    public int editPassword(String username, String input, List<TopicPresentable> opts) {
+    public int editPassword(String username, String input, List<TopicPresentable> options) {
         um.setPassword(username, inputMap.get("password"));
         return 0;
     }
 
     /**
-     * Allow administration only to change other users' password
+     * Calls {@link UserManager#setPassword(String, String)} to change password (administrator only)
      * @param username user who is using the program.
-     * @param input
-     * @param opts
-     * @return 0
+     * @param input Input specifically in to this node. In this case, it is not relevant.
+     * @param options Options available at this node. In this case, it is not relevant.
+     * @return the node to return to. See {@link MenuNode} for clarification
      */
-    public int editOtherPassword(String username,String input, List<TopicPresentable> opts){
+    public int editOtherPassword(String username,String input, List<TopicPresentable> options){
         String name = inputMap.get("target");
         um.setPassword(name, inputMap.get("password"));
         return 0;
     }
 
     /**
-     * Used to create new account
-     * @param input
-     * @param options
-     * @return
+     * Calls {@link UserManager#createUser(String, String, List)} to create a new account
+     * @param input Input specifically in to this node. In this case, it is not relevant.
+     * @param options Options available at this node. In this case, it is not relevant.
+     * @return the node to return to. See {@link MenuNode} for clarification
      */
     public int createAccount(String input, List<TopicPresentable> options){
         um.createUser(inputMap.get("name"), inputMap.get("password"),Template.values()[Integer.parseInt(inputMap.get("template"))].getPermissions() );
@@ -81,10 +81,10 @@ public class UserController {
     }
 
     /**
-     * Used to create a new account that has speaker's permission
-     * @param input
-     * @param options
-     * @return
+     * Calls {@link UserManager#createUser(String, String, List)} to create a new speaker account
+     * @param input Input specifically in to this node. In this case, it is not relevant.
+     * @param options Options available at this node. In this case, it is not relevant.
+     * @return the node to return to. See {@link MenuNode} for clarification
      */
     public int createSpkAccount(String input, List<TopicPresentable> options){
         um.createUser(inputMap.get("name"), inputMap.get("password"), Template.SPEAKER.getPermissions());
