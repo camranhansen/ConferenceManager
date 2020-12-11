@@ -3,6 +3,7 @@ package csc.zerofoureightnine.conferencemanager.messaging;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +45,17 @@ public class MessageManager {
      * @param to usernames of one or a list of recipients to this message
      */
     public MessageData sendMessage(String from, String content, String... to) {
+        //Message msg = new Message(from, to, content);
+        return sendMessage(from, content, Arrays.asList(to));
+    }
+
+    /**
+     * User sends a message to one or more csc.zerofoureightnine.conferencemanager.users.
+     * @param from username of the sender of this message
+     * @param content content of the message
+     * @param to usernames of one or a list of recipients to this message
+     */
+    public MessageData sendMessage(String from, String content, Collection<String> to) {
         //Message msg = new Message(from, to, content);
         MessageData md = new MessageData();
         md.setSender(from);

@@ -33,7 +33,7 @@ public class EntryPoint {
         MessagePresenter messagePresenter = new MessagePresenter();
 
         SessionController sessionController = new SessionController(userManager, permissionManager);
-        MessageController messageController = new MessageController(messageManager, userManager);
+        MessageController messageController = new MessageController(messageManager, userManager, permissionManager);
         
         menuBuilder.addSectionUI(new MessageUI(messageController, messagePresenter), new SessionUI(sessionController, sessionPresenter));
         ConsoleUserInterface userInterface = new ConsoleUserInterface(menuBuilder.build());

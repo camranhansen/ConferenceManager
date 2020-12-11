@@ -1,6 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.interaction.presentation;
 
-public interface PromptablePresentation { //Presenter
+public interface PromptPresentable { //Presenter
     /**
      * The prompt the user recieves when landing on the {@link MenuNode} associated
      * with this presenter.

@@ -7,6 +7,7 @@ import csc.zerofoureightnine.conferencemanager.interaction.LinkedMenuNodeBuilder
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode.MenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.control.UISection;
+import csc.zerofoureightnine.conferencemanager.messaging.presenters.TemplateSelectionPresenter;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 public class MessageUI implements UISection {
@@ -29,8 +30,10 @@ public class MessageUI implements UISection {
         LinkedMenuNodeBuilder sendMessageSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
         sendMessageSeq.addStep("to", messagePresenter::getPromptForSendTo, messageController::isValidMessageRecipient, messagePresenter::invalidRecipient);
         sendMessageSeq.addStep("content", messagePresenter::getPromptForMessageBody, null, null);
-        MenuNodeBuilder sendMessageNode = new MenuNodeBuilder(messageSeqTitle, messageController::messageSingleUser, messagePresenter::getMessageSentCompletion);
+        MenuNodeBuilder sendMessageNode = new MenuNodeBuilder(messageSeqTitle, messageController::messageSingleUser);
+        sendMessageNode.setCompletable(messagePresenter::getMessageSentCompletion);
         entryPoints.add(sendMessageSeq.build(sendMessageNode.build(), Permission.MESSAGE_SINGLE_USER));
+
         return entryPoints;
     }
 

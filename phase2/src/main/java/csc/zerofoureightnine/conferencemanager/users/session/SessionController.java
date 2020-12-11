@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.NameablePresentation;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
@@ -23,7 +23,7 @@ public class SessionController { // UI
         this.permissionManager = permissionManager;
     }
 
-    public NameablePresentation loginUser(String username, String input, List<NameablePresentation> selectableOptions) {
+    public int loginUser(String username, String input, List<TopicPresentable> selectableOptions) {
         String attemptingUser = inputMap.get("user");
         String attemptingPassword = inputMap.get("password");
         if (userManager.userExists(attemptingUser) && userManager.getPassword(attemptingUser).equals(attemptingPassword)) {
@@ -31,23 +31,23 @@ public class SessionController { // UI
         } else {
             onAuthenticationStateChange(attemptingUser, false);
         }
-        return selectableOptions.get(0);
+        return 0;
     }
 
-    public NameablePresentation logOutUser(String username, String input, List<NameablePresentation> selectableOptions){
+    public int logOutUser(String username, String input, List<TopicPresentable> selectableOptions){
         onAuthenticationStateChange(username, false);
-        return selectableOptions.get(0);
+        return 0;
     }
 
-    public boolean checkUserNotExist(String input, List<NameablePresentation> options) {
+    public boolean checkUserNotExist(String input, List<TopicPresentable> options) {
         return !userManager.userExists(input);
     }
 
-    public NameablePresentation createUser(String username, String input, List<NameablePresentation> selectableOptions) {
+    public int createUser(String username, String input, List<TopicPresentable> selectableOptions) {
         String attemptingUser = inputMap.get("user");
         String attemptingPassword = inputMap.get("password");
         userManager.createUser(attemptingUser, attemptingPassword, Template.ATTENDEE.getPermissions());
-        return selectableOptions.get(0);
+        return 0;
     }
 
 

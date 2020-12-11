@@ -21,6 +21,7 @@ public class SessionUI implements UISection, SessionObserver {
     public SessionUI(SessionController sessionController, SessionPresenter sessionPresenter) {
         this.sessionPresenter = sessionPresenter;
         this.sessionController = sessionController;
+        this.sessionController.addObserver(sessionPresenter);
         this.sessionController.addObserver(this);
     }
 
@@ -32,18 +33,21 @@ public class SessionUI implements UISection, SessionObserver {
         LinkedMenuNodeBuilder authenticationSeq = new LinkedMenuNodeBuilder("Login", sessionController.getInputMap());
         authenticationSeq.addStep("user", sessionPresenter::requestUsername, null, null);
         authenticationSeq.addStep("password", sessionPresenter::requestPassword, null, null);
-        MenuNodeBuilder authEnd = new MenuNodeBuilder("Login", sessionController::loginUser, sessionPresenter::authenticationAttemptedMessage);
+        MenuNodeBuilder authEnd = new MenuNodeBuilder("Login", sessionController::loginUser);
+        authEnd.setCompletable(sessionPresenter::authenticationAttemptedMessage);
         entryNodes.add((loginUserNode = authenticationSeq.build(authEnd.build())));
 
         String userCreation = "Create Attendee Account";
         LinkedMenuNodeBuilder userCreationSeq = new LinkedMenuNodeBuilder(userCreation, sessionController.getInputMap());
         userCreationSeq.addStep("user", sessionPresenter::requestUsername, sessionController::checkUserNotExist, sessionPresenter::userExistsError);
         userCreationSeq.addStep("password", sessionPresenter::requestPassword, null, null);
-        MenuNodeBuilder createUserEnd = new MenuNodeBuilder(userCreation, sessionController::createUser, sessionPresenter::accountCreated);
+        MenuNodeBuilder createUserEnd = new MenuNodeBuilder(userCreation + " Final", sessionController::createUser);
+        createUserEnd.setCompletable(sessionPresenter::accountCreated);
         entryNodes.add((CreateUserNode = userCreationSeq.build(createUserEnd.build())));
 
 
-        MenuNodeBuilder logoutNode = new MenuNodeBuilder("Logout", sessionController::logOutUser, sessionPresenter::loggedOut);
+        MenuNodeBuilder logoutNode = new MenuNodeBuilder("Logout", sessionController::logOutUser);
+        logoutNode.setCompletable(sessionPresenter::loggedOut);
         entryNodes.add((logoutUserNode = logoutNode.build()));
         logoutUserNode.setDisabled(true);
 

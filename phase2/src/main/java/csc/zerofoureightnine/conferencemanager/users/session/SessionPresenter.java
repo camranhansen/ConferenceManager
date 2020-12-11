@@ -2,14 +2,13 @@ package csc.zerofoureightnine.conferencemanager.users.session;
 
 import java.util.List;
 
-import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.NameablePresentation;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 public class SessionPresenter implements SessionObserver {
     private String loggedInUser;
 
-    public String authenticationAttemptedMessage(NameablePresentation n) {
+    public String authenticationAttemptedMessage(TopicPresentable n) {
         if (loggedInUser != null) return "Welcome " + loggedInUser + "!";
         return "Login incorrect please try again.";
     }
@@ -22,7 +21,7 @@ public class SessionPresenter implements SessionObserver {
         return "Username";
     }
 
-    public String accountCreated(NameablePresentation n) {
+    public String accountCreated(TopicPresentable n) {
         return "Account successfully created!";
     }
 
@@ -39,7 +38,7 @@ public class SessionPresenter implements SessionObserver {
         }
     }
 
-    public String loggedOut(NameablePresentation n){
+    public String loggedOut(TopicPresentable n){
         return "Logged out successfully!";
     }
 
