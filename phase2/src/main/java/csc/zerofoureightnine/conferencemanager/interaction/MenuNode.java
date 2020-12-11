@@ -65,7 +65,9 @@ public class MenuNode { // UI
         Map<Nameable, MenuNode> nameableNodes = new HashMap<>();
         available.forEach(m -> {
             nameables.add(m == null ? null : m.nameable);
-            nameableNodes.put(m.nameable, m);
+            if (m != null) {
+                nameableNodes.put(m.nameable, m);
+            }
         });
         System.out.println(this.nameable.getIdentifier() + ":");
         if (listable != null)
