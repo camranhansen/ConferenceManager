@@ -9,6 +9,7 @@ import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLConfiguration;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.RuntimeData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
 import csc.zerofoureightnine.conferencemanager.interaction.ConsoleUserInterface;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuBuilder;
@@ -34,6 +35,7 @@ public class EntryPoint {
         MenuBuilder menuBuilder = new MenuBuilder(root);
 
         PersistentMap<String, UserData> userMap = new SQLMap<>(configuration, UserData.class);
+        PersistentMap<String, RuntimeData> runtimeDataMap = new SQLMap<>(configuration, RuntimeData.class);
         PermissionManager permissionManager = new PermissionManager(userMap);
         MessageManager messageManager = new MessageManager(new SQLMap<>(configuration, MessageData.class));
         UserManager userManager = new UserManager(userMap);

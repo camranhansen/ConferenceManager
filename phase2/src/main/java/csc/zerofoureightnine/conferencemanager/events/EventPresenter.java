@@ -3,6 +3,7 @@ package csc.zerofoureightnine.conferencemanager.events;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EventPresenter {
@@ -14,17 +15,31 @@ public class EventPresenter {
         this.inputMap = inputMap;
     }
 
-
-    public String renderUserEvents(TopicPresentable nextNode){
+    private StringBuilder renderEventByIDList(List<String> eventIds) {
         StringBuilder renderableEvents = new StringBuilder();
-        for (String eventID: eventManager.getUserEvents(inputMap.get("username"))){
+        for (String eventID: eventIds){
+            renderableEvents.append("************************************************").append(System.lineSeparator());
             eventManager.getEventData(eventID).forEach((category, dataPoint) ->
-                    renderableEvents.append(category + " " + dataPoint));
+                    renderableEvents.append(category).append(": ").append(dataPoint).append(".").append(System.lineSeparator()));
         }
-        return renderableEvents.toString();
-
+        renderableEvents.append("Press enter once finished!");
+        return renderableEvents;
     }
 
+    public String renderAllEvents(){
+//        inputMap.get("username")
+        List<String> eventIds = eventManager.getAllEventIds();
+        return renderEventByIDList(eventIds).toString();
+    }
+
+    public String renderAvailableEventsToUser(){
+        List<String> eventIds = eventManager.getAvailableEvents(inputMap.get("username"));
+        return renderEventByIDList(eventIds).toString();
+    }
+
+
+
+//    private StringBuilder renderEvents
     // VIEW_ALL_EVENTS
 
     //VIEW_HOSTING_EVENTS

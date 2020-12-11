@@ -28,8 +28,38 @@ public class EventUI implements UISection {
         generateEventCreateNodes();
         generateEventDeleteNodes();
         generateEventSelfEnrollNodes();
+        generateViewAllEventNodes();
+        generateViewAvailableEventNodes();
+        generateEventSelfDropNodes();
         return entryPoints;
 
+
+    }
+
+    private void generateEventSelfDropNodes(){
+        String seqTitle = "Un-enroll yourself from an event";
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
+        seq.addStep("event_id", eventPresenter::enterId, eventController::isValidID, eventPresenter::wrongInput);
+        MenuNode.MenuNodeBuilder dropEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::dropSelf);
+        entryPoints.add(seq.build(dropEventNode.build(), Permission.EVENT_SELF_DROP));
+    }
+
+    private void generateViewAllEventNodes() {
+        String seqTitle = "View All Events";
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
+        seq.addStep(null, eventPresenter::renderAllEvents, null, null);
+        MenuNode.MenuNodeBuilder showAllEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::viewMethod);
+        entryPoints.add(seq.build(showAllEventNode.build(), Permission.VIEW_ALL_EVENTS));
+
+    }
+
+    private void generateViewAvailableEventNodes(){
+        String seqTitle = "View Available Events";
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
+        seq.addStep("username", eventPresenter::enterUsername, eventController::isValidUsername, eventPresenter::wrongInput);
+        seq.addStep(null, eventPresenter::renderAvailableEventsToUser, null, null);
+        MenuNode.MenuNodeBuilder showAvailableEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::viewMethod);
+        entryPoints.add(seq.build(showAvailableEventNode.build(), Permission.VIEW_AVAILABLE_EVENTS));
 
     }
 
