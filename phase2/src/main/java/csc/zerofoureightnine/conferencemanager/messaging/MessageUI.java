@@ -1,6 +1,5 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +31,7 @@ public class MessageUI implements UISection {
         entryPoints.add(generateDeleteMessageNodes());
         entryPoints.add(generateMessageEventNodes());
         entryPoints.add(generateMoveMessageNodes());
+        entryPoints.add(generateMessageViewingNodes());
         return entryPoints;
     }
 
@@ -151,6 +151,51 @@ public class MessageUI implements UISection {
         deleteMessageSeq.addChildren(deleteSingleSeq(), deleteConvoSeq(), deleteInboxSeq());
         deleteMessageSeq.setPermission(Permission.MESSAGE_DELETE);
         return deleteMessageSeq.build();
+    }
+
+    private MenuNode getUnreadInbox(){
+        String messageSeqTitle = "View Unread Inbox";
+        LinkedMenuNodeBuilder viewUnreadSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
+        viewUnreadSeq.addStep("username", messagePresenter::getPromptUsername, messageController::isValidMessageRecipient, messagePresenter::wrongInput);
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle);
+        end.setCompletable(messagePresenter::getUserUnread);
+        return viewUnreadSeq.build(end.build());
+    }
+
+    private MenuNode getEntireInbox(){
+        String messageSeqTitle = "View Entire Inbox";
+        LinkedMenuNodeBuilder viewAllSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
+        viewAllSeq.addStep("username", messagePresenter::getPromptUsername, messageController::isValidMessageRecipient, messagePresenter::wrongInput);
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle);
+        end.setCompletable(messagePresenter::getUserInbox);
+        return (viewAllSeq.build(end.build()));
+    }
+
+    private MenuNode getInboxFrom(){
+        String messageSeqTitle = "View Messages From Username";
+        LinkedMenuNodeBuilder viewInboxSeq= new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
+        viewInboxSeq.addStep("username", messagePresenter::getPromptUsername, messageController::isValidMessageRecipient, messagePresenter::wrongInput);
+        viewInboxSeq.addStep("from", messagePresenter::getPromptForFrom, messageController::isValidMessageRecipient, messagePresenter::wrongInput);
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle);
+        end.setCompletable(messagePresenter::getUserInboxFrom);
+        return (viewInboxSeq.build(end.build()));
+    }
+
+    private MenuNode getArchivedInbox(){
+        String messageSeqTitle = "View Archived Messages";
+        LinkedMenuNodeBuilder viewInboxSeq= new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
+        viewInboxSeq.addStep("username", messagePresenter::getPromptUsername, messageController::isValidMessageRecipient, messagePresenter::wrongInput);
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle);
+        end.setCompletable(messagePresenter::getUserArchived);
+        return (viewInboxSeq.build(end.build()));
+    }
+
+    private MenuNode generateMessageViewingNodes(){
+        String messageSeqTitle = "View Messages";
+        MenuNodeBuilder viewMessageSeq = new MenuNodeBuilder(messageSeqTitle);
+        viewMessageSeq.addChildren(getEntireInbox(), getInboxFrom(), getUnreadInbox(), getArchivedInbox());
+        viewMessageSeq.setPermission(Permission.VIEW_SELF_MESSAGES);
+        return viewMessageSeq.build();
     }
 
     @Override

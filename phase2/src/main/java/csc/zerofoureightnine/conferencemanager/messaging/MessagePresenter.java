@@ -24,7 +24,7 @@ public class MessagePresenter {
      * Returns the unread inbox of the given user.
      * @return a {@link String} representing all unread messages of the user whose username is given by {@code inputMap}
      */
-    public String getUserUnread(){
+    public String getUserUnread(TopicPresentable nextNode){
         return manager.unreadInboxToString(inputMap.get("username"));
     }
 
@@ -32,7 +32,7 @@ public class MessagePresenter {
      * Returns the whole message inbox of the given user.
      * @return a {@link String} representing all messages of the user whose username is given by {@code inputMap}
      */
-    public String getUserInbox(){
+    public String getUserInbox(TopicPresentable nextNode){
         return manager.wholeInboxToString(inputMap.get("username"));
     }
 
@@ -41,7 +41,7 @@ public class MessagePresenter {
      * @return a {@link String} representing all messages sent from a specific sender to the user whose usernames are
      * given by {@code inputMap}.
      */
-    public String getUserInboxFrom(){
+    public String getUserInboxFrom(TopicPresentable nextNode){
         return manager.singleInboxToString(inputMap.get("username"), inputMap.get("from"));
 
     }
@@ -50,7 +50,7 @@ public class MessagePresenter {
      * Returns the archived inbox of the given user.
      * @return a {@link String} representing all archived messages of the user whose username is given by {@code inputMap}.
      */
-    public String getUserArchived(){
+    public String getUserArchived(TopicPresentable nextNode){
         return manager.archivedMessagesToString(inputMap.get("username"));
     }
 
@@ -79,6 +79,9 @@ public class MessagePresenter {
         return "Please type your message";
     }
 
+    public String getPromptUsername(){
+        return "Please re-enter your username for security purposes";
+    }
     public String getPromptForFrom() {
         return "Please enter the username that the message is from";
     }
