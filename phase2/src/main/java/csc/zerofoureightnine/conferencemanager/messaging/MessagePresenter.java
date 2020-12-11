@@ -53,19 +53,35 @@ public class MessagePresenter {
         return manager.archivedMessagesToString(inputMap.get("username"));
     }
 
-
+    /**
+     * Returns the prompt for users to input username of whom they want to send the message to.
+     * @return the string "User to send to"
+     */
     public String getPromptForSendTo() {
         return "User to send to";
     }
 
+    /**
+     * Returns the prompt when users successfully send their message.
+     * @param nextNode nextNode
+     * @return the string "Message sent!"
+     */
     public String getMessageSentCompletion(TopicPresentable nextNode) {
         return "Message sent!";
     }
 
+    /**
+     * Returns the prompt for users to input the content of their message.
+     * @return the string "Please type your message"
+     */
     public String getPromptForMessageBody() {
         return "Please type your message";
     }
 
+    /**
+     * Returns the prompt when the username that the user types in is invalid.
+     * @return the string "This recipient is invalid, please try again"
+     */
     public String invalidRecipient() {
         return "This recipient is invalid, please try again";
     }
