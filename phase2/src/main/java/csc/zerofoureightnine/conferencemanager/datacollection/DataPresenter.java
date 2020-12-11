@@ -27,7 +27,6 @@ public class DataPresenter {
         stringBuilder.append("Messages in inbox: ").append(storedDataGetter.getRetrieveMessages(username)).append(System.lineSeparator());
         stringBuilder.append("Unread messages: ").append(storedDataGetter.getUnreadMessages(username)).append(System.lineSeparator());
         stringBuilder.append("Read messages: ").append(storedDataGetter.getReadMessages(username)).append(System.lineSeparator());
-        stringBuilder.append("Average event capacity: ").append(storedDataGetter.getAverageCapacity()).append(System.lineSeparator());
         return stringBuilder.toString();
     }
 }
