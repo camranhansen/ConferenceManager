@@ -26,7 +26,7 @@ public enum Permission {
     EVENT_EDIT(Category.EVENT), //Determine event ID, then determine what parameter you want to edit.
 
     //User
-    USER_ALL_EDIT_PERMISSION(Category.USER),
+    USER_ALL_EDIT_PERMISSION(Category.USER), //TODO trash this shit
     USER_SELF_EDIT_PASSWORD(Category.USER),
     USER_OTHER_EDIT_PASSWORD(Category.USER),
     USER_CREATE_ACCOUNT(Category.USER),
