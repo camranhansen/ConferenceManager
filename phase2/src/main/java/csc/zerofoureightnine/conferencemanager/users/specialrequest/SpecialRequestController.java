@@ -14,7 +14,7 @@ public class SpecialRequestController {
 
     /**
      * Initiates SpecialRequestController
-     * @param requestManager RequestManager
+     * @param requestManager {@link SpecialRequestManager}
      */
     public SpecialRequestController(SpecialRequestManager requestManager) {
         this.requestManager = requestManager;
@@ -22,11 +22,11 @@ public class SpecialRequestController {
 
 
     /**
-     * Remove the request with the given request id. Returns 0.
+     * Remove the request with the given request id.
      *
      * @param username username of the user
-     * @param input    user input
-     * @param opts     options
+     * @param input user input
+     * @param opts the options available to user
      * @return int 0
      */
     public int removeRequest(String username, String input, List<TopicPresentable> opts) {
@@ -35,11 +35,11 @@ public class SpecialRequestController {
     }
 
     /**
-     * Add a new user request. Returns 0.
+     * Add a new user request.
      *
      * @param username username of the user
-     * @param input    user input
-     * @param opts     options
+     * @param input user input
+     * @param opts the options available to user
      * @return int 0
      */
     public int addRequest(String username, String input, List<TopicPresentable> opts) {
@@ -48,11 +48,11 @@ public class SpecialRequestController {
     }
 
     /**
-     * Address the request. Returns 0.
+     * Address the request.
      *
      * @param username username of the user
-     * @param input    user input
-     * @param opts     options
+     * @param input user input
+     * @param opts the options available to user
      * @return int 0
      */
     public int addressRequest(String username, String input, List<TopicPresentable> opts) {
@@ -64,7 +64,7 @@ public class SpecialRequestController {
      * Returns whether the given requestID is valid or not.
      *
      * @param id requestID
-     * @param options options
+     * @param options the options available to user
      * @return true if {@code id} exists, otherwise return false
      */
     public boolean isValidID(String id, List<TopicPresentable> options) {
