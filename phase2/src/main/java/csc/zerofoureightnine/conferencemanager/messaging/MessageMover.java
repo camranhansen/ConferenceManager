@@ -6,28 +6,27 @@ import java.util.*;
 
 public class MessageMover {
     private MessageManager messageManager;
-    private String username;
 
 
     /**
      * Instantiates MessageMover
      * @param messageManager MessageManager class
-     * @param username username of the user accessing MessageMover
+     *
      */
-    public MessageMover(MessageManager messageManager, String username){
+    public MessageMover(MessageManager messageManager){
         this.messageManager = messageManager;
-        this.username = username;
     }
 
 
     /**
      * Check if the message is in user's read inbox, if so, move the given message from user's read inbox to unread
      * inbox.
+     * @param username current user
      * @param from username of sender
      * @param content message content
      * @param timeSent sent time of the message
      */
-    public void moveReadToUnread(String from, String content, String timeSent){
+    public void moveReadToUnread(String username, String from, String content, String timeSent){
         this.messageManager.getMessageData().beginInteraction();
         List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m: md){
@@ -41,16 +40,17 @@ public class MessageMover {
 
     /**
      * Check if the message is in user's unread inbox, if so, move the given message from user's unread inbox to read.
+     * @param username current user
      * @param from username of sender
      * @param content message content
      * @param timeSent sent time of the message
      */
-    public void moveUnreadToRead(String from, String content, String timeSent){
+    public void moveUnreadToRead(String username, String from, String content, String timeSent){
         this.messageManager.getMessageData().beginInteraction();
         List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m: md){
             if(from.equals(m.getSender())&&content.equals(m.getContent())&&timeSent.equals(m.getTimeSent().toString())){
-                if(!m.getRead().contains(this.username)){
+                if(!m.getRead().contains(username)){
                     m.addToRead(username);
                 }
             }
@@ -66,13 +66,13 @@ public class MessageMover {
      * @param content message content
      * @param timeSent sent time of the message
      */
-    public void moveToArchived(String from, String content, String timeSent) {
+    public void moveToArchived(String username, String from, String content, String timeSent) {
         this.messageManager.getMessageData().beginInteraction();
         List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m : md) {
             if (from.equals(m.getSender()) && content.equals(m.getContent()) && timeSent.equals
                     (m.getTimeSent().toString())) {
-                if (!m.getArchived().contains(this.username)) {
+                if (!m.getArchived().contains(username)) {
                     m.addToArchived(username);
                 }
             }
@@ -83,11 +83,12 @@ public class MessageMover {
 
     /**
      * Remove the given message from user's archived inbox.
+     * @param username current user
      * @param from username of the sender
      * @param content message content
      * @param timeSent sent time of the message
      */
-    public void removeFromArchived(String from, String content, String timeSent){
+    public void removeFromArchived(String username, String from, String content, String timeSent){
         this.messageManager.getMessageData().beginInteraction();
         List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m : md) {
@@ -102,11 +103,12 @@ public class MessageMover {
 
     /**
      * Delete the given message from user's inbox.
+     * @param username current user
      * @param from username of the sender
      * @param content message content
      * @param timeSent sent time of the message
      */
-    public void deleteOneMessage(String from, String content, String timeSent){
+    public void deleteOneMessage(String username, String from, String content, String timeSent){
         this.messageManager.getMessageData().beginInteraction();
         List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m: md){
@@ -124,9 +126,10 @@ public class MessageMover {
 
         /**
          * Delete all conversations between the user and the given sender from user's inbox.
+         * @param username current user
          * @param from username of the sender
          */
-    public void deleteConversation(String from) {
+    public void deleteConversation(String username, String from) {
         this.messageManager.getMessageData().beginInteraction();
         List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m : md) {
@@ -143,8 +146,9 @@ public class MessageMover {
 
     /**
      * Clear this user's inbox.
+     * @param username current user
      */
-    public void clearAllInboxes(){
+    public void clearAllInboxes(String username){
         this.messageManager.getMessageData().beginInteraction();
         List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for(MessageData m: md) {

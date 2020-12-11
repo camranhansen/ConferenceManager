@@ -44,7 +44,8 @@ public class EntryPoint {
         MessagePresenter messagePresenter = new MessagePresenter(messageManager, inputMap);
 
         SessionController sessionController = new SessionController(userManager, permissionManager);
-        MessageController messageController = new MessageController(messageManager, userManager, permissionManager);
+        MessageController messageController = new MessageController(messageManager, userManager, eventManager,
+                permissionManager);
         EventController eventController = new EventController(eventManager,userManager,permissionManager, inputMap);
 
         menuBuilder.addSectionUI(new MessageUI(messageController, messagePresenter), new SessionUI(sessionController, sessionPresenter), new EventUI(eventController,eventPresenter));

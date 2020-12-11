@@ -129,17 +129,12 @@ public class MessageManager {
         return num;
     }
 
-
-
-
-
     /**
      * Returns the read inbox of the given user.
      * @param username username of the user whose read inbox will be retrieved
      * @return a hashmap that maps the username of the sender to a list of read Message sent by the sender to the
      * given user
      */
-
     private Map<String, List<Message>> getReadInbox(String username) {
         HashMap<String, List<Message>> read = new HashMap<>();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
@@ -188,7 +183,6 @@ public class MessageManager {
      * @return a hashmap that maps the username of the sender to a list of unread Message sent by the sender to the
      * given user
      */
-
     private Map<String, List<Message>> getUnreadInbox(String username){
         HashMap<String, List<Message>> unread = new HashMap<>();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
@@ -232,7 +226,7 @@ public class MessageManager {
         return messages;
     }
 
-    //ADDED:
+
     /**
      * Returns the archived inbox of the given user.
      * @param username username of the user
@@ -287,9 +281,7 @@ public class MessageManager {
         }
         this.messageData.endInteraction();
         return messages;
-
     }
-
 
         /**
          * Returns the String representation of all the messages sent from one user to another user. If the given sender
@@ -329,7 +321,6 @@ public class MessageManager {
         return messages;
     }
 
-
     /**
      * Returns the string representation of all the message sent to the user. If no one has sent to the given user before
      * , returns "You have no messages".
@@ -349,7 +340,6 @@ public class MessageManager {
         }
         return allMessages.toString();
     }
-
 
     /**
      * Returns all archived Message of the given user. If the given user has no archived Message, returns "You have no
@@ -377,7 +367,6 @@ public class MessageManager {
         return string.toString();
     }
 
-
     /**
      * Returns all unread Message of the given user. If this user has no Message in unreadInbox, returns
      * "You have no unread messages".
@@ -397,7 +386,6 @@ public class MessageManager {
         }
         return string.toString();
     }
-
 
     /**
      * Returns all unread Message of the given user from the given sender. If this user has no unread Message from the
@@ -427,7 +415,6 @@ public class MessageManager {
         return inbox.toString();
     }
 
-
     /**
      * Returns a list of the information of all message sent to the user including sender, sent time, content, and all
      * recipients.
@@ -453,6 +440,23 @@ public class MessageManager {
         return res;
     }
 
+    /**
+     * Returns true if the content, sender and time sent was been a message this username has received.
+     *
+     * @param username the current user
+     * @param from the sender of a message
+     * @param time the time a message was sent
+     * @param content the content in a message
+     * @return a boolean stating whether or a message exists
+     */
+    public boolean messageExists(String username, String from, String time, String content){
+        List<MessageData> md = getMessageData().loadInCollection("recipients", username);
+        for (MessageData m: md){
+            if(from.equals(m.getSender())&&content.equals(m.getContent())&&time.equals(m.getTimeSent().toString())){
+                return true; }
+        }
+        return false;
+    }
 //    /**
 //     * Create a new Message sent to the given user from a row storing all information about that Message. Put the
 //     * message into the user inbox.
