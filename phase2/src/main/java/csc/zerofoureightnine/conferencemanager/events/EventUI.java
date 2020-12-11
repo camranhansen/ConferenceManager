@@ -31,9 +31,50 @@ public class EventUI implements UISection {
         generateViewAllEventNodes();
         generateViewAvailableEventNodes();
         generateEventSelfDropNodes();
+        generateEventOtherDropNodes();
+        generateViewAttendingEventNodes();
+        generateViewHostingEventsNodes();
+        generateEventOtherEnrollNodes();
+        generateEditEventNodes();
         return entryPoints;
 
 
+    }
+    private void generateEditEventNodes(){
+        String seqTitle = "Edit Event capacity";
+        LinkedMenuNodeBuilder eventEditSeq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
+        eventEditSeq.addStep("capacity", eventPresenter::enterCapacity, eventController::isValidCapacity, eventPresenter::wrongInput);
+        eventEditSeq.addStep("capacity", eventPresenter::enterCapacity, eventController::isValidEditCapacity, eventPresenter::wrongInput);
+        MenuNode.MenuNodeBuilder createEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::editCapacity);
+        entryPoints.add(eventEditSeq.build(createEventNode.build(), Permission.EVENT_EDIT));
+    }
+
+    private void generateViewHostingEventsNodes(){
+        String seqTitle = "View All Hosting Events";
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
+        seq.addStep("username", eventPresenter::enterUsername, eventController::isValidUsername, eventPresenter::wrongInput);
+        seq.addStep(null, eventPresenter::renderHostingEventsToUser, null, null);
+        MenuNode.MenuNodeBuilder showAllEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::viewMethod);
+        entryPoints.add(seq.build(showAllEventNode.build(), Permission.VIEW_HOSTING_EVENTS));
+    }
+
+    private void generateViewAttendingEventNodes(){
+        String seqTitle = "View All Your Events";
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
+        seq.addStep("username", eventPresenter::enterUsername, eventController::isValidUsername, eventPresenter::wrongInput);
+        seq.addStep(null, eventPresenter::renderAttendingEventsToUser, null, null);
+        MenuNode.MenuNodeBuilder showAllEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::viewMethod);
+        entryPoints.add(seq.build(showAllEventNode.build(), Permission.VIEW_ATTENDING_EVENTS));
+
+    }
+
+    private void generateEventOtherDropNodes(){
+        String seqTitle = "Un-enroll other user from an event";
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
+        seq.addStep("event_id", eventPresenter::enterId, eventController::isValidID, eventPresenter::wrongInput);
+        seq.addStep("target", eventPresenter::enterUsername, eventController::isValidUsername, eventPresenter::wrongInput);
+        MenuNode.MenuNodeBuilder dropEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::dropOther);
+        entryPoints.add(seq.build(dropEventNode.build(), Permission.EVENT_OTHER_DROP));
     }
 
     private void generateEventSelfDropNodes(){
@@ -91,6 +132,16 @@ public class EventUI implements UISection {
         seq.addStep("event_id", eventPresenter::enterId, eventController::isValidID, eventPresenter::wrongInput);
         MenuNode.MenuNodeBuilder enrollNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::enrollSelf);
         entryPoints.add(seq.build(enrollNode.build(), Permission.EVENT_SELF_ENROLL));
+    }
+
+    public void generateEventOtherEnrollNodes(){
+        String seqTitle = "enroll other user to an event";
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
+        seq.addStep("event_id", eventPresenter::enterId, eventController::isValidID, eventPresenter::wrongInput);
+        seq.addStep("target", eventPresenter::enterUsername, eventController::isValidUsername, eventPresenter::wrongInput);
+        MenuNode.MenuNodeBuilder dropEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::enrollOther);
+        entryPoints.add(seq.build(dropEventNode.build(), Permission.EVENT_OTHER_ENROLL));
+
     }
 
 //    public void generateShowUserEventNodes(){

@@ -37,6 +37,15 @@ public class EventPresenter {
         return renderEventByIDList(eventIds).toString();
     }
 
+    public String renderAttendingEventsToUser(){
+        List<String> eventIds = eventManager.getUserEvents(inputMap.get("username"));
+        return renderEventByIDList(eventIds).toString();
+    }
+
+    public String renderHostingEventsToUser(){
+        List<String> eventIds = eventManager.getHostingEvents(inputMap.get("username"));
+        return renderEventByIDList(eventIds).toString();
+    }
 
 
 //    private StringBuilder renderEvents
