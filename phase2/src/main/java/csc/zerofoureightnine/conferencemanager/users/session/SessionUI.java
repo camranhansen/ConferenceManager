@@ -3,10 +3,10 @@ package csc.zerofoureightnine.conferencemanager.users.session;
 import java.util.ArrayList;
 import java.util.List;
 
-import csc.zerofoureightnine.conferencemanager.interaction.LinkedMenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode.MenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.control.UISection;
+import csc.zerofoureightnine.conferencemanager.interaction.utils.LinkedMenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 public class SessionUI implements UISection, SessionObserver {

@@ -17,7 +17,7 @@ import csc.zerofoureightnine.conferencemanager.interaction.presentation.complete
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.InfoPresentable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.PromptPresentable;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.ReattemptPromptPresentable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.RetryPromptPresentable;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 public class MenuNode { // UI
@@ -32,12 +32,12 @@ public class MenuNode { // UI
     private final completePresentable completable;
     private final PromptPresentable promptable;
     private final InfoPresentable listable;
-    private final ReattemptPromptPresentable reattemptable;
+    private final RetryPromptPresentable reattemptable;
     private boolean disabled = false;
 
     public MenuNode(Permission permission, Validatable validatable, TopicPresentable nameable, Action action,
             completePresentable completable, PromptPresentable promptable, InfoPresentable listable,
-            ReattemptPromptPresentable reattemptable, Set<MenuNode> children) {
+            RetryPromptPresentable reattemptable, Set<MenuNode> children) {
         this.permission = permission;
         this.validatable = validatable;
         this.nameable = nameable;
@@ -147,7 +147,7 @@ public class MenuNode { // UI
         private Permission permission;
         private PromptPresentable promptable;
         private InfoPresentable listable;
-        private ReattemptPromptPresentable reattemptable;
+        private RetryPromptPresentable reattemptable;
 
         /**
          * Instantiates the {@link MenuNodeBuilder} with minimal requirements.
@@ -191,7 +191,6 @@ public class MenuNode { // UI
             this.promptable = optionPresenter;
             this.reattemptable = optionPresenter;
             this.listable = optionPresenter;
-            this.completable = optionPresenter;
             this.action = optionSelector;
             this.validatable = optionSelector;
         }
@@ -212,7 +211,6 @@ public class MenuNode { // UI
             this.promptable = optionPresenter;
             this.reattemptable = optionPresenter;
             this.listable = optionPresenter;
-            this.completable = optionPresenter;
             this.action = optionSelector;
             this.validatable = optionSelector;
         }
@@ -266,7 +264,7 @@ public class MenuNode { // UI
         }
 
         /**
-         * Sets the {@link ReattemptPromptPresentable} presenter. If this is null, when
+         * Sets the {@link RetryPromptPresentable} presenter. If this is null, when
          * the user fails to enter valid input (determined by the {@link Validatable})
          * the user will be moved to the parent {@link GeneralMenuNode} or the main menu
          * of there is no parent.
@@ -274,7 +272,7 @@ public class MenuNode { // UI
          * @param reattemptable the reattemptable presenter to use to organize displayed
          *                      reattempt content.
          */
-        public void setReattemptable(ReattemptPromptPresentable reattemptable) {
+        public void setReattemptable(RetryPromptPresentable reattemptable) {
             this.reattemptable = reattemptable;
         }
 
