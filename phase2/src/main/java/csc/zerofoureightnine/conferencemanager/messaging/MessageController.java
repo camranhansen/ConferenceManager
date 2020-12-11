@@ -3,8 +3,7 @@ package csc.zerofoureightnine.conferencemanager.messaging;
 import java.util.HashMap;
 import java.util.List;
 
-import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.Nameable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.NameablePresentation;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 
 public class MessageController {
@@ -17,12 +16,12 @@ public class MessageController {
         this.userManager = userManager;
     }
 
-    public Nameable messageSingleUser(String username, String input, List<Nameable> selectableOptions) {
+    public NameablePresentation messageSingleUser(String username, String input, List<NameablePresentation> selectableOptions) {
         messageManager.sendMessage(username, inputMap.get("content"), inputMap.get("to"));
         return selectableOptions.get(0);
     }
 
-    public boolean isValidMessageRecipient(String input, List<Nameable> options) {
+    public boolean isValidMessageRecipient(String input, List<NameablePresentation> options) {
         return userManager.userExists(input);
     }
 

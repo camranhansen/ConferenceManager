@@ -15,11 +15,11 @@ import csc.zerofoureightnine.conferencemanager.interaction.control.Action;
 import csc.zerofoureightnine.conferencemanager.interaction.control.Validatable;
 import csc.zerofoureightnine.conferencemanager.interaction.general.OptionPresenter;
 import csc.zerofoureightnine.conferencemanager.interaction.general.OptionSelector;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.Completable;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.Listable;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.Nameable;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.Promptable;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.Reattemptable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.CompletablePresentation;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.ListablePresentation;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.NameablePresentation;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.PromptablePresentation;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.ReattemptablePresentation;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 public class MenuNode { // UI
@@ -29,16 +29,16 @@ public class MenuNode { // UI
     private final Set<MenuNode> permissionlessChildren = new HashSet<>(); // !null but may be empty.
     private MenuNode parent; // may be null, no parent then, no going back up the menu.
     private final Validatable validatable; // may be null, in which case any input is accepted.
-    private final Nameable nameable; // !null
+    private final NameablePresentation nameable; // !null
     private final Action action; // !null
-    private final Completable completable; // !null
-    private final Promptable promptable;
-    private final Listable listable;
-    private final Reattemptable reattemptable;
+    private final CompletablePresentation completable; // !null
+    private final PromptablePresentation promptable;
+    private final ListablePresentation listable;
+    private final ReattemptablePresentation reattemptable;
     private boolean disabled = false;
 
-    public MenuNode(Permission permission, Validatable validatable, Nameable nameable, Action action,
-            Completable completable, Promptable promptable, Listable listable, Reattemptable reattemptable,
+    public MenuNode(Permission permission, Validatable validatable, NameablePresentation nameable, Action action,
+            CompletablePresentation completable, PromptablePresentation promptable, ListablePresentation listable, ReattemptablePresentation reattemptable,
             Set<MenuNode> children) {
         this.permission = permission;
         this.validatable = validatable;
@@ -61,8 +61,8 @@ public class MenuNode { // UI
 
     public MenuNode executeNode(String username, Scanner scanner, List<Permission> userPermissions, MenuNode mainMenu) {
         List<MenuNode> available = availableOptions(mainMenu, userPermissions);
-        List<Nameable> nameables = new ArrayList<>();
-        Map<Nameable, MenuNode> nameableNodes = new HashMap<>();
+        List<NameablePresentation> nameables = new ArrayList<>();
+        Map<NameablePresentation, MenuNode> nameableNodes = new HashMap<>();
         available.forEach(m -> {
             nameables.add(m == null ? null : m.nameable);
             if (m != null) {
@@ -126,25 +126,25 @@ public class MenuNode { // UI
     public static class MenuNodeBuilder {
         private Set<MenuNode> children = new HashSet<>();
         private final Action action; // !null
-        private final Nameable displayName; // !null
-        private final Completable completable; // !null
+        private final NameablePresentation displayName; // !null
+        private final CompletablePresentation completable; // !null
         private Validatable validatable;
         private Permission permission;
-        private Promptable promptable;
-        private Listable listable;
-        private Reattemptable reattemptable;
+        private PromptablePresentation promptable;
+        private ListablePresentation listable;
+        private ReattemptablePresentation reattemptable;
 
         /**
          * Instantiates the {@link MenuNodeBuilder} with minimal requirements.
          * 
-         * @param displayName A {@link Nameable} presenter that generates a display name
+         * @param displayName A {@link NameablePresentation} presenter that generates a display name
          *                    for this menu.
          * @param action      An {@link Action} that is executed upon after input is
          *                    validated, if input is being validated.
-         * @param completable A {@link Completable} presenter generating information
+         * @param completable A {@link CompletablePresentation} presenter generating information
          *                    regarding the completion of execution of this menu.
          */
-        public MenuNodeBuilder(Nameable displayName, Action action, Completable completable) {
+        public MenuNodeBuilder(NameablePresentation displayName, Action action, CompletablePresentation completable) {
             this.displayName = displayName;
             this.action = action;
             this.completable = completable;
@@ -153,14 +153,14 @@ public class MenuNode { // UI
         /**
          * Instantiates the {@link MenuNodeBuilder} with minimal requirements.
          * 
-         * @param displayName A {@link Nameable} presenter that generates a display name
+         * @param displayName A {@link NameablePresentation} presenter that generates a display name
          *                    for this menu.
          * @param action      An {@link Action} that is executed upon after input is
          *                    validated, if input is being validated.
-         * @param completable A {@link Completable} presenter generating information
+         * @param completable A {@link CompletablePresentation} presenter generating information
          *                    regarding the completion of execution of this menu.
          */
-        public MenuNodeBuilder(String displayName, Action action, Completable completable) {
+        public MenuNodeBuilder(String displayName, Action action, CompletablePresentation completable) {
             this.displayName = () -> displayName;
             this.action = action;
             this.completable = completable;
@@ -196,7 +196,7 @@ public class MenuNode { // UI
          * 
          * @param nameable a constant display name to be used for this node.
          */
-        public MenuNodeBuilder(Nameable nameable) {
+        public MenuNodeBuilder(NameablePresentation nameable) {
             OptionPresenter optionPresenter = new OptionPresenter("");
             OptionSelector optionSelector = new OptionSelector();
             this.displayName = nameable;
@@ -233,7 +233,7 @@ public class MenuNode { // UI
         }
 
         /**
-         * Sets the {@link Promptable} presenter. If this is null, when the user is
+         * Sets the {@link PromptablePresentation} presenter. If this is null, when the user is
          * interacting with this node, they will not be prompted for input nor will they
          * have the option to input. The {@link GeneralMenuNode} will move to calling
          * it's {@link Action#complete(String, String, List)}.
@@ -241,23 +241,23 @@ public class MenuNode { // UI
          * @param promptable the promptable presenter used to generate a request for the
          *                   user to input information.
          */
-        public void setPromptable(Promptable promptable) {
+        public void setPromptable(PromptablePresentation promptable) {
             this.promptable = promptable;
         }
 
         /**
-         * Sets the {@link Listable} presenter. If this is null, when the user is
+         * Sets the {@link ListablePresentation} presenter. If this is null, when the user is
          * interacting with this {@link GeneralMenuNode}, no list of options message is
          * displayed.
          * 
          * @param listable
          */
-        public void setListable(Listable listable) {
+        public void setListable(ListablePresentation listable) {
             this.listable = listable;
         }
 
         /**
-         * Sets the {@link Reattemptable} presenter. If this is null, when the user
+         * Sets the {@link ReattemptablePresentation} presenter. If this is null, when the user
          * fails to enter valid input (determined by the {@link Validatable}) the user
          * will be moved to the parent {@link GeneralMenuNode} or the main menu of there
          * is no parent.
@@ -265,7 +265,7 @@ public class MenuNode { // UI
          * @param reattemptable the reattemptable presenter to use to organize displayed
          *                      reattempt content.
          */
-        public void setReattemptable(Reattemptable reattemptable) {
+        public void setReattemptable(ReattemptablePresentation reattemptable) {
             this.reattemptable = reattemptable;
         }
 

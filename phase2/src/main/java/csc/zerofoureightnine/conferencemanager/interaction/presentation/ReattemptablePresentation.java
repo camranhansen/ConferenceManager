@@ -1,6 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.interaction.presentation;
 
-public interface Reattemptable {  //Presenter
+public interface ReattemptablePresentation {  //Presenter
     /**
      * The retry message.
      * @return A {@link String} querying the user to retry, or empty.

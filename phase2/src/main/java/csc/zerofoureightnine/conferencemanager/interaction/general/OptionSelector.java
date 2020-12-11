@@ -5,7 +5,7 @@ import java.util.List;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.control.Action;
 import csc.zerofoureightnine.conferencemanager.interaction.control.Validatable;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.Nameable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.NameablePresentation;
 
 /**
  * A general {@link Action} and {@link Validatable} meant for choosing between the children
@@ -14,14 +14,14 @@ import csc.zerofoureightnine.conferencemanager.interaction.presentation.Nameable
 public class OptionSelector implements Action, Validatable {
 
     @Override
-    public boolean validateInput(String input, List<Nameable> options) {
+    public boolean validateInput(String input, List<NameablePresentation> options) {
         return input.matches("^[0-9]+$") && 
         Integer.parseInt(input) < options.size() && 
         options.get(Integer.parseInt(input)) != null;
     }
 
     @Override
-    public Nameable complete(String username, String input, List<Nameable> selectableOptions) {
+    public NameablePresentation complete(String username, String input, List<NameablePresentation> selectableOptions) {
         return selectableOptions.get(Integer.parseInt(input));
     }
 

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.Nameable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.NameablePresentation;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
@@ -23,7 +23,7 @@ public class SessionController { // UI
         this.permissionManager = permissionManager;
     }
 
-    public Nameable loginUser(String username, String input, List<Nameable> selectableOptions) {
+    public NameablePresentation loginUser(String username, String input, List<NameablePresentation> selectableOptions) {
         String attemptingUser = inputMap.get("user");
         String attemptingPassword = inputMap.get("password");
         if (userManager.userExists(attemptingUser) && userManager.getPassword(attemptingUser).equals(attemptingPassword)) {
@@ -34,16 +34,16 @@ public class SessionController { // UI
         return selectableOptions.get(0);
     }
 
-    public Nameable logOutUser(String username, String input, List<Nameable> selectableOptions){
+    public NameablePresentation logOutUser(String username, String input, List<NameablePresentation> selectableOptions){
         onAuthenticationStateChange(username, false);
         return selectableOptions.get(0);
     }
 
-    public boolean checkUserNotExist(String input, List<Nameable> options) {
+    public boolean checkUserNotExist(String input, List<NameablePresentation> options) {
         return !userManager.userExists(input);
     }
 
-    public Nameable createUser(String username, String input, List<Nameable> selectableOptions) {
+    public NameablePresentation createUser(String username, String input, List<NameablePresentation> selectableOptions) {
         String attemptingUser = inputMap.get("user");
         String attemptingPassword = inputMap.get("password");
         userManager.createUser(attemptingUser, attemptingPassword, Template.ATTENDEE.getPermissions());

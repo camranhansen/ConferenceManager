@@ -6,16 +6,16 @@ import java.util.Map;
 
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode.MenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.control.Validatable;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.Promptable;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.Reattemptable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.PromptablePresentation;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.ReattemptablePresentation;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 public class LinkedMenuNodeBuilder {
     private Map<String, String> inputMap = new HashMap<>();
     private ArrayList<String> inputTags = new ArrayList<>();
-    private ArrayList<Promptable> prompts = new ArrayList<>();
+    private ArrayList<PromptablePresentation> prompts = new ArrayList<>();
     private ArrayList<Validatable> validatables = new ArrayList<>();
-    private ArrayList<Reattemptable> retryMessages = new ArrayList<>();
+    private ArrayList<ReattemptablePresentation> retryMessages = new ArrayList<>();
 
     private final String goalName;
 
@@ -24,7 +24,7 @@ public class LinkedMenuNodeBuilder {
         this.inputMap = inputMap;
     }
 
-    public void addStep(String inputTag, Promptable prompt, Validatable validatable, Reattemptable retryMessage) {
+    public void addStep(String inputTag, PromptablePresentation prompt, Validatable validatable, ReattemptablePresentation retryMessage) {
         inputTags.add(inputTag);
         prompts.add(prompt);
         validatables.add(validatable);
