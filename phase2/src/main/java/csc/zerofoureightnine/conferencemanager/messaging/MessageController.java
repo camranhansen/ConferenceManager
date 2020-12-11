@@ -1,6 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -90,7 +91,7 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int messageSingleEvent(String username, String input, List<TopicPresentable> options){
-        List<String> users = eventManager.getParticipants(inputMap.get("event_id"));
+        Collection<String> users = eventManager.getParticipants(inputMap.get("event_id"));
         if (users.size() == 0){
             return 0;
         }

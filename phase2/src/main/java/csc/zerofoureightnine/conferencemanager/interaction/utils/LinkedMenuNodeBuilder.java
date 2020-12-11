@@ -1,7 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.interaction.utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +16,16 @@ import csc.zerofoureightnine.conferencemanager.interaction.presentation.RetryPro
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
+/**
+ * Helps to build sequential {@link MenuNode} steps to collect a sequence of
+ * data for one terminal {@link Action}. For example, logging in, is a two piece
+ * of information step process, starting with getting the username, and ending
+ * with the password.
+ * 
+ * As part of collecting a sequence of information, sometimes it's easier to
+ * choose from a list of presented options to then execute an {@link Action}
+ * upon selection. This can be done as well.
+ */
 public class LinkedMenuNodeBuilder {
     private Map<String, String> inputMap = new HashMap<>();
     private ArrayList<String> inputTags = new ArrayList<>();
@@ -80,7 +89,7 @@ public class LinkedMenuNodeBuilder {
                 builder.setValidatable(validatables.get(i));
                 builder.setReattemptable(retryMessages.get(i));
                 builder.addChildren(nextStep);
-    
+
                 if (i == 0)
                     builder.setPermission(permission);
                 previous = builder.build();
@@ -93,14 +102,16 @@ public class LinkedMenuNodeBuilder {
         return previous;
     }
 
-    private MenuNode buildMultiNode(String tag, MenuNode tail, List<String> options, List<Permission> permissions, Permission leadPermission) {
+    private MenuNode buildMultiNode(String tag, MenuNode tail, List<String> options, List<Permission> permissions,
+            Permission leadPermission) {
 
         MenuNode[] optionNodes = new MenuNode[options.size()];
 
         for (int i = 0; i < optionNodes.length; i++) {
             MenuNodeBuilder builder = new MenuNodeBuilder(options.get(i), (u, in, o) -> 2);
             builder.addChildren(tail);
-            if (permissions != null) builder.setPermission(permissions.get(i));
+            if (permissions != null)
+                builder.setPermission(permissions.get(i));
             optionNodes[i] = builder.build();
         }
 

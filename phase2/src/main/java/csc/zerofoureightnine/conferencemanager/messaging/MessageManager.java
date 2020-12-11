@@ -18,7 +18,6 @@ import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 public class MessageManager {
 
 
-    //private HashMap<String, HashMap<String, List<Message>>> inboxes;
     private PersistentMap<String, MessageData> messageData;
 
     /**
