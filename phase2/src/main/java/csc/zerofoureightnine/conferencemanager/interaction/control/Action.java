@@ -2,7 +2,7 @@ package csc.zerofoureightnine.conferencemanager.interaction.control;
 
 import java.util.List;
 
-import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.Nameable;
 
 public interface Action {
 
@@ -16,5 +16,5 @@ public interface Action {
      *                          may be null if the node does not have a parent.
      * @return The next node from the list of options to move to.
      */
-    public MenuNode complete(String username, String input, List<MenuNode> selectableOptions);
+    public Nameable complete(String username, String input, List<Nameable> selectableOptions);
 }

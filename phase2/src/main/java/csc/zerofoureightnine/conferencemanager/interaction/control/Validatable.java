@@ -2,7 +2,7 @@ package csc.zerofoureightnine.conferencemanager.interaction.control;
 
 import java.util.List;
 
-import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.Nameable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.Reattemptable;
 
 public interface Validatable { //Generally, controllers are responsible for their own validation of input.
@@ -14,5 +14,5 @@ public interface Validatable { //Generally, controllers are responsible for thei
      * @param options the options the user has available to them.
      * @return True if the input is valid for the given options. False otherwise.
      */
-    public boolean validateInput(String input, List<MenuNode> options);
+    public boolean validateInput(String input, List<Nameable> options);
 }

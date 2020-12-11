@@ -1,6 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.Nameable;
 
 public class MessagePresenter {
 
@@ -36,7 +37,7 @@ public class MessagePresenter {
         return "User to send to";
     }
 
-    public String getMessageSentCompletion(MenuNode nextNode) {
+    public String getMessageSentCompletion(Nameable nextNode) {
         return "Message sent! :)";
     }
 

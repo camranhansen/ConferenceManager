@@ -10,5 +10,5 @@ public interface Completable { // Presenter
      * @return A {@link String} representing a message to indicate an {@link Action}
      *         was performed.
      */
-    String getCompleteMessage(MenuNode nextNode);
+    String getCompleteMessage(Nameable nextNode);
 }

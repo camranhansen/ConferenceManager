@@ -2,7 +2,7 @@ package csc.zerofoureightnine.conferencemanager.interaction;
 
 import java.util.ArrayList;
 
-import csc.zerofoureightnine.conferencemanager.interaction.GeneralMenuNode.MenuNodeBuilder;
+import csc.zerofoureightnine.conferencemanager.interaction.MenuNode.MenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.control.UISection;
 
 public class MenuBuilder {

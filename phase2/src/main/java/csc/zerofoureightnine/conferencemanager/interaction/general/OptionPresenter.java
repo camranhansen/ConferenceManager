@@ -2,7 +2,6 @@ package csc.zerofoureightnine.conferencemanager.interaction.general;
 
 import java.util.List;
 
-import csc.zerofoureightnine.conferencemanager.interaction.GeneralMenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.Completable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.Listable;
@@ -11,9 +10,9 @@ import csc.zerofoureightnine.conferencemanager.interaction.presentation.Promptab
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.Reattemptable;
 
 /**
- * A general {@link Presentable} that lists the children of the {@link GeneralMenuNode}. Prompts
- * user for an integer to select one of the listed children options. Does not have a
- * completion message.
+ * A general {@link Presentable} that lists the children of the
+ * {@link GeneralMenuNode}. Prompts user for an integer to select one of the
+ * listed children options. Does not have a completion message.
  */
 public class OptionPresenter implements Nameable, Promptable, Listable, Reattemptable, Completable {
     private final String identifier;
@@ -56,7 +55,7 @@ public class OptionPresenter implements Nameable, Promptable, Listable, Reattemp
     }
 
     @Override
-    public String getCompleteMessage(MenuNode menuNode) {
+    public String getCompleteMessage(Nameable nameable) {
         return "";
     }
 }

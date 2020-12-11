@@ -5,15 +5,17 @@ import java.util.List;
 
 import csc.zerofoureightnine.conferencemanager.interaction.LinkedMenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
-import csc.zerofoureightnine.conferencemanager.interaction.GeneralMenuNode.MenuNodeBuilder;
+import csc.zerofoureightnine.conferencemanager.interaction.MenuNode.MenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.control.UISection;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 public class MessageUI implements UISection {
     List<MenuNode> entryPoints;
     MessageController messageController;
+    private MessagePresenter messagePresenter;
 
-    public MessageUI(MessageController messageController) {
+    public MessageUI(MessageController messageController, MessagePresenter messagePresenter) {
+        this.messagePresenter = messagePresenter;
         this.messageController = messageController;
     }
 
@@ -25,9 +27,9 @@ public class MessageUI implements UISection {
 
         String messageSeqTitle = "Message Single User";
         LinkedMenuNodeBuilder sendMessageSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
-        sendMessageSeq.addStep("to", messageController.getPresenter()::getPromptForSendTo, messageController::isValidMessageRecipient, messageController.getPresenter()::invalidRecipient);
-        sendMessageSeq.addStep("content", messageController.getPresenter()::getPromptForMessageBody, null, null);
-        MenuNodeBuilder sendMessageNode = new MenuNodeBuilder(messageSeqTitle, messageController::messageSingleUser, messageController.getPresenter()::getMessageSentCompletion);
+        sendMessageSeq.addStep("to", messagePresenter::getPromptForSendTo, messageController::isValidMessageRecipient, messagePresenter::invalidRecipient);
+        sendMessageSeq.addStep("content", messagePresenter::getPromptForMessageBody, null, null);
+        MenuNodeBuilder sendMessageNode = new MenuNodeBuilder(messageSeqTitle, messageController::messageSingleUser, messagePresenter::getMessageSentCompletion);
         entryPoints.add(sendMessageSeq.build(sendMessageNode.build(), Permission.MESSAGE_SINGLE_USER));
         return entryPoints;
     }

@@ -5,19 +5,21 @@ import java.util.List;
 
 import csc.zerofoureightnine.conferencemanager.interaction.LinkedMenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
-import csc.zerofoureightnine.conferencemanager.interaction.GeneralMenuNode.MenuNodeBuilder;
+import csc.zerofoureightnine.conferencemanager.interaction.MenuNode.MenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.control.UISection;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 public class SessionUI implements UISection, SessionObserver {
     private SessionController sessionController;
+    private SessionPresenter sessionPresenter;
     private List<MenuNode> entryNodes;
     private MenuNode loginUserNode;
     private MenuNode CreateUserNode;
     private MenuNode logoutUserNode;
 
 
-    public SessionUI(SessionController sessionController) {
+    public SessionUI(SessionController sessionController, SessionPresenter sessionPresenter) {
+        this.sessionPresenter = sessionPresenter;
         this.sessionController = sessionController;
         this.sessionController.addObserver(this);
     }
@@ -28,20 +30,20 @@ public class SessionUI implements UISection, SessionObserver {
             return entryNodes;
         entryNodes = new ArrayList<>();
         LinkedMenuNodeBuilder authenticationSeq = new LinkedMenuNodeBuilder("Login", sessionController.getInputMap());
-        authenticationSeq.addStep("user", sessionController.getPresenter()::requestUsername, null, null);
-        authenticationSeq.addStep("password", sessionController.getPresenter()::requestPassword, null, null);
-        MenuNodeBuilder authEnd = new MenuNodeBuilder("Login", sessionController::loginUser, sessionController.getPresenter()::authenticationAttemptedMessage);
+        authenticationSeq.addStep("user", sessionPresenter::requestUsername, null, null);
+        authenticationSeq.addStep("password", sessionPresenter::requestPassword, null, null);
+        MenuNodeBuilder authEnd = new MenuNodeBuilder("Login", sessionController::loginUser, sessionPresenter::authenticationAttemptedMessage);
         entryNodes.add((loginUserNode = authenticationSeq.build(authEnd.build())));
 
         String userCreation = "Create Attendee Account";
         LinkedMenuNodeBuilder userCreationSeq = new LinkedMenuNodeBuilder(userCreation, sessionController.getInputMap());
-        userCreationSeq.addStep("user", sessionController.getPresenter()::requestUsername, sessionController::checkUserNotExist, sessionController.getPresenter()::userExistsError);
-        userCreationSeq.addStep("password", sessionController.getPresenter()::requestPassword, null, null);
-        MenuNodeBuilder createUserEnd = new MenuNodeBuilder(userCreation, sessionController::createUser, sessionController.getPresenter()::accountCreated);
+        userCreationSeq.addStep("user", sessionPresenter::requestUsername, sessionController::checkUserNotExist, sessionPresenter::userExistsError);
+        userCreationSeq.addStep("password", sessionPresenter::requestPassword, null, null);
+        MenuNodeBuilder createUserEnd = new MenuNodeBuilder(userCreation, sessionController::createUser, sessionPresenter::accountCreated);
         entryNodes.add((CreateUserNode = userCreationSeq.build(createUserEnd.build())));
 
 
-        MenuNodeBuilder logoutNode = new MenuNodeBuilder("Logout", sessionController::logOutUser, sessionController.getPresenter()::loggedOut);
+        MenuNodeBuilder logoutNode = new MenuNodeBuilder("Logout", sessionController::logOutUser, sessionPresenter::loggedOut);
         entryNodes.add((logoutUserNode = logoutNode.build()));
         logoutUserNode.setDisabled(true);
 

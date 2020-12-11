@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import csc.zerofoureightnine.conferencemanager.interaction.GeneralMenuNode.MenuNodeBuilder;
+import csc.zerofoureightnine.conferencemanager.interaction.MenuNode.MenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.control.Validatable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.Promptable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.Reattemptable;
@@ -38,7 +38,7 @@ public class LinkedMenuNodeBuilder {
             final MenuNode nextStep = previous;
             MenuNodeBuilder builder = new MenuNodeBuilder(() -> goalName, (u, in, o) -> {
                 inputMap.put(tag, in);
-                return nextStep;
+                return o.get(3);
             }, (n) -> "");
             builder.setPromptable(prompts.get(i));
             builder.setValidatable(validatables.get(i));
