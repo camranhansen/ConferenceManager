@@ -182,9 +182,9 @@ public class MenuNode { // UI
 
         /**
          * Instantiates the {@link MenuNodeBuilder} in preparation for a decision making
-         * {@link GeneralMenuNode}. That is, if {@link MenuNodeBuilder#build()} is
+         * {@link MenuNode}. That is, if {@link MenuNodeBuilder#build()} is
          * called without changing anything, this menu will serve to allow the user to
-         * choose from a list of children {@link GeneralMenuNode}s by inputting an
+         * choose from a list of children {@link MenuNode}s by inputting an
          * integer corresponding to their selection.
          * 
          * @param displayName a constant display name to be used for this node.
@@ -202,9 +202,9 @@ public class MenuNode { // UI
 
         /**
          * Instantiates the {@link MenuNodeBuilder} in preparation for a decision making
-         * {@link GeneralMenuNode}. That is, if {@link MenuNodeBuilder#build()} is
+         * {@link MenuNode}. That is, if {@link MenuNodeBuilder#build()} is
          * called without changing anything, this menu will serve to allow the user to
-         * choose from a list of children {@link GeneralMenuNode}s by inputting an
+         * choose from a list of children {@link MenuNode}s by inputting an
          * integer corresponding to their selection.
          * 
          * @param nameable a constant display name to be used for this node.
@@ -232,11 +232,11 @@ public class MenuNode { // UI
         }
 
         /**
-         * Sets the {@link Permission} associated this {@link GeneralMenuNode}. If this
+         * Sets the {@link Permission} associated this {@link MenuNode}. If this
          * is null, this menu node will be displayed no matter what permissions the
          * currently logged in user has. Furthermore, these are the nodes displayed to
          * guest users. If this is set, only users with this permission will be able to
-         * access this {@link GeneralMenuNode}.
+         * access this {@link MenuNode}.
          * 
          * @param permission The {@link Permission} to associated this node with.
          */
@@ -247,7 +247,7 @@ public class MenuNode { // UI
         /**
          * Sets the {@link PromptPresentable} presenter. If this is null, when the user
          * is interacting with this node, they will not be prompted for input nor will
-         * they have the option to input. The {@link GeneralMenuNode} will move to
+         * they have the option to input. The {@link MenuNode} will move to
          * calling it's {@link Action#complete(String, String, List)}.
          * 
          * @param promptable the promptable presenter used to generate a request for the
@@ -259,7 +259,7 @@ public class MenuNode { // UI
 
         /**
          * Sets the {@link InfoPresentable} presenter. If this is null, when the user is
-         * interacting with this {@link GeneralMenuNode}, no list of options message is
+         * interacting with this {@link MenuNode}, no list of options message is
          * displayed.
          * 
          * @param listable
@@ -271,7 +271,7 @@ public class MenuNode { // UI
         /**
          * Sets the {@link RetryPromptPresentable} presenter. If this is null, when the
          * user fails to enter valid input (determined by the {@link Validatable}) the
-         * user will be moved to the parent {@link GeneralMenuNode} or the main menu of
+         * user will be moved to the parent {@link MenuNode} or the main menu of
          * there is no parent.
          * 
          * @param reattemptable the reattemptable presenter to use to organize displayed
@@ -282,7 +282,7 @@ public class MenuNode { // UI
         }
 
         /**
-         * Adds the {@link Collection} of {@link GeneralMenuNode}s as children to this
+         * Adds the {@link Collection} of {@link MenuNode}s as children to this
          * new node. Their parent will automatically be set to this node.
          * 
          * @param children The children to add to this node.
@@ -292,7 +292,7 @@ public class MenuNode { // UI
         }
 
         /**
-         * Adds the {@link GeneralMenuNode}s as children to this new node. Their parent
+         * Adds the {@link MenuNode}s as children to this new node. Their parent
          * will automatically be set to this node.
          * 
          * @param children The children to add to this node.
