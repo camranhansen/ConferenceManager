@@ -1,5 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.users;
 
+import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
@@ -91,10 +92,11 @@ public class UserController {
     }
 
     /**
-     * Used to delete account
-     * @param input
-     * @param options
-     * @return
+     * Calls {@link UserManager#removeUser(String)} to remove the user's
+     * account specified in inputMap, with tag "name".
+     * @param input Input specifically in to this node. In this case, it is not relevant.
+     * @param options Options available at this node. In this case, it is not relevant.
+     * @return the node to return to. See {@link MenuNode} for clarification
      */
     public int deleteAccount(String input, List<TopicPresentable> options){
         um.removeUser(inputMap.get("name"));
