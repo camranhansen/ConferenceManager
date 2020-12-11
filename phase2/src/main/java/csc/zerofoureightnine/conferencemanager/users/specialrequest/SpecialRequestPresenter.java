@@ -13,7 +13,7 @@ public class SpecialRequestPresenter {
     private HashMap<String, String> inputMap;
 
     /**
-     * Initiates MessagePresenter
+     * Initiates SpecialRequestPresenter
      * @param manager  SpecialRequestManager
      * @param inputMap Hashmap mapping strings to associating user inputs
      */
@@ -22,6 +22,11 @@ public class SpecialRequestPresenter {
         this.inputMap = inputMap;
     }
 
+    /**
+     * Returns all special requests from a specific users. Each request is in the format of "id, header,
+     * description, addressed".
+     * @return the string representation of all special requests of a given user
+     */
     public String getRequests(){
         StringBuilder requests = new StringBuilder();
         List<UUID> lst = manager.getRequests(inputMap.get("username"));
@@ -33,6 +38,11 @@ public class SpecialRequestPresenter {
         return requests.toString();
     }
 
+    /**
+     * Returns all special requests that are pending. Each request is in the format of "id, requestingUser, header,
+     * description".
+     * @return the string representation of all pending special requests
+     */
     public String getPendingRequests(){
         StringBuilder requests = new StringBuilder();
         List<UUID> lst = manager.getPendingRequests();
@@ -44,6 +54,11 @@ public class SpecialRequestPresenter {
         return requests.toString();
     }
 
+    /**
+     * Returns all special requests that are addressed. Each request is in the format of "id, requestingUser, header,
+     * description".
+     * @return the string representation of all addressed special requests
+     */
     public String getAddressedRequests(){
         StringBuilder requests = new StringBuilder();
         List<UUID> lst = manager.getAddressedRequests();
@@ -56,4 +71,39 @@ public class SpecialRequestPresenter {
     }
 
 
+    /**
+     * Returns the prompt for users to enter the header of their request.
+     * @return the string "please enter the header of your request".
+     */
+    public String enterHeader(){
+        return "please enter the header of your request";
+    }
+
+
+    /**
+     * Returns the prompt for users to enter the description of their request.
+     * @return the string "please enter the description of your request".
+     */
+    public String enterDescription(){
+        return "please enter the description of your request";
+    }
+
+
+    /**
+     * Returns the prompt for users to enter the requestID.
+     * @return the string "please enter the request_id".
+     */
+    public String enterRequestID(){
+        return "please enter the request_id";
+    }
+
+
+    /**
+     * Returns the prompt when the requestID is invalid.
+     * @return the string "This request_id is invalid, please try again".
+     */
+    public String invalidRequestID() {
+        return "This request_id is invalid, please try again";
+    }
 }
+

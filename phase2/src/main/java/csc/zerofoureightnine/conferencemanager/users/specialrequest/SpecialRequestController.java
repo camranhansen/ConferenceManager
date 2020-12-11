@@ -1,83 +1,76 @@
 package csc.zerofoureightnine.conferencemanager.users.specialrequest;
 
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
-import csc.zerofoureightnine.conferencemanager.users.UserManager;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class SpecialRequestController {
 
     private SpecialRequestManager requestManager;
-    private UserManager userManager;
     private HashMap<String, String> inputMap = new HashMap<>();
 
 
     /**
      * Initiates SpecialRequestController
      * @param requestManager RequestManager
-     * @param userManager UserManager
      */
-    public SpecialRequestController(SpecialRequestManager requestManager, UserManager userManager) {
+    public SpecialRequestController(SpecialRequestManager requestManager) {
         this.requestManager = requestManager;
-        this.userManager = userManager;
     }
 
 
     /**
      * Remove the request with the given request id. Returns 0.
+     *
      * @param username username of the user
-     * @param input user input
-     * @param opts options
+     * @param input    user input
+     * @param opts     options
      * @return int 0
      */
-    public int removeRequest(String username, String input, List<TopicPresentable> opts){
-        //requestManager.removeRequest(inputMap.get());
+    public int removeRequest(String username, String input, List<TopicPresentable> opts) {
+        requestManager.removeRequest(UUID.fromString(inputMap.get("request_id")));
         return 0;
     }
 
     /**
      * Add a new user request. Returns 0.
+     *
      * @param username username of the user
-     * @param input user input
-     * @param opts options
+     * @param input    user input
+     * @param opts     options
      * @return int 0
      */
-    public int addRequest(String username, String input, List<TopicPresentable> opts){
+    public int addRequest(String username, String input, List<TopicPresentable> opts) {
         requestManager.addRequest(username, inputMap.get("header"), inputMap.get("description"), false);
         return 0;
     }
 
     /**
      * Address the request. Returns 0.
+     *
      * @param username username of the user
-     * @param input user input
-     * @param opts options
+     * @param input    user input
+     * @param opts     options
      * @return int 0
      */
-    public int addressRequest(String username, String input, List<TopicPresentable> opts){
-        //requestManager.addressRequest(inputMap.get());
+    public int addressRequest(String username, String input, List<TopicPresentable> opts) {
+        requestManager.addressRequest(UUID.fromString(inputMap.get("request_id")));
         return 0;
     }
 
     /**
-     * Returns whether the given username is valid or not.
-     * @param id username
+     * Returns whether the given requestID is valid or not.
+     *
+     * @param id requestID
      * @param options options
      * @return true if {@code id} exists, otherwise return false
      */
     public boolean isValidID(String id, List<TopicPresentable> options) {
-        return this.userManager.userExists(id);
+        return this.requestManager.getPendingRequests().contains(UUID.fromString(id)) ||
+                this.requestManager.getAddressedRequests().contains(UUID.fromString(id));
     }
-
-
 }
-    //    public boolean validatorTemplate(String input, List<TopicPresentable> options) {
-//      Return true if the validation check is sucessful
-//    }
 
-//        public int editPassword(String username, String input, List<TopicPresentable> opts) {
-//        um.setPassword(username, inputMap.get("password"));
-//        return 0;
-//    }
 
