@@ -16,6 +16,7 @@ public class SessionUI implements UISection, SessionObserver {
     private MenuNode loginUserNode;
     private MenuNode CreateUserNode;
     private MenuNode logoutUserNode;
+    private MenuNode changePersonalPasswordNode;
 
 
     public SessionUI(SessionController sessionController, SessionPresenter sessionPresenter) {
@@ -30,14 +31,27 @@ public class SessionUI implements UISection, SessionObserver {
         if (entryNodes != null)
             return entryNodes;
         entryNodes = new ArrayList<>();
+
+        entryNodes.add((loginUserNode = buildAuthenticationNode()));
+        entryNodes.add((CreateUserNode = buildUserCreationNode()));
+        entryNodes.add((changePersonalPasswordNode = buildChangePersonalPasswordNode()));
+        entryNodes.add((logoutUserNode = buildLogoutNode()));
+        logoutUserNode.setDisabled(true);
+
+        return entryNodes;
+    }
+
+    private MenuNode buildAuthenticationNode() {
         LinkedMenuNodeBuilder authenticationSeq = new LinkedMenuNodeBuilder("Login", sessionController.getInputMap());
         authenticationSeq.addStep("user", sessionPresenter::requestUsername, null, null);
         authenticationSeq.addStep("password", sessionPresenter::requestPassword, null, null);
         MenuNodeBuilder authEnd = new MenuNodeBuilder("Login", sessionController::loginUser);
         authEnd.setCompletable(sessionPresenter::authenticationAttemptedMessage);
         authEnd.backStepCount(3);
-        entryNodes.add((loginUserNode = authenticationSeq.build(authEnd.build())));
+        return authenticationSeq.build(authEnd.build());
+    }
 
+    private MenuNode buildUserCreationNode() {
         String userCreation = "Create Attendee Account";
         LinkedMenuNodeBuilder userCreationSeq = new LinkedMenuNodeBuilder(userCreation, sessionController.getInputMap());
         userCreationSeq.addStep("user", sessionPresenter::requestUsername, sessionController::checkUserNotExist, sessionPresenter::userExistsError);
@@ -45,15 +59,21 @@ public class SessionUI implements UISection, SessionObserver {
         MenuNodeBuilder createUserEnd = new MenuNodeBuilder(userCreation, sessionController::createUser);
         createUserEnd.setCompletable(sessionPresenter::accountCreated);
         createUserEnd.backStepCount(3);
-        entryNodes.add((CreateUserNode = userCreationSeq.build(createUserEnd.build())));
+        return userCreationSeq.build(createUserEnd.build());
+    }
 
-
+    private MenuNode buildLogoutNode() {
         MenuNodeBuilder logoutNode = new MenuNodeBuilder("Logout", sessionController::logOutUser);
         logoutNode.setCompletable(sessionPresenter::loggedOut);
-        entryNodes.add((logoutUserNode = logoutNode.build()));
-        logoutUserNode.setDisabled(true);
+        return logoutNode.build();
+    }
 
-        return entryNodes;
+    private MenuNode buildChangePersonalPasswordNode() {
+        MenuNodeBuilder changeNode = new MenuNodeBuilder("Change your password", sessionController::changePassword);
+        changeNode.setPromptable(sessionPresenter::requestPassword);
+        changeNode.setCompletable(sessionPresenter::passwordChanged);
+
+        return changeNode.build();
     }
 
     @Override
@@ -69,10 +89,12 @@ public class SessionUI implements UISection, SessionObserver {
             loginUserNode.setDisabled(true);
             CreateUserNode.setDisabled(true);
             logoutUserNode.setDisabled(false);
+            changePersonalPasswordNode.setDisabled(false);
         } else {
             loginUserNode.setDisabled(false);
             CreateUserNode.setDisabled(false);
             logoutUserNode.setDisabled(true);
+            changePersonalPasswordNode.setDisabled(true);
         }
     }
 

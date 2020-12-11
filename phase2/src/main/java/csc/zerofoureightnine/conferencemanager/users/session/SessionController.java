@@ -21,6 +21,10 @@ public class SessionController { // UI
     public SessionController(UserManager userManager, PermissionManager permissionManager) {
         this.userManager = userManager;
         this.permissionManager = permissionManager;
+
+        if (!userManager.userExists("admin")) {
+            userManager.createUser("admin", "password", Template.ADMIN.getPermissions());
+        }
     }
 
     public int loginUser(String username, String input, List<TopicPresentable> selectableOptions) {
@@ -46,10 +50,12 @@ public class SessionController { // UI
     public int createUser(String username, String input, List<TopicPresentable> selectableOptions) {
         String attemptingUser = inputMap.get("user");
         String attemptingPassword = inputMap.get("password");
-//        userManager.createUser(attemptingUser, attemptingPassword, Template.ATTENDEE.getPermissions());
-        userManager.createUser(attemptingUser, attemptingPassword, Template.ADMIN.getPermissions());
-        //TODO change this back to ATTENDEE instead of admin. otherwise, every user is an admin right off the bat! not fun! low energy!
+        userManager.createUser(attemptingUser, attemptingPassword, Template.ATTENDEE.getPermissions());
+        return 1;
+    }
 
+    public int changePassword(String username, String input, List<TopicPresentable> opts) {
+        userManager.setPassword(username, input);
         return 1;
     }
 
