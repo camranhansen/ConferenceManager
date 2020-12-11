@@ -38,6 +38,7 @@ public class MessageUI implements UISection {
         sendMessageSeq.addStep("content", messagePresenter::getPromptForMessageBody, null, null);
         MenuNodeBuilder sendMessageNode = new MenuNodeBuilder(messageSeqTitle, messageController::messageSingleUser);
         sendMessageNode.setCompletable(messagePresenter::getMessageSentCompletion);
+        sendMessageNode.backStepCount(3);
         return sendMessageSeq.build(sendMessageNode.build(), Permission.MESSAGE_SINGLE_USER);
     }
 
@@ -49,6 +50,7 @@ public class MessageUI implements UISection {
         sendTemplateSeq.addMultipleOptions("selected_group", options, null);
         sendTemplateSeq.addStep("content", messagePresenter::getPromptForMessageBody, null, null);
         MenuNodeBuilder end = new MenuNodeBuilder(messageTemplateTitle, messageController::messageGroup);
+        end.backStepCount(3);
         return (sendTemplateSeq.build(end.build(), Permission.MESSAGE_ALL_USERS));
     }
 

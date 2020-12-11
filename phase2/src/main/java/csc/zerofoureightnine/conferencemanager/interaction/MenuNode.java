@@ -33,11 +33,12 @@ public class MenuNode { // UI
     private final PromptPresentable promptable;
     private final InfoPresentable listable;
     private final RetryPromptPresentable reattemptable;
+    private final int backStepCount;
     private boolean disabled = false;
 
     public MenuNode(Permission permission, Validatable validatable, TopicPresentable nameable, Action action,
             completePresentable completable, PromptPresentable promptable, InfoPresentable listable,
-            RetryPromptPresentable reattemptable, Set<MenuNode> children) {
+            RetryPromptPresentable reattemptable, Set<MenuNode> children, int backStepCount) {
         this.permission = permission;
         this.validatable = validatable;
         this.nameable = nameable;
@@ -46,6 +47,7 @@ public class MenuNode { // UI
         this.promptable = promptable;
         this.listable = listable;
         this.reattemptable = reattemptable;
+        this.backStepCount = backStepCount;
 
         for (MenuNode menuNode : children) {
             menuNode.parent = this;
@@ -63,7 +65,7 @@ public class MenuNode { // UI
         available.forEach(m -> {
             nameables.add(m == null ? null : m.nameable);
         });
-        System.out.println("---");
+        System.out.println("----");
         attemptListOptions(nameables); // List possible options for this node.
 
         String input = obtainUserInput(scanner, nameables); // Prompt for user input.
@@ -71,11 +73,6 @@ public class MenuNode { // UI
             return parent != null ? parent : mainMenu;
 
         MenuNode next = available.get(action.complete(username, input, nameables));
-        if (next == null)
-            throw new IllegalStateException("Cannot move to null node.");
-        if (!(permissionlessChildren.contains(next) || mainMenu == next || permissionOptions.containsValue(next)
-                || parent == next))
-            throw new IllegalStateException("Cannot move to node that is not an option child of this node.");
 
         if (completable != null)
             System.out.println(completable.getCompleteMessage(next.nameable));
@@ -110,7 +107,13 @@ public class MenuNode { // UI
                                                            // that don't have permissions associated (ex: main menu,
                                                            // parent);
         available.add(this == mainMenu ? null : mainMenu);
-        available.add(parent);
+        MenuNode currParent = parent;
+        for (int i = 0; i < backStepCount - 1; i++) {
+            if (currParent.parent == null)
+                break;
+            currParent = currParent.parent;
+        }
+        available.add(currParent);
         for (MenuNode menuNode : permissionlessChildren) {
             if (!menuNode.isDisabled()) {
                 available.add(menuNode);
@@ -149,6 +152,7 @@ public class MenuNode { // UI
         private PromptPresentable promptable;
         private InfoPresentable listable;
         private RetryPromptPresentable reattemptable;
+        private int backStepCount = 1;
 
         /**
          * Instantiates the {@link MenuNodeBuilder} with minimal requirements.
@@ -309,9 +313,22 @@ public class MenuNode { // UI
             this.completable = completable;
         }
 
+        /**
+         * The number of layers up to traverse to reach a back position. This is the
+         * number of layers up the user will traverse if the {@link Action} returns 1.
+         * If there exists not enough parental layers, will stop at last available one.
+         * If no value is set, defaults to 1. Cannot be less than 1.
+         * 
+         * @param backStepCount How many steps back does a backstep take?
+         */
+        public void backStepCount(int backStepCount) {
+            if (backStepCount < 1) throw new IllegalArgumentException("Number of back steps cannot be less than 1.");
+            this.backStepCount = backStepCount;
+        }
+
         public MenuNode build() {
             MenuNode res = new MenuNode(this.permission, this.validatable, displayName, action, completable, promptable,
-                    listable, reattemptable, children);
+                    listable, reattemptable, children, backStepCount);
             return res;
         }
     }

@@ -10,7 +10,7 @@ public class SessionPresenter implements SessionObserver {
 
     public String authenticationAttemptedMessage(TopicPresentable n) {
         if (loggedInUser != null) return "Welcome " + loggedInUser + "!";
-        return "Login incorrect please try again.";
+        return "Login incorrect. Returning to " + n.getIdentifier() + ".";
     }
 
     public String requestPassword() {
@@ -21,8 +21,12 @@ public class SessionPresenter implements SessionObserver {
         return "Username";
     }
 
+    public String passwordChanged(TopicPresentable n) {
+        return "Password changed! Returning to " + n.getIdentifier() + ".";
+    }
+
     public String accountCreated(TopicPresentable n) {
-        return "Account successfully created!";
+        return "Account successfully created! You may now go login.";
     }
 
     public String userExistsError() {
