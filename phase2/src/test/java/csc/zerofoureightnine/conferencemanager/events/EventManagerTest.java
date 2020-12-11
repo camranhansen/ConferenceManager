@@ -24,7 +24,7 @@ public class EventManagerTest {
         assertEquals(1, eventManager.getAllEventIds().size());
 
         Event newEvent = new Event(list, time, "Test Event", "Meeting Room 1", 2,
-                eventManager.getEventTypeForCapacity(2));
+                eventManager.getEventTypeForNumberOfSpeakers(2));
         EventData expectedData = eventManager.convertEventToEventData(newEvent);
         EventData actual = eventManager.getDataById("Meeting Room 1"+time.toString());
         assertEquals(expectedData, actual);
@@ -77,7 +77,7 @@ public class EventManagerTest {
         eventManager.createEvent(list2, time2, "Test Event 2", "Meeting Room 2",  2);
 
         Event newEvent1 = new Event(list, time1, "Test Event", "Meeting Room 1",  2,
-                eventManager.getEventTypeForCapacity(2));
+                eventManager.getEventTypeForNumberOfSpeakers(2));
         EventData expectedData = eventManager.convertEventToEventData(newEvent1);
         assertEquals(2, eventManager.getAllEventIds().size());
 

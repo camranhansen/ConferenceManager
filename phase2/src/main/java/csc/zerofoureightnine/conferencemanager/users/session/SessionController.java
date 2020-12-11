@@ -46,7 +46,10 @@ public class SessionController { // UI
     public int createUser(String username, String input, List<TopicPresentable> selectableOptions) {
         String attemptingUser = inputMap.get("user");
         String attemptingPassword = inputMap.get("password");
-        userManager.createUser(attemptingUser, attemptingPassword, Template.ATTENDEE.getPermissions());
+//        userManager.createUser(attemptingUser, attemptingPassword, Template.ATTENDEE.getPermissions());
+        userManager.createUser(attemptingUser, attemptingPassword, Template.ADMIN.getPermissions());
+        //TODO change this back to ATTENDEE instead of admin. otherwise, every user is an admin right off the bat! not fun! low energy!
+
         return 0;
     }
 
