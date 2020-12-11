@@ -13,13 +13,17 @@ public class RuntimeDataHolder {
     private Instant lastTimeCalled;
 
     /**
-     * Constructor
-     * @param pMap
+     * Instantiates the RuntimeDataHolder.
+     * @param pMap A PersistentMap with usernames as keys and the corresponding RuntimeData as the values.
      */
     public RuntimeDataHolder(PersistentMap<String, RuntimeData> pMap) {
         this.pMap = pMap;
     }
 
+    /**
+     * Increments the value of a given RuntimeStat.
+     * @param runtimeStat The RuntimeStat to be incremented.
+     */
     public void incrementStat(RuntimeStats runtimeStat) {
         usernameCheck();
         if (runtimeStat == RuntimeStats.TIME_SPENT) {
@@ -34,12 +38,25 @@ public class RuntimeDataHolder {
         pMap.get(username).setStatValue(runtimeStat, runtimeStatValue);
     }
 
+    /**
+     * Returns the PersistentMap pMap.
+     */
     public PersistentMap<String, RuntimeData> getMap() { return pMap; }
 
+    /**
+     * Returns the stored username.
+     */
     public String getUsername() { return username; }
 
+    /**
+     * Sets the username.
+     * @param username The username to be stored.
+     */
     public void setUsername(String username) { this.username = username; }
 
+    /**
+     * Checks if the given username exists in pMap. If not, creates a new RuntimeData entity and maps the username to it.
+     */
     private void usernameCheck(){
         if (!pMap.containsKey(username)){
         RuntimeData runtimeData = new RuntimeData();
