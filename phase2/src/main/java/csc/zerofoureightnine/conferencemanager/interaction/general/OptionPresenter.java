@@ -37,8 +37,10 @@ public class OptionPresenter implements TopicPresentable, PromptPresentable, Inf
         for (int i = 0; i < options.size(); i++) {
             sb.append(i + ") ");
             TopicPresentable presentable = options.get(i);
-            if (i == 1) {
-                sb.append(presentable == null ? "Cannot go back." : "back (" + presentable.getIdentifier() + ")");
+            if (presentable == null) {
+                sb.append("[Unavailable]");
+            } else if (i == 1) {
+                sb.append("(" + presentable.getIdentifier() + ")");
             } else {
                 sb.append(presentable.getIdentifier());
             }

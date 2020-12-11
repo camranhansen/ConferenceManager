@@ -66,7 +66,7 @@ public class MenuNode { // UI
         System.out.println("---");
         attemptListOptions(nameables); // List possible options for this node.
 
-        String input = promptUserInput(scanner, nameables); // Prompt for user input.
+        String input = obtainUserInput(scanner, nameables); // Prompt for user input.
         if (input == null)
             return parent != null ? parent : mainMenu;
 
@@ -88,7 +88,7 @@ public class MenuNode { // UI
             System.out.println(listable.getInfo(nameables));
     }
 
-    private String promptUserInput(Scanner scanner, List<TopicPresentable> nameables) {
+    private String obtainUserInput(Scanner scanner, List<TopicPresentable> nameables) {
         String input = "";
         if (promptable != null) {
             System.out.print(promptable.getPrompt() + ": ");
@@ -109,7 +109,7 @@ public class MenuNode { // UI
         ArrayList<MenuNode> available = new ArrayList<>(); // returning list of menu nodes because there exists nodes
                                                            // that don't have permissions associated (ex: main menu,
                                                            // parent);
-        available.add(mainMenu);
+        available.add(this == mainMenu ? null : mainMenu);
         available.add(parent);
         for (MenuNode menuNode : permissionlessChildren) {
             if (!menuNode.isDisabled()) {
@@ -241,9 +241,9 @@ public class MenuNode { // UI
         }
 
         /**
-         * Sets the {@link PromptPresentable} presenter. If this is null, when the
-         * user is interacting with this node, they will not be prompted for input nor
-         * will they have the option to input. The {@link GeneralMenuNode} will move to
+         * Sets the {@link PromptPresentable} presenter. If this is null, when the user
+         * is interacting with this node, they will not be prompted for input nor will
+         * they have the option to input. The {@link GeneralMenuNode} will move to
          * calling it's {@link Action#complete(String, String, List)}.
          * 
          * @param promptable the promptable presenter used to generate a request for the
@@ -254,9 +254,9 @@ public class MenuNode { // UI
         }
 
         /**
-         * Sets the {@link InfoPresentable} presenter. If this is null, when the
-         * user is interacting with this {@link GeneralMenuNode}, no list of options
-         * message is displayed.
+         * Sets the {@link InfoPresentable} presenter. If this is null, when the user is
+         * interacting with this {@link GeneralMenuNode}, no list of options message is
+         * displayed.
          * 
          * @param listable
          */
@@ -265,10 +265,10 @@ public class MenuNode { // UI
         }
 
         /**
-         * Sets the {@link RetryPromptPresentable} presenter. If this is null, when
-         * the user fails to enter valid input (determined by the {@link Validatable})
-         * the user will be moved to the parent {@link GeneralMenuNode} or the main menu
-         * of there is no parent.
+         * Sets the {@link RetryPromptPresentable} presenter. If this is null, when the
+         * user fails to enter valid input (determined by the {@link Validatable}) the
+         * user will be moved to the parent {@link GeneralMenuNode} or the main menu of
+         * there is no parent.
          * 
          * @param reattemptable the reattemptable presenter to use to organize displayed
          *                      reattempt content.
@@ -298,12 +298,12 @@ public class MenuNode { // UI
         }
 
         /**
-         * Sets the {@link completePresentable}. If null, no completion message will
-         * be displayed. If not null, will request for a string to indicate menu node
+         * Sets the {@link completePresentable}. If null, no completion message will be
+         * displayed. If not null, will request for a string to indicate menu node
          * completion.
          * 
-         * @param completable A {@link completePresentable} to invoke for a
-         *                    completion message.
+         * @param completable A {@link completePresentable} to invoke for a completion
+         *                    message.
          */
         public void setCompletable(completePresentable completable) {
             this.completable = completable;
