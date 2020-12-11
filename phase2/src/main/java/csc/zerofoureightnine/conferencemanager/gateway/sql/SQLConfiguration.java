@@ -24,8 +24,8 @@ public class SQLConfiguration {
                 setProperty("hibernate.connection.url", "jdbc:hsqldb:file:" + path).
                 setProperty("hibernate.connection.username", "SA").
                 setProperty("hibernate.connection.password", "").
-                setProperty("hibernate.hbm2ddl.auto", "create").
-                setProperty("hbm2ddl.auto", "create").
+                setProperty("hibernate.hbm2ddl.auto", "update").
+                setProperty("hbm2ddl.auto", "update").
                 buildSessionFactory();
     }
 

@@ -2,6 +2,7 @@ package csc.zerofoureightnine.conferencemanager.gateway.sql;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -88,17 +89,55 @@ public class SQLMap<K extends Serializable, V extends Identifiable<K>> implement
 
     @Override
     public Set<K> keySet() {
-        throw new UnsupportedOperationException();
+        Set<K> set = new HashSet<>();
+        Collection<V> vals = values();
+        for (V v : vals) {
+            set.add(v.getId());
+        }
+        return set;
     }
 
     @Override
     public Collection<V> values() {
-        throw new UnsupportedOperationException();
+        Set<V> set = new HashSet<>();
+        beginInteraction();
+        ScrollableResults results = session.createQuery("select t from " + valClass.getSimpleName() + " t").setCacheMode(CacheMode.IGNORE).scroll();
+        while (results.next()) {
+            set.add((V) results.get(0));
+        }
+        results.close();
+        endInteraction();
+        return set;
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        throw new UnsupportedOperationException();
+        Set<Entry<K, V>> set = new HashSet<>();
+        Collection<V> vals = values();
+        for (V v : vals) {
+            Entry<K, V> entry = new Map.Entry<K,V>() {
+
+                @Override
+                public K getKey() {
+
+                    return v.getId();
+                }
+
+                @Override
+                public V getValue() {
+                    return v;
+                }
+
+                @Override
+                public V setValue(V value) {
+                    save(v.getId(), value);
+                    return v;
+                }
+                
+            };
+            set.add(entry);
+        }
+        return set;
     }
 
     @Override
