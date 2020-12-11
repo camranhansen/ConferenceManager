@@ -93,7 +93,11 @@ public class EventController {
     }
 
     public boolean isValidEditCapacity(String capacity, List<TopicPresentable> options){
-        return eventManager.getCapacity(inputMap.get("event_id")) > Integer.parseInt(inputMap.get("capacity"));
+        return capacity.matches("[0-9]+")&&eventManager.getParticipants(inputMap.get("event_id")).size() > Integer.parseInt(capacity);
+    }
+
+    public boolean isValidEnroll(String username, List<TopicPresentable> options){
+        return eventManager.isEventFull(inputMap.get("event_id"))&&userManager.userExists(username);
     }
 
     public boolean isValidRoom(String room, List<TopicPresentable> options) {
