@@ -13,24 +13,95 @@ public class UserController {
     private PermissionManager pm;
     private HashMap<String, String> inputMap = new HashMap<>();
 
-
+    /**
+     * A constructor takes in userManager and PermissionManager
+     * @param um UserManager
+     * @param pm PermissionManager
+     */
     public UserController(UserManager um, PermissionManager pm) {
         this.um = um;
         this.pm = pm;
     }
 
-//    public boolean validatorTemplate(String input, List<TopicPresentable> options) {
-//      Return true if the validation check is sucessful
-//    }
+    /**
+     * check if the input name is a existed username
+     * @param input String that represents username
+     * @param options
+     * @return true if the username existed otherwise false
+     */
+    public boolean isValidUser(String input, List<TopicPresentable> options){
+        return um.userExists(input);
+    }
 
-//TODO edit password, other_edit_password, create_account, create_speaker_account, delete_account,
+    /**
+     * check if the input name is not a existed username
+     * @param input String that represents username
+     * @param options
+     * @return false if the username does not existed otherwise false
+     */
+    public boolean isNotValidUser(String input, List<TopicPresentable> options){
+        return !um.userExists(input);
+    }
 
+    /**
+     * Allow user to change password
+     * @param username user who is using the program.
+     * @param input
+     * @param opts
+     * @return
+     */
     public int editPassword(String username, String input, List<TopicPresentable> opts) {
         um.setPassword(username, inputMap.get("password"));
         return 0;
     }
 
-//Template.values()[Integer.parseInt(inputMap.get("template"))]
+    /**
+     * Allow administration only to change other users' password
+     * @param username user who is using the program.
+     * @param input
+     * @param opts
+     * @return 0
+     */
+    public int editOtherPassword(String username,String input, List<TopicPresentable> opts){
+        String name = inputMap.get("target");
+        um.setPassword(name, inputMap.get("password"));
+        return 0;
+    }
+
+    /**
+     * Used to create new account
+     * @param input
+     * @param options
+     * @return
+     */
+    public int createAccount(String input, List<TopicPresentable> options){
+        um.createUser(inputMap.get("name"), inputMap.get("password"),Template.values()[Integer.parseInt(inputMap.get("template"))].getPermissions() );
+        return 0;
+    }
+
+    /**
+     * Used to create a new account that has speaker's permission
+     * @param input
+     * @param options
+     * @return
+     */
+    public int createSpkAccount(String input, List<TopicPresentable> options){
+        um.createUser(inputMap.get("name"), inputMap.get("password"), Template.SPEAKER.getPermissions());
+        return 0;
+    }
+
+    /**
+     * Used to delete account
+     * @param input
+     * @param options
+     * @return
+     */
+    public int deleteAccount(String input, List<TopicPresentable> options){
+        um.removeUser(inputMap.get("name"));
+        return 0;
+    }
+
+
     public HashMap<String, String> getInputMap() {
         return inputMap;
     }

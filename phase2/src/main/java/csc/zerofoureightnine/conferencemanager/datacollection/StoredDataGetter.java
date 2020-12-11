@@ -10,25 +10,49 @@ public class StoredDataGetter {
     private MessageManager messageManager;
     private String name;
 
+    /**
+     * Constructor
+     * @param em EventManager
+     * @param mm MessageManager
+     * @param username The name of user who is currently using the program
+     */
     public StoredDataGetter(EventManager em, MessageManager mm, String username){
         this.eventManager = em;
         this.messageManager = mm;
         this.name = username;
     }
 
+    /**
+     * Return the number of messages in retrieve inbox
+     * @param name The name of user who is currently using the program
+     * @return the number of messages in retrieve inbox
+     */
     public int getRetrieveMessages(String name){
         return messageManager.getRetrieveInboxSize(name);
     }
 
+    /**
+     * Return the number of messages in unread inbox
+     * @param name The name of user who is currently using the program
+     * @return the number of messages in unread inbox
+     */
     public int getUnreadMessages(String name){
         return messageManager.getUnreadInboxSize(name);
     }
 
+    /**
+     * Return the number of messages in read inbox
+     * @param name The name of user who is currently using the program
+     * @return the number of messages in read inbox
+     */
     public int getReadMessages(String name){
         return messageManager.getReadInboxSize(name);
     }
 
-
+    /**
+     * Formatted all the information
+     * @return All information that we want user to have access with.
+     */
     @Override
     public String toString(){
         String lineSep = ":" + System.lineSeparator();
