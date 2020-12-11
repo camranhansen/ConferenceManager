@@ -47,7 +47,7 @@ public class MessageController {
      */
     public int messageSingleUser(String username, String input, List<TopicPresentable> selectableOptions) {
         messageManager.sendMessage(username, inputMap.get("content"), inputMap.get("to"));
-        return 0;
+        return 1;
     }
 
     /**
@@ -62,7 +62,7 @@ public class MessageController {
         List<String> users = permissionManager.
                 getUserByPermissionTemplate(Template.values()[Integer.parseInt(inputMap.get("selected_group"))]);
         messageManager.sendMessage(username, inputMap.get("content"), users);
-        return 0;
+        return 1;
     }
 
     /**

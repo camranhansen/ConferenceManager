@@ -31,7 +31,7 @@ public class SessionController { // UI
         } else {
             onAuthenticationStateChange(attemptingUser, false);
         }
-        return 0;
+        return 1;
     }
 
     public int logOutUser(String username, String input, List<TopicPresentable> selectableOptions){
@@ -50,7 +50,7 @@ public class SessionController { // UI
         userManager.createUser(attemptingUser, attemptingPassword, Template.ADMIN.getPermissions());
         //TODO change this back to ATTENDEE instead of admin. otherwise, every user is an admin right off the bat! not fun! low energy!
 
-        return 0;
+        return 1;
     }
 
 
