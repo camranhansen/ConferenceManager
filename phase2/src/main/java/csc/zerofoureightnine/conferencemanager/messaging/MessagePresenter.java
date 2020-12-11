@@ -2,7 +2,19 @@ package csc.zerofoureightnine.conferencemanager.messaging;
 
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 
+import java.util.HashMap;
+
 public class MessagePresenter {
+    private MessageManager manager;
+    private HashMap<String, String> inputMap;
+    public MessagePresenter(MessageManager manager, HashMap<String, String> inputMap){
+        this.manager = manager;
+        this.inputMap =inputMap;
+    }
+
+    public String getUserUnread(){
+        return manager.unreadInboxToString(inputMap.get("username"));
+    }
 
     public String getPromptForSendTo() {
         return "User to send to";

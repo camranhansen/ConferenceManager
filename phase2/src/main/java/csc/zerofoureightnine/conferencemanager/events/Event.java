@@ -14,12 +14,16 @@ public class Event {
     private String id;
     private EventType type;
 
+
+
+
+
     /**
      * Construct an event with an empty list of participants.
      * @param speakerName A list of the speaker's name(s). Empty if <code>type</code> is PARTY,
      *                    Size 1 if SINGLE, Size 2 or greater if MULTI.
      * @param time Instant representing the time the event will start at.
-     *             Note that we are assuming events last for one hour.
+     *             We assume that all events last for one hour.
      * @param eventName The event name. May be duplicated across multiple events.
      * @param room The name of the room. Can only have one event per unique room name per 1-hour timeslot.
      * @param capacity The maximum capacity capacity for individuals in this specific event.
@@ -41,7 +45,7 @@ public class Event {
      * @param speakerName A list of the speaker's name(s). Empty if <code>type</code> is PARTY,
      *                    Size 1 if SINGLE, Size 2 or greater if MULTI.
      * @param time Instant representing the time the event will start at.
-     *             Note that we are assuming events last for one hour.
+     *             We assume that all events last for one hour.
      * @param eventName The event name. May be duplicated across multiple events.
      * @param room The name of the room. Can only have one event per unique room name per 1-hour timeslot.
      * @param capacity The maximum capacity capacity for individuals in this specific event.

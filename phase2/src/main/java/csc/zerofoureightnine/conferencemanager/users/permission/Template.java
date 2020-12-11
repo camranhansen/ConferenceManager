@@ -21,6 +21,8 @@ public enum Template {
             Permission.MESSAGE_UNREAD, //New
 
             Permission.EVENT_SELF_ENROLL,
+            Permission.EVENT_SELF_DROP,
+
 
             Permission.VIEW_SELF_MESSAGES,
             Permission.VIEW_ALL_EVENTS,
@@ -39,6 +41,8 @@ public enum Template {
             Permission.MESSAGE_UNREAD, //New
 
             Permission.EVENT_SELF_ENROLL,
+            Permission.EVENT_SELF_DROP,
+
 
             Permission.VIEW_SELF_MESSAGES,
             Permission.VIEW_ALL_EVENTS,
@@ -61,6 +65,7 @@ public enum Template {
             Permission.MESSAGE_UNREAD, //New
 
             Permission.EVENT_SELF_ENROLL,
+            Permission.EVENT_SELF_DROP,
             Permission.EVENT_OTHER_ENROLL,
             Permission.EVENT_CREATE,
             Permission.EVENT_DELETE,
@@ -87,12 +92,13 @@ public enum Template {
 
             Permission.MESSAGE_SINGLE_USER,
             Permission.MESSAGE_EVENT_USERS,
-//            Permission.MESSAGE_ALL_USERS,
+            Permission.MESSAGE_ALL_USERS,
             Permission.MESSAGE_ARCHIVE, //New
             Permission.MESSAGE_DELETE, //New
             Permission.MESSAGE_UNREAD, //New
 
             Permission.EVENT_SELF_ENROLL,
+            Permission.EVENT_SELF_DROP,
             Permission.EVENT_OTHER_ENROLL,
             Permission.EVENT_CREATE,
             Permission.EVENT_DELETE,
@@ -101,8 +107,8 @@ public enum Template {
             Permission.VIEW_SELF_MESSAGES,
             Permission.VIEW_OTHER_MESSAGES,
             Permission.VIEW_ALL_EVENTS,
-            Permission.VIEW_HOSTING_EVENTS,
             Permission.VIEW_SELF_REQUESTS, //New
+            Permission.VIEW_HOSTING_EVENTS,
             Permission.VIEW_SELF_STATISTICS, //New
             Permission.VIEW_OTHER_REQUESTS, //New
             Permission.VIEW_ALL_STATISTICS //New

@@ -66,17 +66,23 @@ public class EventManager {
         return ed;
     }
 
-    public void createEvent(List<String> speakerName, Instant eventTime, String eventName, String room, int capacity){
-        Event newEvent = new Event(speakerName, eventTime, eventName, room, capacity, getEventTypeForCapacity(capacity));
-        this.events.put(newEvent.getId(), newEvent);
-        EventData e = convertEventToEventData(newEvent);
-        this.pMap.beginInteraction();
-        this.pMap.put(newEvent.getId(), e);
-        this.pMap.endInteraction();
-    }
 
     /**
      * Defines a new event with the details speaker's name, event time, event name, room, and capacity.
+     * Automatically determines event type {@link EventType} depending on how many speakers are inputted.
+     * Adds this event to the collection of all csc.zerofoureightnine.conferencemanager.events.
+     * @param speakerName Name of the speaker for the event.
+     * @param eventTime Time that the event takes place.
+     * @param eventName Name of the event.
+     * @param room Room which the event is being held in.
+     * @param capacity Maximum capacity of the event.
+     */
+    public void createEvent(List<String> speakerName, Instant eventTime, String eventName, String room, int capacity){
+        createEvent(speakerName, eventTime, eventName, room, capacity, getEventTypeForNumberOfSpeakers(speakerName.toArray().length));
+    }
+
+    /**
+     * Defines a new event with the details speaker's name, event time, event name, room, and capacity, and type.
      * Adds this event to the collection of all csc.zerofoureightnine.conferencemanager.events.
      * @param speakerName Name of the speaker for the event.
      * @param eventTime Time that the event takes place.
@@ -244,20 +250,22 @@ public class EventManager {
         return false;
     }
     /**
-     * Returns a boolean to identify if a room is in use during a specific time slot.
+     * Returns a boolean to identify if a room is available during a specific time slot.
      * @param timeslot A starting time of a time slot.
      * @param room A room name that is chosen.
      * @return False if the room is not in use during the time slot.
-     * True if the room is in use during the time slot.
+     * True if the room is available during a specific timeslot
      */
     public boolean checkRoom(Instant timeslot, String room){
          for (String id: this.events.keySet()){
-             if(getEventTime(id).equals(timeslot) && getRoom(id).equals(room)){
-                 return true;
+             if(getEventTime(id).equals(room+timeslot)){
+                 return false;
              }
          }
-         return false;
+         return true;
     }
+
+
 
     /**
      * Returns a list of IDs of csc.zerofoureightnine.conferencemanager.events that a user is enrolled in.
@@ -357,7 +365,7 @@ public class EventManager {
      * @param id Event id
      * @return A string containing the given event's name time, room and capacity.
      */
-    public Map<String,String> getFormattedEvent(String id){
+    public Map<String,String> getEventData(String id){
         Event e = this.events.get(id);
         LinkedHashMap<String,String> eventData = new LinkedHashMap<>();
         eventData.put("Name",e.getEventName());
@@ -441,8 +449,8 @@ public class EventManager {
         return Instant.parse("2020-12-" + dayOfMonth.trim() + "T" + hour.trim() + ":00:00.00Z");
     }
 
-    public EventType getEventTypeForCapacity(int capacity){
-        switch (capacity){
+    public EventType getEventTypeForNumberOfSpeakers(int numOfSpeakers){
+        switch (numOfSpeakers){
             case 0:
                 return EventType.PARTY;
             case 1:
