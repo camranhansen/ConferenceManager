@@ -38,7 +38,7 @@ public class OptionPresenter implements TopicPresentable, PromptPresentable, Inf
             sb.append(i + ") ");
             TopicPresentable presentable = options.get(i);
             if (i == 1) {
-                sb.append(presentable == null ? "Cannot go back." : "back (" + presentable.getIdentifier() + ")");
+                sb.append(presentable == null ? "No parent" : "(" + presentable.getIdentifier() + ")");
             } else {
                 sb.append(presentable.getIdentifier());
             }

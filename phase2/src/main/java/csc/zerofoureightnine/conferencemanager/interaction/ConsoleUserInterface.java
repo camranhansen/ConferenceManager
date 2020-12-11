@@ -3,15 +3,17 @@ package csc.zerofoureightnine.conferencemanager.interaction;
 import java.util.List;
 import java.util.Scanner;
 
+import csc.zerofoureightnine.conferencemanager.interaction.utils.ExitObserver;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import csc.zerofoureightnine.conferencemanager.users.session.SessionObserver;
 
-public class ConsoleUserInterface implements SessionObserver { //UI
+public class ConsoleUserInterface implements SessionObserver, ExitObserver { //UI
     private MenuNode mainMenu;
     private MenuNode currentNode;
     private String currentUser;
     private List<Permission> userPermissions;
     private Scanner scanner;
+    private boolean running;
 
     public ConsoleUserInterface(MenuNode startingNode) {
         this.mainMenu = startingNode;
@@ -20,7 +22,8 @@ public class ConsoleUserInterface implements SessionObserver { //UI
     }
 
     public void interact() {
-        while(true) {
+        running = true;
+        while(running) {
             currentNode = currentNode.executeNode(currentUser, scanner, userPermissions, mainMenu);
         }
     }
@@ -38,6 +41,11 @@ public class ConsoleUserInterface implements SessionObserver { //UI
             this.currentUser = null;
             this.userPermissions = null;
         }
+    }
+
+    @Override
+    public void exitting() {
+        running = false;
     }
 
     
