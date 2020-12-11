@@ -23,10 +23,10 @@ public enum Permission {
     EVENT_OTHER_ENROLL(Category.EVENT), //Likewise, except also determine the username of the other person in question.
     EVENT_CREATE(Category.EVENT), //Takes in event parameters.
     EVENT_DELETE(Category.EVENT), //Delete event by ID.
-    EVENT_EDIT(Category.EVENT), //Determine event ID, then determine what parameter you want to edit.
+    EVENT_EDIT(Category.EVENT), //The capacity for a user to edit an event
 
     //User
-    USER_ALL_EDIT_PERMISSION(Category.USER), //TODO trash this shit
+    USER_ALL_EDIT_PERMISSION(Category.USER),
     USER_SELF_EDIT_PASSWORD(Category.USER),
     USER_OTHER_EDIT_PASSWORD(Category.USER),
     USER_CREATE_ACCOUNT(Category.USER),

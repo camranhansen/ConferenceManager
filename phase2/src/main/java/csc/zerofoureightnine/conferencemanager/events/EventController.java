@@ -55,12 +55,21 @@ public class EventController {
     }
 
     public int dropSelf(String username, String input, List<TopicPresentable> selectableOptions){
-        eventManager.enrollUser(inputMap.get("event_id"), username);
+        eventManager.dropUser(inputMap.get("event_id"), username);
+        return 0;
+    }
+
+    public int dropOther(String username, String input, List<TopicPresentable> selectableOptions){
+        eventManager.dropUser(inputMap.get("event_id"), inputMap.get("target"));
         return 0;
     }
 
     public HashMap<String, String> getInputMap() {
         return inputMap;
+    }
+
+    public int viewMethod(String username, String input, List<TopicPresentable> selectableOptions){
+        return 0;
     }
 
     public boolean isValidHour(String hour, List<TopicPresentable> options) {
@@ -96,5 +105,8 @@ public class EventController {
 
     public boolean isValidID(String id, List<TopicPresentable> options) {
         return eventManager.eventExists(id);
+    }
+    public boolean isValidUsername(String input, List<TopicPresentable> options){
+        return userManager.userExists(input);
     }
 }

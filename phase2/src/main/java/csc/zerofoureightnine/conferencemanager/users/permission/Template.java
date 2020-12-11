@@ -26,6 +26,7 @@ public enum Template {
 
             Permission.VIEW_SELF_MESSAGES,
             Permission.VIEW_ALL_EVENTS,
+            Permission.VIEW_AVAILABLE_EVENTS,
             Permission.VIEW_SELF_REQUESTS, //New
             Permission.VIEW_SELF_STATISTICS //New
             }),
@@ -46,6 +47,7 @@ public enum Template {
 
             Permission.VIEW_SELF_MESSAGES,
             Permission.VIEW_ALL_EVENTS,
+            Permission.VIEW_AVAILABLE_EVENTS,
             Permission.VIEW_HOSTING_EVENTS,
             Permission.VIEW_SELF_REQUESTS, //New
             Permission.VIEW_SELF_STATISTICS //New
@@ -73,6 +75,7 @@ public enum Template {
 
             Permission.VIEW_SELF_MESSAGES,
             Permission.VIEW_ALL_EVENTS,
+            Permission.VIEW_AVAILABLE_EVENTS,
             Permission.VIEW_HOSTING_EVENTS,
             Permission.VIEW_SELF_REQUESTS, //New
             Permission.VIEW_SELF_STATISTICS, //New
@@ -107,6 +110,7 @@ public enum Template {
             Permission.VIEW_SELF_MESSAGES,
             Permission.VIEW_OTHER_MESSAGES,
             Permission.VIEW_ALL_EVENTS,
+            Permission.VIEW_AVAILABLE_EVENTS,
             Permission.VIEW_SELF_REQUESTS, //New
             Permission.VIEW_HOSTING_EVENTS,
             Permission.VIEW_SELF_STATISTICS, //New
