@@ -59,7 +59,7 @@ public class PermissionManagerTest {
     public void addPermission() {
         PermissionManager pm = new PermissionManager(populatePermissions());
         //Add first new Permission
-        pm.addPermission("falcon", Permission.MESSAGE_EVENT_USERS);
+        pm.addPermission("falcon", Permission.MESSAGE_EVENTS);
         assertNotEquals(Template.SPEAKER.getPermissions(), pm.getPermissions("falcon"));
         assertNotEquals(Template.ATTENDEE.getPermissions(), pm.getPermissions("falcon"));
         //Add second new Permission
@@ -73,7 +73,7 @@ public class PermissionManagerTest {
     public void removePermission() {
         PermissionManager pm = new PermissionManager(populatePermissions());
         //Remove first Permission
-        pm.removePermission("raven", Permission.MESSAGE_EVENT_USERS);
+        pm.removePermission("raven", Permission.MESSAGE_EVENTS);
         assertNotEquals(Template.SPEAKER.getPermissions(), pm.getPermissions("raven"));
         assertNotEquals(Template.ATTENDEE.getPermissions(), pm.getPermissions("raven"));
         //Remove second Permission

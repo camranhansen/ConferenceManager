@@ -79,6 +79,28 @@ public class MessagePresenter {
         return "Please type your message";
     }
 
+    public String getPromptForFrom() {
+        return "Please enter the username that the message is from";
+    }
+
+    public String getPromptMessageTime(){
+        return "Please enter the time the message was sent";
+    }
+
+    public String getPromptPreviousContent(){
+        return "Please enter content of the message. Note: if message does not exist, you will return to menu";
+    }
+    public String getPromptForEventId(){
+        return "Please enter event id";
+    }
+
+    public String wrongInput(){
+        return ("Invalid Input");
+    }
+
+    public String getPromptForAllEvent(){
+        return "Please enter your username again, so we can verify if you have events";
+    }
     /**
      * Returns the prompt when the username is invalid.
      * @return a {@link String} "This recipient is invalid, please try again"

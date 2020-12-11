@@ -10,12 +10,11 @@ public enum Permission {
     // action refers to the specific action granted permission to do.
     //Messages
     MESSAGE_ALL_USERS(Category.MESSAGE), //Determine the group of csc.zerofoureightnine.conferencemanager.users you want to message(i.e. all csc.zerofoureightnine.conferencemanager.users, specific permission group)
-    MESSAGE_EVENT_USERS(Category.MESSAGE), //Determine whether the logged in user wants to message a specific event that they are hosting, or all csc.zerofoureightnine.conferencemanager.events that they are hosting.
+    MESSAGE_EVENTS(Category.MESSAGE), //Determine whether the logged in user wants to message a specific event that they are hosting, or all csc.zerofoureightnine.conferencemanager.events that they are hosting.
     MESSAGE_SINGLE_USER(Category.MESSAGE), //Determine the recipient user.
     //New for Phase 2!
-    MESSAGE_ARCHIVE(Category.MESSAGE), //Determine the message to archive.
-    MESSAGE_DELETE(Category.MESSAGE), //Determine the message to delete.
-    MESSAGE_UNREAD(Category.MESSAGE), //Determine the message to unread.
+    MESSAGE_MOVE(Category.MESSAGE), //Determine the message to move.
+    MESSAGE_DELETE(Category.MESSAGE), //Determines message to delete.
 
     //Event
     EVENT_SELF_ENROLL(Category.EVENT), //Determine whether want to enroll or unenroll. Determine the specific event to either enroll or unenroll.

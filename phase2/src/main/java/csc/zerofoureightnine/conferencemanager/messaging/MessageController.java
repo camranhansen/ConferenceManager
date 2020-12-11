@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
-import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
@@ -76,6 +74,9 @@ public class MessageController {
     public int messageAllEvents(String username, String input, List<TopicPresentable> options){
         List<String> eventIds = eventManager.getHostingEvents(username);
         List<String> users = getParticipants(eventIds);
+        if (users.size() == 0){
+            return 0;
+        }
         messageManager.sendMessage(username, inputMap.get("content"), users);
         return 0;
     }
@@ -90,6 +91,9 @@ public class MessageController {
      */
     public int messageSingleEvent(String username, String input, List<TopicPresentable> options){
         List<String> users = eventManager.getParticipants(inputMap.get("event_id"));
+        if (users.size() == 0){
+            return 0;
+        }
         messageManager.sendMessage(username, inputMap.get("content"), users);
         return 0;
     }
@@ -103,7 +107,9 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int moveMessageToUnread(String username, String input, List<TopicPresentable> options){
-        messageMover.moveReadToUnread(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
+        if (isValidMessage(username)) {
+            messageMover.moveReadToUnread(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
+        }
         return 0;
     }
 
@@ -116,7 +122,9 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int moveMessageToRead(String username, String input, List<TopicPresentable> options){
-        messageMover.moveUnreadToRead(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
+        if (isValidMessage(username)) {
+            messageMover.moveUnreadToRead(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
+        }
         return 0;
     }
 
@@ -129,7 +137,9 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int moveMessageToArchive(String username, String input, List<TopicPresentable> options){
-        messageMover.moveToArchived(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
+        if (isValidMessage(username)) {
+            messageMover.moveToArchived(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
+        }
         return 0;
     }
 
@@ -142,7 +152,9 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int removeMessageFromArchive(String username, String input, List<TopicPresentable> options){
-        messageMover.removeFromArchived(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
+        if (isValidMessage(username)) {
+            messageMover.removeFromArchived(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
+        }
         return 0;
     }
 
@@ -155,7 +167,8 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int deleteSingleMessage(String username, String input, List<TopicPresentable> options){
-        messageMover.deleteOneMessage(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
+        if (isValidMessage(username)){
+        messageMover.deleteOneMessage(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));}
         return 0;
     }
 
@@ -168,7 +181,7 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int deleteSingleConversation(String username, String input, List<TopicPresentable> options){
-        messageMover.deleteConversation(username, inputMap.get("from"));
+        messageMover.deleteConversation(username, input);
         return 0;
     }
 
@@ -196,16 +209,9 @@ public class MessageController {
         return userManager.userExists(input);
     }
 
-    /**
-     * Returns true if the inputted sender, time and content are an existing message for the current user.
-     *
-     * @param input the current user's input
-     * @param options the options available to user, may be null
-     * @return A boolean stating whether or not an inputted message exists.
-     */
-    public boolean isValidMessage(String input, List<TopicPresentable> options){
-        return messageManager.messageExists(inputMap.get("username"), inputMap.get("from"),
-                inputMap.get("time_sent"), inputMap.get("content"));
+    private boolean isValidMessage(String username){
+        return messageManager.messageExists(username, inputMap.get("from"),
+                inputMap.get("time"), inputMap.get("content"));
     }
 
     /**
@@ -231,17 +237,17 @@ public class MessageController {
         return input.matches("^2020-(0[1-9]|1[1-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([0-1][0-9]|2[0-4]):[0-9][0-9]:[0-9][0-9]Z$");
     }
 
-    /**
-     * Returns true if the inputted is not empty for the purposes of not interacting
-     * with an event that has no participants.
-     *
-     * @param input the current user's input
-     * @param options the options available to user, may be null
-     * @return A boolean stating whether or not the inputted event is not empty.
-     */
-    public boolean isNonEmptyEvent(String input, List<TopicPresentable> options){
-        return eventManager.getParticipants(input).size() != 0;
-    }
+//    /**
+//     * Returns true if the inputted is not empty for the purposes of not interacting
+//     * with an event that has no participants.
+//     *
+//     * @param input the current user's input
+//     * @param options the options available to user, may be null
+//     * @return A boolean stating whether or not the inputted event is not empty.
+//     */
+//    public boolean isNonEmptyEvent(String input, List<TopicPresentable> options){
+//        return eventManager.getParticipants(input).size() != 0;
+//    }
 
     /**
      * Returns true if the inputted event id is valid.
@@ -250,7 +256,7 @@ public class MessageController {
      * @param options the options available to user, may be null
      * @return A boolean stating whether or not the inputted event id is valid
      */
-    public boolean isValidID(String input, List<TopicPresentable> options) {
+    public boolean isValidEventIdForSending(String input, List<TopicPresentable> options) {
         return eventManager.eventExists(input);
     }
 

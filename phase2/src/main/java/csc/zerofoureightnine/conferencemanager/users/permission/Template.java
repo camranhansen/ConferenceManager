@@ -16,9 +16,8 @@ public enum Template {
             Permission.USER_SELF_EDIT_REQUEST, //New
 
             Permission.MESSAGE_SINGLE_USER,
-            Permission.MESSAGE_ARCHIVE, //New
-            Permission.MESSAGE_DELETE, //New
-            Permission.MESSAGE_UNREAD, //New
+            Permission.MESSAGE_MOVE, //New
+            Permission.MESSAGE_DELETE,//New
 
             Permission.EVENT_SELF_ENROLL,
             Permission.EVENT_SELF_DROP,
@@ -36,10 +35,9 @@ public enum Template {
             Permission.USER_SELF_EDIT_REQUEST, //New
 
             Permission.MESSAGE_SINGLE_USER,
-            Permission.MESSAGE_EVENT_USERS,
-            Permission.MESSAGE_ARCHIVE, //New
-            Permission.MESSAGE_DELETE, //New
-            Permission.MESSAGE_UNREAD, //New
+            Permission.MESSAGE_EVENTS,
+            Permission.MESSAGE_MOVE, //New
+            Permission.MESSAGE_DELETE,//New
 
             Permission.EVENT_SELF_ENROLL,
             Permission.EVENT_SELF_DROP,
@@ -60,11 +58,9 @@ public enum Template {
             Permission.USER_OTHER_EDIT_REQUEST, //New
 
             Permission.MESSAGE_SINGLE_USER,
-            Permission.MESSAGE_EVENT_USERS,
-//            Permission.MESSAGE_ALL_USERS, //TODO add more specific permissions for message_all_users
-            Permission.MESSAGE_ARCHIVE, //New
-            Permission.MESSAGE_DELETE, //New
-            Permission.MESSAGE_UNREAD, //New
+            Permission.MESSAGE_EVENTS,
+            Permission.MESSAGE_MOVE, //New
+            Permission.MESSAGE_DELETE,//New
 
             Permission.EVENT_SELF_ENROLL,
             Permission.EVENT_SELF_DROP,
@@ -94,11 +90,10 @@ public enum Template {
             Permission.USER_OTHER_EDIT_REQUEST, //New
 
             Permission.MESSAGE_SINGLE_USER,
-            Permission.MESSAGE_EVENT_USERS,
+            Permission.MESSAGE_EVENTS,
             Permission.MESSAGE_ALL_USERS,
-            Permission.MESSAGE_ARCHIVE, //New
-            Permission.MESSAGE_DELETE, //New
-            Permission.MESSAGE_UNREAD, //New
+            Permission.MESSAGE_MOVE, //New
+            Permission.MESSAGE_DELETE,//New
 
             Permission.EVENT_SELF_ENROLL,
             Permission.EVENT_SELF_DROP,
