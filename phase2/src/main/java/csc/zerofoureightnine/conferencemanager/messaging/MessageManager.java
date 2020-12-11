@@ -73,7 +73,7 @@ public class MessageManager {
      * @param user username of the user whose inbox will be retrieved
      * @return a hashmap that maps the username of sender to a list of Message sent to the given user
      */
-    public Map<String, List<Message>> retrieveUserInbox(String user) {
+    private Map<String, List<Message>> retrieveUserInbox(String user) {
 
         HashMap<String, List<Message>> inbox = new HashMap<>();
         List<MessageData> md = this.messageData.loadInCollection("recipients", user);
@@ -90,6 +90,48 @@ public class MessageManager {
         return inbox;
     }
 
+    /**
+     * Return the size of the retrieve inbox.
+     * @param name username of the user whose inbox will be retrieved
+     * @return a integer that shows the size of retrieve inbox.
+     */
+    public int getRetrieveInboxSize(String name){
+        int num = 0;
+        for(String key : this.retrieveUserInbox(name).keySet()){
+            num += this.retrieveUserInbox(name).get(key).size();
+        }
+        return num;
+    }
+
+    /**
+     * Return the size of the unread inbox.
+     * @param name username of the user whose inbox will be retrieved
+     * @return a integer that shows the size of unread inbox.
+     */
+    public int getUnreadInboxSize(String name){
+        int num = 0;
+        for(String key : this.getUnreadInbox(name).keySet()){
+            num += this.getUnreadInbox(name).get(key).size();
+        }
+        return num;
+    }
+
+    /**
+     * Return the size of the retrieve inbox.
+     * @param name username of the user whose inbox will be retrieved
+     * @return a integer that shows the size of read inbox.
+     */
+    public int getReadInboxSize(String name){
+        int num = 0;
+        for(String key : this.getReadInbox(name).keySet()){
+            num += this.getReadInbox(name).get(key).size();
+        }
+        return num;
+    }
+
+
+
+
 
     /**
      * Returns the read inbox of the given user.
@@ -98,7 +140,7 @@ public class MessageManager {
      * given user
      */
 
-    public Map<String, List<Message>> getReadInbox(String username) {
+    private Map<String, List<Message>> getReadInbox(String username) {
         HashMap<String, List<Message>> read = new HashMap<>();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         List<String> senders = new ArrayList<>();
@@ -122,7 +164,7 @@ public class MessageManager {
      * @param from username of the sender
      * @return a list of read Message that the sender has sent to the user
      */
-    public List<Message> getReadInboxFrom(String username, String from) {
+    private List<Message> getReadInboxFrom(String username, String from) {
         List<Message> messages = new ArrayList<>();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         for (MessageData m : md) {
@@ -147,7 +189,7 @@ public class MessageManager {
      * given user
      */
 
-    public Map<String, List<Message>> getUnreadInbox(String username){
+    private Map<String, List<Message>> getUnreadInbox(String username){
         HashMap<String, List<Message>> unread = new HashMap<>();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         List<String> senders = new ArrayList<>();
@@ -172,7 +214,7 @@ public class MessageManager {
      * @param from username of the sender
      * @return a list of unread Message that the sender has sent to the user
      */
-    public List<Message> getUnreadFrom(String username, String from){
+    private List<Message> getUnreadFrom(String username, String from){
         List<Message> messages = new ArrayList<>();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         for (MessageData m : md) {
@@ -196,7 +238,7 @@ public class MessageManager {
      * @param username username of the user
      * @return a list of archived Message of the given user
      */
-    public List<Message> getArchivedInbox(String username) {
+    private List<Message> getArchivedInbox(String username) {
         List<Message> archived = new ArrayList<>();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
         for (MessageData m: md){
@@ -221,7 +263,7 @@ public class MessageManager {
      * @return A list of Message that the sender has sent to the user.
      */
     // only retrieveUserInboxFor move read message to unread
-    public List<Message> retrieveUserInboxFor(String user, String from) {
+    private List<Message> retrieveUserInboxFor(String user, String from) {
         List<Message> messages = new ArrayList<>();
         this.messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", user);
