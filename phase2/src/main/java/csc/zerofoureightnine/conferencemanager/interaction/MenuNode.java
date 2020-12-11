@@ -63,6 +63,7 @@ public class MenuNode { // UI
         available.forEach(m -> {
             nameables.add(m == null ? null : m.nameable);
         });
+        System.out.println("---");
         attemptListOptions(nameables); // List possible options for this node.
 
         String input = promptUserInput(scanner, nameables); // Prompt for user input.

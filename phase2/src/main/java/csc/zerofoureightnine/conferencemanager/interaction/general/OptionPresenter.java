@@ -44,7 +44,7 @@ public class OptionPresenter implements TopicPresentable, PromptPresentable, Inf
             }
             sb.append("\n");
         }
-        return sb.toString();
+        return sb.toString().trim();
     }
 
     @Override

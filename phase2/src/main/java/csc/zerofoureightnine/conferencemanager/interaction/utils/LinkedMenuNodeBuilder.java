@@ -85,7 +85,7 @@ public class LinkedMenuNodeBuilder {
                     builder.setPermission(permission);
                 previous = builder.build();
             } else {
-                previous = buildMultiNode(tag, previous, options.get(i), optionsPermissions.get(i));
+                previous = buildMultiNode(tag, previous, options.get(i), optionsPermissions.get(i), permission);
             }
 
         }
@@ -93,7 +93,7 @@ public class LinkedMenuNodeBuilder {
         return previous;
     }
 
-    private MenuNode buildMultiNode(String tag, MenuNode tail, List<String> options, List<Permission> permissions) {
+    private MenuNode buildMultiNode(String tag, MenuNode tail, List<String> options, List<Permission> permissions, Permission leadPermission) {
 
         MenuNode[] optionNodes = new MenuNode[options.size()];
 
@@ -118,6 +118,7 @@ public class LinkedMenuNodeBuilder {
         entry.setPromptable(presenter);
         entry.setReattemptable(presenter);
         entry.addChildren(optionNodes);
+        entry.setPermission(leadPermission);
         return entry.build();
     }
 
