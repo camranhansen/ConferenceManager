@@ -12,6 +12,10 @@ public class RuntimeDataHolder {
     private String username;
     private Instant lastTimeCalled;
 
+    /**
+     * Constructor
+     * @param pMap
+     */
     public RuntimeDataHolder(PersistentMap<String, RuntimeData> pMap) {
         this.pMap = pMap;
     }
@@ -26,11 +30,15 @@ public class RuntimeDataHolder {
             pMap.get(username).setInstantValue(oldTime.plus(timeDifference));
             lastTimeCalled = currentTime;
         }
-        int runtimeStatValue = pMap.get(username).getStatValue(runtimeStat) + 1;
+        Integer runtimeStatValue = pMap.get(username).getStatValue(runtimeStat) + 1;
         pMap.get(username).setStatValue(runtimeStat, runtimeStatValue);
     }
 
     public PersistentMap<String, RuntimeData> getMap() { return pMap; }
+
+    public String getUsername() { return username; }
+
+    public void setUsername(String username) { this.username = username; }
 
     private void usernameCheck(){
         if (!pMap.containsKey(username)){
