@@ -79,7 +79,7 @@ public class MessagePresenter {
     }
 
     /**
-     * Returns the prompt when the username that the user types in is invalid.
+     * Returns the prompt when the username is invalid.
      * @return the string "This recipient is invalid, please try again"
      */
     public String invalidRecipient() {
