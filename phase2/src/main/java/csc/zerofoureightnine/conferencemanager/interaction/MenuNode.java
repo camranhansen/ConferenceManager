@@ -309,11 +309,11 @@ public class MenuNode { // UI
         }
 
         /**
-         * Sets the {@link completePresentable}. If null, no completion message will be
+         * Sets the {@link CompletePresentable}. If null, no completion message will be
          * displayed. If not null, will request for a string to indicate menu node
          * completion.
-         * 
-         * @param completable A {@link completePresentable} to invoke for a completion
+         *
+         * @param completable A {@link CompletePresentable} to invoke for a completion
          *                    message.
          */
         public void setCompletable(CompletePresentable completable) {
