@@ -106,9 +106,7 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int moveMessageToUnread(String username, String input, List<TopicPresentable> options){
-        if (isValidMessage(username)) {
             messageMover.moveReadToUnread(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
-        }
         return 0;
     }
 
@@ -121,9 +119,7 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int moveMessageToRead(String username, String input, List<TopicPresentable> options){
-        if (isValidMessage(username)) {
             messageMover.moveUnreadToRead(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
-        }
         return 0;
     }
 
@@ -136,9 +132,7 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int moveMessageToArchive(String username, String input, List<TopicPresentable> options){
-        if (isValidMessage(username)) {
             messageMover.moveToArchived(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
-        }
         return 0;
     }
 
@@ -151,9 +145,8 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int removeMessageFromArchive(String username, String input, List<TopicPresentable> options){
-        if (isValidMessage(username)) {
-            messageMover.removeFromArchived(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
-        }
+        messageMover.removeFromArchived(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
+
         return 0;
     }
 
@@ -165,9 +158,8 @@ public class MessageController {
      * @param options the options available to user, may be null
      * @return zero for continuation purposes
      */
-    public int deleteSingleMessage(String username, String input, List<TopicPresentable> options){
-        if (isValidMessage(username)){
-        messageMover.deleteOneMessage(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));}
+    public int deleteSingleMessage(String username, String input, List<TopicPresentable> options) {
+        messageMover.deleteOneMessage(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
         return 0;
     }
 
@@ -208,10 +200,6 @@ public class MessageController {
         return userManager.userExists(input);
     }
 
-    private boolean isValidMessage(String username){
-        return messageManager.messageExists(username, inputMap.get("from"),
-                inputMap.get("time"), inputMap.get("content"));
-    }
 
     /**
      * Returns true if the inputted content for a message is valid,
