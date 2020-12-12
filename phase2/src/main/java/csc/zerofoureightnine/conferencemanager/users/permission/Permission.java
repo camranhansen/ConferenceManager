@@ -31,7 +31,8 @@ public enum Permission {
     USER_OTHER_EDIT_PASSWORD(Category.USER),
     USER_CREATE_ACCOUNT(Category.USER),
     USER_CREATE_SPEAKER_ACCOUNT(Category.USER), //THIS SHOULD NOW EXTENDED TO ALL ACCOUNT TYPES NOT JUST SPEAKERS... perhaps
-    USER_DELETE_ACCOUNT(Category.USER), //Delete other people's account, or yourself.
+    USER_SELF_DELETE_ACCOUNT(Category.USER), //Delete other people's account, or yourself.
+    USER_OTHER_DELETE_ACCOUNT(Category.USER),
     //New for Phase 2!
     USER_CREATE_REQUEST(Category.SPECIAL_REQUEST), //Create a SpecialRequest.
     USER_SELF_EDIT_REQUEST(Category.SPECIAL_REQUEST), //Determine the SpecialRequest, and the type of edit to perform.
@@ -50,7 +51,8 @@ public enum Permission {
     VIEW_OTHER_MESSAGES(Category.MESSAGE), //Not necessary now. Determine the other user, then call view_self_messages from the perspective of that user.
     //New for Phase 2!
     VIEW_SELF_REQUESTS(Category.SPECIAL_REQUEST), //Determine the SpecialRequest to view.
-    VIEW_OTHER_REQUESTS(Category.SPECIAL_REQUEST), //Determine the user whose SpecialRequest should be viewed
+    VIEW_OTHER_PENDING_REQUESTS(Category.SPECIAL_REQUEST), //Determine the user whose SpecialRequest should be viewed
+    VIEW_OTHER_ADDRESSED_REQUESTS(Category.SPECIAL_REQUEST),
     VIEW_SELF_STATISTICS(Category.DATA), //Show personal statistics. SUBJECT TO CHANGE!
     VIEW_ALL_STATISTICS(Category.DATA) //Show statistics for whole conference. SUBJECT TO CHANGE!
     ;
