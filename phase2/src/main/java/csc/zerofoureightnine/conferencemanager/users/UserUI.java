@@ -51,6 +51,7 @@ public class UserUI implements UISection {
         generateViewSelfSpecialRequestNodes();
         generateViewPendingSpecialRequestNodes();
         generateViewAddressedSpecialRequestNodes();
+        generateCreateSpeakerAccount();
         //put generators here.
         return entryPoints;
     }
@@ -76,6 +77,15 @@ public class UserUI implements UISection {
         entryPoints.add(seq.build(node.build(), Permission.USER_CREATE_ACCOUNT));
     }
 
+    private void generateCreateSpeakerAccount(){
+        String seqTitle = "Create a New Speaker Account";
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
+        seq.addStep("username", userPresenter::enterUsername, userController::isNotValidUser, userPresenter::userExists);
+        seq.addStep("password", userPresenter::enterPassword, null, userPresenter::wrongInput);
+        MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userController::createSpkAccount);
+        node.backStepCount(2);
+        entryPoints.add(seq.build(node.build(), Permission.USER_CREATE_SPEAKER_ACCOUNT));
+    }
     private void generateOtherEditPasswordNodes(){
         String seqTitle = "Edit another User's password";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());

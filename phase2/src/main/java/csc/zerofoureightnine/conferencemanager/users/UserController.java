@@ -114,7 +114,7 @@ public class UserController {
      * @return the node to return to. See {@link MenuNode} for clarification
      */
     public int createSpkAccount(String username, String input, List<TopicPresentable> options) {
-        um.createUser(inputMap.get("name"), inputMap.get("password"), Template.SPEAKER.getPermissions());
+        um.createUser(inputMap.get("username"), inputMap.get("password"), Template.SPEAKER.getPermissions());
         return 0;
     }
 
