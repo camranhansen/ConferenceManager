@@ -1,66 +1,62 @@
 package csc.zerofoureightnine.conferencemanager.datacollection;
 
-import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.RuntimeData;
-
-import java.time.Duration;
 import java.time.Instant;
+import java.util.EnumMap;
 
-public class RuntimeDataHolder {
+public class RuntimeDataHolder implements RuntimeStatModifier {
 
-    private PersistentMap<String, RuntimeData> pMap;
-    private String username;
+    private EnumMap<RuntimeStats, Integer> statMap;
+    private String username = "guest";
     private Instant lastTimeCalled;
 
     /**
      * Instantiates the RuntimeDataHolder.
-     * @param pMap A PersistentMap with usernames as keys and the corresponding RuntimeData as the values.
      */
-    public RuntimeDataHolder(PersistentMap<String, RuntimeData> pMap) {
-        this.pMap = pMap;
+    public RuntimeDataHolder() {
+        this.statMap = new EnumMap<>(RuntimeStats.class);
+        resetMap();
+    }
+
+    private void resetMap() {
+        for (RuntimeStats stat : RuntimeStats.values()
+        ) {
+            statMap.put(stat, 0);
+        }
     }
 
     /**
      * Increments the value of a given RuntimeStat.
+     *
      * @param runtimeStat The RuntimeStat to be incremented.
      */
+    @Override
     public void incrementStat(RuntimeStats runtimeStat) {
-        usernameCheck();
-        if (runtimeStat == RuntimeStats.TIME_SPENT) {
-            Instant time = pMap.get(username).getInstantValue(runtimeStat);
-            Instant oldTime = pMap.get(username).getInstantValue(RuntimeStats.BAD_INPUT);
-            Instant currentTime = Instant.now();
-            Duration timeDifference = Duration.between(currentTime, lastTimeCalled);
-            pMap.get(username).setInstantValue(oldTime.plus(timeDifference));
-            lastTimeCalled = currentTime;
-        }
-        Integer runtimeStatValue = pMap.get(username).getStatValue(runtimeStat) + 1;
-        pMap.get(username).setStatValue(runtimeStat, runtimeStatValue);
+        Integer runtimeStatValue = statMap.get(runtimeStat) + 1;
+        statMap.put(runtimeStat, runtimeStatValue);
+        System.out.println(statMap.toString());
     }
 
     /**
      * Returns the PersistentMap pMap.
      */
-    public PersistentMap<String, RuntimeData> getMap() { return pMap; }
+    public EnumMap<RuntimeStats, Integer> getMap() {
+        return statMap; }
 
     /**
      * Returns the stored username.
      */
-    public String getUsername() { return username; }
+    public String getUsername() { return username;
+    }
 
     /**
      * Sets the username.
+     *
      * @param username The username to be stored.
      */
-    public void setUsername(String username) { this.username = username; }
-
-    /**
-     * Checks if the given username exists in pMap. If not, creates a new RuntimeData entity and maps the username to it.
-     */
-    private void usernameCheck(){
-        if (!pMap.containsKey(username)){
-        RuntimeData runtimeData = new RuntimeData();
-        pMap.put(username, runtimeData);
-        }
+    public void setUsername(String username) {
+        this.username = username;
+        resetMap();
     }
+
+
 }

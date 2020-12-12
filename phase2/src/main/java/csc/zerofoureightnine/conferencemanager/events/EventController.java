@@ -14,12 +14,13 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EventController {
     private EventManager eventManager;
     private UserManager userManager;
     private PermissionManager permissionManager;
-    private HashMap<String, String> inputMap;
+    private Map<String, String> inputMap;
 
     public EventController(EventManager eventManager,
                            UserManager userManager,
@@ -71,7 +72,7 @@ public class EventController {
         return 0;
     }
 
-    public HashMap<String, String> getInputMap() {
+    public Map<String, String> getInputMap() {
         return inputMap;
     }
 

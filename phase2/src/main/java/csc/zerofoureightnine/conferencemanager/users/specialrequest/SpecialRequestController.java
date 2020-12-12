@@ -4,12 +4,13 @@ import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPre
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class SpecialRequestController {
 
     private SpecialRequestManager requestManager;
-    private HashMap<String, String> inputMap = new HashMap<>();
+    private Map<String, String> inputMap = new HashMap<>();
 
 
     /**
