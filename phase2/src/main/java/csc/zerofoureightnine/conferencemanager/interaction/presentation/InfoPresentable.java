@@ -1,5 +1,8 @@
 package csc.zerofoureightnine.conferencemanager.interaction.presentation;
 
+import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
+import csc.zerofoureightnine.conferencemanager.interaction.control.Action;
+
 import java.util.List;
 
 public interface InfoPresentable {
