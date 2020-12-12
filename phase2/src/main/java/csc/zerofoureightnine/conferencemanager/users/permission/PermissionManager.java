@@ -94,32 +94,5 @@ public class PermissionManager {
         }
         return fullFillingUsers;
     }
-
-    /**
-     * Convert a string corresponding to permissions into the appropriate Permissions
-     * @param permission a string that corresponds to existing Permissions
-     * @return a list of Permissions
-     */
-    @Deprecated
-    public List<Permission> stringToPermissions(String permission){
-        String[] strList = permission.split(", ");
-        ArrayList<Permission> permissions = new ArrayList<>();
-        for (String s: strList) {
-            permissions.add(Permission.valueOf(s));
-        }
-        return permissions;
-    }
-
-    /**
-     * Convert a list of Permissions into a string
-     * @param permissions a list of Permissions
-     * @return a string with each string of a Permission separated by a comma
-     */
-    @Deprecated
-    public String permissionsToString(List<Permission> permissions){
-        return permissions.toString().replace("[", "").replace("]", "");
-    }
-
-
 }
 
