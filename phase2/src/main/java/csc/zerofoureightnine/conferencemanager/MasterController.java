@@ -137,4 +137,16 @@ public class MasterController {
     public UserPresenter getUserPresenter() {
         return userPresenter;
     }
+
+    public StoredDataGetter getStoredDataGetter() {
+        return storedDataGetter;
+    }
+
+    public DataPresenter getDataPresenter() {
+        return dataPresenter;
+    }
+
+    public DataController getDataController() {
+        return dataController;
+    }
 }

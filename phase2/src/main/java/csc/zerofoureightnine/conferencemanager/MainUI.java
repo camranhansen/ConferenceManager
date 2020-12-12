@@ -1,5 +1,6 @@
 package csc.zerofoureightnine.conferencemanager;
 
+import csc.zerofoureightnine.conferencemanager.datacollection.DataUI;
 import csc.zerofoureightnine.conferencemanager.events.EventController;
 import csc.zerofoureightnine.conferencemanager.events.EventPresenter;
 import csc.zerofoureightnine.conferencemanager.events.EventUI;
@@ -38,8 +39,10 @@ public class MainUI {
         exit.setCompletable((u, n) -> "Goodbye!");
         exit.build();
         userInterface = new ConsoleUserInterface(menu);
+        menu.setTracker(masterController.getRuntimeDataHolder());
         exitAction.addObserver(userInterface);
         masterController.getSessionController().addObserver(userInterface);
+        masterController.getSessionController().addObserver(masterController.getRuntimeDataHolder());
         userInterface.interact();
     }
 
@@ -53,6 +56,7 @@ public class MainUI {
         menuBuilder.addSectionUI(new MessageUI(messageController, messagePresenter),
                 new SessionUI(sessionController, sessionPresenter), new EventUI(eventController, eventPresenter),
                 new UserUI(masterController.getUserController(), masterController.getUserPresenter(),
-                        masterController.getSpecialRequestController(), masterController.getSpecialRequestPresenter()));
+                        masterController.getSpecialRequestController(), masterController.getSpecialRequestPresenter()),
+                new DataUI(masterController.getDataPresenter(), masterController.getDataController()));
     }
 }
