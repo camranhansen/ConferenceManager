@@ -7,12 +7,13 @@ import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserController {
 
     private UserManager um;
     private PermissionManager pm;
-    private HashMap<String, String> inputMap = new HashMap<>();
+    private Map<String, String> inputMap = new HashMap<>();
 
     /**
      * A constructor takes in userManager and PermissionManager
@@ -104,7 +105,7 @@ public class UserController {
     }
 
 
-    public HashMap<String, String> getInputMap() {
+    public Map<String, String> getInputMap() {
         return inputMap;
     }
 }
