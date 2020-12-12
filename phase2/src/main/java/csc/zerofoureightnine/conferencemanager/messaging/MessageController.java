@@ -200,10 +200,6 @@ public class MessageController {
         return userManager.userExists(input);
     }
 
-    private boolean isValidMessage(String username){
-        return messageManager.messageExists(username, inputMap.get("from"),
-                inputMap.get("time"), inputMap.get("content"));
-    }
 
     /**
      * Returns true if the inputted content for a message is valid,
