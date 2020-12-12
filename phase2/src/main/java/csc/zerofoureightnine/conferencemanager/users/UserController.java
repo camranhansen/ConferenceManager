@@ -72,22 +72,24 @@ public class UserController {
 
     /**
      * Calls {@link UserManager#createUser(String, String, List)} to create a new account
+     * @param username user who is using the program.
      * @param input Input specifically in to this node. In this case, it is not relevant.
      * @param options Options available at this node. In this case, it is not relevant.
      * @return the node to return to. See {@link MenuNode} for clarification
      */
-    public int createAccount(String input, List<TopicPresentable> options){
+    public int createAccount(String username, String input, List<TopicPresentable> options){
         um.createUser(inputMap.get("name"), inputMap.get("password"),Template.values()[Integer.parseInt(inputMap.get("template"))].getPermissions() );
         return 0;
     }
 
     /**
      * Calls {@link UserManager#createUser(String, String, List)} to create a new speaker account
+     * @param username user who is using the program.
      * @param input Input specifically in to this node. In this case, it is not relevant.
      * @param options Options available at this node. In this case, it is not relevant.
      * @return the node to return to. See {@link MenuNode} for clarification
      */
-    public int createSpkAccount(String input, List<TopicPresentable> options){
+    public int createSpkAccount(String username, String input, List<TopicPresentable> options){
         um.createUser(inputMap.get("name"), inputMap.get("password"), Template.SPEAKER.getPermissions());
         return 0;
     }
@@ -95,15 +97,19 @@ public class UserController {
     /**
      * Calls {@link UserManager#removeUser(String)} to remove the user's
      * account specified in inputMap, with tag "name".
+     * @param username user who is using the program.
      * @param input Input specifically in to this node. In this case, it is not relevant.
      * @param options Options available at this node. In this case, it is not relevant.
      * @return the node to return to. See {@link MenuNode} for clarification
      */
-    public int deleteAccount(String input, List<TopicPresentable> options){
+    public int deleteAccount(String username, String input, List<TopicPresentable> options){
         um.removeUser(inputMap.get("name"));
         return 0;
     }
 
+    public boolean isCorrectPassword(String input, List<TopicPresentable> options){
+        return um.getPassword(inputMap.get("name")).equals(inputMap.get("password"));
+    }
 
     public Map<String, String> getInputMap() {
         return inputMap;

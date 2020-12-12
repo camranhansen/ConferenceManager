@@ -9,7 +9,6 @@ public class SpecialRequestManager {
     /**
      * requestMap stores a hashmap where the keys are usernames and the corresponding value is a list of SpecialRequests.
      */
-//    HashMap<String, List<SpecialRequest>> requestMap;
     PersistentMap<UUID, SpecialRequestData> requestDataMap;
 
     /**

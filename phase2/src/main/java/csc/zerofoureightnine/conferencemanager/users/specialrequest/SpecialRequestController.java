@@ -21,7 +21,6 @@ public class SpecialRequestController {
         this.requestManager = requestManager;
     }
 
-
     /**
      * Remove the request with the given request id.
      *
@@ -72,6 +71,26 @@ public class SpecialRequestController {
         return this.requestManager.getPendingRequests().contains(UUID.fromString(id)) ||
                 this.requestManager.getAddressedRequests().contains(UUID.fromString(id));
     }
+
+    /**
+     * Returns the input map of this SpecialRequestController.
+     * @return a HashMap of String to String of the input
+     */
+    public Map<String, String> getInputMap() {
+        return inputMap;
+    }
+
+    /**
+     * A method to connect with the {@link SpecialRequestPresenter} view methods.
+     * @param username the username of the current session User
+     * @param input the input by the user
+     * @param selectableOptions a list of options the user can select
+     * @return 0 always to work with the menu system
+     */
+    public int viewMethod(String username, String input, List<TopicPresentable> selectableOptions){
+        return 0;
+    }
+
 }
 
 
