@@ -3,6 +3,7 @@ package csc.zerofoureightnine.conferencemanager.datacollection;
 
 import java.util.EnumMap;
 
+
 public class DataPresenter {
 
     private String username;

@@ -1,9 +1,10 @@
 package csc.zerofoureightnine.conferencemanager.users;
-import java.util.List;
 
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+
+import java.util.List;
 
 public class UserManager {
 
@@ -69,12 +70,22 @@ public class UserManager {
 
     /**
      * Returns the password associated with a given User
-     * @param username the name of the User whose password should be retrieved
+     *
+     * @param username    the name of the User whose password should be retrieved
      * @param newPassword the new password to set for this User
      */
-    public void setPassword(String username, String newPassword){
+    public void setPassword(String username, String newPassword) {
         this.userData.beginInteraction();
         this.userData.load(username).setPassword(newPassword);
         this.userData.endInteraction();
+    }
+
+    /**
+     * Get the total number of users in this program!
+     *
+     * @return the total number of uzers
+     */
+    public Integer getTotalUsers() {
+        return userData.keySet().size();
     }
 }
