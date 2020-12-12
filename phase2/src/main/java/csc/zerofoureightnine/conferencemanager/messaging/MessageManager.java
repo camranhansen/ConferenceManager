@@ -25,7 +25,6 @@ public class MessageManager {
      * @param messageData @see PersistentMap storing ids as keys and their associating messageDatas as values
      */
     public MessageManager(PersistentMap<String, MessageData> messageData) {
-        //inboxes = new HashMap<>();
         this.messageData = messageData;
     }
 
@@ -44,7 +43,6 @@ public class MessageManager {
      * @param to usernames of one or a list of recipients to this message
      */
     public MessageData sendMessage(String from, String content, String... to) {
-        //Message msg = new Message(from, to, content);
         return sendMessage(from, content, Arrays.asList(to));
     }
 
@@ -55,7 +53,6 @@ public class MessageManager {
      * @param to usernames of one or a list of recipients to this message
      */
     public MessageData sendMessage(String from, String content, Collection<String> to) {
-        //Message msg = new Message(from, to, content);
         MessageData md = new MessageData();
         md.setSender(from);
         md.setContent(content);
@@ -66,12 +63,6 @@ public class MessageManager {
         return this.messageData.load(id);
     }
 
-
-    /**
-     * Returns the inbox of the given user.
-     * @param user username of the user whose inbox will be retrieved
-     * @return a hashmap that maps the username of sender to a list of Message sent to the given user
-     */
     private Map<String, List<Message>> retrieveUserInbox(String user) {
 
         HashMap<String, List<Message>> inbox = new HashMap<>();
@@ -115,11 +106,6 @@ public class MessageManager {
         return num;
     }
 
-    /**
-     * Return the size of the retrieve inbox.
-     * @param name username of the user whose inbox will be retrieved
-     * @return a integer that shows the size of read inbox.
-     */
     public int getReadInboxSize(String name){
         int num = 0;
         for(String key : this.getReadInbox(name).keySet()){
@@ -128,12 +114,6 @@ public class MessageManager {
         return num;
     }
 
-    /**
-     * Returns the read inbox of the given user.
-     * @param username username of the user whose read inbox will be retrieved
-     * @return a hashmap that maps the username of the sender to a list of read Message sent by the sender to the
-     * given user
-     */
     private Map<String, List<Message>> getReadInbox(String username) {
         HashMap<String, List<Message>> read = new HashMap<>();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
@@ -152,12 +132,6 @@ public class MessageManager {
         return read;
     }
 
-    /**
-     * Returns the read inbox of the user from a specific sender.
-     * @param username username of the user
-     * @param from username of the sender
-     * @return a list of read Message that the sender has sent to the user
-     */
     private List<Message> getReadInboxFrom(String username, String from) {
         List<Message> messages = new ArrayList<>();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
@@ -176,12 +150,6 @@ public class MessageManager {
         return messages;
     }
 
-    /**
-     * Returns the unread inbox of the given user.
-     * @param username username of the user whose unread inbox will be retrieved
-     * @return a hashmap that maps the username of the sender to a list of unread Message sent by the sender to the
-     * given user
-     */
     private Map<String, List<Message>> getUnreadInbox(String username){
         HashMap<String, List<Message>> unread = new HashMap<>();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
@@ -200,13 +168,6 @@ public class MessageManager {
         return unread;
     }
 
-
-    /**
-     * Returns the unread inbox of the user from a specific sender.
-     * @param username username of the user
-     * @param from username of the sender
-     * @return a list of unread Message that the sender has sent to the user
-     */
     private List<Message> getUnreadFrom(String username, String from){
         List<Message> messages = new ArrayList<>();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
@@ -225,12 +186,6 @@ public class MessageManager {
         return messages;
     }
 
-
-    /**
-     * Returns the archived inbox of the given user.
-     * @param username username of the user
-     * @return a list of archived Message of the given user
-     */
     private List<Message> getArchivedInbox(String username) {
         List<Message> archived = new ArrayList<>();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
@@ -249,13 +204,6 @@ public class MessageManager {
         return archived;
     }
 
-    /**
-     * Returns the unread inbox of the user from a specific sender.
-     * @param user Username of the recipient.
-     * @param from Username of the sender.
-     * @return A list of Message that the sender has sent to the user.
-     */
-    // only retrieveUserInboxFor move read message to unread
     private List<Message> retrieveUserInboxFor(String user, String from) {
         List<Message> messages = new ArrayList<>();
         this.messageData.beginInteraction();
@@ -414,31 +362,6 @@ public class MessageManager {
         return inbox.toString();
     }
 
-//    /**
-//     * Returns a list of the information of all message sent to the user including sender, sent time, content, and all
-//     * recipients.
-//     * @param user Username of the recipient.
-//     * @return A list of String[] that stores all information of all the messages sent to the given user. Each String[]
-//     * contains the sender's username at index 0, sent time at index 1, content at index 2, and String[] of recipients'
-//     * usernames at index 3, of a single message sent to the given user.
-//     */
-//    public List<String[]> getInboxAsArray(String user) {
-//        Map<String, List<Message>> inbox = retrieveUserInbox(user);
-//
-//        List<String[]> res = new ArrayList<>();
-//        for (List<Message> fromUser : inbox.values()) {
-//            String[] text = new String[4];
-//            for (Message message : fromUser) {
-//                text[0] = message.getSender();
-//                text[1] = message.getTimeSent().toString();
-//                text[2] = message.getContent();
-//                text[3] = Arrays.toString(message.getRecipients()).replaceAll("[\\[\\]]", "");
-//            }
-//            res.add(text);
-//        }
-//        return res;
-//    }
-
     /**
      * Returns true if the content, sender and time sent was been a message this username has received.
      *
@@ -456,36 +379,4 @@ public class MessageManager {
         }
         return false;
     }
-//    /**
-//     * Create a new Message sent to the given user from a row storing all information about that Message. Put the
-//     * message into the user inbox.
-//     * @param user Username of the recipient.
-//     * @param row A String[] with sender's username at index 0, sent time at index 1, message content at index 2, and
-//     * String[] of recipients' usernames at index 3.
-//     */
-//    public void putMessageFromArray(String user, String[] row) {
-//        Map<String, List<Message>> inbox = retrieveUserInbox(user);
-//        String sender = row[0];
-//        Message curMessage = new Message(sender, row[3].split(", "), row[2]);
-//        curMessage.setTimeSent(Instant.parse(row[1]));
-//        if (!inbox.containsKey(sender)) {
-//            List<Message> list = new ArrayList<>();
-//            list.add(curMessage);
-//            inbox.put(sender, list);
-//        } else{
-//            List<Message> senderMessage = inbox.get(sender);
-//            senderMessage.add(curMessage);
-//        }
-//    }
-//
-//    /**
-//     * Returns an iterator over all csc.zerofoureightnine.conferencemanager.users of the inbox.
-//     * @return An iterator that iterates through the keys, which represent the username of the recipients, in a hashmap,
-//     * which is the inboxes.
-//     */
-//    public Iterator<String> getAllUsersWithInboxes() {
-//
-//        return inboxes.keySet().iterator();
-//    }
-
 }

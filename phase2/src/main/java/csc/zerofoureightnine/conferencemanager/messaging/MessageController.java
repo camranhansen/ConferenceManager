@@ -235,17 +235,6 @@ public class MessageController {
         return input.matches("^2020-(0[1-9]|1[1-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([0-1][0-9]|2[0-4]):[0-9][0-9]:[0-9][0-9]Z$");
     }
 
-//    /**
-//     * Returns true if the inputted is not empty for the purposes of not interacting
-//     * with an event that has no participants.
-//     *
-//     * @param input the current user's input
-//     * @param options the options available to user, may be null
-//     * @return A boolean stating whether or not the inputted event is not empty.
-//     */
-//    public boolean isNonEmptyEvent(String input, List<TopicPresentable> options){
-//        return eventManager.getParticipants(input).size() != 0;
-//    }
 
     /**
      * Returns true if the inputted event id is valid.
