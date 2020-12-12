@@ -131,6 +131,10 @@ public class UserController {
         return 0;
     }
 
+    /**
+     *
+     * @return the inputMap.
+     */
     public Map<String, String> getInputMap() {
         return inputMap;
     }
