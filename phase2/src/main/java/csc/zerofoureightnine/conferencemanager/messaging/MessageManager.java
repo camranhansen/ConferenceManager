@@ -1,18 +1,10 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
+
+import java.time.Instant;
+import java.util.*;
 
 
 public class MessageManager {
@@ -371,12 +363,23 @@ public class MessageManager {
      * @param content the content in a message
      * @return a boolean stating whether or a message exists
      */
-    public boolean messageExists(String username, String from, String time, String content){
+    public boolean messageExists(String username, String from, String time, String content) {
         List<MessageData> md = getMessageData().loadInCollection("recipients", username);
-        for (MessageData m: md){
-            if(from.equals(m.getSender())&&content.equals(m.getContent())&&time.equals(m.getTimeSent().toString())){
-                return true; }
+        for (MessageData m : md) {
+            if (from.equals(m.getSender()) && content.equals(m.getContent()) && time.equals(m.getTimeSent().toString())) {
+                return true;
+            }
         }
         return false;
+    }
+
+
+    /**
+     * Gets the total number of messages
+     *
+     * @return the total number of messages
+     */
+    public Integer getTotalMessages() {
+        return messageData.size();
     }
 }

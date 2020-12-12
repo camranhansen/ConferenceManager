@@ -28,12 +28,6 @@ public class DataPresenter {
         stringBuilder.append("Messages in inbox: ").append(storedDataGetter.getRetrieveMessages(username)).append(System.lineSeparator());
         stringBuilder.append("Unread messages: ").append(storedDataGetter.getUnreadMessages(username)).append(System.lineSeparator());
         stringBuilder.append("Read messages: ").append(storedDataGetter.getReadMessages(username)).append(System.lineSeparator());
-        stringBuilder.append("Total events registered: ").append(storedDataGetter.getTotalEvents()).append(System.lineSeparator());
-        stringBuilder.append("Total parties registered: ").append(storedDataGetter.getTotalParties()).append(System.lineSeparator());
-        stringBuilder.append("Total single-speaker events registered: ").append(storedDataGetter.getTotalSingles()).append(System.lineSeparator());
-        stringBuilder.append("Total multi-speaker events registered: ").append(storedDataGetter.getTotalMulties()).append(System.lineSeparator());
-        stringBuilder.append("Most popular event type: ").append(storedDataGetter.getMostPopularEventType()).append(System.lineSeparator());
-        stringBuilder.append("Average event capacity: ").append(storedDataGetter.getAverageCapacity()).append(System.lineSeparator());
         return stringBuilder.toString();
     }
 }

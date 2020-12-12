@@ -1,88 +1,117 @@
 package csc.zerofoureightnine.conferencemanager.datacollection;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
-import csc.zerofoureightnine.conferencemanager.events.EventType;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
+import csc.zerofoureightnine.conferencemanager.users.UserManager;
+import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestManager;
 
 public class StoredDataGetter {
     private EventManager eventManager;
+    private SpecialRequestManager requestManager;
+    private UserManager userManager;
     private MessageManager messageManager;
     private String name;
 
     /**
      * Constructor
-     * @param em EventManager
-     * @param mm MessageManager
-     * @param username The name of user who is currently using the program
+     *
+     * @param messageManager {@link MessageManager}
+     * @param eventManager   {@link EventManager}
+     * @param requestManager {@link SpecialRequestManager}
+     * @param userManager    {@link UserManager}
+     * @param username       The name of user who is currently using the program
      */
-    public StoredDataGetter(EventManager em, MessageManager mm, String username){
-        this.eventManager = em;
-        this.messageManager = mm;
+    public StoredDataGetter(MessageManager messageManager, EventManager eventManager, SpecialRequestManager requestManager, UserManager userManager, String username) {
+        this.eventManager = eventManager;
+        this.messageManager = messageManager;
+        this.requestManager = requestManager;
+        this.userManager = userManager;
         this.name = username;
     }
 
     /**
      * Return the number of messages in retrieve inbox
+     *
      * @param name The name of user who is currently using the program
      * @return the number of messages in retrieve inbox
      */
-    public int getRetrieveMessages(String name){
+    public Integer getRetrieveMessages(String name) {
         return messageManager.getRetrieveInboxSize(name);
     }
 
     /**
      * Return the number of messages in unread inbox
+     *
      * @param name The name of user who is currently using the program
      * @return the number of messages in unread inbox
      */
-    public int getUnreadMessages(String name){
+    public Integer getUnreadMessages(String name) {
         return messageManager.getUnreadInboxSize(name);
     }
 
     /**
      * Return the number of messages in read inbox
+     *
      * @param name The name of user who is currently using the program
      * @return the number of messages in read inbox
      */
-    public int getReadMessages(String name){
+    public Integer getReadMessages(String name) {
         return messageManager.getReadInboxSize(name);
     }
 
     /**
-     * Returns the total number of events.
-     * @return An integer representing the number of events which are currently registered.
+     * Get the total number of users
+     *
+     * @return the total number of users
      */
-    public int getTotalEvents() { return eventManager.totalEventNumber(); }
+    public Integer getTotalusers() {
+        return userManager.getTotalUsers();
+    }
 
     /**
-     * Returns the total number of parties.
-     * @return An integer representing the number of parties which are currently registered.
+     * Get the total number of sent messages
+     *
+     * @return the total number of sent messages
      */
-    public int getTotalParties() { return eventManager.totalOfEventType(EventType.PARTY); }
+    public Integer getTotalMessagesSent() {
+        return messageManager.getTotalMessages();
+    }
 
     /**
-     * Returns the total number of single-speaker events.
-     * @return An integer representing the number of single-speaker events which are currently registered.
+     * Get the total number of special requests
+     *
+     * @return the total number of special requests
      */
-    public int getTotalSingles() { return eventManager.totalOfEventType(EventType.SINGLE); }
+    public Integer getTotalSpecialRequests() {
+        return requestManager.getTotalRequests();
+    }
 
     /**
-     * Returns the total number of multi-speaker events.
-     * @return An integer representing the number of multi-speaker events which are currently registered.
+     * Get the total number of pending requests
+     *
+     * @return the total number of pending requests
      */
-    public int getTotalMulties() { return eventManager.totalOfEventType(EventType.MULTI); }
+    public Integer getTotalPendingRequests() {
+        return requestManager.getNumberPendingRequests();
+    }
 
     /**
-     * Returns the most common {@link EventType} which events are registered as.
-     * @return The most commonly-occuring {@link EventType}.
+     * Get the total number of adressed requests
+     *
+     * @return the total number of adressed requests
      */
-    public EventType getMostPopularEventType() { return eventManager.mostPopularEventType(); }
+    public Integer getTotalAddressedRequests() {
+        return requestManager.getNumberAdressedRequests();
+    }
 
     /**
-     * Returns the truncated average capacity of all registered events.
-     * @return An integer representing the truncated average capacity of all registered events.
+     * Get the percentage of requests that have been adressed out of all requests
+     *
+     * @return the percentage of adressed requests
      */
-    public int getAverageCapacity() { return eventManager.averageCapacity(); }
+    public Double getPercentAdressedRequests() {
+        return requestManager.getNumberAdressedRequests().doubleValue() / requestManager.getTotalRequests().doubleValue();
+    }
 
 
 }

@@ -83,9 +83,9 @@ public class UserManager {
     /**
      * Get the total number of users in this program!
      *
-     * @return the total number of uzers
+     * @return the total number of users
      */
     public Integer getTotalUsers() {
-        return userData.keySet().size();
+        return userData.size();
     }
 }
