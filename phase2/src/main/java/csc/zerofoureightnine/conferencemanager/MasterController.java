@@ -27,6 +27,9 @@ import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialReque
 
 import java.util.UUID;
 
+/**
+ * Master controller. Stores and instantiates controller
+ */
 public class MasterController {
     private MessageManager messageManager;
     private PermissionManager permissionManager;
@@ -48,7 +51,14 @@ public class MasterController {
     private EventController eventController;
     private SpecialRequestController specialRequestController;
 
-
+    /**
+     * Create a master controller
+     *
+     * @param userMap           {@link PersistentMap} map of users/permissions.
+     * @param eventMap          {@link PersistentMap} map of events.
+     * @param messageMap        {@link PersistentMap} messages.
+     * @param specialRequestMap {@link PersistentMap} special requests.
+     */
     public MasterController(PersistentMap<String, UserData> userMap, PersistentMap<String, EventData> eventMap,
                             PersistentMap<String, MessageData> messageMap, PersistentMap<UUID, SpecialRequestData> specialRequestMap) {
 
