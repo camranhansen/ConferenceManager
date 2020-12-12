@@ -2,7 +2,6 @@ package csc.zerofoureightnine.conferencemanager.users.specialrequest;
 
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -10,14 +9,14 @@ import java.util.UUID;
 public class SpecialRequestPresenter {
 
     private SpecialRequestManager manager;
-    private HashMap<String, String> inputMap;
+    private Map<String, String> inputMap;
 
     /**
      * Initiates SpecialRequestPresenter
      * @param manager  SpecialRequestManager
      * @param inputMap Hashmap mapping strings to associating user inputs
      */
-    public SpecialRequestPresenter(SpecialRequestManager manager, HashMap<String, String> inputMap) {
+    public SpecialRequestPresenter(SpecialRequestManager manager, Map<String, String> inputMap) {
         this.manager = manager;
         this.inputMap = inputMap;
     }

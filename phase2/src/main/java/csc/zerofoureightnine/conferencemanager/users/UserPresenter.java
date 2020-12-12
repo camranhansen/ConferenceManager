@@ -1,10 +1,5 @@
 package csc.zerofoureightnine.conferencemanager.users;
 
-import csc.zerofoureightnine.conferencemanager.users.permission.Template;
-
-import java.util.Arrays;
-import java.util.List;
-
 public class UserPresenter {
 
     /**

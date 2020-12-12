@@ -2,21 +2,21 @@ package csc.zerofoureightnine.conferencemanager.messaging;
 
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MessagePresenter {
     private MessageManager manager;
-    private HashMap<String, String> inputMap;
+    private Map<String, String> inputMap;
 
     /**
      * Initiates MessagePresenter
      * 
      * @param manager  {@link MessageManager}
      */
-    public MessagePresenter(MessageManager manager) {
+    public MessagePresenter(MessageManager manager, Map<String, String> inputMap) {
         this.manager = manager;
-        this.inputMap = new HashMap<>();
+        this.inputMap = inputMap;
     }
 
     /**
@@ -47,7 +47,6 @@ public class MessagePresenter {
      */
     public String getUserInboxFrom(String username, List<TopicPresentable> nextNode) {
         return manager.singleInboxToString(username, inputMap.get("from"));
-
     }
 
     /**

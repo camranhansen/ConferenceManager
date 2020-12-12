@@ -21,7 +21,7 @@ public class EventController {
     public EventController(EventManager eventManager,
                            UserManager userManager,
                            PermissionManager permissionManager,
-                           HashMap<String, String> inputMap) {
+                           Map<String, String> inputMap) {
         this.eventManager = eventManager;
         this.userManager = userManager;
         this.permissionManager = permissionManager;

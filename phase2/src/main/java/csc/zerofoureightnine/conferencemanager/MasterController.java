@@ -5,8 +5,6 @@ import csc.zerofoureightnine.conferencemanager.events.EventController;
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.events.EventPresenter;
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLConfiguration;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.SpecialRequestData;
@@ -25,6 +23,7 @@ import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialReque
 import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestPresenter;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class MasterController {
@@ -56,13 +55,14 @@ public class MasterController {
 
         this.eventPresenter = new EventPresenter(eventManager);
         this.sessionPresenter = new SessionPresenter();
-        this.messagePresenter = new MessagePresenter(messageManager);
-        HashMap<String, String> specialRequestInput = new HashMap<>();
+        Map<String, String> messageInput = new HashMap<>();
+        this.messagePresenter = new MessagePresenter(messageManager, messageInput);
+        Map<String, String> specialRequestInput = new HashMap<>();
         this.specialRequestPresenter = new SpecialRequestPresenter(specialRequestManager, specialRequestInput);
         this.userPresenter = new UserPresenter();
 
         this.sessionController = new SessionController(userManager, permissionManager);
-        this.messageController = new MessageController(messageManager, userManager, eventManager, permissionManager);
+        this.messageController = new MessageController(messageManager, userManager, eventManager, permissionManager, messageInput);
         this.eventController = new EventController(eventManager, userManager, permissionManager, specialRequestInput);
         this.specialRequestController = new SpecialRequestController(specialRequestManager);
         this.runtimeDataHolder = new RuntimeDataHolder();

@@ -10,7 +10,7 @@ import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 
 public class MessageController {
     private MessageManager messageManager;
-    private Map<String, String> inputMap = new HashMap<>();
+    private Map<String, String> inputMap;
     private UserManager userManager;
     private PermissionManager permissionManager;
     private MessageMover messageMover;
@@ -25,12 +25,13 @@ public class MessageController {
      * @param permissionManager associated permission manager
      */
     public MessageController(MessageManager messageManager, UserManager userManager, EventManager eventManager,
-                             PermissionManager permissionManager) {
+                             PermissionManager permissionManager, Map<String, String> inputMap) {
         this.messageManager = messageManager;
         this.userManager = userManager;
         this.permissionManager = permissionManager;
         this.messageMover = new MessageMover(messageManager);
         this.eventManager = eventManager;
+        this.inputMap = inputMap;
     }
 
     /**
