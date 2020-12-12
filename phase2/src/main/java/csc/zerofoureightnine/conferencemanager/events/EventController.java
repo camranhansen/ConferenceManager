@@ -242,6 +242,9 @@ public class EventController {
      * @return true if {@code unparsedSpeakers} are valid speakers, false otherwise.
      */
     public boolean isValidSpeakers(String unparsedSpeakers, List<TopicPresentable> options) {
+        if (unparsedSpeakers.isEmpty()){
+            return true;
+        }
         List<String> speakers = Arrays.asList(unparsedSpeakers.split(", "));
         for (String speaker : speakers) {
             List<Permission> speakerPermissions = permissionManager.getPermissions(speaker);
