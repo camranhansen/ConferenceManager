@@ -18,6 +18,13 @@ public class EventController {
     private PermissionManager permissionManager;
     private Map<String, String> inputMap;
 
+    /**
+     * Initiates EventController
+     * @param eventManager associated {@link EventManager}
+     * @param userManager associated {@link UserManager}
+     * @param permissionManager associated {@link PermissionManager}
+     * @param inputMap {@link Map} mapping strings to associating user inputs
+     */
     public EventController(EventManager eventManager,
                            UserManager userManager,
                            PermissionManager permissionManager,
