@@ -1,12 +1,12 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
-import java.util.*;
-
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
+
+import java.util.*;
 
 public class MessageController {
     private MessageManager messageManager;
@@ -19,19 +19,19 @@ public class MessageController {
     /**
      * Creates a new MessageController
      *
-     * @param messageManager associated message manager
-     * @param userManager associated user manager
-     * @param eventManager associated event manager
+     * @param messageManager    associated message manager
+     * @param userManager       associated user manager
+     * @param eventManager      associated event manager
      * @param permissionManager associated permission manager
      */
     public MessageController(MessageManager messageManager, UserManager userManager, EventManager eventManager,
-                             PermissionManager permissionManager, Map<String, String> inputMap) {
+                             PermissionManager permissionManager) {
         this.messageManager = messageManager;
         this.userManager = userManager;
         this.permissionManager = permissionManager;
         this.messageMover = new MessageMover(messageManager);
         this.eventManager = eventManager;
-        this.inputMap = inputMap;
+        this.inputMap = new HashMap<>();
     }
 
     /**

@@ -11,7 +11,6 @@ public class StoredDataGetter {
     private SpecialRequestManager requestManager;
     private UserManager userManager;
     private MessageManager messageManager;
-    private String name;
 
     /**
      * Constructor
@@ -20,14 +19,12 @@ public class StoredDataGetter {
      * @param eventManager   {@link EventManager}
      * @param requestManager {@link SpecialRequestManager}
      * @param userManager    {@link UserManager}
-     * @param username       The name of user who is currently using the program
      */
-    public StoredDataGetter(MessageManager messageManager, EventManager eventManager, SpecialRequestManager requestManager, UserManager userManager, String username) {
+    public StoredDataGetter(MessageManager messageManager, EventManager eventManager, SpecialRequestManager requestManager, UserManager userManager) {
         this.eventManager = eventManager;
         this.messageManager = messageManager;
         this.requestManager = requestManager;
         this.userManager = userManager;
-        this.name = username;
     }
 
     /**
