@@ -15,9 +15,9 @@ public class DataPresenter {
     }
 
     public String getRuntimeStats() {
-        EnumMap<RuntimeStats, Integer> runtimeData = runtimeDataHolder.getMap();
+        EnumMap<RuntimeStat, Integer> runtimeData = runtimeDataHolder.getMap();
         StringBuilder stringBuilder = new StringBuilder();
-        for (RuntimeStats key : RuntimeStats.values()) {
+        for (RuntimeStat key : RuntimeStat.values()) {
             stringBuilder.append(key).append(": ").append(runtimeData.get(key)).append(System.lineSeparator());
         }
         return stringBuilder.toString();

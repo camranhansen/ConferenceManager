@@ -3,8 +3,6 @@ package csc.zerofoureightnine.conferencemanager.datacollection;
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
 
-import java.util.List;
-
 public class StoredDataGetter {
     private EventManager eventManager;
     private MessageManager messageManager;
@@ -49,19 +47,5 @@ public class StoredDataGetter {
         return messageManager.getReadInboxSize(name);
     }
 
-    /**
-     * Formatted all the information
-     * @return All information that we want user to have access with.
-     */
-    @Override
-    public String toString(){
-        String lineSep = ":" + System.lineSeparator();
-        String formatted = "Number of enrolled events: " + eventManager.getUserEvents(name).size() + lineSep +
-                "Number of events: " + eventManager.getAllEventIds().size() + lineSep +
-                "Number of events that are available: " + eventManager.getAvailableEvents(name).size() + lineSep +
-                "Number of retrieve messages: " + getRetrieveMessages(name) + lineSep +
-                "Number of unread messages: " + getUnreadMessages(name) + lineSep +
-                "Number of read messages: " + getReadMessages(name) + lineSep;
-        return formatted;
-    }
+
 }

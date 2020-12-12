@@ -1,6 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.datacollection;
 
-public enum RuntimeStats {
+public enum RuntimeStat {
     INPUT_RETRIES,
     MENUS_VISITED,
     LINES_INPUTTED,
