@@ -11,7 +11,7 @@ public class UserPresenter {
      * Asks the user to enter in a username, corresponding to a User account
      * @return a String containing the question to be asked
      */
-    public String enterUsername(){
+    public String enterUsername(String username){
         return ("Please enter the relevant username:");
     }
 
@@ -19,7 +19,7 @@ public class UserPresenter {
      * Asks the user to enter in a password, corresponding to a User account
      * @return a String containing the question to be asked
      */
-    public String enterPassword(){
+    public String enterPassword(String username){
         return ("Please enter the relevant password");
     }
 
@@ -46,16 +46,6 @@ public class UserPresenter {
     public String wrongInput() {
         return ("Invalid Input");
     }
-
-//    public String enterTemplate() {
-//        List<Template> templates = Arrays.asList(Template.values());
-//        StringBuilder sb = new StringBuilder();
-//        for (Template p: templates) {
-//            sb.append(templates.indexOf(p)+ ": " +
-//                    p.toString().replace("_", " ") + "\n");
-//        }
-//        return sb.toString();
-//    }
 
 }
 

@@ -45,27 +45,25 @@ public class MasterController {
     private SpecialRequestController specialRequestController;
     private RuntimeDataHolder runtimeDataHolder;
 
-    public MasterController(PersistentMap<String, UserData> userMap,
-                            PersistentMap<String, EventData> eventMap, PersistentMap<String, MessageData> messageMap, PersistentMap<UUID, SpecialRequestData> specialRequestMap) {
-                                
-        HashMap<String, String> inputBuffer = new HashMap<>();
+    public MasterController(PersistentMap<String, UserData> userMap, PersistentMap<String, EventData> eventMap,
+            PersistentMap<String, MessageData> messageMap, PersistentMap<UUID, SpecialRequestData> specialRequestMap) {
         this.messageManager = new MessageManager(messageMap);
         this.permissionManager = new PermissionManager(userMap);
         this.userManager = new UserManager(userMap);
         this.eventManager = new EventManager(eventMap);
         this.userManager = new UserManager(userMap);
         this.specialRequestManager = new SpecialRequestManager(specialRequestMap);
-        
-        this.eventPresenter = new EventPresenter(eventManager, inputBuffer);
+
+        this.eventPresenter = new EventPresenter(eventManager);
         this.sessionPresenter = new SessionPresenter();
-        this.messagePresenter = new MessagePresenter(messageManager, inputBuffer);
-        this.specialRequestPresenter = new SpecialRequestPresenter(specialRequestManager, inputBuffer);
+        this.messagePresenter = new MessagePresenter(messageManager);
+        HashMap<String, String> specialRequestInput = new HashMap<>();
+        this.specialRequestPresenter = new SpecialRequestPresenter(specialRequestManager, specialRequestInput);
         this.userPresenter = new UserPresenter();
 
         this.sessionController = new SessionController(userManager, permissionManager);
-        this.messageController = new MessageController(messageManager, userManager, eventManager,
-                permissionManager);
-        this.eventController = new EventController(eventManager,userManager,permissionManager, inputBuffer);
+        this.messageController = new MessageController(messageManager, userManager, eventManager, permissionManager);
+        this.eventController = new EventController(eventManager, userManager, permissionManager, specialRequestInput);
         this.specialRequestController = new SpecialRequestController(specialRequestManager);
         this.runtimeDataHolder = new RuntimeDataHolder();
         this.userController = new UserController(userManager, permissionManager);

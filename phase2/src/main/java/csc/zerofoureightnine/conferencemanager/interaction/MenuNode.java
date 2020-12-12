@@ -60,7 +60,7 @@ public class MenuNode { // UI
         System.out.println("----");
         attemptListOptions(username, nameables, mainMenu.getTracker()); // List possible options for this node.
 
-        String input = obtainUserInput(scanner, nameables, mainMenu.getTracker()); // Prompt for user input.
+        String input = obtainUserInput(username, scanner, nameables, mainMenu.getTracker()); // Prompt for user input.
         mainMenu.getTracker().incrementStat(RuntimeStat.LINES_INPUTTED);
         if (input == null)
             return parent != null ? parent : mainMenu;
@@ -82,10 +82,10 @@ public class MenuNode { // UI
         }
     }
 
-    private String obtainUserInput(Scanner scanner, List<TopicPresentable> nameables, RuntimeStatModifier modifier) {
+    private String obtainUserInput(String username, Scanner scanner, List<TopicPresentable> nameables, RuntimeStatModifier modifier) {
         String input = "";
         if (promptable != null) {
-            System.out.print(promptable.getPrompt() + ": ");
+            System.out.print(promptable.getPrompt(username) + ": ");
             input = scanner.nextLine();
             while (validatable != null && !validatable.validateInput(input, nameables)) {
                 modifier.incrementStat(RuntimeStat.INPUT_RETRIES);

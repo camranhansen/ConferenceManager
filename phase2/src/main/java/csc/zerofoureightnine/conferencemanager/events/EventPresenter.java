@@ -9,10 +9,8 @@ import java.util.Map;
 public class EventPresenter {
 
     private EventManager eventManager;
-    private HashMap<String, String> inputMap;
-    public EventPresenter(EventManager eventManager, HashMap<String, String> inputMap) {
+    public EventPresenter(EventManager eventManager) {
         this.eventManager = eventManager;
-        this.inputMap = inputMap;
     }
 
     private StringBuilder renderEventByIDList(List<String> eventIds) {
@@ -26,24 +24,24 @@ public class EventPresenter {
         return renderableEvents;
     }
 
-    public String renderAllEvents(){
+    public String renderAllEvents(String username){
 //        inputMap.get("username")
         List<String> eventIds = eventManager.getAllEventIds();
         return renderEventByIDList(eventIds).toString();
     }
 
-    public String renderAvailableEventsToUser(){
-        List<String> eventIds = eventManager.getAvailableEvents(inputMap.get("username"));
+    public String renderAvailableEventsToUser(String username){
+        List<String> eventIds = eventManager.getAvailableEvents(username);
         return renderEventByIDList(eventIds).toString();
     }
 
-    public String renderAttendingEventsToUser(){
-        List<String> eventIds = eventManager.getUserEvents(inputMap.get("username"));
+    public String renderAttendingEventsToUser(String username){
+        List<String> eventIds = eventManager.getUserEvents(username);
         return renderEventByIDList(eventIds).toString();
     }
 
-    public String renderHostingEventsToUser(){
-        List<String> eventIds = eventManager.getHostingEvents(inputMap.get("username"));
+    public String renderHostingEventsToUser(String username){
+        List<String> eventIds = eventManager.getHostingEvents(username);
         return renderEventByIDList(eventIds).toString();
     }
 
@@ -52,12 +50,12 @@ public class EventPresenter {
     // VIEW_ALL_EVENTS
 
     //VIEW_HOSTING_EVENTS
-    public void viewSpeakerList(){
+    public void viewSpeakerList(String username){
         System.out.println("List of csc.zerofoureightnine.conferencemanager.events that you are hosting");
     }
 
 
-    public String foundConflict(){
+    public String foundConflict(String username){
         return("You already joined a event at the give time slot or the event you wish to enroll currently is full.");
     }
 
@@ -66,45 +64,45 @@ public class EventPresenter {
     }
 
 
-    public String enterId(){
+    public String enterId(String username){
         return("Please enter the event id");
     }
 
-    public void enrollOrDrop(){
+    public void enrollOrDrop(String username) {
         System.out.println("Do you want to 1. enroll an event or 2. drop an event? Reply 1 or 2");
     }
 
-    public void enterChange(){
+    public void enterChange(String username) {
         System.out.println("What information would you like to change 1.Time 2.Speaker name 3.Event name 4.Room 5.Capacity");
     }
 
     //EVENT_OTHER_ENROLL
-    public String enterUsername(){
+    public String enterUsername(String username){
         return("Please enter the username");
     }
 
     //EVENT_EDIT, EVENT_CREATE
-    public String enterHour(){
+    public String enterHour(String username){
         return("Assuming that events last for one hour, please enter the hour that the event will start on");
     }
 
-    public String enterDay(){
+    public String enterDay(String username){
         return("Please enter a valid day of December, from 1-31");
     }
 
-    public String enterSpeakerName(){
+    public String enterSpeakerName(String username) {
         return("Please enter any number of speaker names, seperated by a comma." + System.lineSeparator() + "In the format speakrname1, speakername2..." + System.lineSeparator() + "If you would like to create a party, please put a space bar, end then enter.");
     }
 
-    public String enterEventName(){
+    public String enterEventName(String username) {
         return("Please enter an event name");
     }
 
-    public String enterRoom(){
+    public String enterRoom(String username){
         return("Please enter a room name");
     }
 
-    public String enterCapacity(){
+    public String enterCapacity(String username) {
         return("Please enter a number designating the capacity");
     }
 

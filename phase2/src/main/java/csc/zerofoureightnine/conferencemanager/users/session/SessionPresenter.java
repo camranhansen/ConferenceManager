@@ -23,7 +23,7 @@ public class SessionPresenter implements SessionObserver {
      * Returns the prompt for users to enter their password.
      * @return the {@link String} "Password"
      */
-    public String requestPassword() {
+    public String requestPassword(String username) {
         return "Password";
     }
 
@@ -31,7 +31,7 @@ public class SessionPresenter implements SessionObserver {
      * Returns the prompt for users to enter their username.
      * @return the {@link String} "Username"
      */
-    public String requestUsername() {
+    public String requestUsername(String username) {
         return "Username";
     }
 

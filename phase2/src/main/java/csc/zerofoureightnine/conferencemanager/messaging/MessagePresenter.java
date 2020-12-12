@@ -15,9 +15,8 @@ public class MessagePresenter {
      * @param manager  {@link MessageManager}
      * @param inputMap {@link HashMap} mapping strings to associating user inputs
      */
-    public MessagePresenter(MessageManager manager, HashMap<String, String> inputMap) {
+    public MessagePresenter(MessageManager manager) {
         this.manager = manager;
-        this.inputMap = inputMap;
     }
 
     /**
@@ -67,7 +66,7 @@ public class MessagePresenter {
      * 
      * @return the {@link String} "User to send to"
      */
-    public String getPromptForSendTo() {
+    public String getPromptForSendTo(String username) {
         return "User to send to";
     }
 
@@ -86,7 +85,7 @@ public class MessagePresenter {
      * 
      * @return a {@link String} "Please type your message"
      */
-    public String getPromptForMessageBody() {
+    public String getPromptForMessageBody(String username) {
         return "Please type your message";
     }
 
@@ -96,7 +95,7 @@ public class MessagePresenter {
      * @return a {@link String} "Please re-enter your username for security
      *         purposes"
      */
-    public String getPromptUsername() {
+    public String getPromptUsername(String username) {
         return "Please re-enter your username for security purposes";
     }
 
@@ -105,7 +104,7 @@ public class MessagePresenter {
      * 
      * @return a {@link String} "Please enter the username that the message is from"
      */
-    public String getPromptForFrom() {
+    public String getPromptForFrom(String username) {
         return "Please enter the username that the message is from";
     }
 
@@ -114,7 +113,7 @@ public class MessagePresenter {
      * 
      * @return a {@link String} "Please enter the time the message was sent"
      */
-    public String getPromptMessageTime() {
+    public String getPromptMessageTime(String username) {
         return "Please enter the time the message was sent";
     }
 
@@ -126,7 +125,7 @@ public class MessagePresenter {
      * @return a {@link String} "Please enter content of the message. Note: if
      *         message does not exist, you will return to menu"
      */
-    public String getPromptPreviousContent() {
+    public String getPromptPreviousContent(String username) {
         return "Please enter content of the message. Note: if message does not exist, you will return to menu";
     }
 
@@ -135,7 +134,7 @@ public class MessagePresenter {
      * 
      * @return a {@link String} "Please enter event id to send to"
      */
-    public String getPromptForEventId() {
+    public String getPromptForEventId(String username) {
         return "Please enter event id to send to";
     }
 
@@ -184,7 +183,7 @@ public class MessagePresenter {
         return "This event id is invalid, please try again";
     }
 
-    public String promptForConfirmation() {
+    public String promptForConfirmation(String username) {
         return "Press enter to continue";
     }
 }
