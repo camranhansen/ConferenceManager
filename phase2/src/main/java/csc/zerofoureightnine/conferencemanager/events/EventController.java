@@ -1,15 +1,11 @@
 package csc.zerofoureightnine.conferencemanager.events;
 
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
-import org.hibernate.type.IntegerType;
-import org.jvnet.staxex.BinaryText;
 
-import javax.print.DocFlavor;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,7 +28,18 @@ public class EventController {
         this.inputMap = inputMap;
     }
 
-    public int editCapacity(String username, String input, List<TopicPresentable> selectableOptions){
+    /**
+     * edit event capacity,
+     * according to previous user input
+     *
+     * @param username          the username of the user who is doing the inputting
+     * @param input             the input in this node. Not used in this case.
+     * @param selectableOptions the list of {@link TopicPresentable} options available at this node.
+     *                          In this case, there are none
+     * @return an integer representing what node to go to after this action.
+     * In this case, return 0, representing the main menu.
+     */
+    public int editCapacity(String username, String input, List<TopicPresentable> selectableOptions) {
         eventManager.editCapacity(inputMap.get("event_id)"), Integer.parseInt(inputMap.get("capacity")));
         return 0;
     }

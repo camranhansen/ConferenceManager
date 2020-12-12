@@ -389,20 +389,24 @@ public class EventManager {
     }
 
 
-
-    //TODO possible create class for string parsing?
-    public Instant parseTime(String dayOfMonth, String hour){
+    public Instant parseTime(String dayOfMonth, String hour) {
         if (dayOfMonth.length() == 1) {
             dayOfMonth = "0" + dayOfMonth;
         }
-        if (hour.length() == 1){
+        if (hour.length() == 1) {
             hour = "0" + hour;
         }
         return Instant.parse("2020-12-" + dayOfMonth.trim() + "T" + hour.trim() + ":00:00.00Z");
     }
 
-    public EventType getEventTypeForNumberOfSpeakers(int numOfSpeakers){
-        switch (numOfSpeakers){
+    /**
+     * Gets the appropriate {@link EventType} for the number of speakers
+     *
+     * @param numOfSpeakers the number of speakers
+     * @return the appropriate {@link EventType}
+     */
+    public EventType getEventTypeForNumberOfSpeakers(int numOfSpeakers) {
+        switch (numOfSpeakers) {
             case 0:
                 return EventType.PARTY;
             case 1:
