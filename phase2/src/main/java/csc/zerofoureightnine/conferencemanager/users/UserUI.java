@@ -30,6 +30,7 @@ public class UserUI implements UISection {
     public List<MenuNode> getEntryMenuNodes() {
         if (entryPoints != null)
             return entryPoints;
+        entryPoints = new ArrayList<>();
         generateCreateAccountNodes();
         generateOtherEditPasswordNodes();
         generateDeleteSelfAccountNodes();
@@ -46,7 +47,7 @@ public class UserUI implements UISection {
 
     @Override
     public String getSectionListing() {
-        return "User Management";
+        return "Account Management";
     }
 
     private void generateCreateAccountNodes(){
@@ -57,33 +58,33 @@ public class UserUI implements UISection {
         List<String> options = new ArrayList<>();
         Arrays.asList(Template.values()).forEach(t -> options.add(t.toString()));
         seq.addMultipleOptions("template", options, null);
-        MenuNode.MenuNodeBuilder createAccountNode = new MenuNode.MenuNodeBuilder(seqTitle, userController::createAccount);
-        entryPoints.add(seq.build(createAccountNode.build(), Permission.USER_SELF_EDIT_PASSWORD));
+        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, userController::createAccount);
+        entryPoints.add(seq.build(Node.build(), Permission.USER_CREATE_ACCOUNT));
     }
 
     private void generateOtherEditPasswordNodes(){
-        String seqTitle = "Edit your password";
+        String seqTitle = "Edit another User's password";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
         seq.addStep("username", userPresenter::enterUsername, userController::isValidUser, userPresenter::wrongInput);
         seq.addStep("password", userPresenter::enterPassword, null, null);
-        MenuNode.MenuNodeBuilder editOtherPasswordNode = new MenuNode.MenuNodeBuilder(seqTitle, userController::editOtherPassword);
-        entryPoints.add(seq.build(editOtherPasswordNode.build(), Permission.USER_OTHER_EDIT_PASSWORD));
+        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, userController::editOtherPassword);
+        entryPoints.add(seq.build(Node.build(), Permission.USER_OTHER_EDIT_PASSWORD));
     }
 
     private void generateDeleteSelfAccountNodes(){
         String seqTitle = "Delete your User Account :(";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
         seq.addStep("password", userPresenter::enterPassword, userController::isCorrectPassword, userPresenter::wrongPassword);
-        MenuNode.MenuNodeBuilder deleteSelfAccountNode = new MenuNode.MenuNodeBuilder(seqTitle, userController::deleteAccount);
-        entryPoints.add(seq.build(deleteSelfAccountNode.build(), Permission.USER_DELETE_ACCOUNT));
+        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, userController::deleteAccount);
+        entryPoints.add(seq.build(Node.build(), Permission.USER_DELETE_ACCOUNT));
     }
     private void generateDeleteOtherAccountNodes(){
-        String seqTitle = "Delete someone else' User Account :(";
+        String seqTitle = "Delete someone else's User Account :(";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
         seq.addStep("username", userPresenter::enterUsername, userController::isValidUser, userPresenter::wrongInput);
         seq.addStep("password", userPresenter::enterPassword, userController::isCorrectPassword, userPresenter::wrongPassword);
-        MenuNode.MenuNodeBuilder deleteOtherAccountNode = new MenuNode.MenuNodeBuilder(seqTitle, userController::deleteAccount);
-        entryPoints.add(seq.build(deleteOtherAccountNode.build(), Permission.USER_DELETE_ACCOUNT));
+        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, userController::deleteAccount);
+        entryPoints.add(seq.build(Node.build(), Permission.USER_DELETE_ACCOUNT));
     }
 
     private void generateCreateSpecialRequestNodes(){

@@ -27,7 +27,7 @@ public class OptionPresenter implements TopicPresentable, PromptPresentable, Inf
     }
 
     @Override
-    public String getPrompt() {
+    public String getPrompt(String username) {
         return prompt;
     }
 
