@@ -25,12 +25,13 @@ public class MenuNode { // UI
     private final InfoPresentable listable;
     private final RetryPromptPresentable reattemptable;
     private final int backStepCount;
+    private int sequence;
     private RuntimeStatModifier tracker;
     private boolean disabled = false;
 
     private MenuNode(Permission permission, Validatable validatable, TopicPresentable nameable, Action action,
             CompletePresentable completable, PromptPresentable promptable, InfoPresentable listable,
-            RetryPromptPresentable reattemptable, Set<MenuNode> children, int backStepCount) {
+            RetryPromptPresentable reattemptable, List<MenuNode> children, int backStepCount, int childPriority) {
         this.permission = permission;
         this.validatable = validatable;
         this.nameable = nameable;
@@ -40,14 +41,18 @@ public class MenuNode { // UI
         this.listable = listable;
         this.reattemptable = reattemptable;
         this.backStepCount = backStepCount;
+        this.sequence = childPriority;
 
-        for (MenuNode menuNode : children) {
+        for (int i = 0; i < children.size(); i++) {
+            MenuNode menuNode = children.get(i);
             menuNode.parent = this;
+            if (menuNode.sequence == 0) menuNode.sequence = i + 1;
             if (menuNode.permission != null) {
                 this.permissionOptions.put(menuNode.permission, menuNode);
             } else {
                 this.permissionlessChildren.add(menuNode);
             }
+
         }
     }
 
@@ -82,7 +87,8 @@ public class MenuNode { // UI
         }
     }
 
-    private String obtainUserInput(String username, Scanner scanner, List<TopicPresentable> nameables, RuntimeStatModifier modifier) {
+    private String obtainUserInput(String username, Scanner scanner, List<TopicPresentable> nameables,
+            RuntimeStatModifier modifier) {
         String input = "";
         if (promptable != null) {
             System.out.print(promptable.getPrompt(username) + ": ");
@@ -101,31 +107,35 @@ public class MenuNode { // UI
     }
 
     private List<MenuNode> availableOptions(MenuNode mainMenu, List<Permission> userPermissions) {
-        ArrayList<MenuNode> available = new ArrayList<>(); // returning list of menu nodes because there exists nodes
+        ArrayList<MenuNode> menu = new ArrayList<>(); // returning list of menu nodes because there exists nodes
                                                            // that don't have permissions associated (ex: main menu,
                                                            // parent);
-        available.add(this == mainMenu ? null : mainMenu);
+        menu.add(this == mainMenu ? null : mainMenu);
         MenuNode currParent = parent;
         for (int i = 0; i < backStepCount - 1; i++) {
             if (currParent.parent == null)
                 break;
             currParent = currParent.parent;
         }
-        available.add(currParent);
+        menu.add(currParent);
+
+        ArrayList<MenuNode> children = new ArrayList<>();
         for (MenuNode menuNode : permissionlessChildren) {
             if (!menuNode.isDisabled()) {
-                available.add(menuNode);
+                menu.add(menuNode);
             }
         }
         if (userPermissions != null) {
             for (Permission permission : userPermissions) {
                 if (permissionOptions.containsKey(permission) && !permissionOptions.get(permission).isDisabled()) {
-                    available.add(permissionOptions.get(permission));
+                    menu.add(permissionOptions.get(permission));
                 }
             }
         }
-        mainMenu.getTracker().incrementStat(RuntimeStat.MENUS_VISITED); 
-        return available;
+        children.sort((a, b) -> a.sequence - b.sequence);
+        menu.addAll(children);
+        mainMenu.getTracker().incrementStat(RuntimeStat.MENUS_VISITED);
+        return menu;
     }
 
     public void setDisabled(boolean disabled) {
@@ -150,7 +160,7 @@ public class MenuNode { // UI
     }
 
     public static class MenuNodeBuilder {
-        private Set<MenuNode> children = new HashSet<>();
+        private List<MenuNode> children = new ArrayList<>();
         private final Action action; // !null
         private final TopicPresentable displayName; // !null
         private CompletePresentable completable;
@@ -159,6 +169,7 @@ public class MenuNode { // UI
         private PromptPresentable promptable;
         private InfoPresentable listable;
         private RetryPromptPresentable reattemptable;
+        private int childPriority;
         private int backStepCount = 1;
 
         /**
@@ -189,10 +200,10 @@ public class MenuNode { // UI
 
         /**
          * Instantiates the {@link MenuNodeBuilder} in preparation for a decision making
-         * {@link MenuNode}. That is, if {@link MenuNodeBuilder#build()} is
-         * called without changing anything, this menu will serve to allow the user to
-         * choose from a list of children {@link MenuNode}s by inputting an
-         * integer corresponding to their selection.
+         * {@link MenuNode}. That is, if {@link MenuNodeBuilder#build()} is called
+         * without changing anything, this menu will serve to allow the user to choose
+         * from a list of children {@link MenuNode}s by inputting an integer
+         * corresponding to their selection.
          * 
          * @param displayName a constant display name to be used for this node.
          */
@@ -209,10 +220,10 @@ public class MenuNode { // UI
 
         /**
          * Instantiates the {@link MenuNodeBuilder} in preparation for a decision making
-         * {@link MenuNode}. That is, if {@link MenuNodeBuilder#build()} is
-         * called without changing anything, this menu will serve to allow the user to
-         * choose from a list of children {@link MenuNode}s by inputting an
-         * integer corresponding to their selection.
+         * {@link MenuNode}. That is, if {@link MenuNodeBuilder#build()} is called
+         * without changing anything, this menu will serve to allow the user to choose
+         * from a list of children {@link MenuNode}s by inputting an integer
+         * corresponding to their selection.
          * 
          * @param nameable a constant display name to be used for this node.
          */
@@ -239,8 +250,8 @@ public class MenuNode { // UI
         }
 
         /**
-         * Sets the {@link Permission} associated this {@link MenuNode}. If this
-         * is null, this menu node will be displayed no matter what permissions the
+         * Sets the {@link Permission} associated this {@link MenuNode}. If this is
+         * null, this menu node will be displayed no matter what permissions the
          * currently logged in user has. Furthermore, these are the nodes displayed to
          * guest users. If this is set, only users with this permission will be able to
          * access this {@link MenuNode}.
@@ -254,8 +265,8 @@ public class MenuNode { // UI
         /**
          * Sets the {@link PromptPresentable} presenter. If this is null, when the user
          * is interacting with this node, they will not be prompted for input nor will
-         * they have the option to input. The {@link MenuNode} will move to
-         * calling it's {@link Action#complete(String, String, List)}.
+         * they have the option to input. The {@link MenuNode} will move to calling it's
+         * {@link Action#complete(String, String, List)}.
          * 
          * @param promptable the promptable presenter used to generate a request for the
          *                   user to input information.
@@ -267,9 +278,9 @@ public class MenuNode { // UI
         /**
          * Set this MenuNode's listable presenter.
          *
-         * @param listable the {@link InfoPresentable} presenter. If this is null, when the user is
-         *                 interacting with this {@link MenuNode}, no list of options message is
-         *                 displayed.
+         * @param listable the {@link InfoPresentable} presenter. If this is null, when
+         *                 the user is interacting with this {@link MenuNode}, no list
+         *                 of options message is displayed.
          */
         public void setListable(InfoPresentable listable) {
             this.listable = listable;
@@ -278,8 +289,8 @@ public class MenuNode { // UI
         /**
          * Sets the {@link RetryPromptPresentable} presenter. If this is null, when the
          * user fails to enter valid input (determined by the {@link Validatable}) the
-         * user will be moved to the parent {@link MenuNode} or the main menu of
-         * there is no parent.
+         * user will be moved to the parent {@link MenuNode} or the main menu of there
+         * is no parent.
          * 
          * @param reattemptable the reattemptable presenter to use to organize displayed
          *                      reattempt content.
@@ -289,8 +300,8 @@ public class MenuNode { // UI
         }
 
         /**
-         * Adds the {@link Collection} of {@link MenuNode}s as children to this
-         * new node. Their parent will automatically be set to this node.
+         * Adds the {@link Collection} of {@link MenuNode}s as children to this new
+         * node. Their parent will automatically be set to this node.
          * 
          * @param children The children to add to this node.
          */
@@ -299,8 +310,8 @@ public class MenuNode { // UI
         }
 
         /**
-         * Adds the {@link MenuNode}s as children to this new node. Their parent
-         * will automatically be set to this node.
+         * Adds the {@link MenuNode}s as children to this new node. Their parent will
+         * automatically be set to this node.
          * 
          * @param children The children to add to this node.
          */
@@ -329,13 +340,26 @@ public class MenuNode { // UI
          * @param backStepCount How many steps back does a backstep take?
          */
         public void backStepCount(int backStepCount) {
-            if (backStepCount < 1) throw new IllegalArgumentException("Number of back steps cannot be less than 1.");
+            if (backStepCount < 1)
+                throw new IllegalArgumentException("Number of back steps cannot be less than 1.");
             this.backStepCount = backStepCount;
+        }
+
+        /**
+         * A value representing how high on the list of options this node should place.
+         * If 0, will set to number it was added in.
+         * 
+         * Does not override the absolute positioning of the main menu and back options.
+         * 
+         * @param childPriority a int representing the priority of this child on the list.
+         */
+        public void setChildPriority(int childPriority) {
+            this.childPriority = childPriority;
         }
 
         public MenuNode build() {
             MenuNode res = new MenuNode(this.permission, this.validatable, displayName, action, completable, promptable,
-                    listable, reattemptable, children, backStepCount);
+                    listable, reattemptable, children, backStepCount, childPriority);
             return res;
         }
     }
