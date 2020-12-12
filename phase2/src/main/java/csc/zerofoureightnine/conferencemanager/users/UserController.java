@@ -118,6 +118,14 @@ public class UserController {
         return um.getPassword(inputMap.get("name")).equals(inputMap.get("password"));
     }
 
+    /**
+     * Adds a permission for a given user.
+     *
+     * @param username user whom the permission is being applied to.
+     * @param input Input specifically in to this node. In this case, it is not relevant.
+     * @param options Options available at this node. In this case, it is not relevant.
+     * @return the node to return to. See {@link MenuNode} for clarification
+     */
     public int addPermission(String username, String input, List<TopicPresentable> options){
         pm.addPermission(username, Permission.valueOf(inputMap.get("permission")));
         return 0;
