@@ -177,17 +177,17 @@ public class MessageMoverTest {
 //    }
 //
 //
-//    @Test
-//    public void testMoveRemoveMessageFromArchived(){
-//        Message message = new Message("sender", new String[]{"recipient"}, "hello");
-//        config = new SQLConfiguration("testfiles/db/data");
-//        sqlMap = new SQLMap<>(config, MessageData.class);
-//        MessageManager mm = new MessageManager(sqlMap);
-//        MessageData md = mm.sendMessage("sender", "hello", "recipient");
-//        MessageMover messageMover = new MessageMover(mm, "recipient");
-//        messageMover.moveToArchived(md.getSender(), md.getContent(), md.getTimeSent().toString());
-//        assertEquals("hello", mm.getArchivedInbox("recipient").get(0).getContent());
-//        messageMover.removeFromArchived(md.getSender(), md.getContent(), md.getTimeSent().toString());
-//        assertEquals(0, mm.getArchivedInbox("recipient").size());
-//    }
+    @Test
+    public void testMoveRemoveMessageFromArchived(){
+        Message message = new Message("sender", new String[]{"recipient"}, "hello");
+        config = new SQLConfiguration("testfiles/db/data");
+        sqlMap = new SQLMap<>(config, MessageData.class);
+        MessageManager mm = new MessageManager(sqlMap);
+        MessageData md = mm.sendMessage("sender", "5yg45gertyb", "recipient");
+        MessageMover messageMover = new MessageMover(mm);
+        messageMover.moveToArchived("recipient", "sender", "5yg45gertyb", messageMover.getTime(md.getTimeSent()));
+        //assertEquals("m", mm.archivedMessagesToString("recipient"));
+        messageMover.removeFromArchived("recipient", "sender", "5yg45gertyb", messageMover.getTime(md.getTimeSent()));
+        //assertEquals(0, mm.archivedMessagesToString("recipient"));
+    }
 }
