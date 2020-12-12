@@ -62,6 +62,17 @@ public class UserUI implements UISection {
         entryPoints.add(seq.build(Node.build(), Permission.USER_CREATE_ACCOUNT));
     }
 
+
+//    private void generateOtherEditPermissionNodes(){
+//        String seqTitle = "Edit another User's Permission";
+//        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
+//        seq.addStep("username", userPresenter::enterUsername, userController::isValidUser, userPresenter::wrongInput);
+//        List<String> options = new ArrayList<>();
+//        Arrays.asList(Permission.values()).forEach(p -> options.add(p.toString()));
+//        seq.addMultipleOptions("permission", options, null);
+//        entryPoints.add(seq.build(Node.build(), Permission.USER_ALL_EDIT_PERMISSION));
+//    }
+
     private void generateOtherEditPasswordNodes(){
         String seqTitle = "Edit another User's password";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
@@ -76,7 +87,7 @@ public class UserUI implements UISection {
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
         seq.addStep("password", userPresenter::enterPassword, userController::isCorrectPassword, userPresenter::wrongPassword);
         MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, userController::deleteAccount);
-        entryPoints.add(seq.build(Node.build(), Permission.USER_DELETE_ACCOUNT));
+        entryPoints.add(seq.build(Node.build(), Permission.USER_SELF_DELETE_ACCOUNT));
     }
     private void generateDeleteOtherAccountNodes(){
         String seqTitle = "Delete someone else's User Account :(";
@@ -84,7 +95,7 @@ public class UserUI implements UISection {
         seq.addStep("username", userPresenter::enterUsername, userController::isValidUser, userPresenter::wrongInput);
         seq.addStep("password", userPresenter::enterPassword, userController::isCorrectPassword, userPresenter::wrongPassword);
         MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, userController::deleteAccount);
-        entryPoints.add(seq.build(Node.build(), Permission.USER_DELETE_ACCOUNT));
+        entryPoints.add(seq.build(Node.build(), Permission.USER_OTHER_DELETE_ACCOUNT));
     }
 
     private void generateCreateSpecialRequestNodes(){
@@ -93,6 +104,7 @@ public class UserUI implements UISection {
         seq.addStep("header", specialRequestPresenter::enterHeader, null, null);
         seq.addStep("description", specialRequestPresenter::enterDescription, null, null);
         MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::addRequest);
+        Node.setCompletable(specialRequestPresenter::requestCreateConfirmation);
         entryPoints.add(seq.build(Node.build(), Permission.USER_CREATE_REQUEST));
     }
 
@@ -125,7 +137,7 @@ public class UserUI implements UISection {
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
         seq.addStep(null, specialRequestPresenter::getPendingRequests, null, null);
         MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::viewMethod);
-        entryPoints.add(seq.build(Node.build(), Permission.VIEW_OTHER_REQUESTS));
+        entryPoints.add(seq.build(Node.build(), Permission.VIEW_OTHER_PENDING_REQUESTS));
     }
 
     private void generateViewAddressedSpecialRequestNodes(){
@@ -133,7 +145,7 @@ public class UserUI implements UISection {
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
         seq.addStep(null, specialRequestPresenter::getAddressedRequests, null, null);
         MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::viewMethod);
-        entryPoints.add(seq.build(Node.build(), Permission.VIEW_OTHER_REQUESTS));
+        entryPoints.add(seq.build(Node.build(), Permission.VIEW_OTHER_ADDRESSED_REQUESTS));
     }
 
 }

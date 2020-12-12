@@ -1,5 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.users.specialrequest;
 
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,6 +104,16 @@ public class SpecialRequestPresenter {
      */
     public String invalidRequestID() {
         return "This request_id is invalid, please try again";
+    }
+
+    /**
+     * Returns a string to confirm to the user a Request has been created
+     * @param username the username of the User
+     * @param p a flag
+     * @return a string for confirmation
+     */
+    public String requestCreateConfirmation(String username, TopicPresentable p) {
+        return "Event created!";
     }
 }
 
