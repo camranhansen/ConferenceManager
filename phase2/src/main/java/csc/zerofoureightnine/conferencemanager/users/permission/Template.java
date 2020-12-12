@@ -75,14 +75,16 @@ public enum Template {
             Permission.VIEW_HOSTING_EVENTS,
             Permission.VIEW_SELF_REQUESTS, //New
             Permission.VIEW_SELF_STATISTICS, //New
-            Permission.VIEW_OTHER_REQUESTS, //New
+            Permission.VIEW_OTHER_PENDING_REQUESTS, //New
+            Permission.VIEW_OTHER_ADDRESSED_REQUESTS,
             Permission.VIEW_ALL_STATISTICS //New
             }),
     ADMIN(new Permission[] {
             Permission.USER_ALL_EDIT_PERMISSION,
             Permission.USER_OTHER_EDIT_PASSWORD,
             Permission.USER_CREATE_ACCOUNT,
-            Permission.USER_DELETE_ACCOUNT,
+            Permission.USER_SELF_DELETE_ACCOUNT,
+            Permission.USER_OTHER_DELETE_ACCOUNT,
             Permission.USER_SELF_EDIT_PASSWORD,
             Permission.USER_CREATE_SPEAKER_ACCOUNT,
             Permission.USER_CREATE_REQUEST, //New
@@ -109,7 +111,8 @@ public enum Template {
             Permission.VIEW_SELF_REQUESTS, //New
             Permission.VIEW_HOSTING_EVENTS,
             Permission.VIEW_SELF_STATISTICS, //New
-            Permission.VIEW_OTHER_REQUESTS, //New
+            Permission.VIEW_OTHER_PENDING_REQUESTS, //New
+            Permission.VIEW_OTHER_ADDRESSED_REQUESTS,
             Permission.VIEW_ALL_STATISTICS //New
             });
 
@@ -124,7 +127,5 @@ public enum Template {
         return this.permissions;
     }
 
-    //TODO: Store as Array, return as List. Implement method to convert from Array to List.
-    //TODO: Investigate inheritance using groups for templates(?)
 
 }
