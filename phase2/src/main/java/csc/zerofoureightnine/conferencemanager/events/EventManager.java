@@ -14,7 +14,9 @@ public class EventManager {
     private PersistentMap<String, EventData> pMap;
 
     /**
-     * Instantiates EventManager
+     * Instantiates EventManager.
+     *
+     * @param pMap A map storing event IDs as keys and {@link EventData} as keys.
      */
     public EventManager(PersistentMap<String, EventData> pMap){
         this.pMap = pMap;
@@ -274,6 +276,7 @@ public class EventManager {
         this.pMap.get(id).setEventName(newEventName);
         this.pMap.endInteraction();
     }
+
     /**
      * Changes the room of an event to a new one.
      * @param id ID of the selected event.
@@ -424,15 +427,13 @@ public class EventManager {
         return total / pMap.size();
     }
 
-    public boolean validHourForEvent(String room, List<String> speakers, String dayOfMonth, String hour){
-        Instant time = parseTime(dayOfMonth, hour);
-        if (checkRoom(time, room)){
-            return false;
-        }
-        return !checkConflictSpeaker(time, speakers);
-    }
-
-
+    /**
+     * Converts a string representation of time to an Instant.
+     *
+     * @param dayOfMonth the day of the month.
+     * @param hour the hour.
+     * @return An Instant representation of the input data.
+     */
     public Instant parseTime(String dayOfMonth, String hour) {
         if (dayOfMonth.length() == 1) {
             dayOfMonth = "0" + dayOfMonth;
