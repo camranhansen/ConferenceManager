@@ -4,7 +4,6 @@ import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.control.UISection;
 import csc.zerofoureightnine.conferencemanager.interaction.utils.LinkedMenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
-import csc.zerofoureightnine.conferencemanager.users.session.SessionObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
 /**
  * User Interface for viewing data collected both during runtime, and also across sessions
  */
-public class DataUI implements UISection, SessionObserver {
+public class DataUI implements UISection {
 
     private DataPresenter dataPresenter;
     private DataController dataController;
@@ -29,7 +28,6 @@ public class DataUI implements UISection, SessionObserver {
     public DataUI(DataPresenter dataPresenter, DataController dataController) {
         this.dataPresenter = dataPresenter;
         this.dataController = dataController;
-        generateSeeRuntimeStatsNodes();
     }
 
     /**
@@ -57,17 +55,6 @@ public class DataUI implements UISection, SessionObserver {
         return "Statistics collection";
     }
 
-    /**
-     * Notifies the DataUI if someone new has logged in or out. Modifies the username stored in DataUI.
-     *
-     * @param username    the newly logged or out user, represented by their username.
-     * @param permissions a list of the user's {@link Permission}.
-     * @param loggedIn    true if someone is logged in, false if otherwise.
-     */
-    @Override
-    public void authenticationStateChanged(String username, List<Permission> permissions, boolean loggedIn) {
-        this.username = username;
-    }
 
 
     //Helper methods to generate nodes...
