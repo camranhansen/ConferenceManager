@@ -162,7 +162,7 @@ public class MessageUI implements UISection {
         String messageSeqTitle = "View Unread Inbox";
         MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageController::confirmationAction);
         end.setPromptable(messagePresenter::promptForConfirmation);
-        end.setListable(messagePresenter::getUserInbox);
+        end.setListable(messagePresenter::getUserUnread);
         return end.build();
     }
 
@@ -187,7 +187,7 @@ public class MessageUI implements UISection {
         String messageSeqTitle = "View Archived Messages";
         MenuNodeBuilder node = new MenuNodeBuilder(messageSeqTitle, messageController::confirmationAction);
         node.setPromptable(messagePresenter::promptForConfirmation);
-        node.setListable(messagePresenter::getUserInbox);
+        node.setListable(messagePresenter::getUserArchived);
         return (node.build());
     }
 

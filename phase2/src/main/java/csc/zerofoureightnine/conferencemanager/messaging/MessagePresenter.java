@@ -25,7 +25,7 @@ public class MessagePresenter {
      * @return a {@link String} representing all unread messages of the user whose
      *         username is given by {@code inputMap}
      */
-    public String getUserUnread(String username, TopicPresentable nextNode) {
+    public String getUserUnread(String username, List<TopicPresentable> nextNode) {
         return manager.unreadInboxToString(username);
     }
 
@@ -56,7 +56,7 @@ public class MessagePresenter {
      * @return a {@link String} representing all archived messages of the user whose
      *         username is given by {@code inputMap}.
      */
-    public String getUserArchived(String username, TopicPresentable nextNode) {
+    public String getUserArchived(String username, List<TopicPresentable> nextNode) {
         return manager.archivedMessagesToString(username);
     }
 
