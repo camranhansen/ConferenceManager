@@ -3,7 +3,7 @@ package csc.zerofoureightnine.conferencemanager.messaging;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.List;
 
 public class MessageMover {
     private MessageManager messageManager;
@@ -31,7 +31,7 @@ public class MessageMover {
         this.messageManager.getMessageData().beginInteraction();
         List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m: md){
-            if(from.equals(m.getSender())&&(content.equals(m.getContent()))&&(timeSent.equals(this.getTime(m.getTimeSent())))){
+            if (from.equals(m.getSender()) && (content.equals(m.getContent())) && (timeSent.equals(this.getTime(m.getTimeSent())))) {
                 m.removeFromRead(username);
             }
         }
@@ -46,12 +46,12 @@ public class MessageMover {
      * @param content message content
      * @param timeSent sent time of the message
      */
-    public void moveUnreadToRead(String username, String from, String content, String timeSent){
+    public void moveUnreadToRead(String username, String from, String content, String timeSent) {
         this.messageManager.getMessageData().beginInteraction();
         List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
-        for (MessageData m: md){
-            if(from.equals(m.getSender())&&(content.equals(m.getContent()))&&(timeSent.equals(this.getTime(m.getTimeSent())))){
-                if(!m.getRead().contains(username)){
+        for (MessageData m : md) {
+            if (from.equals(m.getSender()) && (content.equals(m.getContent())) && (timeSent.equals(this.getTime(m.getTimeSent())))) {
+                if (!m.getRead().contains(username)) {
                     m.addToRead(username);
                 }
             }
@@ -159,7 +159,7 @@ public class MessageMover {
         this.messageManager.getMessageData().endInteraction();
     }
 
-    public String getTime(Instant time){
+    public String getTime(Instant time) {
         StringBuilder string = new StringBuilder();
         String string1 = time.toString();
         string.append(string1.substring(0, string1.indexOf(".")));

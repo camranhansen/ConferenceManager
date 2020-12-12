@@ -16,6 +16,7 @@ public class MessagePresenter {
      */
     public MessagePresenter(MessageManager manager) {
         this.manager = manager;
+        this.inputMap = new HashMap<>();
     }
 
     /**
@@ -44,7 +45,7 @@ public class MessagePresenter {
      * @return a {@link String} representing all messages sent from a specific
      *         sender to the user whose usernames are given by {@code inputMap}.
      */
-    public String getUserInboxFrom(String username, TopicPresentable nextNode) {
+    public String getUserInboxFrom(String username, List<TopicPresentable> nextNode) {
         return manager.singleInboxToString(username, inputMap.get("from"));
 
     }

@@ -1,15 +1,15 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode.MenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.control.UISection;
 import csc.zerofoureightnine.conferencemanager.interaction.utils.LinkedMenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MessageUI implements UISection {
     List<MenuNode> entryPoints;
@@ -179,7 +179,7 @@ public class MessageUI implements UISection {
         LinkedMenuNodeBuilder viewInboxSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
         viewInboxSeq.addStep("from", messagePresenter::getPromptForFrom, messageController::isValidMessageRecipient, messagePresenter::invalidUsername);
         MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle);
-        end.setCompletable(messagePresenter::getUserInboxFrom);
+        end.setListable(messagePresenter::getUserInboxFrom);
         return (viewInboxSeq.build(end.build()));
     }
 
