@@ -58,13 +58,16 @@ public class MessageManager {
     private Map<String, List<Message>> retrieveUserInbox(String user) {
 
         HashMap<String, List<Message>> inbox = new HashMap<>();
+        messageData.beginInteraction();
         List<MessageData> md = this.messageData.loadInCollection("recipients", user);
         List<String> senders = new ArrayList<>();
-        for (MessageData message: md){
+        for (MessageData message: md) {
             if(!senders.contains(message.getSender())){
                 senders.add(message.getSender());
             }
+            message.getRead().add(user);
         }
+        messageData.endInteraction();
         for (String sender: senders){
             List<Message> messages = this.retrieveUserInboxFor(user, sender);
             inbox.put(sender, messages);
