@@ -26,19 +26,8 @@ public class MessageMover {
      * Check if the message is in user's read inbox, if so, move the given message from user's read inbox to unread
      * inbox.
      * @param id id of the MessageData
-     * @param username current user
+     * @param username username of the current user
      */
-    // public void moveReadToUnread(String username, String from, String content, String timeSent){
-    //     this.messageManager.getMessageData().beginInteraction();
-    //     List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
-    //     for (MessageData m: md){
-    //         if (from.equals(m.getSender()) && (content.equals(m.getContent())) && (timeSent.equals(this.getTime(m.getTimeSent())))) {
-    //             m.removeFromRead(username);
-    //         }
-    //     }
-    //     this.messageManager.getMessageData().endInteraction();
-    // }
-
     public void moveReadToUnread(UUID id, String username){
         this.messageManager.getMessageData().beginInteraction();
         PersistentMap<UUID, MessageData> md = this.messageManager.getMessageData();
@@ -51,21 +40,8 @@ public class MessageMover {
     /**
      * Check if the message is in user's unread inbox, if so, move the given message from user's unread inbox to read.
      * @param id id of the MessageData
-     * @param username current user
+     * @param username username of the current user
      */
-    // public void moveUnreadToRead(String username, String from, String content, String timeSent) {
-    //     this.messageManager.getMessageData().beginInteraction();
-    //     List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
-    //     for (MessageData m : md) {
-    //         if (from.equals(m.getSender()) && (content.equals(m.getContent())) && (timeSent.equals(this.getTime(m.getTimeSent())))) {
-    //             if (!m.getRead().contains(username)) {
-    //                 m.addToRead(username);
-    //             }
-    //         }
-    //     }
-    //     this.messageManager.getMessageData().endInteraction();
-    // }
-
     public void moveUnreadToRead(UUID id, String username){
         this.messageManager.getMessageData().beginInteraction();
         PersistentMap<UUID, MessageData> md = this.messageManager.getMessageData();
@@ -78,20 +54,8 @@ public class MessageMover {
     /**
      * Check if this message is in user's unread inbox, if not, add the given message to this user's archived inbox.
      * @param id id of the MessageData
-     * @param from username of the sender
+     * @param username username of the current user
      */
-    // public void moveToArchived(String username, String from, String content, String timeSent) {
-    //     this.messageManager.getMessageData().beginInteraction();
-    //     List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
-    //     for (MessageData m : md) {
-    //         if (from.equals(m.getSender()) && (content.equals(m.getContent())) && (timeSent.equals(this.getTime(m.getTimeSent())))) {
-    //             if (!m.getArchived().contains(username)) {
-    //                 m.addToArchived(username);
-    //             }
-    //         }
-    //     }
-    //     this.messageManager.getMessageData().endInteraction();
-    // }
 
     public void moveToArchived(UUID id, String username){
         this.messageManager.getMessageData().beginInteraction();
@@ -105,19 +69,8 @@ public class MessageMover {
     /**
      * Remove the given message from user's archived inbox.
      * @param id id of the MessageData
-     * @param username current user
+     * @param username username of the current user
      */
-    // public void removeFromArchived(String username, String from, String content, String timeSent){
-    //     this.messageManager.getMessageData().beginInteraction();
-    //     List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
-    //     for (MessageData m : md) {
-    //         if (from.equals(m.getSender()) && (content.equals(m.getContent())) && (timeSent.equals(this.getTime(m.getTimeSent())))) {
-    //             m.removeFromArchived(username);
-    //         }
-    //     }
-    //     this.messageManager.getMessageData().endInteraction();
-    // }
-
     public void removeFromArchived(UUID id, String username){
         this.messageManager.getMessageData().beginInteraction();
         PersistentMap<UUID, MessageData> md = this.messageManager.getMessageData();
@@ -130,23 +83,8 @@ public class MessageMover {
     /**
      * Delete the given message from user's inbox.
      * @param id id of the MessageData
-     * @param username current user
+     * @param username username of the current user
      */
-    // public void deleteOneMessage(String username, String from, String content, String timeSent){
-    //     this.messageManager.getMessageData().beginInteraction();
-    //     List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
-    //     for (MessageData m: md){
-    //         if (from.equals(m.getSender()) && content.equals(m.getContent()) && timeSent.equals
-    //                 (this.getTime(m.getTimeSent()))) {
-    //             m.getRecipients().remove(username);
-    //             if(m.getRecipients().isEmpty()){
-    //                 this.messageManager.getMessageData().remove(m.getId());
-    //             }
-    //         }
-    //     }
-    //     this.messageManager.getMessageData().endInteraction();
-    // }
-
     public void deleteOneMessage(UUID id, String username){
         this.messageManager.getMessageData().beginInteraction();
         PersistentMap<UUID, MessageData> md = this.messageManager.getMessageData();
@@ -160,7 +98,7 @@ public class MessageMover {
 
         /**
          * Delete all conversations between the user and the given sender from user's inbox.
-         * @param username current user
+         * @param username username of the current user
          * @param from username of the sender
          */
     public void deleteConversation(String username, String from) {
@@ -180,7 +118,7 @@ public class MessageMover {
 
     /**
      * Clear this user's inbox.
-     * @param username current user
+     * @param username username of the current user
      */
     public void clearAllInboxes(String username){
         this.messageManager.getMessageData().beginInteraction();
@@ -194,11 +132,4 @@ public class MessageMover {
         this.messageManager.getMessageData().endInteraction();
     }
 
-    public String getTime(Instant time) {
-        StringBuilder string = new StringBuilder();
-        String string1 = time.toString();
-        string.append(string1.substring(0, string1.indexOf(".")));
-        string.append("Z");
-        return string.toString();
-    }
 }

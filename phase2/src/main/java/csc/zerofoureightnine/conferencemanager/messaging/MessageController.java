@@ -277,7 +277,7 @@ public class MessageController {
     /**
      * Checks if a numerical selection from the group of messages being presented by {@link MessagePresenter}.
      * @param input the current user's input
-     * @param options the options available to user, may be null
+     * @param opts the options available to user, may be null
      * @return A boolean stating whether or not the input number is within bounds of selectable messages.
      */
     public boolean validateMessageSelectionFromGroup(String input, List<TopicPresentable> opts) {

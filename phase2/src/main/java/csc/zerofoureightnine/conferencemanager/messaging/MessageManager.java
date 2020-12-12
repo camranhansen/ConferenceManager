@@ -194,6 +194,11 @@ public class MessageManager {
         return res;
     }
 
+    /**
+     * Returns a list of strings representing of all read messages of user.
+     * @param username Username of the user whose inbox will be retrieved.
+     * @return A {@link List} containing all messages received by this user that are read. The list is sorted by the time they were received.
+     */
     public List<String> readInboxToString(String username){
         List<MessageData> inbox = getReadInbox(username);
         List<String> res = new ArrayList<>();
@@ -254,25 +259,6 @@ public class MessageManager {
         single.forEach(messageData -> res.add(messageData.toString()));
         return res;
     }
-
-//    /**
-//     * Returns true if the content, sender and time sent was been a message this username has received.
-//     *
-//     * @param username the current user
-//     * @param from the sender of a message
-//     * @param time the time a message was sent
-//     * @param content the content in a message
-//     * @return a boolean stating whether or a message exists
-//     */
-//    public boolean messageExists(String username, String from, String time, String content) {
-//        List<MessageData> md = getMessageData().loadInCollection("recipients", username);
-//        for (MessageData m : md) {
-//            if (from.equals(m.getSender()) && content.equals(m.getContent()) && time.equals(m.getTimeSent().toString())) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 
 
     /**
