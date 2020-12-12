@@ -16,7 +16,6 @@ public class DataUI implements UISection {
 
     private DataPresenter dataPresenter;
     private DataController dataController;
-    private String username;
     private List<MenuNode> entryPoints;
 
     /**
