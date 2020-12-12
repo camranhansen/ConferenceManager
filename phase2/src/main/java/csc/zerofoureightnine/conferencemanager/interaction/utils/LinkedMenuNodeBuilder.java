@@ -37,11 +37,23 @@ public class LinkedMenuNodeBuilder {
 
     private final String goalName;
 
+    /**
+     * Instantiates a {@link LinkedMenuNodeBuilder} for use.
+     * @param goalName A {@link String} for the {@link TopicPresentable}.
+     * @param inputMap A {@link Map} for storing the inputs at the different stages in the sequence.
+     */
     public LinkedMenuNodeBuilder(String goalName, Map<String, String> inputMap) {
         this.goalName = goalName;
         this.inputMap = inputMap;
     }
 
+    /**
+     * Adds a step to the sequence.
+     * @param inputTag A {@link String} to associated with the input at this step stored in the {@link Map} given in the constructor.
+     * @param prompt A {@link PromptPresentable} for prompting the user for input at this step.
+     * @param validatable A {@link Validatable} to use to validate this steps input.
+     * @param retryMessage A {@link RetryPromptPresentable} to be used to indicate invalid input and require a reattempt.
+     */
     public void addStep(String inputTag, PromptPresentable prompt, Validatable validatable,
             RetryPromptPresentable retryMessage) {
         inputTags.add(inputTag);
@@ -52,6 +64,12 @@ public class LinkedMenuNodeBuilder {
         optionsPermissions.add(null);
     }
 
+    /**
+     * Adds a step where there exists multiple choice option.
+     * @param inputTag The input tag to be associated with the choice.
+     * @param options The variety of options.
+     * @param permissions The permissions in the same order as the options to associated with each choice.
+     */
     public void addMultipleOptions(String inputTag, List<String> options, List<Permission> permissions) {
         inputTags.add(inputTag);
         prompts.add(null);
@@ -61,6 +79,12 @@ public class LinkedMenuNodeBuilder {
         this.optionsPermissions.add(permissions);
     }
 
+    /**
+     * Builds the sequence of {@link MenuNode}s.
+     * @param terminator terminating node.
+     * @param permission the permission to associate with the entry node.
+     * @return The {@link MenuNode} acting as the entry point to this sequence.
+     */
     public MenuNode build(MenuNode terminator, Permission permission) {
         class TaggedAutoAction implements Action {
             private final String tag;

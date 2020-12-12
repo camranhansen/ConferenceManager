@@ -50,24 +50,6 @@ public class EventManager {
     }
 
     /**
-     * Returns a record of event data with given information from an Event type object.
-     * @param newEvent A new event.
-     * @return A record of event data.
-     */
-    public EventData convertEventToEventData(Event newEvent){
-        EventData ed = new EventData();
-        ed.addSpeakers(newEvent.getSpeakerName());
-        ed.setType(newEvent.getType());
-        ed.setEventName(newEvent.getEventName());
-        ed.setCapacity(newEvent.getCapacity());
-        ed.setRoom(newEvent.getRoom());
-        ed.setTime(newEvent.getEventTime());
-        ed.setId(newEvent.getId());
-        return ed;
-    }
-
-
-    /**
      * Defines a new event with the details speaker's name, event time, event name, room, and capacity.
      * Automatically determines event type {@link EventType} depending on how many speakers are inputted.
      * Adds this event to the collection of all csc.zerofoureightnine.conferencemanager.events.
