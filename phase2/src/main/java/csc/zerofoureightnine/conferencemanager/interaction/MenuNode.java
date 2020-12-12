@@ -13,7 +13,7 @@ import csc.zerofoureightnine.conferencemanager.interaction.control.Action;
 import csc.zerofoureightnine.conferencemanager.interaction.control.Validatable;
 import csc.zerofoureightnine.conferencemanager.interaction.general.OptionPresenter;
 import csc.zerofoureightnine.conferencemanager.interaction.general.OptionSelector;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.completePresentable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.CompletePresentable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.InfoPresentable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.PromptPresentable;
@@ -29,7 +29,7 @@ public class MenuNode { // UI
     private final Validatable validatable; // may be null, in which case any input is accepted.
     private final TopicPresentable nameable; // !null
     private final Action action; // !null
-    private final completePresentable completable;
+    private final CompletePresentable completable;
     private final PromptPresentable promptable;
     private final InfoPresentable listable;
     private final RetryPromptPresentable reattemptable;
@@ -37,7 +37,7 @@ public class MenuNode { // UI
     private boolean disabled = false;
 
     public MenuNode(Permission permission, Validatable validatable, TopicPresentable nameable, Action action,
-            completePresentable completable, PromptPresentable promptable, InfoPresentable listable,
+            CompletePresentable completable, PromptPresentable promptable, InfoPresentable listable,
             RetryPromptPresentable reattemptable, Set<MenuNode> children, int backStepCount) {
         this.permission = permission;
         this.validatable = validatable;
@@ -146,7 +146,7 @@ public class MenuNode { // UI
         private Set<MenuNode> children = new HashSet<>();
         private final Action action; // !null
         private final TopicPresentable displayName; // !null
-        private completePresentable completable;
+        private CompletePresentable completable;
         private Validatable validatable;
         private Permission permission;
         private PromptPresentable promptable;
@@ -302,14 +302,14 @@ public class MenuNode { // UI
         }
 
         /**
-         * Sets the {@link completePresentable}. If null, no completion message will be
+         * Sets the {@link CompletePresentable}. If null, no completion message will be
          * displayed. If not null, will request for a string to indicate menu node
          * completion.
          * 
-         * @param completable A {@link completePresentable} to invoke for a completion
+         * @param completable A {@link CompletePresentable} to invoke for a completion
          *                    message.
          */
-        public void setCompletable(completePresentable completable) {
+        public void setCompletable(CompletePresentable completable) {
             this.completable = completable;
         }
 

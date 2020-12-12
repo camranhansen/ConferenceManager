@@ -2,7 +2,7 @@ package csc.zerofoureightnine.conferencemanager.interaction.presentation;
 
 import csc.zerofoureightnine.conferencemanager.interaction.control.Action;
 
-public interface completePresentable { // Presenter
+public interface CompletePresentable { // Presenter
     /**
      * A final message that is displayed to the user on the action completion.
      * @param username The currently logged in user's username.
