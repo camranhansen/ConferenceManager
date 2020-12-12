@@ -1,6 +1,5 @@
 package csc.zerofoureightnine.conferencemanager;
 
-import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLConfiguration;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;

@@ -6,7 +6,6 @@ import java.util.EnumMap;
 
 public class DataPresenter {
 
-    private String username;
     private RuntimeDataHolder runtimeDataHolder;
     private StoredDataGetter storedDataGetter;
 
@@ -15,7 +14,7 @@ public class DataPresenter {
         this.storedDataGetter = storedDataGetter;
     }
 
-    public String getRuntimeStats() {
+    public String getRuntimeStats(String username) {
         EnumMap<RuntimeStat, Integer> runtimeData = runtimeDataHolder.getMap();
         StringBuilder stringBuilder = new StringBuilder();
         for (RuntimeStat key : RuntimeStat.values()) {
@@ -24,7 +23,7 @@ public class DataPresenter {
         return stringBuilder.toString();
     }
 
-    public String getStoredData() {
+    public String getStoredData(String username) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Messages in inbox: ").append(storedDataGetter.getRetrieveMessages(username)).append(System.lineSeparator());
         stringBuilder.append("Unread messages: ").append(storedDataGetter.getUnreadMessages(username)).append(System.lineSeparator());

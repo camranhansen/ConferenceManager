@@ -14,7 +14,6 @@ public class Message {
      * @param recipients a {@code String[]} of recipients of the message
      * @param content content of the message
      */
-
     public Message(String sender, String[] recipients, String content) {
         this.content = content;
         this.timeSent = Instant.now();

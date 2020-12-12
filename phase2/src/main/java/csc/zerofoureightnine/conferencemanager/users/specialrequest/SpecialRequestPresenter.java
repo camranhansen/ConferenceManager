@@ -1,7 +1,5 @@
 package csc.zerofoureightnine.conferencemanager.users.specialrequest;
 
-import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +25,7 @@ public class SpecialRequestPresenter {
      * description, addressed".
      * @return the string representation of all special requests of a given user
      */
-    public String getRequests(){
+    public String getRequests(String username){
         StringBuilder requests = new StringBuilder();
         List<UUID> lst = manager.getRequests(inputMap.get("username"));
         for (UUID id: lst){
@@ -43,7 +41,7 @@ public class SpecialRequestPresenter {
      * description".
      * @return the string representation of all pending special requests
      */
-    public String getPendingRequests(){
+    public String getPendingRequests(String username){
         StringBuilder requests = new StringBuilder();
         List<UUID> lst = manager.getPendingRequests();
         for (UUID id: lst){
@@ -59,7 +57,7 @@ public class SpecialRequestPresenter {
      * description".
      * @return the string representation of all addressed special requests
      */
-    public String getAddressedRequests(){
+    public String getAddressedRequests(String username){
         StringBuilder requests = new StringBuilder();
         List<UUID> lst = manager.getAddressedRequests();
         for (UUID id: lst){
@@ -75,7 +73,7 @@ public class SpecialRequestPresenter {
      * Returns the prompt for users to enter the header of their request.
      * @return the string "please enter the header of your request".
      */
-    public String enterHeader(){
+    public String enterHeader(String username){
         return "please enter the header of your request";
     }
 
@@ -84,7 +82,7 @@ public class SpecialRequestPresenter {
      * Returns the prompt for users to enter the description of their request.
      * @return the string "please enter the description of your request".
      */
-    public String enterDescription(){
+    public String enterDescription(String username){
         return "please enter the description of your request";
     }
 
@@ -93,8 +91,8 @@ public class SpecialRequestPresenter {
      * Returns the prompt for users to enter the requestID.
      * @return the string "please enter the request_id".
      */
-    public String enterRequestID(){
-        return "please enter the request_id";
+    public String enterRequestID(String username){
+        return "please enter the request id";
     }
 
 

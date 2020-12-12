@@ -7,5 +7,5 @@ public interface PromptPresentable { //Presenter
      * 
      * @return A string containing the prompt for the user.
      */
-    String getPrompt();
+    String getPrompt(String username);
 }

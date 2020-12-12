@@ -78,7 +78,7 @@ public class UserController {
      * @return the node to return to. See {@link MenuNode} for clarification
      */
     public int createAccount(String username, String input, List<TopicPresentable> options){
-        um.createUser(inputMap.get("name"), inputMap.get("password"),Template.values()[Integer.parseInt(inputMap.get("template"))].getPermissions() );
+        um.createUser(inputMap.get("name"), inputMap.get("password"),Template.values()[Integer.parseInt(inputMap.get("template"))- 2].getPermissions() );
         return 0;
     }
 
