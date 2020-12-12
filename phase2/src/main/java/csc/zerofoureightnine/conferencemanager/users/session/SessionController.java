@@ -16,8 +16,8 @@ public class SessionController {
 
     /**
      * Initiates SessionController
-     * @param userManager {@link UserManager}
-     * @param permissionManager {@link PermissionManager}
+     * @param userManager associating {@link UserManager}
+     * @param permissionManager associating {@link PermissionManager}
      */
     public SessionController(UserManager userManager, PermissionManager permissionManager) {
         this.userManager = userManager;
@@ -29,11 +29,15 @@ public class SessionController {
     }
 
     /**
-     * Login the current user.
-     * @param username username of the user
-     * @param input user input
-     * @param selectableOptions the options available to user
-     * @return int 0 after the user is logged in.
+     * Login the current user,
+     * according to previous user input
+     *
+     * @param username          the username of the user who is doing the inputting
+     * @param input             the input in this node. Not used in this case.
+     * @param selectableOptions the list of {@link TopicPresentable} options available at this node.
+     *                          In this case, there are none
+     * @return an integer representing what node to go to after this action.
+     * In this case, return 0, representing the main menu.
      */
     public int loginUser(String username, String input, List<TopicPresentable> selectableOptions) {
         String attemptingUser = inputMap.get("user");
@@ -47,11 +51,15 @@ public class SessionController {
     }
 
     /**
-     * Logout the current user.
-     * @param username username of the user
-     * @param input user input
-     * @param selectableOptions the options available to user
-     * @return int 0 after the user is logged out.
+     * Logout the current user,
+     * according to previous user input
+     *
+     * @param username          the username of the user who is doing the inputting
+     * @param input             the input in this node. Not used in this case.
+     * @param selectableOptions the list of {@link TopicPresentable} options available at this node.
+     *                          In this case, there are none
+     * @return an integer representing what node to go to after this action.
+     * In this case, return 0, representing the main menu.
      */
     public int logOutUser(String username, String input, List<TopicPresentable> selectableOptions){
         onAuthenticationStateChange(username, false);
@@ -61,7 +69,7 @@ public class SessionController {
     /**
      * Check whether the given username exists or not.
      * @param input user input, username being checked
-     * @param options the options available to user
+     * @param options the list of {@link TopicPresentable} options available at this node. In this case, there are none
      * @return true if the username exists, otherwise return false.
      */
     public boolean checkUserNotExist(String input, List<TopicPresentable> options) {
@@ -69,12 +77,15 @@ public class SessionController {
     }
 
     /**
-     * Create an user account.
+     * Create an user account,
+     * according to previous user input
      *
-     * @param username          this is null, because no user is logged in currently - since this is in sessionController
-     * @param input             user input
-     * @param selectableOptions the options available to user
-     * @return int 1 after the new user account is created
+     * @param username          the username of the user who is doing the inputting
+     * @param input             the input in this node. Not used in this case.
+     * @param selectableOptions the list of {@link TopicPresentable} options available at this node.
+     *                          In this case, there are none
+     * @return an integer representing what node to go to after this action.
+     * In this case, return 1.
      */
     public int createUser(String username, String input, List<TopicPresentable> selectableOptions) {
         String attemptingUser = inputMap.get("user");
@@ -85,10 +96,14 @@ public class SessionController {
 
     /**
      * Change the user's password.
-     * @param username username of the user
-     * @param input user input, new password
-     * @param opts the options available to user
-     * @return int 1 after the password has changed
+     * according to previous user input,
+     *
+     * @param username          the username of the user who is doing the inputting
+     * @param input             the input in this node. Not used in this case.
+     * @param opts the list of {@link TopicPresentable} options available at this node.
+     *                          In this case, there are none
+     * @return an integer representing what node to go to after this action.
+     * In this case, return 1.
      */
     public int changePassword(String username, String input, List<TopicPresentable> opts) {
         userManager.setPassword(username, input);
