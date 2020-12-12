@@ -79,31 +79,57 @@ public class MessagePresenter {
         return "Please type your message";
     }
 
+    /**
+     * Returns the prompt for users to re-enter their username.
+     * @return a {@link String} "Please re-enter your username for security purposes"
+     */
     public String getPromptUsername(){
         return "Please re-enter your username for security purposes";
     }
+
+    /**
+     * Returns the prompt for users to enter who a message is from.
+     * @return a {@link String} "Please enter the username that the message is from"
+     */
     public String getPromptForFrom() {
         return "Please enter the username that the message is from";
     }
 
+    /**
+     * Returns the prompt for users to enter the time a message was sent.
+     * @return a {@link String} "Please enter the time the message was sent"
+     */
     public String getPromptMessageTime(){
         return "Please enter the time the message was sent";
     }
 
+    /**
+     * Returns the prompt for users to enter the content of a previous message. Warns users that if any of
+     * the previous message details do not align with their response, will return to the main menu.
+     *
+     * @return a {@link String} "Please enter content of the message. Note:
+     * if message does not exist, you will return to menu"
+     */
     public String getPromptPreviousContent(){
         return "Please enter content of the message. Note: if message does not exist, you will return to menu";
     }
+
+    /**
+     *Returns a prompt for users to enter the event id they'd like to message.
+     * @return a {@link String} "Please enter event id to send to"
+     */
     public String getPromptForEventId(){
-        return "Please enter event id";
+        return "Please enter event id to send to";
     }
 
+    /**
+     *Returns a message telling the user they have inputted something invalid.
+     * @return a {@link String} "Invalid Input"
+     */
     public String wrongInput(){
         return ("Invalid Input");
     }
 
-    public String getPromptForAllEvent(){
-        return "Please enter your username again, so we can verify if you have events";
-    }
     /**
      * Returns the prompt when the username is invalid.
      * @return a {@link String} "This recipient is invalid, please try again"
@@ -111,4 +137,22 @@ public class MessagePresenter {
     public String invalidRecipient() {
         return "This recipient is invalid, please try again";
     }
+
+    /**
+     * Returns the prompt when the username is invalid.
+     * @return a {@link String} "This username is invalid, please try again"
+     */
+    public String invalidUsername(){return "This username is invalid, please try again";}
+
+    /**
+     * Returns the prompt when the time is invalid.
+     * @return a {@link String} "This time is invalid, please try again"
+     */
+    public String invalidTime(){return "This time is invalid, please try again";}
+
+    /**
+     * Returns the prompt when the event id is invalid.
+     * @return a {@link String} "This event id is invalid, please try again"
+     */
+    public String invalidEventId(){return "This event id is invalid, please try again";}
 }
