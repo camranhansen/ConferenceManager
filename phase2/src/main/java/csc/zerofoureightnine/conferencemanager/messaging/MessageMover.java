@@ -58,8 +58,6 @@ public class MessageMover {
         this.messageManager.getMessageData().endInteraction();
     }
 
-
-
     /**
      * Check if this message is in user's unread inbox, if not, add the given message to this user's archived inbox.
      * @param from username of the sender
@@ -80,7 +78,6 @@ public class MessageMover {
         this.messageManager.getMessageData().endInteraction();
     }
 
-
     /**
      * Remove the given message from user's archived inbox.
      * @param username current user
@@ -99,7 +96,6 @@ public class MessageMover {
         }
         this.messageManager.getMessageData().endInteraction();
     }
-
 
     /**
      * Delete the given message from user's inbox.
@@ -123,12 +119,11 @@ public class MessageMover {
         this.messageManager.getMessageData().endInteraction();
     }
 
-
-        /**
-         * Delete all conversations between the user and the given sender from user's inbox.
-         * @param username current user
-         * @param from username of the sender
-         */
+     /**
+      *Delete all conversations between the user and the given sender from user's inbox.
+      * @param username current user
+      * @param from username of the sender
+      */
     public void deleteConversation(String username, String from) {
         this.messageManager.getMessageData().beginInteraction();
         List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
@@ -142,7 +137,6 @@ public class MessageMover {
         }
         this.messageManager.getMessageData().endInteraction();
     }
-
 
     /**
      * Clear this user's inbox.
