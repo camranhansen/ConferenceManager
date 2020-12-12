@@ -20,19 +20,18 @@ public class EventController {
 
     /**
      * Initiates EventController
-     * @param eventManager associated {@link EventManager}
-     * @param userManager associated {@link UserManager}
+     *
+     * @param eventManager      associated {@link EventManager}
+     * @param userManager       associated {@link UserManager}
      * @param permissionManager associated {@link PermissionManager}
-     * @param inputMap {@link Map} mapping strings to associating user inputs
      */
     public EventController(EventManager eventManager,
                            UserManager userManager,
-                           PermissionManager permissionManager,
-                           Map<String, String> inputMap) {
+                           PermissionManager permissionManager) {
         this.eventManager = eventManager;
         this.userManager = userManager;
         this.permissionManager = permissionManager;
-        this.inputMap = inputMap;
+        this.inputMap = new HashMap<>();
     }
 
     /**

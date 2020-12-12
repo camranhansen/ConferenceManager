@@ -1,6 +1,9 @@
 package csc.zerofoureightnine.conferencemanager;
 
+import csc.zerofoureightnine.conferencemanager.datacollection.DataController;
+import csc.zerofoureightnine.conferencemanager.datacollection.DataPresenter;
 import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeDataHolder;
+import csc.zerofoureightnine.conferencemanager.datacollection.StoredDataGetter;
 import csc.zerofoureightnine.conferencemanager.events.EventController;
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.events.EventPresenter;
@@ -22,8 +25,6 @@ import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialReque
 import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestManager;
 import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestPresenter;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class MasterController {
@@ -32,6 +33,10 @@ public class MasterController {
     private SpecialRequestManager specialRequestManager;
     private UserManager userManager;
     private EventManager eventManager;
+    private RuntimeDataHolder runtimeDataHolder;
+    private StoredDataGetter storedDataGetter;
+    private DataPresenter dataPresenter;
+    private DataController dataController;
     private EventPresenter eventPresenter;
     private UserPresenter userPresenter;
     private SessionPresenter sessionPresenter;
@@ -42,31 +47,47 @@ public class MasterController {
     private MessageController messageController;
     private EventController eventController;
     private SpecialRequestController specialRequestController;
-    private RuntimeDataHolder runtimeDataHolder;
+
 
     public MasterController(PersistentMap<String, UserData> userMap, PersistentMap<String, EventData> eventMap,
-            PersistentMap<String, MessageData> messageMap, PersistentMap<UUID, SpecialRequestData> specialRequestMap) {
+                            PersistentMap<String, MessageData> messageMap, PersistentMap<UUID, SpecialRequestData> specialRequestMap) {
+
+        createUseCases(userMap, eventMap, messageMap, specialRequestMap);
+        createDataCollectors();
+        createControllers();
+        createPresenters();
+    }
+
+    private void createControllers() {
+        this.dataController = new DataController();
+        this.sessionController = new SessionController(userManager, permissionManager);
+        this.messageController = new MessageController(messageManager, userManager, eventManager, permissionManager);
+        this.eventController = new EventController(eventManager, userManager, permissionManager);
+        this.specialRequestController = new SpecialRequestController(specialRequestManager);
+        this.userController = new UserController(userManager, permissionManager);
+    }
+
+    private void createPresenters() {
+        this.eventPresenter = new EventPresenter(eventManager);
+        this.sessionPresenter = new SessionPresenter();
+        this.messagePresenter = new MessagePresenter(messageManager, messageController.getInputMap());
+        this.specialRequestPresenter = new SpecialRequestPresenter(specialRequestManager, specialRequestController.getInputMap());
+        this.userPresenter = new UserPresenter();
+        this.dataPresenter = new DataPresenter(runtimeDataHolder, storedDataGetter);
+    }
+
+    private void createDataCollectors() {
+        this.runtimeDataHolder = new RuntimeDataHolder();
+        this.storedDataGetter = new StoredDataGetter(messageManager, eventManager, specialRequestManager, userManager);
+    }
+
+    private void createUseCases(PersistentMap<String, UserData> userMap, PersistentMap<String, EventData> eventMap, PersistentMap<String, MessageData> messageMap, PersistentMap<UUID, SpecialRequestData> specialRequestMap) {
         this.messageManager = new MessageManager(messageMap);
         this.permissionManager = new PermissionManager(userMap);
         this.userManager = new UserManager(userMap);
         this.eventManager = new EventManager(eventMap);
         this.userManager = new UserManager(userMap);
         this.specialRequestManager = new SpecialRequestManager(specialRequestMap);
-
-        this.eventPresenter = new EventPresenter(eventManager);
-        this.sessionPresenter = new SessionPresenter();
-        Map<String, String> messageInput = new HashMap<>();
-        this.messagePresenter = new MessagePresenter(messageManager, messageInput);
-        Map<String, String> specialRequestInput = new HashMap<>();
-        this.specialRequestPresenter = new SpecialRequestPresenter(specialRequestManager, specialRequestInput);
-        this.userPresenter = new UserPresenter();
-
-        this.sessionController = new SessionController(userManager, permissionManager);
-        this.messageController = new MessageController(messageManager, userManager, eventManager, permissionManager, messageInput);
-        this.eventController = new EventController(eventManager, userManager, permissionManager, specialRequestInput);
-        this.specialRequestController = new SpecialRequestController(specialRequestManager);
-        this.runtimeDataHolder = new RuntimeDataHolder();
-        this.userController = new UserController(userManager, permissionManager);
     }
 
     public EventManager getEventManager() {
