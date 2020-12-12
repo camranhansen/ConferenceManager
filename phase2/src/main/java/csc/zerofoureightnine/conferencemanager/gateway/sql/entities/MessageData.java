@@ -6,13 +6,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.*;
 
 @Table(name = "messages") @Entity
-public class MessageData implements Identifiable<String> {
+public class MessageData implements Identifiable<UUID> {
     @Id
-    private String id;
+    private UUID id;
     
     @Column(name = "content")
     private String content = "";
@@ -118,12 +119,17 @@ public class MessageData implements Identifiable<String> {
     }
 
     @Override
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
     @Override
-    public String getId() {
+    public UUID getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return id.toString() + " From: " + getSender() + " at " + getTimeSent() + ": " + getContent();
     }
 }

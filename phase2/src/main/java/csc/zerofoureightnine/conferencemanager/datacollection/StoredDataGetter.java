@@ -34,7 +34,7 @@ public class StoredDataGetter {
      * @return the number of messages in retrieve inbox
      */
     public Integer getRetrieveMessages(String name) {
-        return messageManager.getRetrieveInboxSize(name);
+        return messageManager.getInboxSize(name);
     }
 
     /**
