@@ -2,6 +2,7 @@ package csc.zerofoureightnine.conferencemanager.messaging;
 
 import java.time.Instant;
 
+@Deprecated
 public class Message {
     private String content;
     private Instant timeSent;

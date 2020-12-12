@@ -60,7 +60,7 @@ public class MasterController {
      * @param specialRequestMap {@link PersistentMap} special requests.
      */
     public MasterController(PersistentMap<String, UserData> userMap, PersistentMap<String, EventData> eventMap,
-                            PersistentMap<String, MessageData> messageMap, PersistentMap<UUID, SpecialRequestData> specialRequestMap) {
+                            PersistentMap<UUID, MessageData> messageMap, PersistentMap<UUID, SpecialRequestData> specialRequestMap) {
 
         createUseCases(userMap, eventMap, messageMap, specialRequestMap);
         createDataCollectors();
@@ -91,7 +91,7 @@ public class MasterController {
         this.storedDataGetter = new StoredDataGetter(messageManager, eventManager, specialRequestManager, userManager);
     }
 
-    private void createUseCases(PersistentMap<String, UserData> userMap, PersistentMap<String, EventData> eventMap, PersistentMap<String, MessageData> messageMap, PersistentMap<UUID, SpecialRequestData> specialRequestMap) {
+    private void createUseCases(PersistentMap<String, UserData> userMap, PersistentMap<String, EventData> eventMap, PersistentMap<UUID, MessageData> messageMap, PersistentMap<UUID, SpecialRequestData> specialRequestMap) {
         this.messageManager = new MessageManager(messageMap);
         this.permissionManager = new PermissionManager(userMap);
         this.userManager = new UserManager(userMap);

@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class MessagePresenter {
     private MessageManager manager;
+    private List<String> selectedMessageIDs;
     private Map<String, String> inputMap;
 
     /**
@@ -26,7 +27,19 @@ public class MessagePresenter {
      *         username is given by {@code inputMap}
      */
     public String getUserUnread(String username, List<TopicPresentable> nextNode) {
-        return manager.unreadInboxToString(username);
+        List<String> unreadInbox = manager.unreadInboxToString(username);
+        updateSelectedMessageIDs(unreadInbox);
+        return this.buildMessageList(unreadInbox, 37);
+    }
+
+    private String buildMessageList(List<String> strings, int idHeaderSize) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < strings.size(); i++) {
+            sb.append(i + ") ");
+            sb.append(strings.get(i).substring(idHeaderSize));
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 
     /**
@@ -36,7 +49,15 @@ public class MessagePresenter {
      *         is given by {@code inputMap}
      */
     public String getUserInbox(String username, List<TopicPresentable> topics) {
-        return manager.wholeInboxToString(username);
+        List<String> userInbox = manager.wholeInboxToString(username);
+        updateSelectedMessageIDs(userInbox);
+        return this.buildMessageList(userInbox, 37);
+    }
+
+    public String getUserInboxRead(String username, List<TopicPresentable> topics) {
+        List<String> userInbox = manager.readInboxToString(username);
+        updateSelectedMessageIDs(userInbox);
+        return this.buildMessageList(userInbox, 37);
     }
 
     /**
@@ -46,7 +67,9 @@ public class MessagePresenter {
      *         sender to the user whose usernames are given by {@code inputMap}.
      */
     public String getUserInboxFrom(String username, List<TopicPresentable> nextNode) {
-        return manager.singleInboxToString(username, inputMap.get("from"));
+        List<String> userInbox = manager.singleInboxToString(username, inputMap.get("from"));
+        updateSelectedMessageIDs(userInbox);
+        return this.buildMessageList(userInbox, 37);
     }
 
     /**
@@ -56,7 +79,9 @@ public class MessagePresenter {
      *         username is given by {@code inputMap}.
      */
     public String getUserArchived(String username, List<TopicPresentable> nextNode) {
-        return manager.archivedMessagesToString(username);
+        List<String> archivedInbox = manager.archivedMessagesToString(username);
+        updateSelectedMessageIDs(archivedInbox);
+        return this.buildMessageList(archivedInbox, 37);
     }
 
     /**
@@ -182,7 +207,20 @@ public class MessagePresenter {
         return "This event id is invalid, please try again";
     }
 
+    public String promptForMessageIndex(String username) {
+        return "Please enter message index";
+    }
+
     public String promptForConfirmation(String username) {
         return "Press enter to continue";
+    }
+
+    private void updateSelectedMessageIDs(List<String> selected) {
+        this.selectedMessageIDs.clear();
+        selected.forEach(s -> this.selectedMessageIDs.add(s.substring(0, 36)));
+    }
+
+    public void setSelectedMessageIDs(List<String> selectedMessageIDs) {
+        this.selectedMessageIDs = selectedMessageIDs;
     }
 }

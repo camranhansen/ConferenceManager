@@ -15,7 +15,8 @@ public class MessageController {
     private PermissionManager permissionManager;
     private MessageMover messageMover;
     private EventManager eventManager;
-
+    private final List<String> selectedMessageIDs = new ArrayList<>();
+    
     /**
      * Creates a new MessageController
      *
@@ -77,7 +78,7 @@ public class MessageController {
             return 0;
         }
         messageManager.sendMessage(username, inputMap.get("content"), users);
-        return 0;
+        return 1;
     }
 
     /**
@@ -94,7 +95,7 @@ public class MessageController {
             return 0;
         }
         messageManager.sendMessage(username, inputMap.get("content"), users);
-        return 0;
+        return 1;
     }
 
     /**
@@ -106,10 +107,8 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int moveMessageToUnread(String username, String input, List<TopicPresentable> options){
-        if (isValidMessage(username)) {
-            messageMover.moveReadToUnread(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
-        }
-        return 0;
+        messageMover.moveReadToUnread(UUID.fromString(selectedMessageIDs.get(Integer.parseInt(input))), username);
+        return 1;
     }
 
     /**
@@ -121,10 +120,8 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int moveMessageToRead(String username, String input, List<TopicPresentable> options){
-        if (isValidMessage(username)) {
-            messageMover.moveUnreadToRead(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
-        }
-        return 0;
+        messageMover.moveUnreadToRead(UUID.fromString(selectedMessageIDs.get(Integer.parseInt(input))), username);
+        return 1;
     }
 
     /**
@@ -136,10 +133,8 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int moveMessageToArchive(String username, String input, List<TopicPresentable> options){
-        if (isValidMessage(username)) {
-            messageMover.moveToArchived(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
-        }
-        return 0;
+        messageMover.moveToArchived(UUID.fromString(selectedMessageIDs.get(Integer.parseInt(input))), username);
+        return 1;
     }
 
     /**
@@ -151,10 +146,8 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int removeMessageFromArchive(String username, String input, List<TopicPresentable> options){
-        if (isValidMessage(username)) {
-            messageMover.removeFromArchived(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));
-        }
-        return 0;
+        messageMover.removeFromArchived(UUID.fromString(selectedMessageIDs.get(Integer.parseInt(input))), username);
+        return 1;
     }
 
     /**
@@ -166,9 +159,8 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int deleteSingleMessage(String username, String input, List<TopicPresentable> options){
-        if (isValidMessage(username)){
-        messageMover.deleteOneMessage(username, inputMap.get("from"), inputMap.get("content"), inputMap.get("time"));}
-        return 0;
+        messageMover.deleteOneMessage(UUID.fromString(selectedMessageIDs.get(Integer.parseInt(input))), username);
+        return 1;
     }
 
     /**
@@ -181,7 +173,7 @@ public class MessageController {
      */
     public int deleteSingleConversation(String username, String input, List<TopicPresentable> options){
         messageMover.deleteConversation(username, input);
-        return 0;
+        return 1;
     }
 
     /**
@@ -194,7 +186,7 @@ public class MessageController {
      */
     public int deleteAllInboxes(String username, String input, List<TopicPresentable> options){
         messageMover.clearAllInboxes(username);
-        return 0;
+        return 1;
     }
 
     /**
@@ -225,17 +217,6 @@ public class MessageController {
         return !input.isEmpty();
     }
 
-    /**
-     * Returns true if the inputted time for a message matches the format.
-     *
-     * @param input the current user's input
-     * @param options the options available to user, may be null
-     * @return A boolean stating whether or not the inputted time is valid
-     */
-    public boolean isValidTime(String input, List<TopicPresentable> options){
-        return input.matches("^2020-(0[1-9]|1[1-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([0-1][0-9]|2[0-4]):[0-9][0-9]:[0-9][0-9]Z$");
-    }
-
 
     /**
      * Returns true if the inputted event id is valid.
@@ -261,11 +242,28 @@ public class MessageController {
         return 1;
     }
 
+    public int confirmationReadAction(String username, String input, List<TopicPresentable> topics) {
+        for (String uuid : selectedMessageIDs) {
+            messageMover.moveUnreadToRead(UUID.fromString(uuid), username);
+        }
+        return 1;
+    }
+
+
     private List<String> getParticipants(List<String> eventIds){
         List<String> users = new ArrayList<>();
         for (String eventId : eventIds){
             users.addAll(eventManager.getParticipants(eventId));
         }
         return users;
+    }
+
+    public boolean validateMessageSelectionFromGroup(String input, List<TopicPresentable> opts) {
+        return input.matches("^[0-9]+$") && 
+        Integer.parseInt(input) < selectedMessageIDs.size();
+    }
+
+    public List<String> getSelectedMessageIDs() {
+        return selectedMessageIDs;
     }
 }
