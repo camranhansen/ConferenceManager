@@ -12,7 +12,7 @@ public class UserPresenter {
      * @return a String containing the question to be asked
      */
     public String enterUsername(String username){
-        return ("Please enter the relevant username:");
+        return ("Please enter the relevant username");
     }
 
     /**
