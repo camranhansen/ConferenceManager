@@ -181,7 +181,6 @@ public class SpecialRequestManager {
 
     /**
      * Gets the number of pending requests
-     *
      * @return the relevant number
      */
     public Integer getNumberPendingRequests() {
