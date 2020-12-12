@@ -95,9 +95,14 @@ public class Event {
         this.participants.add(username);
     }
 
+    /**
+     * Removes a participant.
+     * @param username the username of the participant in question
+     */
     public void removeParticipant(String username){
         this.participants.remove(username);
     }
+
     /**
      * Get the name of the room that this event is taking place in.
      * @return String represents the name of room.
