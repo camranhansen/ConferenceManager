@@ -64,7 +64,7 @@ public class MessageController {
      */
     public int messageGroup(String username, String input, List<TopicPresentable> options) {
         List<String> users = permissionManager.
-                getUserByPermissionTemplate(Template.values()[Integer.parseInt(inputMap.get("selected_group"))- 2]);
+                getUserByPermissionTemplate(Template.valueOf(inputMap.get("selected_group_value")));
         messageManager.sendMessage(username, inputMap.get("content"), users);
         return 1;
     }

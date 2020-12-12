@@ -18,6 +18,7 @@ public class UserController {
 
     /**
      * A constructor takes in userManager and PermissionManager
+     * 
      * @param um UserManager
      * @param pm PermissionManager
      */
@@ -28,29 +29,38 @@ public class UserController {
 
     /**
      * check if the input name is a existed username
-     * @param input Input specifically in to this node. In this case, it is not relevant.
-     * @param options Options available at this node. In this case, it is not relevant.
+     * 
+     * @param input   Input specifically in to this node. In this case, it is not
+     *                relevant.
+     * @param options Options available at this node. In this case, it is not
+     *                relevant.
      * @return the node to return to. See {@link MenuNode} for clarification
      */
-    public boolean isValidUser(String input, List<TopicPresentable> options){
+    public boolean isValidUser(String input, List<TopicPresentable> options) {
         return um.userExists(input);
     }
 
     /**
      * check if the input name is not a existed username
-     * @param input Input specifically in to this node. In this case, it is not relevant.
-     * @param options Options available at this node. In this case, it is not relevant.
+     * 
+     * @param input   Input specifically in to this node. In this case, it is not
+     *                relevant.
+     * @param options Options available at this node. In this case, it is not
+     *                relevant.
      * @return the node to return to. See {@link MenuNode} for clarification
      */
-    public boolean isNotValidUser(String input, List<TopicPresentable> options){
+    public boolean isNotValidUser(String input, List<TopicPresentable> options) {
         return !um.userExists(input);
     }
 
     /**
      * Calls {@link UserManager#setPassword(String, String)} to change password
+     * 
      * @param username user who is using the program.
-     * @param input Input specifically in to this node. In this case, it is not relevant.
-     * @param options Options available at this node. In this case, it is not relevant.
+     * @param input    Input specifically in to this node. In this case, it is not
+     *                 relevant.
+     * @param options  Options available at this node. In this case, it is not
+     *                 relevant.
      * @return the node to return to. See {@link MenuNode} for clarification
      */
     public int editPassword(String username, String input, List<TopicPresentable> options) {
@@ -59,62 +69,81 @@ public class UserController {
     }
 
     /**
-     * Calls {@link UserManager#setPassword(String, String)} to change password (administrator only)
+     * Calls {@link UserManager#setPassword(String, String)} to change password
+     * (administrator only)
+     * 
      * @param username user who is using the program.
-     * @param input Input specifically in to this node. In this case, it is not relevant.
-     * @param options Options available at this node. In this case, it is not relevant.
+     * @param input    Input specifically in to this node. In this case, it is not
+     *                 relevant.
+     * @param options  Options available at this node. In this case, it is not
+     *                 relevant.
      * @return the node to return to. See {@link MenuNode} for clarification
      */
-    public int editOtherPassword(String username,String input, List<TopicPresentable> options){
+    public int editOtherPassword(String username, String input, List<TopicPresentable> options) {
         String name = inputMap.get("target");
         um.setPassword(name, inputMap.get("password"));
         return 0;
     }
 
     /**
-     * Calls {@link UserManager#createUser(String, String, List)} to create a new account
+     * Calls {@link UserManager#createUser(String, String, List)} to create a new
+     * account
+     * 
      * @param username user who is using the program.
-     * @param input Input specifically in to this node. In this case, it is not relevant.
-     * @param options Options available at this node. In this case, it is not relevant.
+     * @param input    Input specifically in to this node. In this case, it is not
+     *                 relevant.
+     * @param options  Options available at this node. In this case, it is not
+     *                 relevant.
      * @return the node to return to. See {@link MenuNode} for clarification
      */
-    public int createAccount(String username, String input, List<TopicPresentable> options){
-        um.createUser(inputMap.get("name"), inputMap.get("password"),Template.values()[Integer.parseInt(inputMap.get("template"))- 2].getPermissions() );
+    public int createAccount(String username, String input, List<TopicPresentable> options) {
+        um.createUser(inputMap.get("username"), inputMap.get("password"), Template
+                .valueOf(inputMap.get("template_value")).getPermissions());
         return 0;
     }
 
     /**
-     * Calls {@link UserManager#createUser(String, String, List)} to create a new speaker account
+     * Calls {@link UserManager#createUser(String, String, List)} to create a new
+     * speaker account
+     * 
      * @param username user who is using the program.
-     * @param input Input specifically in to this node. In this case, it is not relevant.
-     * @param options Options available at this node. In this case, it is not relevant.
+     * @param input    Input specifically in to this node. In this case, it is not
+     *                 relevant.
+     * @param options  Options available at this node. In this case, it is not
+     *                 relevant.
      * @return the node to return to. See {@link MenuNode} for clarification
      */
-    public int createSpkAccount(String username, String input, List<TopicPresentable> options){
+    public int createSpkAccount(String username, String input, List<TopicPresentable> options) {
         um.createUser(inputMap.get("name"), inputMap.get("password"), Template.SPEAKER.getPermissions());
         return 0;
     }
 
     /**
-     * Calls {@link UserManager#removeUser(String)} to remove the user's
-     * account specified in inputMap, with tag "name".
+     * Calls {@link UserManager#removeUser(String)} to remove the user's account
+     * specified in inputMap, with tag "name".
+     * 
      * @param username user who is using the program.
-     * @param input Input specifically in to this node. In this case, it is not relevant.
-     * @param options Options available at this node. In this case, it is not relevant.
+     * @param input    Input specifically in to this node. In this case, it is not
+     *                 relevant.
+     * @param options  Options available at this node. In this case, it is not
+     *                 relevant.
      * @return the node to return to. See {@link MenuNode} for clarification
      */
-    public int deleteAccount(String username, String input, List<TopicPresentable> options){
+    public int deleteAccount(String username, String input, List<TopicPresentable> options) {
         um.removeUser(inputMap.get("name"));
         return 0;
     }
 
     /**
      * Check the user's account to see if the input password is correct or not.
-     * @param input Input specifically in to this node. In this case, it is not relevant.
-     * @param options Options available at this node. In this case, it is not relevant.
+     * 
+     * @param input   Input specifically in to this node. In this case, it is not
+     *                relevant.
+     * @param options Options available at this node. In this case, it is not
+     *                relevant.
      * @return the node to return to. See {@link MenuNode} for clarification
      */
-    public boolean isCorrectPassword(String input, List<TopicPresentable> options){
+    public boolean isCorrectPassword(String input, List<TopicPresentable> options) {
         return um.getPassword(inputMap.get("name")).equals(inputMap.get("password"));
     }
 
@@ -122,11 +151,13 @@ public class UserController {
      * Adds a permission for a given user.
      *
      * @param username user whom the permission is being applied to.
-     * @param input Input specifically in to this node. In this case, it is not relevant.
-     * @param options Options available at this node. In this case, it is not relevant.
+     * @param input    Input specifically in to this node. In this case, it is not
+     *                 relevant.
+     * @param options  Options available at this node. In this case, it is not
+     *                 relevant.
      * @return the node to return to. See {@link MenuNode} for clarification
      */
-    public int addPermission(String username, String input, List<TopicPresentable> options){
+    public int addPermission(String username, String input, List<TopicPresentable> options) {
         pm.addPermission(username, Permission.valueOf(inputMap.get("permission")));
         return 0;
     }

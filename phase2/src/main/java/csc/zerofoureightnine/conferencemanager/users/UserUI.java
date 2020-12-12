@@ -71,20 +71,10 @@ public class UserUI implements UISection {
         List<String> options = new ArrayList<>();
         Arrays.asList(Template.values()).forEach(t -> options.add(t.toString()));
         seq.addMultipleOptions("template", options, null);
-        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, userController::createAccount);
-        entryPoints.add(seq.build(Node.build(), Permission.USER_CREATE_ACCOUNT));
+        MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userController::createAccount);
+        node.backStepCount(3);
+        entryPoints.add(seq.build(node.build(), Permission.USER_CREATE_ACCOUNT));
     }
-
-
-//    private void generateOtherEditPermissionNodes(){
-//        String seqTitle = "Edit another User's Permission";
-//        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
-//        seq.addStep("username", userPresenter::enterUsername, userController::isValidUser, userPresenter::wrongInput);
-//        List<String> options = new ArrayList<>();
-//        Arrays.asList(Permission.values()).forEach(p -> options.add(p.toString()));
-//        seq.addMultipleOptions("permission", options, null);
-//        entryPoints.add(seq.build(Node.build(), Permission.USER_ALL_EDIT_PERMISSION));
-//    }
 
     private void generateOtherEditPasswordNodes(){
         String seqTitle = "Edit another User's password";

@@ -124,7 +124,7 @@ public class MenuNode { // UI
                 }
             }
         }
-        mainMenu.getTracker().incrementStat(RuntimeStat.MENUS_VISITED);
+        mainMenu.getTracker().incrementStat(RuntimeStat.MENUS_VISITED); 
         return available;
     }
 
