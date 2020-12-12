@@ -1,7 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.interaction;
 
+import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeStat;
 import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeStatModifier;
-import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeStats;
 import csc.zerofoureightnine.conferencemanager.interaction.control.Action;
 import csc.zerofoureightnine.conferencemanager.interaction.control.Validatable;
 import csc.zerofoureightnine.conferencemanager.interaction.general.OptionPresenter;
@@ -61,14 +61,14 @@ public class MenuNode { // UI
         attemptListOptions(username, nameables, mainMenu.getTracker()); // List possible options for this node.
 
         String input = obtainUserInput(scanner, nameables, mainMenu.getTracker()); // Prompt for user input.
-        mainMenu.getTracker().incrementStat(RuntimeStats.LINES_INPUTTED);
+        mainMenu.getTracker().incrementStat(RuntimeStat.LINES_INPUTTED);
         if (input == null)
             return parent != null ? parent : mainMenu;
 
         MenuNode next = available.get(action.complete(username, input, nameables));
 
         if (completable != null) {
-            mainMenu.getTracker().incrementStat(RuntimeStats.COMPLETABLE_COMPLETED);
+            mainMenu.getTracker().incrementStat(RuntimeStat.COMPLETABLE_COMPLETED);
             System.out.println(completable.getCompleteMessage(username, next.nameable));
         }
         return next;
@@ -78,7 +78,7 @@ public class MenuNode { // UI
         System.out.println(this.nameable.getIdentifier() + ":");
         if (listable != null) {
             System.out.println(listable.getInfo(username, nameables));
-            modifier.incrementStat(RuntimeStats.LISTABLE_LISTED);
+            modifier.incrementStat(RuntimeStat.LISTABLE_LISTED);
         }
     }
 
@@ -88,7 +88,7 @@ public class MenuNode { // UI
             System.out.print(promptable.getPrompt() + ": ");
             input = scanner.nextLine();
             while (validatable != null && !validatable.validateInput(input, nameables)) {
-                modifier.incrementStat(RuntimeStats.INPUT_RETRIES);
+                modifier.incrementStat(RuntimeStat.INPUT_RETRIES);
                 if (reattemptable != null) {
                     System.out.print(reattemptable.getRetryMessage() + ": ");
                     input = scanner.nextLine();
@@ -124,7 +124,7 @@ public class MenuNode { // UI
                 }
             }
         }
-        mainMenu.getTracker().incrementStat(RuntimeStats.MENUS_VISITED);
+        mainMenu.getTracker().incrementStat(RuntimeStat.MENUS_VISITED);
         return available;
     }
 
@@ -265,11 +265,11 @@ public class MenuNode { // UI
         }
 
         /**
-         * Sets the {@link InfoPresentable} presenter. If this is null, when the user is
-         * interacting with this {@link MenuNode}, no list of options message is
-         * displayed.
-         * 
-         * @param listable
+         * Set this MenuNode's listable presenter.
+         *
+         * @param listable the {@link InfoPresentable} presenter. If this is null, when the user is
+         *                 interacting with this {@link MenuNode}, no list of options message is
+         *                 displayed.
          */
         public void setListable(InfoPresentable listable) {
             this.listable = listable;

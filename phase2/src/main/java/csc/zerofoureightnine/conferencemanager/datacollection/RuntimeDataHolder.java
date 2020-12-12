@@ -1,62 +1,63 @@
 package csc.zerofoureightnine.conferencemanager.datacollection;
 
-import java.time.Instant;
+import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+import csc.zerofoureightnine.conferencemanager.users.session.SessionObserver;
+
 import java.util.EnumMap;
+import java.util.List;
 
-public class RuntimeDataHolder implements RuntimeStatModifier {
+public class RuntimeDataHolder implements RuntimeStatModifier, SessionObserver {
 
-    private EnumMap<RuntimeStats, Integer> statMap;
-    private String username = "guest";
-    private Instant lastTimeCalled;
+    private EnumMap<RuntimeStat, Integer> statMap;
 
     /**
      * Instantiates the RuntimeDataHolder.
      */
     public RuntimeDataHolder() {
-        this.statMap = new EnumMap<>(RuntimeStats.class);
+        this.statMap = new EnumMap<>(RuntimeStat.class);
         resetMap();
     }
 
+    //private, so no need for javadoc. but if you are curious.
+    //this method will reset the map for the new user, by setting all values to 0.
     private void resetMap() {
-        for (RuntimeStats stat : RuntimeStats.values()
+        for (RuntimeStat stat : RuntimeStat.values()
         ) {
             statMap.put(stat, 0);
         }
     }
 
     /**
-     * Increments the value of a given RuntimeStat.
+     * Increments the value of a given {@link RuntimeStat}.
      *
      * @param runtimeStat The RuntimeStat to be incremented.
      */
     @Override
-    public void incrementStat(RuntimeStats runtimeStat) {
+    public void incrementStat(RuntimeStat runtimeStat) {
         Integer runtimeStatValue = statMap.get(runtimeStat) + 1;
         statMap.put(runtimeStat, runtimeStatValue);
-        System.out.println(statMap.toString());
     }
 
     /**
-     * Returns the PersistentMap pMap.
-     */
-    public EnumMap<RuntimeStats, Integer> getMap() {
-        return statMap; }
-
-    /**
-     * Returns the stored username.
-     */
-    public String getUsername() { return username;
-    }
-
-    /**
-     * Sets the username.
+     * Get the representation of this user's runtime statistics
      *
-     * @param username The username to be stored.
+     * @return an EnumMap with key {@link RuntimeStat}, and value {@link Integer},
+     * representing number of occurences.
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public EnumMap<RuntimeStat, Integer> getMap() {
+        return statMap;
+    }
+
+
+    /**
+     * Change the authentication state.
+     *
+     * @param username    the newly logged or out user, represented by their username.
+     * @param permissions a list of the user's {@link Permission}.
+     * @param loggedIn    true if someone is logged in, false if otherwise.
+     */
+    @Override
+    public void authenticationStateChanged(String username, List<Permission> permissions, boolean loggedIn) {
         resetMap();
     }
-
-
 }
