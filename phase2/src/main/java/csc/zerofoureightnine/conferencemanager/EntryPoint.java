@@ -1,5 +1,6 @@
 package csc.zerofoureightnine.conferencemanager;
 
+import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeDataHolder;
 import csc.zerofoureightnine.conferencemanager.events.EventController;
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.events.EventPresenter;
@@ -9,7 +10,6 @@ import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLConfiguration;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.RuntimeData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
 import csc.zerofoureightnine.conferencemanager.interaction.ConsoleUserInterface;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuBuilder;
@@ -35,7 +35,7 @@ public class EntryPoint {
         MenuBuilder menuBuilder = new MenuBuilder(root);
 
         PersistentMap<String, UserData> userMap = new SQLMap<>(configuration, UserData.class);
-        PersistentMap<String, RuntimeData> runtimeDataMap = new SQLMap<>(configuration, RuntimeData.class);
+        RuntimeDataHolder runtimeDataHolder = new RuntimeDataHolder();
         PermissionManager permissionManager = new PermissionManager(userMap);
         MessageManager messageManager = new MessageManager(new SQLMap<>(configuration, MessageData.class));
         UserManager userManager = new UserManager(userMap);
@@ -50,8 +50,9 @@ public class EntryPoint {
                 permissionManager);
         EventController eventController = new EventController(eventManager,userManager,permissionManager, inputMap);
 
+
         menuBuilder.addSectionUI(new MessageUI(messageController, messagePresenter), new SessionUI(sessionController, sessionPresenter), new EventUI(eventController,eventPresenter));
-        ConsoleUserInterface userInterface = new ConsoleUserInterface(menuBuilder.build());
+        ConsoleUserInterface userInterface = new ConsoleUserInterface(menuBuilder.build(runtimeDataHolder)); // Dependency injection!!!
         sessionController.addObserver(userInterface);
         userInterface.interact();
     }

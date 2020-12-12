@@ -1,24 +1,15 @@
 package csc.zerofoureightnine.conferencemanager.interaction;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
-
+import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeStatModifier;
+import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeStats;
 import csc.zerofoureightnine.conferencemanager.interaction.control.Action;
 import csc.zerofoureightnine.conferencemanager.interaction.control.Validatable;
 import csc.zerofoureightnine.conferencemanager.interaction.general.OptionPresenter;
 import csc.zerofoureightnine.conferencemanager.interaction.general.OptionSelector;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.completePresentable;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.InfoPresentable;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.PromptPresentable;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.RetryPromptPresentable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.*;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
+
+import java.util.*;
 
 public class MenuNode { // UI
     private final Permission permission; // may be null.
@@ -34,6 +25,7 @@ public class MenuNode { // UI
     private final InfoPresentable listable;
     private final RetryPromptPresentable reattemptable;
     private final int backStepCount;
+    private RuntimeStatModifier tracker;
     private boolean disabled = false;
 
     public MenuNode(Permission permission, Validatable validatable, TopicPresentable nameable, Action action,
@@ -66,31 +58,37 @@ public class MenuNode { // UI
             nameables.add(m == null ? null : m.nameable);
         });
         System.out.println("----");
-        attemptListOptions(nameables); // List possible options for this node.
+        attemptListOptions(nameables, mainMenu.getTracker()); // List possible options for this node.
 
-        String input = obtainUserInput(scanner, nameables); // Prompt for user input.
+        String input = obtainUserInput(scanner, nameables, mainMenu.getTracker()); // Prompt for user input.
+        mainMenu.getTracker().incrementStat(RuntimeStats.LINES_INPUTTED);
         if (input == null)
             return parent != null ? parent : mainMenu;
 
         MenuNode next = available.get(action.complete(username, input, nameables));
 
-        if (completable != null)
+        if (completable != null) {
+            mainMenu.getTracker().incrementStat(RuntimeStats.COMPLETABLE_COMPLETED);
             System.out.println(completable.getCompleteMessage(next.nameable));
+        }
         return next;
     }
 
-    private void attemptListOptions(List<TopicPresentable> nameables) {
+    private void attemptListOptions(List<TopicPresentable> nameables, RuntimeStatModifier modifier) {
         System.out.println(this.nameable.getIdentifier() + ":");
-        if (listable != null)
+        if (listable != null) {
             System.out.println(listable.getInfo(nameables));
+            modifier.incrementStat(RuntimeStats.LISTABLE_LISTED);
+        }
     }
 
-    private String obtainUserInput(Scanner scanner, List<TopicPresentable> nameables) {
+    private String obtainUserInput(Scanner scanner, List<TopicPresentable> nameables, RuntimeStatModifier modifier) {
         String input = "";
         if (promptable != null) {
             System.out.print(promptable.getPrompt() + ": ");
             input = scanner.nextLine();
             while (validatable != null && !validatable.validateInput(input, nameables)) {
+                modifier.incrementStat(RuntimeStats.INPUT_RETRIES);
                 if (reattemptable != null) {
                     System.out.print(reattemptable.getRetryMessage() + ": ");
                     input = scanner.nextLine();
@@ -126,6 +124,7 @@ public class MenuNode { // UI
                 }
             }
         }
+        mainMenu.getTracker().incrementStat(RuntimeStats.MENUS_VISITED);
         return available;
     }
 
@@ -135,6 +134,14 @@ public class MenuNode { // UI
 
     public boolean isDisabled() {
         return disabled;
+    }
+
+    public RuntimeStatModifier getTracker() {
+        return this.tracker;
+    }
+
+    public void setTracker(RuntimeStatModifier tracker) {
+        this.tracker = tracker;
     }
 
     @Override

@@ -1,17 +1,13 @@
 package csc.zerofoureightnine.conferencemanager.users.session;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 
-public class SessionController { // UI
+import java.util.*;
+
+public class SessionController {
     private Set<SessionObserver> observers = new HashSet<>();
     private Map<String, String> inputMap = new HashMap<>();
     private UserManager userManager;
@@ -74,8 +70,9 @@ public class SessionController { // UI
 
     /**
      * Create an user account.
-     * @param username
-     * @param input user input
+     *
+     * @param username          this is null, because no user is logged in currently - since this is in sessionController
+     * @param input             user input
      * @param selectableOptions the options available to user
      * @return int 1 after the new user account is created
      */

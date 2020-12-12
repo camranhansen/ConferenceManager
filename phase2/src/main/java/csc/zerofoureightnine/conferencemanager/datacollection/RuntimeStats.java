@@ -1,9 +1,9 @@
 package csc.zerofoureightnine.conferencemanager.datacollection;
 
 public enum RuntimeStats {
-    BAD_INPUT,
+    INPUT_RETRIES,
     MENUS_VISITED,
     LINES_INPUTTED,
-    // MOST_INVOKED_PERMISSION,
-    TIME_SPENT,
+    COMPLETABLE_COMPLETED,
+    LISTABLE_LISTED,
 }

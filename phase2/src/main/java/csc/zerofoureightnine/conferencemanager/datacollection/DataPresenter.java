@@ -1,6 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.datacollection;
 
-import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.RuntimeData;
+
+import java.util.EnumMap;
 
 public class DataPresenter {
 
@@ -14,10 +15,10 @@ public class DataPresenter {
     }
 
     public String getRuntimeStats() {
-        RuntimeData runtimeData = runtimeDataHolder.getMap().get(username);
+        EnumMap<RuntimeStats, Integer> runtimeData = runtimeDataHolder.getMap();
         StringBuilder stringBuilder = new StringBuilder();
         for (RuntimeStats key : RuntimeStats.values()) {
-            stringBuilder.append(key).append(": ").append(runtimeData.getStatValue(key)).append(System.lineSeparator());
+            stringBuilder.append(key).append(": ").append(runtimeData.get(key)).append(System.lineSeparator());
         }
         return stringBuilder.toString();
     }

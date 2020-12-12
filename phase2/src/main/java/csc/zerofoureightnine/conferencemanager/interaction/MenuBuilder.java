@@ -1,9 +1,10 @@
 package csc.zerofoureightnine.conferencemanager.interaction;
 
-import java.util.ArrayList;
-
+import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeStatModifier;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode.MenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.control.UISection;
+
+import java.util.ArrayList;
 
 public class MenuBuilder {
     private MenuNodeBuilder mainMenu;
@@ -11,6 +12,7 @@ public class MenuBuilder {
 
     public MenuBuilder(MenuNodeBuilder rootMenuNodeBuilder) {
         this.mainMenu = rootMenuNodeBuilder;
+
 
     }
 
@@ -22,9 +24,11 @@ public class MenuBuilder {
         }
     }
 
-    public MenuNode build() {
+    public MenuNode build(RuntimeStatModifier tracker) {
         mainMenu.addChildren(sectionNodes);
-        return mainMenu.build();
+        MenuNode main = mainMenu.build();
+        main.setTracker(tracker);
+        return main;
     }
     
 }
