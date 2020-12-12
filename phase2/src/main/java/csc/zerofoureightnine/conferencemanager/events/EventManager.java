@@ -380,6 +380,50 @@ public class EventManager {
         return pMap.get(id).getType();
     }
 
+    /**
+     * Returns the total number of events.
+     * @return An integer representing the number of events which are currently registered.
+     */
+    public int totalEventNumber() { return pMap.size(); }
+
+    /**
+     * Returns the total number of events of a specific {@link EventType}.
+     * @param eventType The type of event to search for.
+     * @return An integer representing the number of events of the specified {@link EventType}.
+     */
+    public int totalOfEventType(EventType eventType) {
+        int total = 0;
+        for (String key: getAllEventIds()) {
+            if (getEventType(key).equals(eventType)) { total++; }
+        }
+        return total;
+    }
+
+    /**
+     * Returns the most common {@link EventType} which events are registered as.
+     * @return The most commonly-occuring {@link EventType}.
+     */
+    public EventType mostPopularEventType() {
+        int parties = totalOfEventType(EventType.PARTY);
+        int singles = totalOfEventType(EventType.SINGLE);
+        int multies = totalOfEventType(EventType.MULTI);
+        if (parties >= singles && parties >= multies) { return EventType.PARTY; }
+        if (singles >= parties && singles >= multies) { return EventType.SINGLE; }
+        return EventType.MULTI;
+    }
+
+    /**
+     * Returns the truncated average capacity of all registered events.
+     * @return An integer representing the truncated average capacity of all registered events.
+     */
+    public int averageCapacity() {
+        int total = 0;
+        for (String key: getAllEventIds()) {
+            total += pMap.get(key).getCapacity();
+        }
+        return total / pMap.size();
+    }
+
     public boolean validHourForEvent(String room, List<String> speakers, String dayOfMonth, String hour){
         Instant time = parseTime(dayOfMonth, hour);
         if (checkRoom(time, room)){
