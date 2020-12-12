@@ -19,6 +19,13 @@ public class UserUI implements UISection {
     private SpecialRequestPresenter specialRequestPresenter;
     List<MenuNode> entryPoints;
 
+    /**
+     * Constructs a UserUI.
+     * @param userController a {@link UserController}.
+     * @param userPresenter a {@link UserPresenter}.
+     * @param specialRequestController a {@link SpecialRequestController}.
+     * @param specialRequestPresenter a {@link SpecialRequestPresenter}.
+     */
     public UserUI(UserController userController, UserPresenter userPresenter, SpecialRequestController specialRequestController, SpecialRequestPresenter specialRequestPresenter) {
         this.userController = userController;
         this.userPresenter = userPresenter;
@@ -26,6 +33,9 @@ public class UserUI implements UISection {
         this.specialRequestPresenter = specialRequestPresenter;
     }
 
+    /**
+     * @return a list of menu nodes.
+     */
     @Override
     public List<MenuNode> getEntryMenuNodes() {
         if (entryPoints != null)
@@ -45,6 +55,9 @@ public class UserUI implements UISection {
         return entryPoints;
     }
 
+    /**
+     * @return the name of the section.
+     */
     @Override
     public String getSectionListing() {
         return "Account Management";
