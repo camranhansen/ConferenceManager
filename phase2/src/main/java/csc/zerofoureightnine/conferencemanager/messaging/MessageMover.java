@@ -31,8 +31,7 @@ public class MessageMover {
         this.messageManager.getMessageData().beginInteraction();
         List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m: md){
-            if(from.equals(m.getSender())&&content.equals(m.getContent())&&timeSent.equals
-                    (this.getTime(m.getTimeSent()))){
+            if(from.equals(m.getSender())&&(content.equals(m.getContent()))&&(timeSent.equals(this.getTime(m.getTimeSent())))){
                 m.removeFromRead(username);
             }
         }
@@ -51,8 +50,7 @@ public class MessageMover {
         this.messageManager.getMessageData().beginInteraction();
         List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m: md){
-            if(from.equals(m.getSender())&&content.equals(m.getContent())&&timeSent.equals
-                    (this.getTime(m.getTimeSent()))){
+            if(from.equals(m.getSender())&&(content.equals(m.getContent()))&&(timeSent.equals(this.getTime(m.getTimeSent())))){
                 if(!m.getRead().contains(username)){
                     m.addToRead(username);
                 }
@@ -73,8 +71,7 @@ public class MessageMover {
         this.messageManager.getMessageData().beginInteraction();
         List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m : md) {
-            if (from.equals(m.getSender()) && content.equals(m.getContent()) && timeSent.equals
-                    (this.getTime(m.getTimeSent()))) {
+            if (from.equals(m.getSender()) && (content.equals(m.getContent())) && (timeSent.equals(this.getTime(m.getTimeSent())))) {
                 if (!m.getArchived().contains(username)) {
                     m.addToArchived(username);
                 }
@@ -95,8 +92,7 @@ public class MessageMover {
         this.messageManager.getMessageData().beginInteraction();
         List<MessageData> md = this.messageManager.getMessageData().loadInCollection("recipients", username);
         for (MessageData m : md) {
-            if (from.equals(m.getSender()) && content.equals(m.getContent()) && timeSent.equals
-                    (this.getTime(m.getTimeSent()))) {
+            if (from.equals(m.getSender()) && (content.equals(m.getContent())) && (timeSent.equals(this.getTime(m.getTimeSent())))) {
                 m.removeFromArchived(username);
             }
         }
@@ -163,7 +159,7 @@ public class MessageMover {
         this.messageManager.getMessageData().endInteraction();
     }
 
-    private String getTime(Instant time){
+    public String getTime(Instant time){
         StringBuilder string = new StringBuilder();
         String string1 = time.toString();
         string.append(string1.substring(0, string1.indexOf(".")));
