@@ -108,7 +108,7 @@ public class EventPresenter {
         return("Please enter a number designating the capacity");
     }
 
-    public String eventCreateConfirmation(){
+    public String eventCreateConfirmation(String username, TopicPresentable p) {
         return "Event created!";
     }
 

@@ -111,11 +111,7 @@ public class SessionController {
         this.observers.remove(observer);
     }
 
-    /**
-     * Update user's login status.
-     * @param username username of the user
-     * @param loggedIn status of the user
-     */
+
     private void onAuthenticationStateChange(String username, boolean loggedIn) {
         for (SessionObserver sessionObserver : observers) {
             sessionObserver.authenticationStateChanged(username, permissionManager.getPermissions(username), loggedIn);

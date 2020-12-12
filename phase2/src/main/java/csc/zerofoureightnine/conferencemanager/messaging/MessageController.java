@@ -1,8 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
@@ -12,7 +10,7 @@ import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 
 public class MessageController {
     private MessageManager messageManager;
-    private HashMap<String, String> inputMap = new HashMap<>();
+    private Map<String, String> inputMap = new HashMap<>();
     private UserManager userManager;
     private PermissionManager permissionManager;
     private MessageMover messageMover;
@@ -90,7 +88,7 @@ public class MessageController {
      * @return zero for continuation purposes
      */
     public int messageSingleEvent(String username, String input, List<TopicPresentable> options){
-        List<String> users = eventManager.getParticipants(inputMap.get("event_id"));
+        Collection<String> users = eventManager.getParticipants(inputMap.get("event_id"));
         if (users.size() == 0){
             return 0;
         }
@@ -263,9 +261,9 @@ public class MessageController {
     /**
      * Returns the input map of this MessageController.
      *
-     * @return a HashMap of String to String of the input
+     * @return a Map of String to String of the input
      */
-    public HashMap<String, String> getInputMap() {
+    public Map<String, String> getInputMap() {
         return inputMap;
     }
 

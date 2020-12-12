@@ -19,6 +19,11 @@ public class SessionUI implements UISection, SessionObserver {
     private MenuNode changePersonalPasswordNode;
 
 
+    /**
+     * Initiates SessionUI
+     * @param sessionController {@link SessionController}
+     * @param sessionPresenter {@link SessionPresenter}
+     */
     public SessionUI(SessionController sessionController, SessionPresenter sessionPresenter) {
         this.sessionPresenter = sessionPresenter;
         this.sessionController = sessionController;
@@ -26,6 +31,10 @@ public class SessionUI implements UISection, SessionObserver {
         this.sessionController.addObserver(this);
     }
 
+    /**
+     * Returns all entry {@link MenuNode} required for the functionality of {@link SessionController}.
+     * @return a list of entry {@link MenuNode}
+     */
     @Override
     public List<MenuNode> getEntryMenuNodes() {
         if (entryNodes != null)
@@ -50,6 +59,7 @@ public class SessionUI implements UISection, SessionObserver {
         authEnd.backStepCount(3);
         return authenticationSeq.build(authEnd.build());
     }
+
 
     private MenuNode buildUserCreationNode() {
         String userCreation = "Create Attendee Account";
@@ -76,6 +86,11 @@ public class SessionUI implements UISection, SessionObserver {
         return changeNode.build();
     }
 
+    /**
+     * Check if the user is logged in and returns corresponding {@link String} prompts.
+     * @return {@link String} "Login / Create account" if user is not logged in,
+     * {@link SessionController#getLoggedInUser()} + "'s account" otherwise.
+     */
     @Override
     public String getSectionListing() {
         if (sessionController.getLoggedInUser() != null)
@@ -83,6 +98,12 @@ public class SessionUI implements UISection, SessionObserver {
         return "Login / Create account";
     }
 
+    /**
+     * Enable and disable the corresponding functionalities by user's login status
+     * @param username username of the user
+     * @param permissions list of {@link Permission} that the user has
+     * @param loggedIn login status of the user
+     */
     @Override
     public void authenticationStateChanged(String username, List<Permission> permissions, boolean loggedIn) {
         if (loggedIn) {

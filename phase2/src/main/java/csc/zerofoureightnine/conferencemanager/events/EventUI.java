@@ -115,6 +115,7 @@ public class EventUI implements UISection {
         eventCreateSeq.addStep("speakers", eventPresenter::enterSpeakerName, eventController::isValidSpeakers, eventPresenter::wrongInput);
         eventCreateSeq.addStep("capacity", eventPresenter::enterCapacity, eventController::isValidCapacity, eventPresenter::wrongInput);
         MenuNode.MenuNodeBuilder createEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::createEvent);
+        createEventNode.setCompletable(eventPresenter::eventCreateConfirmation);
         entryPoints.add(eventCreateSeq.build(createEventNode.build(), Permission.EVENT_CREATE));
     }
 
@@ -141,7 +142,6 @@ public class EventUI implements UISection {
         seq.addStep("target", eventPresenter::enterUsername, eventController::isValidUsername, eventPresenter::wrongInput);
         MenuNode.MenuNodeBuilder dropEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::enrollOther);
         entryPoints.add(seq.build(dropEventNode.build(), Permission.EVENT_OTHER_ENROLL));
-
     }
 
 //    public void generateShowUserEventNodes(){

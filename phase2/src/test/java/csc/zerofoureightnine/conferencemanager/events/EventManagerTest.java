@@ -49,23 +49,6 @@ public class EventManagerTest {
     }
 
     @Test
-    public void createEditedEvent() {
-        EventManager eventManager = new EventManager(pMap);
-        Instant time = MAX;
-        List<String> speakerList = Arrays.asList("Bob", "John");
-        List<String> participantsList = Arrays.asList("Cool", "Mike");
-        eventManager.createEditedEvent(speakerList, time,"Test Event", participantsList,
-                "Meeting Room 1", 2, EventType.MULTI);
-
-        Event newEvent = new Event(speakerList, participantsList, time, "Test Event", "Meeting Room 1", 2,
-                EventType.MULTI);
-        EventData expectedData = eventManager.convertEventToEventData(newEvent);
-        expectedData.addParticipants(participantsList);
-        EventData actual = eventManager.getDataById("Meeting Room 1"+time.toString());
-        assertEquals(expectedData, actual);
-    }
-
-    @Test
     public void deleteEvent() {
         EventManager eventManager = new EventManager(pMap);
         eventManager.clear();

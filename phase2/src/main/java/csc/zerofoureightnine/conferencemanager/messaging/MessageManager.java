@@ -18,7 +18,6 @@ import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 public class MessageManager {
 
 
-    //private HashMap<String, HashMap<String, List<Message>>> inboxes;
     private PersistentMap<String, MessageData> messageData;
 
     /**
@@ -415,30 +414,30 @@ public class MessageManager {
         return inbox.toString();
     }
 
-    /**
-     * Returns a list of the information of all message sent to the user including sender, sent time, content, and all
-     * recipients.
-     * @param user Username of the recipient.
-     * @return A list of String[] that stores all information of all the messages sent to the given user. Each String[]
-     * contains the sender's username at index 0, sent time at index 1, content at index 2, and String[] of recipients'
-     * usernames at index 3, of a single message sent to the given user.
-     */
-    public List<String[]> getInboxAsArray(String user) {
-        Map<String, List<Message>> inbox = retrieveUserInbox(user);
-
-        List<String[]> res = new ArrayList<>();
-        for (List<Message> fromUser : inbox.values()) {
-            String[] text = new String[4];
-            for (Message message : fromUser) {
-                text[0] = message.getSender();
-                text[1] = message.getTimeSent().toString();
-                text[2] = message.getContent();
-                text[3] = Arrays.toString(message.getRecipients()).replaceAll("[\\[\\]]", "");
-            }
-            res.add(text);
-        }
-        return res;
-    }
+//    /**
+//     * Returns a list of the information of all message sent to the user including sender, sent time, content, and all
+//     * recipients.
+//     * @param user Username of the recipient.
+//     * @return A list of String[] that stores all information of all the messages sent to the given user. Each String[]
+//     * contains the sender's username at index 0, sent time at index 1, content at index 2, and String[] of recipients'
+//     * usernames at index 3, of a single message sent to the given user.
+//     */
+//    public List<String[]> getInboxAsArray(String user) {
+//        Map<String, List<Message>> inbox = retrieveUserInbox(user);
+//
+//        List<String[]> res = new ArrayList<>();
+//        for (List<Message> fromUser : inbox.values()) {
+//            String[] text = new String[4];
+//            for (Message message : fromUser) {
+//                text[0] = message.getSender();
+//                text[1] = message.getTimeSent().toString();
+//                text[2] = message.getContent();
+//                text[3] = Arrays.toString(message.getRecipients()).replaceAll("[\\[\\]]", "");
+//            }
+//            res.add(text);
+//        }
+//        return res;
+//    }
 
     /**
      * Returns true if the content, sender and time sent was been a message this username has received.

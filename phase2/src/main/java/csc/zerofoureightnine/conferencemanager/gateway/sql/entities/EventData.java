@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -39,6 +40,15 @@ public class EventData implements Identifiable<String> {
 
     @Column(name = "event_type")
     private EventType type;
+
+    public void setEventData(Collection<String> speakerName, Instant time, String eventName, String room, int capacity, EventType type) {
+        speakers.addAll(speakerName);
+        this.time = time;
+        this.eventName = eventName;
+        this.room = room;
+        this.capacity = capacity;
+        this.type = type;
+    }
 
     public Set<String> getSpeakers() {
         return speakers;
