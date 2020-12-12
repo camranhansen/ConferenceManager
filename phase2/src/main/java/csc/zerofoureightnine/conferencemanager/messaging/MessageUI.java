@@ -179,7 +179,7 @@ public class MessageUI implements UISection {
         LinkedMenuNodeBuilder viewInboxSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
         viewInboxSeq.addStep("from", messagePresenter::getPromptForFrom, messageController::isValidMessageRecipient, messagePresenter::invalidUsername);
         MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle);
-        end.setCompletable(messagePresenter::getUserInboxFrom);
+        end.setListable(messagePresenter::getUserInboxFrom);
         return (viewInboxSeq.build(end.build()));
     }
 
