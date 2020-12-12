@@ -30,6 +30,7 @@ public class UserUI implements UISection {
     public List<MenuNode> getEntryMenuNodes() {
         if (entryPoints != null)
             return entryPoints;
+        entryPoints = new ArrayList<>();
         generateCreateAccountNodes();
         generateOtherEditPasswordNodes();
         generateDeleteSelfAccountNodes();
@@ -46,7 +47,7 @@ public class UserUI implements UISection {
 
     @Override
     public String getSectionListing() {
-        return "User Management";
+        return "Account Management";
     }
 
     private void generateCreateAccountNodes(){
@@ -58,7 +59,7 @@ public class UserUI implements UISection {
         Arrays.asList(Template.values()).forEach(t -> options.add(t.toString()));
         seq.addMultipleOptions("template", options, null);
         MenuNode.MenuNodeBuilder createAccountNode = new MenuNode.MenuNodeBuilder(seqTitle, userController::createAccount);
-        entryPoints.add(seq.build(createAccountNode.build(), Permission.USER_SELF_EDIT_PASSWORD));
+        entryPoints.add(seq.build(createAccountNode.build(), Permission.USER_CREATE_ACCOUNT));
     }
 
     private void generateOtherEditPasswordNodes(){

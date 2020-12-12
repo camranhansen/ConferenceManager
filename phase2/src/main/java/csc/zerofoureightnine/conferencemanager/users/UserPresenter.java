@@ -20,7 +20,7 @@ public class UserPresenter {
      * @return a String containing the question to be asked
      */
     public String enterPassword(){
-        return ("Please enter the relevant password:");
+        return ("Please enter the relevant password");
     }
 
     /**
