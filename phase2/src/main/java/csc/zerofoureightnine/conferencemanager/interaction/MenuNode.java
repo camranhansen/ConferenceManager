@@ -28,7 +28,7 @@ public class MenuNode { // UI
     private RuntimeStatModifier tracker;
     private boolean disabled = false;
 
-    public MenuNode(Permission permission, Validatable validatable, TopicPresentable nameable, Action action,
+    private MenuNode(Permission permission, Validatable validatable, TopicPresentable nameable, Action action,
             CompletePresentable completable, PromptPresentable promptable, InfoPresentable listable,
             RetryPromptPresentable reattemptable, Set<MenuNode> children, int backStepCount) {
         this.permission = permission;
