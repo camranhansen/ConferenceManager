@@ -60,7 +60,7 @@ public class UserUI implements UISection {
      */
     @Override
     public String getSectionListing() {
-        return "Account Management";
+        return "User Management";
     }
 
     private void generateCreateAccountNodes(){

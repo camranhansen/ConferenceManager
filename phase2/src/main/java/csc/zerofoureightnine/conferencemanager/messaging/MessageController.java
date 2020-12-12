@@ -1,12 +1,18 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
+import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
-
-import java.util.*;
 
 public class MessageController {
     private MessageManager messageManager;
@@ -234,10 +240,24 @@ public class MessageController {
         return inputMap;
     }
 
+    /**
+     * Simply asks for input to confirm with the user.
+     * @param username the current users username.
+     * @param input the users input for this {@link MenuNode}.
+     * @param topics the variety of children this {@link MenuNode} has.
+     * @return a numerical value representing the option from topics selected.
+     */
     public int confirmationAction(String username, String input, List<TopicPresentable> topics) {
         return 1;
     }
 
+    /**
+     * Similar to {@link MessageController#confirmationAction(String, String, List)}, with the only difference of setting the selected messages to read.
+     * @param username the current users username.
+     * @param input the users input for this {@link MenuNode}.
+     * @param topics the variety of children this {@link MenuNode} has.
+     * @return a numerical value representing the option from topics selected.
+     */
     public int confirmationReadAction(String username, String input, List<TopicPresentable> topics) {
         for (String uuid : selectedMessageIDs) {
             messageMover.moveUnreadToRead(UUID.fromString(uuid), username);
@@ -254,11 +274,21 @@ public class MessageController {
         return users;
     }
 
+    /**
+     * Checks if a numerical selection from the group of messages being presented by {@link MessagePresenter}.
+     * @param input the current user's input
+     * @param options the options available to user, may be null
+     * @return A boolean stating whether or not the input number is within bounds of selectable messages.
+     */
     public boolean validateMessageSelectionFromGroup(String input, List<TopicPresentable> opts) {
         return input.matches("^[0-9]+$") && 
         Integer.parseInt(input) < selectedMessageIDs.size();
     }
 
+    /**
+     * 
+     * @return A {@link List} of {@link String}s that represent the IDs of the messages currently being looked at by the user through the {@link MessagePresenter}.
+     */
     public List<String> getSelectedMessageIDs() {
         return selectedMessageIDs;
     }
