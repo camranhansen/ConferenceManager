@@ -160,26 +160,23 @@ public class MessageUI implements UISection {
 
     private MenuNode getUnreadInbox(){
         String messageSeqTitle = "View Unread Inbox";
-        LinkedMenuNodeBuilder viewUnreadSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
-        viewUnreadSeq.addStep("username", messagePresenter::getPromptUsername, messageController::isValidMessageRecipient, messagePresenter::invalidUsername);
-        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle);
-        end.setCompletable(messagePresenter::getUserUnread);
-        return viewUnreadSeq.build(end.build());
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageController::confirmationAction);
+        end.setPromptable(messagePresenter::promptForConfirmation);
+        end.setListable(messagePresenter::getUserInbox);
+        return end.build();
     }
 
     private MenuNode getEntireInbox(){
         String messageSeqTitle = "View Entire Inbox";
-        LinkedMenuNodeBuilder viewAllSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
-        viewAllSeq.addStep("username", messagePresenter::getPromptUsername, messageController::isValidMessageRecipient, messagePresenter::invalidUsername);
-        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle);
-        end.setCompletable(messagePresenter::getUserInbox);
-        return (viewAllSeq.build(end.build()));
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageController::confirmationAction);
+        end.setPromptable(messagePresenter::promptForConfirmation);
+        end.setListable(messagePresenter::getUserInbox);
+        return end.build();
     }
 
     private MenuNode getInboxFrom(){
         String messageSeqTitle = "View Messages From Username";
-        LinkedMenuNodeBuilder viewInboxSeq= new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
-        viewInboxSeq.addStep("username", messagePresenter::getPromptUsername, messageController::isValidMessageRecipient, messagePresenter::invalidUsername);
+        LinkedMenuNodeBuilder viewInboxSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
         viewInboxSeq.addStep("from", messagePresenter::getPromptForFrom, messageController::isValidMessageRecipient, messagePresenter::invalidUsername);
         MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle);
         end.setCompletable(messagePresenter::getUserInboxFrom);
@@ -188,11 +185,10 @@ public class MessageUI implements UISection {
 
     private MenuNode getArchivedInbox(){
         String messageSeqTitle = "View Archived Messages";
-        LinkedMenuNodeBuilder viewInboxSeq= new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
-        viewInboxSeq.addStep("username", messagePresenter::getPromptUsername, messageController::isValidMessageRecipient, messagePresenter::invalidUsername);
-        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle);
-        end.setCompletable(messagePresenter::getUserArchived);
-        return (viewInboxSeq.build(end.build()));
+        MenuNodeBuilder node = new MenuNodeBuilder(messageSeqTitle, messageController::confirmationAction);
+        node.setPromptable(messagePresenter::promptForConfirmation);
+        node.setListable(messagePresenter::getUserInbox);
+        return (node.build());
     }
 
     private MenuNode generateMessageViewingNodes(){

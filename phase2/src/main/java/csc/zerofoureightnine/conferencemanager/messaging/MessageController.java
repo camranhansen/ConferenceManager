@@ -270,6 +270,10 @@ public class MessageController {
         return inputMap;
     }
 
+    public int confirmationAction(String username, String input, List<TopicPresentable> topics) {
+        return 1;
+    }
+
     private List<String> getParticipants(List<String> eventIds){
         List<String> users = new ArrayList<>();
         for (String eventId : eventIds){

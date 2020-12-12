@@ -27,7 +27,7 @@ public class MessagePresenter {
      *         username is given by {@code inputMap}
      */
     public String getUserUnread(String username, TopicPresentable nextNode) {
-        return manager.unreadInboxToString(inputMap.get("username"));
+        return manager.unreadInboxToString(username);
     }
 
     /**
@@ -36,8 +36,8 @@ public class MessagePresenter {
      * @return a {@link String} representing all messages of the user whose username
      *         is given by {@code inputMap}
      */
-    public String getUserInbox(String username, TopicPresentable nextNode) {
-        return manager.wholeInboxToString(inputMap.get("username"));
+    public String getUserInbox(String username, List<TopicPresentable> topics) {
+        return manager.wholeInboxToString(username);
     }
 
     /**
@@ -47,7 +47,7 @@ public class MessagePresenter {
      *         sender to the user whose usernames are given by {@code inputMap}.
      */
     public String getUserInboxFrom(String username, TopicPresentable nextNode) {
-        return manager.singleInboxToString(inputMap.get("username"), inputMap.get("from"));
+        return manager.singleInboxToString(username, inputMap.get("from"));
 
     }
 
@@ -182,5 +182,9 @@ public class MessagePresenter {
      */
     public String invalidEventId() {
         return "This event id is invalid, please try again";
+    }
+
+    public String promptForConfirmation() {
+        return "Press enter to continue";
     }
 }

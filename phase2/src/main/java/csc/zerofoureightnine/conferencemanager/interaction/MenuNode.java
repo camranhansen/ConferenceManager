@@ -66,7 +66,7 @@ public class MenuNode { // UI
             nameables.add(m == null ? null : m.nameable);
         });
         System.out.println("----");
-        attemptListOptions(nameables); // List possible options for this node.
+        attemptListOptions(username, nameables); // List possible options for this node.
 
         String input = obtainUserInput(scanner, nameables); // Prompt for user input.
         if (input == null)
@@ -79,10 +79,10 @@ public class MenuNode { // UI
         return next;
     }
 
-    private void attemptListOptions(List<TopicPresentable> nameables) {
+    private void attemptListOptions(String username, List<TopicPresentable> nameables) {
         System.out.println(this.nameable.getIdentifier() + ":");
         if (listable != null)
-            System.out.println(listable.getInfo(nameables));
+            System.out.println(listable.getInfo(username, nameables));
     }
 
     private String obtainUserInput(Scanner scanner, List<TopicPresentable> nameables) {

@@ -32,7 +32,7 @@ public class OptionPresenter implements TopicPresentable, PromptPresentable, Inf
     }
 
     @Override
-    public String getInfo(List<TopicPresentable> options) {
+    public String getInfo(String username, List<TopicPresentable> options) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < options.size(); i++) {
             sb.append(i + ") ");

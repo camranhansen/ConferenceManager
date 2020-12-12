@@ -14,5 +14,5 @@ public interface InfoPresentable {
      *                selections of {@see MenuNode}'s to traverse to.
      * @return The formatted {@link String} with all options displayed to the user.
      */
-    String getInfo(List<TopicPresentable> options);
+    String getInfo(String username, List<TopicPresentable> options);
 }
