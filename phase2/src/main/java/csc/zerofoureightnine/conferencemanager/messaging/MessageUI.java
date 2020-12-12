@@ -178,7 +178,7 @@ public class MessageUI implements UISection {
         String messageSeqTitle = "View Messages From Username";
         LinkedMenuNodeBuilder viewInboxSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
         viewInboxSeq.addStep("from", messagePresenter::getPromptForFrom, messageController::isValidMessageRecipient, messagePresenter::invalidUsername);
-        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle);
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageController::confirmationAction);
         end.setListable(messagePresenter::getUserInboxFrom);
         return (viewInboxSeq.build(end.build()));
     }
