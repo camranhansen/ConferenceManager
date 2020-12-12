@@ -8,7 +8,7 @@ import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 public class SessionPresenter implements SessionObserver {
     private String loggedInUser;
 
-    public String authenticationAttemptedMessage(TopicPresentable n) {
+    public String authenticationAttemptedMessage(String username, TopicPresentable n) {
         if (loggedInUser != null) return "Welcome " + loggedInUser + "!";
         return "Login incorrect. Returning to " + n.getIdentifier() + ".";
     }
@@ -21,11 +21,11 @@ public class SessionPresenter implements SessionObserver {
         return "Username";
     }
 
-    public String passwordChanged(TopicPresentable n) {
+    public String passwordChanged(String username, TopicPresentable n) {
         return "Password changed! Returning to " + n.getIdentifier() + ".";
     }
 
-    public String accountCreated(TopicPresentable n) {
+    public String accountCreated(String username, TopicPresentable n) {
         return "Account successfully created! You may now go login.";
     }
 
@@ -42,7 +42,7 @@ public class SessionPresenter implements SessionObserver {
         }
     }
 
-    public String loggedOut(TopicPresentable n){
+    public String loggedOut(String username, TopicPresentable n){
         return "Logged out successfully!";
     }
 

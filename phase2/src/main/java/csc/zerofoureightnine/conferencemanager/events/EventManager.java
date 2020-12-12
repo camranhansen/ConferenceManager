@@ -23,8 +23,8 @@ public class EventManager {
 
     //This function is necessary.
     /**
-     * Returns a list of all csc.zerofoureightnine.conferencemanager.events' IDs that are stored in the instance variable csc.zerofoureightnine.conferencemanager.events.
-     * @return A list of all csc.zerofoureightnine.conferencemanager.events' IDs.
+     * Returns a list of all {@link Event} IDs.
+     * @return A list of all {@link Event} IDs as {@link String}.
      */
     public List<String> getAllEventIds(){
         return new ArrayList<>(this.pMap.keySet());
@@ -375,7 +375,6 @@ public class EventManager {
     public int getCapacity(String id){
         return pMap.get(id).getCapacity();
     }
-
 
     public EventType getEventType(String id){
         return pMap.get(id).getType();

@@ -75,7 +75,7 @@ public class MenuNode { // UI
         MenuNode next = available.get(action.complete(username, input, nameables));
 
         if (completable != null)
-            System.out.println(completable.getCompleteMessage(next.nameable));
+            System.out.println(completable.getCompleteMessage(username, next.nameable));
         return next;
     }
 
