@@ -161,6 +161,30 @@ public class SpecialRequestManager {
         return details;
     }
 
+    /**
+     * Gets the total number of special requests
+     *
+     * @return the total number of special requests
+     */
+    public Integer getTotalRequests() {
+        return requestDataMap.size();
+    }
 
+    /**
+     * Gets the number of addressed requests
+     *
+     * @return the relevant number
+     */
+    public Integer getNumberAdressedRequests() {
+        return getAddressedRequests().size();
+    }
 
+    /**
+     * Gets the number of pending requests
+     *
+     * @return the relevant number
+     */
+    public Integer getNumberPendingRequests() {
+        return getPendingRequests().size();
+    }
 }
