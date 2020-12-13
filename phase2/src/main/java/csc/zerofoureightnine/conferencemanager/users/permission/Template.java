@@ -26,9 +26,10 @@ public enum Template {
             Permission.VIEW_SELF_MESSAGES,
             Permission.VIEW_ALL_EVENTS,
             Permission.VIEW_AVAILABLE_EVENTS,
+            Permission.VIEW_ATTENDING_EVENTS,
             Permission.VIEW_SELF_REQUESTS, //New
             Permission.VIEW_SELF_STATISTICS //New
-            }),
+    }),
     SPEAKER(new Permission[] {
             Permission.USER_SELF_EDIT_PASSWORD,
             Permission.USER_CREATE_REQUEST, //New
@@ -46,10 +47,11 @@ public enum Template {
             Permission.VIEW_SELF_MESSAGES,
             Permission.VIEW_ALL_EVENTS,
             Permission.VIEW_AVAILABLE_EVENTS,
+            Permission.VIEW_ATTENDING_EVENTS,
             Permission.VIEW_HOSTING_EVENTS,
             Permission.VIEW_SELF_REQUESTS, //New
             Permission.VIEW_SELF_STATISTICS //New
-            }),
+    }),
     ORGANIZER(new Permission[] {
             Permission.USER_SELF_EDIT_PASSWORD,
             Permission.USER_CREATE_SPEAKER_ACCOUNT,
@@ -72,13 +74,14 @@ public enum Template {
             Permission.VIEW_SELF_MESSAGES,
             Permission.VIEW_ALL_EVENTS,
             Permission.VIEW_AVAILABLE_EVENTS,
+            Permission.VIEW_ATTENDING_EVENTS,
             Permission.VIEW_HOSTING_EVENTS,
             Permission.VIEW_SELF_REQUESTS, //New
             Permission.VIEW_SELF_STATISTICS, //New
             Permission.VIEW_OTHER_PENDING_REQUESTS, //New
             Permission.VIEW_OTHER_ADDRESSED_REQUESTS,
             Permission.VIEW_ALL_STATISTICS //New
-            }),
+    }),
     ADMIN(new Permission[] {
             Permission.USER_ALL_EDIT_PERMISSION,
             Permission.USER_OTHER_EDIT_PASSWORD,
@@ -107,6 +110,8 @@ public enum Template {
             Permission.VIEW_SELF_MESSAGES,
             Permission.VIEW_OTHER_MESSAGES,
             Permission.VIEW_ALL_EVENTS,
+            Permission.VIEW_ATTENDING_EVENTS,
+            Permission.VIEW_HOSTING_EVENTS,
             Permission.VIEW_AVAILABLE_EVENTS,
             Permission.VIEW_SELF_REQUESTS, //New
             Permission.VIEW_HOSTING_EVENTS,
@@ -114,7 +119,7 @@ public enum Template {
             Permission.VIEW_OTHER_PENDING_REQUESTS, //New
             Permission.VIEW_OTHER_ADDRESSED_REQUESTS,
             Permission.VIEW_ALL_STATISTICS //New
-            });
+    });
 
     private final List<Permission> permissions; //Use getPermissions
 
