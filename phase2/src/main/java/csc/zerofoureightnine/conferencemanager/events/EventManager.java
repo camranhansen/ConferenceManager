@@ -119,7 +119,7 @@ public class EventManager {
      */
     public boolean isEventFull(String eventID){
         //Call this as !isEventFull(ID);.
-        return (this.pMap.get(eventID).getCapacity() <=
+        return !(this.pMap.get(eventID).getCapacity() >
                 this.pMap.get(eventID).getParticipants().size());
     }
 

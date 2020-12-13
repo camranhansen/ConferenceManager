@@ -23,7 +23,7 @@ public class EventPresenter {
             eventManager.getEventData(eventID).forEach((category, dataPoint) ->
                     renderableEvents.
                             append(category).append(": ").
-                            append(dataPoint).append(".").
+                            append(dataPoint).
                             append(System.lineSeparator()));
         }
         renderableEvents.append("Press enter once finished!");
@@ -73,18 +73,30 @@ public class EventPresenter {
 
     /**
      * Indicates that the user cannot register in an event.
-     * @param username The username of the user.
+     *
      * @return A string explaining the error.
      */
-    public String foundConflict(String username){
-        return("You already joined a event at the give time slot or the event you wish to enroll currently is full.");
+    public String enrollConflict() {
+        return ("Such an event does not exist, or is fully booked");
     }
+
+
+    /**
+     * Indicates that the user can not join the room at the given time, as it is invalid.
+     *
+     * @return the string "this room is not available at the time"
+     */
+    public String invalidRoom() {
+        return ("This room is not available at the time");
+    }
+
 
     /**
      * Indicates that an invalid input has been received.
+     *
      * @return A string explaining the error.
      */
-    public String wrongInput(){
+    public String wrongInput() {
         return ("Invalid Input");
     }
 
@@ -167,14 +179,34 @@ public class EventPresenter {
 
     /**
      * Indicates that the event has been created successfully.
+     *
      * @param username The username of the user.
-     * @param p An identifier for the presenter.
+     * @param p        An identifier for the presenter.
      * @return A string indicating that the event has been created successfully.
      */
     public String eventCreateConfirmation(String username, TopicPresentable p) {
         return "Event created!";
     }
 
+    /**
+     * Indicates that the user has enrolled in an event successfully
+     *
+     * @param username The username of the user.
+     * @param p        An identifier for the presenter.
+     * @return A string indicating that the event has been enrolled successfully
+     */
+    public String eventEnrollConfirmation(String username, TopicPresentable p) {
+        return "Enrolled sucessfuly!";
+    }
 
-
+    /**
+     * Indicates that the user has unenrolled in an event successfully
+     *
+     * @param username The username of the user.
+     * @param p        An identifier for the presenter.
+     * @return A string indicating that the event has been unenrolled successfully
+     */
+    public String eventUnEnrollConfirmation(String username, TopicPresentable p) {
+        return "Un-enrolled sucessfuly!";
+    }
 }

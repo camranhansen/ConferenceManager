@@ -221,7 +221,7 @@ public class EventController {
      * @return true if {@code id} exists, false otherwise.
      */
     public boolean isEnrollableEventID(String id, List<TopicPresentable> options){
-        return eventManager.eventExists(id)&&eventManager.isEventFull(inputMap.get(id));
+        return eventManager.eventExists(id) && !eventManager.isEventFull(id);
     }
 
     /**
