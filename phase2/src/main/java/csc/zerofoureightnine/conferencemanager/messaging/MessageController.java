@@ -266,6 +266,12 @@ public class MessageController {
     }
 
 
+    /**
+     * Returns the usernames that are attending events,
+     * so a message can be sent to them.
+     * @param eventIds a list of {@link String} of event ids
+     * @return a list {@link String} of users.
+     */
     private List<String> getParticipants(List<String> eventIds){
         List<String> users = new ArrayList<>();
         for (String eventId : eventIds){

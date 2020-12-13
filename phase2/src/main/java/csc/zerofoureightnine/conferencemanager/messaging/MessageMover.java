@@ -56,14 +56,12 @@ public class MessageMover {
      * @param id id of the MessageData
      * @param username username of the current user
      */
-
     public void moveToArchived(UUID id, String username){
         this.messageManager.getMessageData().beginInteraction();
         PersistentMap<UUID, MessageData> md = this.messageManager.getMessageData();
         MessageData m = md.get(id);
         m.getArchived().add(username);
         this.messageManager.getMessageData().endInteraction();
-
     }
 
     /**
@@ -131,5 +129,4 @@ public class MessageMover {
         }
         this.messageManager.getMessageData().endInteraction();
     }
-
 }

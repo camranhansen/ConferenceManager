@@ -94,6 +94,11 @@ public class MessageManager {
     }
 
 
+    /**
+     * Returns the unread inbox of a user as a list of string representing messages.
+     * @param username a {@link String} of the username.
+     * @return a list {@link MessageData}
+     */
     private List<MessageData> getUnreadInbox(String username) {
         List<MessageData> messages = messageData.loadInCollection("recipients", username);
         List<MessageData> res = new ArrayList<>();
@@ -105,6 +110,11 @@ public class MessageManager {
         return res;
     }
 
+    /**
+     * Returns the read inbox of a user as a list of string representing messages.
+     * @param username a {@link String} of the username.
+     * @return a list {@link MessageData}
+     */
     private List<MessageData> getReadInbox(String username){
         List<MessageData> messages = messageData.loadInCollection("recipients", username);
         List<MessageData> res = new ArrayList<>();
@@ -116,6 +126,11 @@ public class MessageManager {
         return res;
     }
 
+    /**
+     * Returns the archived inbox of a user as a list of string representing messages.
+     * @param username a {@link String} of the username.
+     * @return a list {@link MessageData}
+     */
     private List<MessageData> getArchivedInbox(String username) {
         List<MessageData> archived = new ArrayList<>();
         List<MessageData> md = this.messageData.loadInCollection("recipients", username);
@@ -126,7 +141,6 @@ public class MessageManager {
         }
         return archived;
     }
-
 
      /**
      * Returns a list of strings representing all the messages sent from one user to another user.
@@ -148,6 +162,10 @@ public class MessageManager {
         return res;
     }
 
+    /**
+     * Sorts the messages by time.
+     * @param messages a list of {@link MessageData}
+     */
     private void sortByTime(List<MessageData> messages) {
         messages.sort((a, b) -> Math.toIntExact(a.getTimeSent().toEpochMilli() - b.getTimeSent().toEpochMilli()));
     }

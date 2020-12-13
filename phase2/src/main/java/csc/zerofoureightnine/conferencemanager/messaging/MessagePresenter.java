@@ -32,6 +32,13 @@ public class MessagePresenter {
         return this.buildMessageList(unreadInbox, 37);
     }
 
+    /**
+     * Returns a {@link String} of the messages that are being formatted.
+     *
+     * @param strings a list of {@link String} representing messages
+     * @param idHeaderSize an int
+     * @return a {@link String} representing messages
+     */
     private String buildMessageList(List<String> strings, int idHeaderSize) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < strings.size(); i++) {
@@ -54,6 +61,12 @@ public class MessagePresenter {
         return this.buildMessageList(userInbox, 37);
     }
 
+    /**
+     * Returns the read message inbox of the given user.
+     *
+     * @return a {@link String} representing read messages of the user whose username
+     *         is given by {@code inputMap}
+     */
     public String getUserInboxRead(String username, List<TopicPresentable> topics) {
         List<String> userInbox = manager.readInboxToString(username);
         updateSelectedMessageIDs(userInbox);
@@ -114,43 +127,12 @@ public class MessagePresenter {
     }
 
     /**
-     * Returns the prompt for users to re-enter their username.
-     * 
-     * @return a {@link String} "Please re-enter your username for security
-     *         purposes"
-     */
-    public String getPromptUsername(String username) {
-        return "Please re-enter your username for security purposes";
-    }
-
-    /**
      * Returns the prompt for users to enter who a message is from.
      * 
      * @return a {@link String} "Please enter the username that the message is from"
      */
     public String getPromptForFrom(String username) {
         return "Please enter the username that the message is from";
-    }
-
-    /**
-     * Returns the prompt for users to enter the time a message was sent.
-     * 
-     * @return a {@link String} "Please enter the time the message was sent"
-     */
-    public String getPromptMessageTime(String username) {
-        return "Please enter the time the message was sent";
-    }
-
-    /**
-     * Returns the prompt for users to enter the content of a previous message.
-     * Warns users that if any of the previous message details do not align with
-     * their response, will return to the main menu.
-     *
-     * @return a {@link String} "Please enter content of the message. Note: if
-     *         message does not exist, you will return to menu"
-     */
-    public String getPromptPreviousContent(String username) {
-        return "Please enter content of the message. Note: if message does not exist, you will return to menu";
     }
 
     /**
@@ -190,15 +172,6 @@ public class MessagePresenter {
     }
 
     /**
-     * Returns the prompt when the time is invalid.
-     * 
-     * @return a {@link String} "This time is invalid, please try again"
-     */
-    public String invalidTime() {
-        return "This time is invalid, please try again";
-    }
-
-    /**
      * Returns the prompt when the event id is invalid.
      * 
      * @return a {@link String} "This event id is invalid, please try again"
@@ -207,19 +180,41 @@ public class MessagePresenter {
         return "This event id is invalid, please try again";
     }
 
+    /**
+     * Returns a string prompting the user to enter an index.
+     *
+     * @param username a {@link String} of the current username
+     * @return a {@link String} "Please enter message index"
+     */
     public String promptForMessageIndex(String username) {
         return "Please enter message index";
     }
 
+    /**
+     * Returns a string prompting the user to press enter.
+     *
+     * @param username a {@link String} of the current username
+     * @return a {@link String} "Press enter to continue"
+     */
     public String promptForConfirmation(String username) {
         return "Press enter to continue";
     }
 
+    /**
+     * Updates the selected message ids of this {@link MessagePresenter}.
+     *
+     * @param selected a list of {@link String} of message ids
+     */
     private void updateSelectedMessageIDs(List<String> selected) {
         this.selectedMessageIDs.clear();
         selected.forEach(s -> this.selectedMessageIDs.add(s.substring(0, 36)));
     }
 
+    /**
+     * Sets the selected message ids of this {@link MessagePresenter}.
+     *
+     * @param selectedMessageIDs a list of {@link String} of message ids
+     */
     public void setSelectedMessageIDs(List<String> selectedMessageIDs) {
         this.selectedMessageIDs = selectedMessageIDs;
     }
