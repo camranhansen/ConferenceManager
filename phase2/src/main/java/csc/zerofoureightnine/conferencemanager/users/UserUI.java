@@ -79,7 +79,7 @@ public class UserUI implements UISection {
     }
 
     private void generateCreateSpeakerAccount(){
-        String seqTitle = "Create a New Speaker Account";
+        String seqTitle = "Create a new Speaker Account";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
         seq.addStep("username", userPresenter::enterUsername, userController::isNotValidUser, userPresenter::userExists);
         seq.addStep("password", userPresenter::enterPassword, null, userPresenter::wrongInput);
@@ -119,18 +119,18 @@ public class UserUI implements UISection {
         entryPoints.add(node.build());
     }
 
-    private void generateCreateSpecialRequestNodes(){
+    private void generateCreateSpecialRequestNodes() {
         String seqTitle = "Create a new Special Request";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
         seq.addStep("header", specialRequestPresenter::enterHeader, null, null);
         seq.addStep("description", specialRequestPresenter::enterDescription, null, null);
-        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::addRequest);
-        Node.setCompletable(specialRequestPresenter::requestCreateConfirmation);
-        entryPoints.add(seq.build(Node.build(), Permission.USER_CREATE_REQUEST));
+        MenuNode.MenuNodeBuilder createRequestNode = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::addRequest);
+        createRequestNode.setCompletable(specialRequestPresenter::requestCreateConfirmation);
+        entryPoints.add(seq.build(createRequestNode.build(), Permission.USER_CREATE_REQUEST));
     }
 
     private void generateAddressSpecialRequestNodes(){
-        String seqTitle = "Edit an existing Special Requests";
+        String seqTitle = "Edit an existing Special Request";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
         seq.addStep("request_id", specialRequestPresenter::enterRequestID, specialRequestController::isValidID, specialRequestPresenter::invalidRequestID);
         MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::addressRequest);
@@ -138,7 +138,7 @@ public class UserUI implements UISection {
     }
 
     private void generateDeleteSpecialRequestNodes(){
-        String seqTitle = "Remove an existing Special Requests";
+        String seqTitle = "Remove an existing Special Request";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
         seq.addStep("request_id", specialRequestPresenter::enterRequestID, specialRequestController::isValidID, specialRequestPresenter::invalidRequestID);
         MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::removeRequest);
@@ -146,7 +146,7 @@ public class UserUI implements UISection {
     }
 
     private void generateViewSelfSpecialRequestNodes(){
-        String seqTitle = "View your existing Special Requests";
+        String seqTitle = "View your submitted Special Requests ";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
         seq.addStep(null, specialRequestPresenter::getRequests, null, null);
         MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::viewMethod);
@@ -154,7 +154,7 @@ public class UserUI implements UISection {
     }
 
     private void generateViewPendingSpecialRequestNodes(){
-        String seqTitle = "View all Special Requests flagged as Pending";
+        String seqTitle = "View all pending Special Requests ";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
         seq.addStep(null, specialRequestPresenter::getPendingRequests, null, null);
         MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::viewMethod);
@@ -162,7 +162,7 @@ public class UserUI implements UISection {
     }
 
     private void generateViewAddressedSpecialRequestNodes(){
-        String seqTitle = "View all Special Requests flagged as Addressed";
+        String seqTitle = "View all adressed Special Requests ";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
         seq.addStep(null, specialRequestPresenter::getAddressedRequests, null, null);
         MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::viewMethod);

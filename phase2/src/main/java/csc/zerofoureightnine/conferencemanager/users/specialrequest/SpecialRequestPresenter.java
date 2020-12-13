@@ -27,14 +27,8 @@ public class SpecialRequestPresenter {
      * @return the string representation of all special requests of a given user
      */
     public String getRequests(String username){
-        StringBuilder requests = new StringBuilder();
-        List<UUID> lst = manager.getRequests(inputMap.get("username"));
-        for (UUID id: lst){
-            Map<String, String> map = manager.getRequestDetails(id);
-            requests.append(map.get("id")).append(", ").append(map.get("header")).append(", ").
-                    append(map.get("description")).append(", ").append(map.get("addressed")).append("\n");
-        }
-        return requests.toString();
+        List<UUID> lst = manager.getRequests(username);
+        return renderRequestList(lst);
     }
 
     /**
@@ -43,48 +37,39 @@ public class SpecialRequestPresenter {
      * @return the string representation of all pending special requests
      */
     public String getPendingRequests(String username){
-        StringBuilder requests = new StringBuilder();
         List<UUID> lst = manager.getPendingRequests();
-        for (UUID id: lst){
-            Map<String, String> map = manager.getRequestDetails(id);
-            requests.append(map.get("id")).append(", ").append(map.get("requestingUser")).append(", ").
-                    append(map.get("header")).append(", ").append(map.get("description"));
-        }
-        return requests.toString();
+        return renderRequestList(lst);
     }
 
     /**
      * Returns all special requests that are addressed. Each request is in the format of "id, requestingUser, header,
      * description".
+     *
      * @return the string representation of all addressed special requests
      */
-    public String getAddressedRequests(String username){
-        StringBuilder requests = new StringBuilder();
+    public String getAddressedRequests(String username) {
         List<UUID> lst = manager.getAddressedRequests();
-        for (UUID id: lst){
-            Map<String, String> map = manager.getRequestDetails(id);
-            requests.append(map.get("id")).append(", ").append(map.get("requestingUser")).append(", ").
-                    append(map.get("header")).append(", ").append(map.get("description"));
-        }
-        return requests.toString();
+
+        return renderRequestList(lst);
     }
 
 
     /**
      * Returns the prompt for users to enter the header of their request.
-     * @return the string "please enter the header of your request".
+     *
+     * @return the string "Please enter the header of your request".
      */
     public String enterHeader(String username){
-        return "please enter the header of your request";
+        return "Please enter the header of your request";
     }
 
 
     /**
      * Returns the prompt for users to enter the description of their request.
-     * @return the string "please enter the description of your request".
+     * @return the string "Please enter the description of your request".
      */
     public String enterDescription(String username){
-        return "please enter the description of your request";
+        return "Please enter the description of your request";
     }
 
 
@@ -93,7 +78,7 @@ public class SpecialRequestPresenter {
      * @return the string "please enter the request_id".
      */
     public String enterRequestID(String username){
-        return "please enter the request id";
+        return "Please enter the request id";
     }
 
 
@@ -107,12 +92,34 @@ public class SpecialRequestPresenter {
 
     /**
      * Returns a string to confirm to the user a Request has been created
+     *
      * @param username the username of the User
-     * @param p a flag
+     * @param p        a flag
      * @return a string for confirmation
      */
     public String requestCreateConfirmation(String username, TopicPresentable p) {
-        return "Event created!";
+        return "Request created!";
+    }
+
+    /**
+     * Render a special request (i.e. process the text prettily)
+     *
+     * @return the rendered string.
+     */
+    private String renderRequestList(List<UUID> uuid_List) {
+        StringBuilder requestsRendered = new StringBuilder();
+        for (UUID id : uuid_List) {
+            requestsRendered.append("************************************************").append(System.lineSeparator());
+
+            manager.getRequestDetails(id).forEach((category, dataPoint) ->
+                    requestsRendered.
+                            append(category).append(": ").
+                            append(dataPoint).append(".").
+                            append(System.lineSeparator()));
+
+        }
+        return requestsRendered.toString();
+
     }
 }
 

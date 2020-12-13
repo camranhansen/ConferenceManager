@@ -21,7 +21,10 @@ public class EventPresenter {
         for (String eventID: eventIds){
             renderableEvents.append("************************************************").append(System.lineSeparator());
             eventManager.getEventData(eventID).forEach((category, dataPoint) ->
-                    renderableEvents.append(category).append(": ").append(dataPoint).append(".").append(System.lineSeparator()));
+                    renderableEvents.
+                            append(category).append(": ").
+                            append(dataPoint).append(".").
+                            append(System.lineSeparator()));
         }
         renderableEvents.append("Press enter once finished!");
         return renderableEvents;

@@ -153,11 +153,11 @@ public class SpecialRequestManager {
     public Map<String, String> getRequestDetails(UUID requestID){
         LinkedHashMap<String, String> details = new LinkedHashMap<>();
         SpecialRequestData r = this.getRequestFromID(requestID);
-        details.put("id", r.getId().toString());
-        details.put("requestingUser", r.getRequestingUser());
-        details.put("header", r.getHeader());
-        details.put("description", r.getDescription());
-        details.put("addressed", String.valueOf(r.getAddressed()));
+        details.put("Request ID", r.getId().toString());
+        details.put("Requesting Username", r.getRequestingUser());
+        details.put("Header", r.getHeader());
+        details.put("Description", r.getDescription());
+        details.put("Adressed", String.valueOf(r.getAddressed()));
         return details;
     }
 
