@@ -143,11 +143,11 @@ public class SpecialRequestManagerTest {
         List<UUID> timList = srm.getRequests("tim");
         UUID requestID = timList.get(0);
         Map<String, String> timData = srm.getRequestDetails(requestID);
-        assertEquals(requestID.toString(), timData.get("id"));
-        assertEquals("tim", timData.get("requestingUser"));
-        assertEquals("Dietary", timData.get("header"));
-        assertEquals("I only eat orange foods", timData.get("description"));
-        assertEquals("false", timData.get("addressed"));
+        assertEquals(requestID.toString(), timData.get("Request ID"));
+        assertEquals("tim", timData.get("Requesting Username"));
+        assertEquals("Dietary", timData.get("Header"));
+        assertEquals("I only eat orange foods", timData.get("Description"));
+        assertEquals("false", timData.get("Adressed"));
     }
 
 }
