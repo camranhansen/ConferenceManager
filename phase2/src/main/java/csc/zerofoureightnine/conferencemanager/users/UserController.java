@@ -5,13 +5,14 @@ import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPre
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
+import csc.zerofoureightnine.conferencemanager.users.session.SessionObserver;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UserController {
-
+public class UserController implements SessionObserver {
+    private String loggedInUser;
     private UserManager um;
     private PermissionManager pm;
     private Map<String, String> inputMap = new HashMap<>();
@@ -30,14 +31,25 @@ public class UserController {
     /**
      * check if the input name is a existed username
      * 
-     * @param input   Input specifically in to this node. In this case, it is not
-     *                relevant.
+     * @param input   Input specifically in to this node.
      * @param options Options available at this node. In this case, it is not
      *                relevant.
      * @return the node to return to. See {@link MenuNode} for clarification
      */
     public boolean isValidUser(String input, List<TopicPresentable> options) {
         return um.userExists(input);
+    }
+
+    /**
+     * check if the input name is a existed username
+     * 
+     * @param input   Input specifically in to this node.
+     * @param options Options available at this node. In this case, it is not
+     *                relevant.
+     * @return the node to return to. See {@link MenuNode} for clarification
+     */
+    public boolean isUserNotCurrentUser(String input, List<TopicPresentable> options) {
+        return um.userExists(input) && !loggedInUser.equals(input);
     }
 
     /**
@@ -82,7 +94,7 @@ public class UserController {
     public int editOtherPassword(String username, String input, List<TopicPresentable> options) {
         String name = inputMap.get("target");
         um.setPassword(name, inputMap.get("password"));
-        return 0;
+        return 1;
     }
 
     /**
@@ -99,7 +111,7 @@ public class UserController {
     public int createAccount(String username, String input, List<TopicPresentable> options) {
         um.createUser(inputMap.get("username"), inputMap.get("password"), Template
                 .valueOf(inputMap.get("template_value")).getPermissions());
-        return 0;
+        return 1;
     }
 
     /**
@@ -115,7 +127,7 @@ public class UserController {
      */
     public int createSpkAccount(String username, String input, List<TopicPresentable> options) {
         um.createUser(inputMap.get("username"), inputMap.get("password"), Template.SPEAKER.getPermissions());
-        return 0;
+        return 1;
     }
 
     /**
@@ -129,13 +141,28 @@ public class UserController {
      *                 relevant.
      * @return the node to return to. See {@link MenuNode} for clarification
      */
-    public int deleteAccount(String username, String input, List<TopicPresentable> options) {
-        um.removeUser(inputMap.get("name"));
+    public int deleteCurrentAccount(String username, String input, List<TopicPresentable> options) {
+        um.removeUser(username);
         return 0;
     }
 
+        /**
+     * Calls {@link UserManager#removeUser(String)} to remove the user's account
+     * specified by the user input.
+     * 
+     * @param username user who is using the program.
+     * @param input    Input specifically in to this node.
+     * @param options  Options available at this node. In this case, it is not
+     *                 relevant.
+     * @return the node to return to. See {@link MenuNode} for clarification
+     */
+    public int deleteOtherAccount(String username, String input, List<TopicPresentable> options) {
+        um.removeUser(input);
+        return 1;
+    }
+
     /**
-     * Check the user's account to see if the input password is correct or not.
+     * Check the user's account to see if the input password is correct or not for the logged in user.
      * 
      * @param input   Input specifically in to this node. In this case, it is not
      *                relevant.
@@ -143,8 +170,8 @@ public class UserController {
      *                relevant.
      * @return the node to return to. See {@link MenuNode} for clarification
      */
-    public boolean isCorrectPassword(String input, List<TopicPresentable> options) {
-        return um.getPassword(inputMap.get("name")).equals(inputMap.get("password"));
+    public boolean isCurrentlyLoggedInPasswordCorrect(String input, List<TopicPresentable> options) {
+        return um.getPassword(loggedInUser).equals(inputMap.get("password"));
     }
 
     /**
@@ -168,5 +195,14 @@ public class UserController {
      */
     public Map<String, String> getInputMap() {
         return inputMap;
+    }
+
+    @Override
+    public void authenticationStateChanged(String username, List<Permission> permissions, boolean loggedIn) {
+        if (loggedIn) {
+            this.loggedInUser = username;
+        } else {
+            this.loggedInUser = null;
+        }
     }
 }

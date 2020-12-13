@@ -1,5 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.users;
 
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
+
 public class UserPresenter {
 
     /**
@@ -40,6 +42,22 @@ public class UserPresenter {
      */
     public String wrongInput() {
         return ("Invalid Input");
+    }
+
+    public String accountCreationSuccess(String username, TopicPresentable next) {
+        return "account created successfully! Returning to: " + next.getIdentifier();
+    }
+
+    public String passwordChangedSuccess(String username, TopicPresentable next) {
+        return "Password updated successfully! Returning to: " + next.getIdentifier();
+    }
+
+    public String accountDeleted(String username, TopicPresentable next) {
+        return "Account deleted. Returning to " + next;
+    }
+
+    public String usernameInvalid() {
+        return "username invalid, please try again";
     }
 
 }

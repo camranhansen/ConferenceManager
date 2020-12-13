@@ -73,7 +73,8 @@ public class UserUI implements UISection {
         Arrays.asList(Template.values()).forEach(t -> options.add(t.toString()));
         seq.addMultipleOptions("template", options, null);
         MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userController::createAccount);
-        node.backStepCount(3);
+        node.backStepCount(5);
+        node.setCompletable(userPresenter::accountCreationSuccess);
         entryPoints.add(seq.build(node.build(), Permission.USER_CREATE_ACCOUNT));
     }
 
@@ -83,7 +84,8 @@ public class UserUI implements UISection {
         seq.addStep("username", userPresenter::enterUsername, userController::isNotValidUser, userPresenter::userExists);
         seq.addStep("password", userPresenter::enterPassword, null, userPresenter::wrongInput);
         MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userController::createSpkAccount);
-        node.backStepCount(2);
+        node.backStepCount(4);
+        node.setCompletable(userPresenter::accountCreationSuccess);
         entryPoints.add(seq.build(node.build(), Permission.USER_CREATE_SPEAKER_ACCOUNT));
     }
     private void generateOtherEditPasswordNodes(){
@@ -91,24 +93,30 @@ public class UserUI implements UISection {
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
         seq.addStep("username", userPresenter::enterUsername, userController::isValidUser, userPresenter::wrongInput);
         seq.addStep("password", userPresenter::enterPassword, null, null);
-        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, userController::editOtherPassword);
-        entryPoints.add(seq.build(Node.build(), Permission.USER_OTHER_EDIT_PASSWORD));
+        MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userController::editOtherPassword);
+        node.backStepCount(4);
+        node.setCompletable(userPresenter::passwordChangedSuccess);
+        entryPoints.add(seq.build(node.build(), Permission.USER_OTHER_EDIT_PASSWORD));
     }
-
+    
     private void generateDeleteSelfAccountNodes(){
         String seqTitle = "Delete your User Account :(";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
-        seq.addStep("password", userPresenter::enterPassword, userController::isCorrectPassword, userPresenter::wrongPassword);
-        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, userController::deleteAccount);
-        entryPoints.add(seq.build(Node.build(), Permission.USER_SELF_DELETE_ACCOUNT));
+        seq.addStep("password", userPresenter::enterPassword, userController::isCurrentlyLoggedInPasswordCorrect, userPresenter::wrongPassword);
+        MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userController::deleteCurrentAccount);
+        node.setCompletable(userPresenter::accountDeleted);
+        entryPoints.add(seq.build(node.build(), Permission.USER_SELF_DELETE_ACCOUNT));
     }
     private void generateDeleteOtherAccountNodes(){
         String seqTitle = "Delete someone else's User Account :(";
-        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
-        seq.addStep("username", userPresenter::enterUsername, userController::isValidUser, userPresenter::wrongInput);
-        seq.addStep("password", userPresenter::enterPassword, userController::isCorrectPassword, userPresenter::wrongPassword);
-        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, userController::deleteAccount);
-        entryPoints.add(seq.build(Node.build(), Permission.USER_OTHER_DELETE_ACCOUNT));
+        MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userController::deleteOtherAccount);
+        node.backStepCount(1);
+        node.setPromptable(userPresenter::enterUsername);
+        node.setValidatable(userController::isUserNotCurrentUser);
+        node.setReattemptable(userPresenter::usernameInvalid);
+        node.setCompletable(userPresenter::passwordChangedSuccess);
+        node.setPermission(Permission.USER_OTHER_DELETE_ACCOUNT);
+        entryPoints.add(node.build());
     }
 
     private void generateCreateSpecialRequestNodes(){
