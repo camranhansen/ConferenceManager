@@ -130,7 +130,9 @@ public class EventPresenter {
      * @return A string indicating that input should be received.
      */
     public String enterSpeakerName(String username) {
-        return("Please enter any number of speaker names, seperated by a comma." + System.lineSeparator() + "In the format speakrname1, speakername2..." + System.lineSeparator() + "If you would like to create a party, please put a space bar, end then enter.");
+        return("Please enter any number of speaker names, seperated by a comma." +
+                System.lineSeparator() + "In the format speakrname1, speakername2..." + System.lineSeparator() +
+                "If you would like to create a party, please just put enter, end then enter.");
     }
 
     /**

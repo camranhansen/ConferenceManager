@@ -83,6 +83,7 @@ public class MasterController {
         this.messagePresenter = new MessagePresenter(messageManager, messageController.getInputMap());
         this.specialRequestPresenter = new SpecialRequestPresenter(specialRequestManager, specialRequestController.getInputMap());
         this.userPresenter = new UserPresenter();
+        this.sessionController.addObserver(userController);
         this.dataPresenter = new DataPresenter(runtimeDataHolder, storedDataGetter);
     }
 

@@ -93,18 +93,6 @@ public class MessageManager {
         return read;
     }
 
-    
-    private List<MessageData> getUnreadFrom(String username, String from){
-        List<MessageData> messages = getUnreadInbox(username);
-        List<MessageData> res = new ArrayList<>();
-        for (MessageData messageData : messages) {
-            if (messageData.getSender().equals(from)) {
-                res.add(messageData);
-            }
-        }
-        return messages;
-    }
-
 
     private List<MessageData> getUnreadInbox(String username) {
         List<MessageData> messages = messageData.loadInCollection("recipients", username);
@@ -139,23 +127,6 @@ public class MessageManager {
         return archived;
     }
 
-    private List<MessageData> retrieveUserInboxFor(String user, String from) {
-        List<MessageData> messages = new ArrayList<>();
-        this.messageData.beginInteraction();
-        List<MessageData> md = this.messageData.loadInCollection("recipients", user);
-
-        for (MessageData message : md) {
-            if (message.getSender().equals(from)){
-                messages.add(message);
-
-                if(!message.getRead().contains(user)){
-                    message.addToRead(user);
-                }
-            }
-        }
-        this.messageData.endInteraction();
-        return messages;
-    }
 
      /**
      * Returns a list of strings representing all the messages sent from one user to another user.
@@ -194,6 +165,11 @@ public class MessageManager {
         return res;
     }
 
+    /**
+     * Returns a list of strings representing of all read messages of user.
+     * @param username Username of the user whose inbox will be retrieved.
+     * @return A {@link List} containing all messages received by this user that are read. The list is sorted by the time they were received.
+     */
     public List<String> readInboxToString(String username){
         List<MessageData> inbox = getReadInbox(username);
         List<String> res = new ArrayList<>();
@@ -231,49 +207,6 @@ public class MessageManager {
         unread.forEach(m -> res.add(m.toString()));
         return res;
     }
-
-    /**
-     * Returns all unread Message of the given user from the given sender. If this user has no unread Message from the
-     * given sender, returns "You have no unread messages from sender".
-     * @param username username of the user
-     * @param from username of the sender
-     * @return a string representation of all unread Message of the user from the sender, including the sender's
-     * username and message contents, or "You have no unread messages from sender" if this user's unreadInbox from the
-     * sender is empty.
-     */
-    public List<String> singleUnreadInboxToString(String username, String from){
-        List<MessageData> fromUser = messageData.loadInCollection("recipients", username);
-        List<MessageData> single = new ArrayList<>();
-        for (MessageData messageData : fromUser) {
-            if (messageData.getSender().equals(from) && !messageData.getRead().contains(username)) {
-                single.add(messageData);
-            }
-        }
-        sortByTime(single);
-        List<String> res = new ArrayList<>();
-        single.forEach(messageData -> res.add(messageData.toString()));
-        return res;
-    }
-
-    /**
-     * Returns true if the content, sender and time sent was been a message this username has received.
-     *
-     * @param username the current user
-     * @param from the sender of a message
-     * @param time the time a message was sent
-     * @param content the content in a message
-     * @return a boolean stating whether or a message exists
-     */
-    public boolean messageExists(String username, String from, String time, String content) {
-        List<MessageData> md = getMessageData().loadInCollection("recipients", username);
-        for (MessageData m : md) {
-            if (from.equals(m.getSender()) && content.equals(m.getContent()) && time.equals(m.getTimeSent().toString())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     /**
      * Gets the total number of messages

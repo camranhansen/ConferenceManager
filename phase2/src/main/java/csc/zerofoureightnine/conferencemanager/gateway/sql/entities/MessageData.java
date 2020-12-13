@@ -1,6 +1,9 @@
 package csc.zerofoureightnine.conferencemanager.gateway.sql.entities;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -10,11 +13,12 @@ import java.util.UUID;
 
 import javax.persistence.*;
 
-@Table(name = "messages") @Entity
+@Table(name = "messages")
+@Entity
 public class MessageData implements Identifiable<UUID> {
     @Id
     private UUID id;
-    
+
     @Column(name = "content")
     private String content = "";
 
@@ -38,7 +42,6 @@ public class MessageData implements Identifiable<UUID> {
 
     public MessageData() {
     }
-
 
     public Set<String> getRecipients() {
         return recipients;
@@ -76,41 +79,39 @@ public class MessageData implements Identifiable<UUID> {
         this.timeSent = timeSent;
     }
 
-    public Set<String> getRead(){
+    public Set<String> getRead() {
         return this.read;
     }
 
-    public Set<String> getArchived(){
+    public Set<String> getArchived() {
         return archived;
     }
 
-    public void addToRead(String username){
+    public void addToRead(String username) {
         this.read.add(username);
     }
 
-    public void removeFromRead(String username){
+    public void removeFromRead(String username) {
         this.read.remove(username);
     }
 
-    public void addToArchived(String username){
+    public void addToArchived(String username) {
         this.archived.add(username);
     }
 
-    public void removeFromArchived(String username){
+    public void removeFromArchived(String username) {
         this.archived.remove(username);
     }
 
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         MessageData that = (MessageData) o;
-        return getId().equals(that.getId()) &&
-                Objects.equals(content, that.content) &&
-                timeSent.equals(that.timeSent) &&
-                sender.equals(that.sender) &&
-                recipients.equals(that.recipients);
+        return getId().equals(that.getId()) && Objects.equals(content, that.content) && timeSent.equals(that.timeSent)
+                && sender.equals(that.sender) && recipients.equals(that.recipients);
     }
 
     @Override
@@ -130,6 +131,8 @@ public class MessageData implements Identifiable<UUID> {
 
     @Override
     public String toString() {
-        return id.toString() + " From: " + getSender() + " at " + getTimeSent() + ": " + getContent();
+        return id.toString() + " " +  getSender() + " at " + DateTimeFormatter
+                .ofLocalizedDateTime(FormatStyle.SHORT).withZone(ZoneId.systemDefault()).format(getTimeSent()) + " said: "
+                + getContent();
     }
 }

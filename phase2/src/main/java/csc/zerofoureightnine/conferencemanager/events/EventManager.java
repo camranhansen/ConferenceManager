@@ -25,8 +25,8 @@ public class EventManager {
 
     //This function is necessary.
     /**
-     * Returns a list of all {@link Event} IDs.
-     * @return A list of all {@link Event} IDs as {@link String}.
+     * Returns a list of all {@link String} IDs.
+     * @return A list of all {@link String} IDs as {@link String}.
      */
     public List<String> getAllEventIds(){
         return new ArrayList<>(this.pMap.keySet());
@@ -60,7 +60,7 @@ public class EventManager {
      * @param capacity Maximum capacity of the event.
      */
     public void createEvent(List<String> speakerName, Instant eventTime, String eventName, String room, int capacity){
-        createEvent(speakerName, eventTime, eventName, room, capacity, getEventTypeForNumberOfSpeakers(speakerName.toArray().length));
+        createEvent(speakerName, eventTime, eventName, room, capacity, getEventTypeForNumberOfSpeakers(speakerName));
     }
 
     /**
@@ -210,7 +210,7 @@ public class EventManager {
      */
     public boolean checkRoom(Instant timeslot, String room){
          for (String id: pMap.keySet()) {
-             if(getEventTime(id).equals(room+timeslot)){
+             if(getEventTime(id).equals(timeslot) && getRoom(id).equals(room)){
                  return false;
              }
          }
@@ -432,15 +432,17 @@ public class EventManager {
      * @param numOfSpeakers the number of speakers
      * @return the appropriate {@link EventType}
      */
-    public EventType getEventTypeForNumberOfSpeakers(int numOfSpeakers) {
-        switch (numOfSpeakers) {
-            case 0:
-                return EventType.PARTY;
-            case 1:
-                return EventType.SINGLE;
-            default:
-                return EventType.MULTI;
+    public EventType getEventTypeForNumberOfSpeakers(List<String> numOfSpeakers) {
+        if (numOfSpeakers.size()>1){
+            return EventType.MULTI;
         }
+        else if(numOfSpeakers.isEmpty()){
+            return EventType.PARTY;
+        }
+        else if (numOfSpeakers.get(0).isEmpty()){
+            return EventType.PARTY;
+        }
+        return EventType.SINGLE;
     }
 
     /**

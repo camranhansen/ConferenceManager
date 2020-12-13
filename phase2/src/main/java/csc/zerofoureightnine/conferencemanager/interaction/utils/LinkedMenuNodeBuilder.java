@@ -113,20 +113,20 @@ public class LinkedMenuNodeBuilder {
                 builder.setValidatable(validatables.get(i));
                 builder.setReattemptable(retryMessages.get(i));
                 builder.addChildren(nextStep);
+                builder.backStepCount(i+1);
 
                 if (i == 0)
                     builder.setPermission(permission);
                 previous = builder.build();
             } else {
-                previous = buildMultiNode(tag, previous, options.get(i), optionsPermissions.get(i), permission);
+                previous = buildMultiNode(i + 1, tag, previous, options.get(i), optionsPermissions.get(i), permission);
             }
-
         }
 
         return previous;
     }
 
-    private MenuNode buildMultiNode(String tag, MenuNode tail, List<String> options, List<Permission> permissions,
+    private MenuNode buildMultiNode(int backsteps, String tag, MenuNode tail, List<String> options, List<Permission> permissions,
             Permission leadPermission) {
 
         MenuNode[] optionNodes = new MenuNode[options.size()];
@@ -143,6 +143,7 @@ public class LinkedMenuNodeBuilder {
         OptionSelector selector = new OptionSelector() {
             public int complete(String username, String input, java.util.List<TopicPresentable> selectableOptions) {
                 inputMap.put(tag, input);
+                inputMap.put(tag + "_value", selectableOptions.get(Integer.parseInt(input)).getIdentifier());
                 return super.complete(username, input, selectableOptions);
             };
         };
@@ -154,6 +155,7 @@ public class LinkedMenuNodeBuilder {
         entry.setReattemptable(presenter);
         entry.addChildren(optionNodes);
         entry.setPermission(leadPermission);
+        entry.backStepCount(backsteps);
         return entry.build();
     }
 

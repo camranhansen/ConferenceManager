@@ -44,7 +44,7 @@ public class SpecialRequestController {
      */
     public int addRequest(String username, String input, List<TopicPresentable> opts) {
         requestManager.addRequest(username, inputMap.get("header"), inputMap.get("description"), false);
-        return 0;
+        return 1;
     }
 
     /**
