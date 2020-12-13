@@ -40,7 +40,11 @@ public class EventUI implements UISection {
 
 
     }
-    private void generateEditEventNodes(){
+
+    /**
+     * Generate and add to the set of nodes that represents user editing event.
+     */
+    private void generateEditEventNodes() {
         String seqTitle = "Edit Event capacity";
         LinkedMenuNodeBuilder eventEditSeq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
         eventEditSeq.addStep("capacity", eventPresenter::enterCapacity, eventController::isValidCapacity, eventPresenter::wrongInput);
@@ -49,7 +53,7 @@ public class EventUI implements UISection {
         entryPoints.add(eventEditSeq.build(createEventNode.build(), Permission.EVENT_EDIT));
     }
 
-    private void generateViewHostingEventsNodes(){
+    private void generateViewHostingEventsNodes() {
         String seqTitle = "View All Hosting Events";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
         seq.addStep("username", eventPresenter::enterUsername, eventController::isValidUsername, eventPresenter::wrongInput);
