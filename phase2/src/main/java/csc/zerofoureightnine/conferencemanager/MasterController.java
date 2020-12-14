@@ -28,7 +28,7 @@ import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialReque
 import java.util.UUID;
 
 /**
- * Master controller. Stores and instantiates controller
+ * Master controller.
  */
 public class MasterController {
     private MessageManager messageManager;
@@ -101,9 +101,6 @@ public class MasterController {
         this.specialRequestManager = new SpecialRequestManager(specialRequestMap);
     }
 
-    public EventManager getEventManager() {
-        return eventManager;
-    }
 
     public EventPresenter getEventPresenter() {
         return eventPresenter;

@@ -17,6 +17,9 @@ import csc.zerofoureightnine.conferencemanager.users.session.SessionController;
 import csc.zerofoureightnine.conferencemanager.users.session.SessionPresenter;
 import csc.zerofoureightnine.conferencemanager.users.session.SessionUI;
 
+/**
+ * The UI layer for the "main" page
+ */
 public class MainUI {
     private ExitAction exitAction;
     ConsoleUserInterface userInterface;
@@ -24,6 +27,11 @@ public class MainUI {
     private MasterController masterController;
     private MenuBuilder menuBuilder;
 
+    /**
+     * Constructor for the main page. Special because exit action is constructed here.
+     *
+     * @param masterController
+     */
     public MainUI(MasterController masterController) {
         this.exitAction = new ExitAction();
         this.masterController = masterController;
@@ -31,6 +39,9 @@ public class MainUI {
         this.menuBuilder = new MenuBuilder(root);
     }
 
+    /**
+     * Run the program.
+     */
     public void run() {
         addSectionUIs();
         MenuNodeBuilder exit = new MenuNodeBuilder("Exit", exitAction);
@@ -46,6 +57,9 @@ public class MainUI {
         userInterface.interact();
     }
 
+    /**
+     * Instantiate and add section UIs to the MainUI.
+     */
     private void addSectionUIs() {
         EventController eventController = masterController.getEventController();
         MessageController messageController = masterController.getMessageController();
