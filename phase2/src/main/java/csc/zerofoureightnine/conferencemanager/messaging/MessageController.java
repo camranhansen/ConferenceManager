@@ -80,7 +80,7 @@ public class MessageController {
     public int messageAllEvents(String username, String input, List<TopicPresentable> options){
         List<String> eventIds = eventManager.getHostingEvents(username);
         List<String> users = getParticipants(eventIds);
-        if (users.size() == 0){
+        if (users.isEmpty()){
             return 0;
         }
         messageManager.sendMessage(username, inputMap.get("content"), users);
@@ -97,7 +97,7 @@ public class MessageController {
      */
     public int messageSingleEvent(String username, String input, List<TopicPresentable> options){
         Collection<String> users = eventManager.getParticipants(inputMap.get("event_id"));
-        if (users.size() == 0){
+        if (users.isEmpty()){
             return 0;
         }
         messageManager.sendMessage(username, inputMap.get("content"), users);

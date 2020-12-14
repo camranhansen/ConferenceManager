@@ -145,7 +145,7 @@ public class LinkedMenuNodeBuilder {
                 inputMap.put(tag, input);
                 inputMap.put(tag + "_value", selectableOptions.get(Integer.parseInt(input)).getIdentifier());
                 return super.complete(username, input, selectableOptions);
-            };
+            }
         };
 
         MenuNodeBuilder entry = new MenuNodeBuilder(presenter, selector);

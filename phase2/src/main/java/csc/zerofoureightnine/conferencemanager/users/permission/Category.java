@@ -15,4 +15,11 @@ public enum Category {
     Category(String renderableText){
         this.renderableText = renderableText;
     }
+
+    /**
+     * @return a user-friendly {@link String} of what each category manages.
+     */
+    public String getRenderableText() {
+        return renderableText;
+    }
 }

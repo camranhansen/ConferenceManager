@@ -1,17 +1,9 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
 import java.util.UUID;
-
-import org.junit.Test;
 
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLConfiguration;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.SQLMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 
 public class MessageMoverTest {

@@ -5,6 +5,7 @@ import csc.zerofoureightnine.conferencemanager.users.session.SessionObserver;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 public class RuntimeDataHolder implements RuntimeStatModifier, SessionObserver {
 
@@ -44,7 +45,7 @@ public class RuntimeDataHolder implements RuntimeStatModifier, SessionObserver {
      * @return an EnumMap with key {@link RuntimeStat}, and value {@link Integer},
      * representing number of occurences.
      */
-    public EnumMap<RuntimeStat, Integer> getMap() {
+    public Map<RuntimeStat, Integer> getMap() {
         return statMap;
     }
 
