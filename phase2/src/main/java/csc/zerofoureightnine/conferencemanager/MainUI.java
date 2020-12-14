@@ -54,6 +54,7 @@ public class MainUI {
         exitAction.addObserver(userInterface);
         masterController.getSessionController().addObserver(userInterface);
         masterController.getSessionController().addObserver(masterController.getRuntimeDataHolder());
+        masterController.getSessionController().addObserver(masterController.getUserInputValidator());
         userInterface.interact();
     }
 
@@ -70,7 +71,7 @@ public class MainUI {
         menuBuilder.addSectionUI(new MessageUI(messageController, messagePresenter),
                 new SessionUI(sessionController, sessionPresenter), new EventUI(eventController, eventPresenter),
                 new UserUI(masterController.getUserController(), masterController.getUserPresenter(),
-                        masterController.getSpecialRequestController(), masterController.getSpecialRequestPresenter()),
+                        masterController.getSpecialRequestController(), masterController.getSpecialRequestPresenter(), masterController.getUserInputValidator()),
                 new DataUI(masterController.getDataPresenter(), masterController.getDataController()));
     }
 }

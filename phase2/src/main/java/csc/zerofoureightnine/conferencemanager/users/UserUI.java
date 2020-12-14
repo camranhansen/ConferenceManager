@@ -13,21 +13,25 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UserUI implements UISection {
-    private UserController userController;
+    private UserActions userActions;
     private UserPresenter userPresenter;
+    private UserInputValidator userInputValidator;
     private SpecialRequestController specialRequestController;
     private SpecialRequestPresenter specialRequestPresenter;
     List<MenuNode> entryPoints;
 
     /**
      * Constructs a UserUI.
-     * @param userController a {@link UserController}.
-     * @param userPresenter a {@link UserPresenter}.
+     *
+     * @param userActions              a {@link UserActions}.
+     * @param userPresenter            a {@link UserPresenter}.
      * @param specialRequestController a {@link SpecialRequestController}.
-     * @param specialRequestPresenter a {@link SpecialRequestPresenter}.
+     * @param specialRequestPresenter  a {@link SpecialRequestPresenter}.
+     * @param userInputValidator       a {@link UserInputValidator}
      */
-    public UserUI(UserController userController, UserPresenter userPresenter, SpecialRequestController specialRequestController, SpecialRequestPresenter specialRequestPresenter) {
-        this.userController = userController;
+    public UserUI(UserActions userActions, UserPresenter userPresenter, SpecialRequestController specialRequestController, SpecialRequestPresenter specialRequestPresenter, UserInputValidator userInputValidator) {
+        this.userActions = userActions;
+        this.userInputValidator = userInputValidator;
         this.userPresenter = userPresenter;
         this.specialRequestController = specialRequestController;
         this.specialRequestPresenter = specialRequestPresenter;
@@ -64,55 +68,57 @@ public class UserUI implements UISection {
         return "User Management";
     }
 
-    private void generateCreateAccountNodes(){
+    private void generateCreateAccountNodes() {
         String seqTitle = "Create a new User Account from a Template";
-        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
-        seq.addStep("username", userPresenter::enterUsername, userController::isNotValidUser, userPresenter::userExists);
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userActions.getInputMap());
+        seq.addStep("username", userPresenter::enterUsername, userInputValidator::isNotValidUser, userPresenter::userExists);
         seq.addStep("password", userPresenter::enterPassword, null, userPresenter::wrongInput);
         List<String> options = new ArrayList<>();
         Arrays.asList(Template.values()).forEach(t -> options.add(t.toString()));
         seq.addMultipleOptions("template", options, null);
-        MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userController::createAccount);
+        MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userActions::createAccount);
         node.backStepCount(5);
         node.setCompletable(userPresenter::accountCreationSuccess);
         entryPoints.add(seq.build(node.build(), Permission.USER_CREATE_ACCOUNT));
     }
 
-    private void generateCreateSpeakerAccount(){
+    private void generateCreateSpeakerAccount() {
         String seqTitle = "Create a new Speaker Account";
-        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
-        seq.addStep("username", userPresenter::enterUsername, userController::isNotValidUser, userPresenter::userExists);
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userActions.getInputMap());
+        seq.addStep("username", userPresenter::enterUsername, userInputValidator::isNotValidUser, userPresenter::userExists);
         seq.addStep("password", userPresenter::enterPassword, null, userPresenter::wrongInput);
-        MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userController::createSpkAccount);
+        MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userActions::createSpkAccount);
         node.backStepCount(4);
         node.setCompletable(userPresenter::accountCreationSuccess);
         entryPoints.add(seq.build(node.build(), Permission.USER_CREATE_SPEAKER_ACCOUNT));
     }
-    private void generateOtherEditPasswordNodes(){
+
+    private void generateOtherEditPasswordNodes() {
         String seqTitle = "Edit another User's password";
-        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
-        seq.addStep("username", userPresenter::enterUsername, userController::isValidUser, userPresenter::wrongInput);
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userActions.getInputMap());
+        seq.addStep("username", userPresenter::enterUsername, userInputValidator::isValidUser, userPresenter::wrongInput);
         seq.addStep("password", userPresenter::newPassword, null, null);
-        MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userController::editOtherPassword);
+        MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userActions::editOtherPassword);
         node.backStepCount(4);
         node.setCompletable(userPresenter::passwordChangedSuccess);
         entryPoints.add(seq.build(node.build(), Permission.USER_OTHER_EDIT_PASSWORD));
     }
-    
-    private void generateDeleteSelfAccountNodes(){
+
+    private void generateDeleteSelfAccountNodes() {
         String seqTitle = "Delete your User Account :(";
-        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
-        seq.addStep("password", userPresenter::enterPassword, userController::isCurrentlyLoggedInPasswordCorrect, userPresenter::wrongPassword);
-        MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userController::deleteCurrentAccount);
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userActions.getInputMap());
+        seq.addStep("password", userPresenter::enterPassword, userInputValidator::isCurrentlyLoggedInPasswordCorrect, userPresenter::wrongPassword);
+        MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userActions::deleteCurrentAccount);
         node.setCompletable(userPresenter::accountDeleted);
         entryPoints.add(seq.build(node.build(), Permission.USER_SELF_DELETE_ACCOUNT));
     }
-    private void generateDeleteOtherAccountNodes(){
+
+    private void generateDeleteOtherAccountNodes() {
         String seqTitle = "Delete someone else's User Account :(";
-        MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userController::deleteOtherAccount);
+        MenuNode.MenuNodeBuilder node = new MenuNode.MenuNodeBuilder(seqTitle, userActions::deleteOtherAccount);
         node.backStepCount(1);
         node.setPromptable(userPresenter::enterUsername);
-        node.setValidatable(userController::isUserNotCurrentUser);
+        node.setValidatable(userInputValidator::isUserNotCurrentUser);
         node.setReattemptable(userPresenter::usernameInvalid);
         node.setCompletable(userPresenter::accountDeleted);
         node.setPermission(Permission.USER_OTHER_DELETE_ACCOUNT);

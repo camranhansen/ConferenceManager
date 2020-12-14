@@ -5,13 +5,12 @@ import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPre
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
-import csc.zerofoureightnine.conferencemanager.users.session.SessionObserver;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UserController implements SessionObserver {
+public class UserActions {
     private String loggedInUser;
     private UserManager um;
     private PermissionManager pm;
@@ -19,51 +18,15 @@ public class UserController implements SessionObserver {
 
     /**
      * A constructor takes in userManager and PermissionManager
-     * 
+     *
      * @param um UserManager
      * @param pm PermissionManager
      */
-    public UserController(UserManager um, PermissionManager pm) {
+    public UserActions(UserManager um, PermissionManager pm) {
         this.um = um;
         this.pm = pm;
     }
 
-    /**
-     * check if the input name is a existed username
-     * 
-     * @param input   Input specifically in to this node.
-     * @param options Options available at this node. In this case, it is not
-     *                relevant.
-     * @return the node to return to. See {@link MenuNode} for clarification
-     */
-    public boolean isValidUser(String input, List<TopicPresentable> options) {
-        return um.userExists(input);
-    }
-
-    /**
-     * check if the input name is a existed username
-     * 
-     * @param input   Input specifically in to this node.
-     * @param options Options available at this node. In this case, it is not
-     *                relevant.
-     * @return the node to return to. See {@link MenuNode} for clarification
-     */
-    public boolean isUserNotCurrentUser(String input, List<TopicPresentable> options) {
-        return um.userExists(input) && !loggedInUser.equals(input);
-    }
-
-    /**
-     * check if the input name is not a existed username
-     * 
-     * @param input   Input specifically in to this node. In this case, it is not
-     *                relevant.
-     * @param options Options available at this node. In this case, it is not
-     *                relevant.
-     * @return the node to return to. See {@link MenuNode} for clarification
-     */
-    public boolean isNotValidUser(String input, List<TopicPresentable> options) {
-        return !um.userExists(input);
-    }
 
     /**
      * Calls {@link UserManager#setPassword(String, String)} to change password
@@ -161,18 +124,6 @@ public class UserController implements SessionObserver {
         return 1;
     }
 
-    /**
-     * Check the user's account to see if the input password is correct or not for the logged in user.
-     * 
-     * @param input   Input specifically in to this node. In this case, it is not
-     *                relevant.
-     * @param options Options available at this node. In this case, it is not
-     *                relevant.
-     * @return the node to return to. See {@link MenuNode} for clarification
-     */
-    public boolean isCurrentlyLoggedInPasswordCorrect(String input, List<TopicPresentable> options) {
-        return um.getPassword(loggedInUser).equals(inputMap.get("password"));
-    }
 
     /**
      * Adds a permission for a given user.
@@ -197,12 +148,4 @@ public class UserController implements SessionObserver {
         return inputMap;
     }
 
-    @Override
-    public void authenticationStateChanged(String username, List<Permission> permissions, boolean loggedIn) {
-        if (loggedIn) {
-            this.loggedInUser = username;
-        } else {
-            this.loggedInUser = null;
-        }
-    }
 }
