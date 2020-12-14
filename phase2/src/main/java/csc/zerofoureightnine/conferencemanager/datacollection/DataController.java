@@ -4,6 +4,7 @@ import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPre
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Currently does not do much, but can be extended to do different things in the future.
@@ -24,7 +25,7 @@ public class DataController {
      *
      * @return the input map.
      */
-    public HashMap<String, String> getInputMap() {
+    public Map<String, String> getInputMap() {
         return inputMap;
     }
 

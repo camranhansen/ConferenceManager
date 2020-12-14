@@ -1,12 +1,10 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
-import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
-import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
-
-import java.time.Instant;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+
+import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
+import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 
 public class MessageMover {
     private MessageManager messageManager;

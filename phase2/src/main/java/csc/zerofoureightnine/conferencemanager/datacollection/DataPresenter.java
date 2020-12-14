@@ -1,7 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.datacollection;
 
 
-import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * Data Presenter.
@@ -30,7 +30,7 @@ public class DataPresenter {
      * @return The formatted stats
      */
     public String getRuntimeStats(String username) {
-        EnumMap<RuntimeStat, Integer> runtimeData = runtimeDataHolder.getMap();
+        Map<RuntimeStat, Integer> runtimeData = runtimeDataHolder.getMap();
         StringBuilder stringBuilder = new StringBuilder();
         for (RuntimeStat key : RuntimeStat.values()) {
             stringBuilder.append(key).append(": ").append(runtimeData.get(key)).append(System.lineSeparator());
