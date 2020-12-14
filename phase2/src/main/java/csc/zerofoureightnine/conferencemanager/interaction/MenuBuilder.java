@@ -16,8 +16,8 @@ public class MenuBuilder {
 
     }
 
-    public void addSectionUI(UISection... sectionControllers) {
-        for (UISection sectionController : sectionControllers) {
+    public void addSectionUI(UISection... sectionUI) {
+        for (UISection sectionController : sectionUI) {
             MenuNodeBuilder sectionNode = new MenuNodeBuilder(sectionController::getSectionListing);
             sectionNode.addChildren(sectionController.getEntryMenuNodes());
             sectionNodes.add(sectionNode.build());
