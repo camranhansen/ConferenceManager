@@ -49,14 +49,14 @@ public class EventUI implements UISection {
         LinkedMenuNodeBuilder eventEditSeq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
         eventEditSeq.addStep("event_id", eventPresenter::enterId, eventController::isValidID, eventPresenter::wrongInput);
         eventEditSeq.addStep("capacity", eventPresenter::enterCapacity, eventController::isValidEditCapacity, eventPresenter::wrongInput);
-        MenuNode.MenuNodeBuilder createEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::editCapacity);
-        entryPoints.add(eventEditSeq.build(createEventNode.build(), Permission.EVENT_EDIT));
+        MenuNode.MenuNodeBuilder editEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::editCapacity);
+        editEventNode.setCompletable(eventPresenter::eventEditConfirmation);
+        entryPoints.add(eventEditSeq.build(editEventNode.build(), Permission.EVENT_EDIT));
     }
 
     private void generateViewHostingEventsNodes() {
         String seqTitle = "View All Hosting Events";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
-        seq.addStep("username", eventPresenter::enterUsername, eventController::isValidUsername, eventPresenter::wrongInput);
         seq.addStep(null, eventPresenter::renderHostingEventsToUser, null, null);
         MenuNode.MenuNodeBuilder showAllEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::viewMethod);
         entryPoints.add(seq.build(showAllEventNode.build(), Permission.VIEW_HOSTING_EVENTS));
@@ -65,7 +65,6 @@ public class EventUI implements UISection {
     private void generateViewAttendingEventNodes(){
         String seqTitle = "View Attending Events";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
-        seq.addStep("username", eventPresenter::enterUsername, eventController::isValidUsername, eventPresenter::wrongInput);
         seq.addStep(null, eventPresenter::renderAttendingEventsToUser, null, null);
         MenuNode.MenuNodeBuilder showAllEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::viewMethod);
         entryPoints.add(seq.build(showAllEventNode.build(), Permission.VIEW_ATTENDING_EVENTS));
@@ -86,6 +85,7 @@ public class EventUI implements UISection {
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
         seq.addStep("event_id", eventPresenter::enterId, eventController::isValidID, eventPresenter::wrongInput);
         MenuNode.MenuNodeBuilder dropEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::dropSelf);
+        dropEventNode.setCompletable(eventPresenter::eventUnEnrollConfirmation);
         entryPoints.add(seq.build(dropEventNode.build(), Permission.EVENT_SELF_DROP));
     }
 
@@ -127,6 +127,7 @@ public class EventUI implements UISection {
         LinkedMenuNodeBuilder eventDeleteSeq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
         eventDeleteSeq.addStep("event_id", eventPresenter::enterId, eventController::isValidID, eventPresenter::wrongInput);
         MenuNode.MenuNodeBuilder deleteEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::deleteEvent);
+        deleteEventNode.setCompletable(eventPresenter::eventDeleteConfirmation);
         entryPoints.add(eventDeleteSeq.build(deleteEventNode.build(), Permission.EVENT_DELETE));
     }
 
@@ -139,19 +140,15 @@ public class EventUI implements UISection {
         entryPoints.add(seq.build(enrollNode.build(), Permission.EVENT_SELF_ENROLL));
     }
 
-    public void generateEventOtherEnrollNodes(){
+    public void generateEventOtherEnrollNodes() {
         String seqTitle = "Enroll other user in an event";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
         seq.addStep("event_id", eventPresenter::enterId, eventController::isEnrollableEventID, eventPresenter::wrongInput);
         seq.addStep("target", eventPresenter::enterUsername, eventController::isValidUsername, eventPresenter::wrongInput);
-        MenuNode.MenuNodeBuilder dropEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::enrollOther);
-        dropEventNode.setCompletable(eventPresenter::eventUnEnrollConfirmation);
-        entryPoints.add(seq.build(dropEventNode.build(), Permission.EVENT_OTHER_ENROLL));
+        MenuNode.MenuNodeBuilder enrollOtherEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::enrollOther);
+        enrollOtherEventNode.setCompletable(eventPresenter::eventEnrollConfirmation);
+        entryPoints.add(seq.build(enrollOtherEventNode.build(), Permission.EVENT_OTHER_ENROLL));
     }
-
-
-
-
 
     @Override
     public String getSectionListing() {

@@ -209,4 +209,27 @@ public class EventPresenter {
     public String eventUnEnrollConfirmation(String username, TopicPresentable p) {
         return "Un-enrolled sucessfuly!";
     }
+
+    /**
+     * Indicates that the event has been successfully edited
+     *
+     * @param username The username of the user.
+     * @param p        An identifier for the presenter.
+     * @return A string indicating that the event has been successfully edited
+     */
+    public String eventEditConfirmation(String username, TopicPresentable p) {
+        return "Event edited!!";
+    }
+
+    /**
+     * Indicates that the user has deleted an event
+     *
+     * @param username The username of the user.
+     * @param p        An identifier for the presenter.
+     * @return A string indicating that the event has deleted
+     */
+    public String eventDeleteConfirmation(String username, TopicPresentable p) {
+        return "Event deleted. Better luck next time~~";
+    }
+
 }
