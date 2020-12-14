@@ -1,5 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.users.specialrequest;
 
+import csc.zerofoureightnine.conferencemanager.interaction.control.Action;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 
 import java.util.HashMap;
@@ -7,6 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Presenter-level (in MVP) class for holding methods that follow the {@link Action} interface, for modifying the model
+ * responsible for special request-related data.
+ */
 public class SpecialRequestActions {
 
     private SpecialRequestManager requestManager;

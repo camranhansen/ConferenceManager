@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Presenter-level class for holding methods that follow the {@link Action} interface, for modifying the model
+ * Presenter-level (in MVP) class for holding methods that follow the {@link Action} interface, for modifying the model
  * responsible for user-related data, in this case, users themselves, and permissions
  */
 public class UserActions {

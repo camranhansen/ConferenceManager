@@ -6,11 +6,20 @@ import csc.zerofoureightnine.conferencemanager.users.session.SessionObserver;
 
 import java.util.List;
 
+
+/**
+ * Responsible for input validation for user-related actions and prompts.
+ * Part of the presenter layer in Model-View-Presenter, and is a controller in clean architecture
+ */
 public class UserInputValidator implements SessionObserver {
     private String loggedInUser;
     private UserManager um;
 
-
+    /**
+     * Create a UserInputValidator
+     *
+     * @param um a {@link UserManager}
+     */
     public UserInputValidator(UserManager um) {
         this.um = um;
     }

@@ -5,9 +5,19 @@ import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPre
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Responsible for input validation for special request actions and prompts.
+ * Part of the presenter layer in Model-View-Presenter, and is a controller in clean architecture
+ */
 public class SpecialRequestInputValidator {
     private SpecialRequestManager requestManager;
 
+
+    /**
+     * Create a SpecialRequestInputValidator
+     *
+     * @param requestManager a {@link SpecialRequestManager}
+     */
     public SpecialRequestInputValidator(SpecialRequestManager requestManager) {
         this.requestManager = requestManager;
     }
