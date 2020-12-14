@@ -201,6 +201,27 @@ public class MessagePresenter {
     }
 
     /**
+     * Returns a string that a message has successfully been moved.
+     *
+     * @param username a {@link String} of the current username
+     * @return a {@link String} "Successfully moved!"
+     */
+    public String messageMoveConfirmation(String username, TopicPresentable nextNode){
+        return "Successfully moved!";
+    }
+
+    /**
+     * Returns a string that a message/inbox has successfully been deleted.
+     *
+     * @param username a {@link String} of the current username
+     * @return a {@link String} "Successfully deleted!"
+     */
+    public String messageDeletedConfirmation(String username, TopicPresentable nextNode){
+        return "Successfully deleted!";
+    }
+
+
+    /**
      * Updates the selected message ids of this {@link MessagePresenter}.
      *
      * @param selected a list of {@link String} of message ids
