@@ -22,7 +22,8 @@ import csc.zerofoureightnine.conferencemanager.users.UserPresenter;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.session.SessionController;
 import csc.zerofoureightnine.conferencemanager.users.session.SessionPresenter;
-import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestController;
+import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestActions;
+import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestInputValidator;
 import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestManager;
 import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestPresenter;
 
@@ -48,13 +49,14 @@ public class MasterController {
     private SpecialRequestPresenter specialRequestPresenter;
 
     private UserInputValidator userInputValidator;
+    private SpecialRequestInputValidator specialRequestInputValidator;
 
 
     private SessionController sessionController;
     private UserActions userActions;
     private MessageController messageController;
     private EventController eventController;
-    private SpecialRequestController specialRequestController;
+    private SpecialRequestActions specialRequestActions;
 
     /**
      * Create a master controller
@@ -79,19 +81,21 @@ public class MasterController {
         this.sessionController = new SessionController(userManager, permissionManager);
         this.messageController = new MessageController(messageManager, userManager, eventManager, permissionManager);
         this.eventController = new EventController(eventManager, userManager, permissionManager);
-        this.specialRequestController = new SpecialRequestController(specialRequestManager);
+        this.specialRequestActions = new SpecialRequestActions(specialRequestManager);
         this.userActions = new UserActions(userManager, permissionManager);
     }
 
     private void createInputValidators() {
         this.userInputValidator = new UserInputValidator(userManager);
+        this.specialRequestInputValidator = new SpecialRequestInputValidator(specialRequestManager);
+
     }
 
     private void createPresenters() {
         this.eventPresenter = new EventPresenter(eventManager);
         this.sessionPresenter = new SessionPresenter();
         this.messagePresenter = new MessagePresenter(messageManager, messageController.getInputMap());
-        this.specialRequestPresenter = new SpecialRequestPresenter(specialRequestManager, specialRequestController.getInputMap());
+        this.specialRequestPresenter = new SpecialRequestPresenter(specialRequestManager, specialRequestActions.getInputMap());
         this.userPresenter = new UserPresenter();
         this.dataPresenter = new DataPresenter(runtimeDataHolder, storedDataGetter);
     }
@@ -143,15 +147,19 @@ public class MasterController {
         return specialRequestPresenter;
     }
 
-    public SpecialRequestController getSpecialRequestController() {
-        return specialRequestController;
+    public SpecialRequestActions getSpecialRequestController() {
+        return specialRequestActions;
+    }
+
+    public SpecialRequestInputValidator getSpecialRequestInputValidator() {
+        return specialRequestInputValidator;
     }
 
     public UserInputValidator getUserInputValidator() {
         return userInputValidator;
     }
 
-    public UserActions getUserController() {
+    public UserActions getUserActions() {
         return userActions;
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class SpecialRequestController {
+public class SpecialRequestActions {
 
     private SpecialRequestManager requestManager;
     private Map<String, String> inputMap = new HashMap<>();
@@ -15,9 +15,10 @@ public class SpecialRequestController {
 
     /**
      * Initiates SpecialRequestController
+     *
      * @param requestManager {@link SpecialRequestManager}
      */
-    public SpecialRequestController(SpecialRequestManager requestManager) {
+    public SpecialRequestActions(SpecialRequestManager requestManager) {
         this.requestManager = requestManager;
     }
 
@@ -60,17 +61,6 @@ public class SpecialRequestController {
         return 0;
     }
 
-    /**
-     * Returns whether the given requestID is valid or not.
-     *
-     * @param id requestID
-     * @param options the options available to user
-     * @return true if {@code id} exists, otherwise return false
-     */
-    public boolean isValidID(String id, List<TopicPresentable> options) {
-        return this.requestManager.getPendingRequests().contains(UUID.fromString(id)) ||
-                this.requestManager.getAddressedRequests().contains(UUID.fromString(id));
-    }
 
     /**
      * Returns the input map of this SpecialRequestController.

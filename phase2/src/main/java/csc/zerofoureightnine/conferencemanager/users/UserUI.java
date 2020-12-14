@@ -5,7 +5,8 @@ import csc.zerofoureightnine.conferencemanager.interaction.control.UISection;
 import csc.zerofoureightnine.conferencemanager.interaction.utils.LinkedMenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
-import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestController;
+import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestActions;
+import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestInputValidator;
 import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestPresenter;
 
 import java.util.ArrayList;
@@ -16,25 +17,28 @@ public class UserUI implements UISection {
     private UserActions userActions;
     private UserPresenter userPresenter;
     private UserInputValidator userInputValidator;
-    private SpecialRequestController specialRequestController;
+
+    private SpecialRequestInputValidator specialRequestInputValidator;
+    private SpecialRequestActions specialRequestActions;
     private SpecialRequestPresenter specialRequestPresenter;
     List<MenuNode> entryPoints;
 
     /**
      * Constructs a UserUI.
      *
-     * @param userActions              a {@link UserActions}.
-     * @param userPresenter            a {@link UserPresenter}.
-     * @param specialRequestController a {@link SpecialRequestController}.
-     * @param specialRequestPresenter  a {@link SpecialRequestPresenter}.
-     * @param userInputValidator       a {@link UserInputValidator}
+     * @param userActions             a {@link UserActions}.
+     * @param userPresenter           a {@link UserPresenter}.
+     * @param specialRequestActions   a {@link SpecialRequestActions}.
+     * @param specialRequestPresenter a {@link SpecialRequestPresenter}.
+     * @param userInputValidator      a {@link UserInputValidator}
      */
-    public UserUI(UserActions userActions, UserPresenter userPresenter, SpecialRequestController specialRequestController, SpecialRequestPresenter specialRequestPresenter, UserInputValidator userInputValidator) {
+    public UserUI(UserActions userActions, UserPresenter userPresenter, SpecialRequestActions specialRequestActions, SpecialRequestPresenter specialRequestPresenter, UserInputValidator userInputValidator, SpecialRequestInputValidator specialRequestInputValidator) {
         this.userActions = userActions;
         this.userInputValidator = userInputValidator;
         this.userPresenter = userPresenter;
-        this.specialRequestController = specialRequestController;
+        this.specialRequestActions = specialRequestActions;
         this.specialRequestPresenter = specialRequestPresenter;
+        this.specialRequestInputValidator = specialRequestInputValidator;
     }
 
     /**
@@ -127,51 +131,51 @@ public class UserUI implements UISection {
 
     private void generateCreateSpecialRequestNodes() {
         String seqTitle = "Create a new Special Request";
-        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestActions.getInputMap());
         seq.addStep("header", specialRequestPresenter::enterHeader, null, null);
         seq.addStep("description", specialRequestPresenter::enterDescription, null, null);
-        MenuNode.MenuNodeBuilder createRequestNode = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::addRequest);
+        MenuNode.MenuNodeBuilder createRequestNode = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestActions::addRequest);
         createRequestNode.setCompletable(specialRequestPresenter::requestCreateConfirmation);
         entryPoints.add(seq.build(createRequestNode.build(), Permission.USER_CREATE_REQUEST));
     }
 
-    private void generateAddressSpecialRequestNodes(){
+    private void generateAddressSpecialRequestNodes() {
         String seqTitle = "Edit an existing Special Request";
-        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
-        seq.addStep("request_id", specialRequestPresenter::enterRequestID, specialRequestController::isValidID, specialRequestPresenter::invalidRequestID);
-        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::addressRequest);
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestActions.getInputMap());
+        seq.addStep("request_id", specialRequestPresenter::enterRequestID, specialRequestInputValidator::isValidID, specialRequestPresenter::invalidRequestID);
+        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestActions::addressRequest);
         entryPoints.add(seq.build(Node.build(), Permission.USER_OTHER_EDIT_REQUEST));
     }
 
-    private void generateDeleteSpecialRequestNodes(){
+    private void generateDeleteSpecialRequestNodes() {
         String seqTitle = "Remove an existing Special Request";
-        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
-        seq.addStep("request_id", specialRequestPresenter::enterRequestID, specialRequestController::isValidID, specialRequestPresenter::invalidRequestID);
-        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::removeRequest);
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestActions.getInputMap());
+        seq.addStep("request_id", specialRequestPresenter::enterRequestID, specialRequestInputValidator::isValidID, specialRequestPresenter::invalidRequestID);
+        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestActions::removeRequest);
         entryPoints.add(seq.build(Node.build(), Permission.USER_SELF_EDIT_REQUEST));
     }
 
     private void generateViewSelfSpecialRequestNodes(){
         String seqTitle = "View your submitted Special Requests ";
-        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestActions.getInputMap());
         seq.addStep(null, specialRequestPresenter::getRequests, null, null);
-        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::viewMethod);
+        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestActions::viewMethod);
         entryPoints.add(seq.build(Node.build(), Permission.VIEW_SELF_REQUESTS));
     }
 
     private void generateViewPendingSpecialRequestNodes(){
         String seqTitle = "View all pending Special Requests ";
-        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestActions.getInputMap());
         seq.addStep(null, specialRequestPresenter::getPendingRequests, null, null);
-        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::viewMethod);
+        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestActions::viewMethod);
         entryPoints.add(seq.build(Node.build(), Permission.VIEW_OTHER_PENDING_REQUESTS));
     }
 
     private void generateViewAddressedSpecialRequestNodes(){
         String seqTitle = "View all adressed Special Requests ";
-        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestActions.getInputMap());
         seq.addStep(null, specialRequestPresenter::getAddressedRequests, null, null);
-        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::viewMethod);
+        MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestActions::viewMethod);
         entryPoints.add(seq.build(Node.build(), Permission.VIEW_OTHER_ADDRESSED_REQUESTS));
     }
 

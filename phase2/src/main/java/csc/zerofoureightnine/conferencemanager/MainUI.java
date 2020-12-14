@@ -70,8 +70,8 @@ public class MainUI {
         SessionPresenter sessionPresenter = masterController.getSessionPresenter();
         menuBuilder.addSectionUI(new MessageUI(messageController, messagePresenter),
                 new SessionUI(sessionController, sessionPresenter), new EventUI(eventController, eventPresenter),
-                new UserUI(masterController.getUserController(), masterController.getUserPresenter(),
-                        masterController.getSpecialRequestController(), masterController.getSpecialRequestPresenter(), masterController.getUserInputValidator()),
+                new UserUI(masterController.getUserActions(), masterController.getUserPresenter(),
+                        masterController.getSpecialRequestController(), masterController.getSpecialRequestPresenter(), masterController.getUserInputValidator(), masterController.getSpecialRequestInputValidator()),
                 new DataUI(masterController.getDataPresenter(), masterController.getDataController()));
     }
 }
