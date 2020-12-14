@@ -63,6 +63,9 @@ public class UserUI implements UISection {
         return "Account Management";
     }
 
+    /**
+     * Creates a "Create a new User Account from a Template" menu node.
+     */
     private void generateCreateAccountNodes(){
         String seqTitle = "Create a new User Account from a Template";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
@@ -86,6 +89,9 @@ public class UserUI implements UISection {
 //        entryPoints.add(seq.build(Node.build(), Permission.USER_ALL_EDIT_PERMISSION));
 //    }
 
+    /**
+     * Creates an "Edit another User's password" node.
+     */
     private void generateOtherEditPasswordNodes(){
         String seqTitle = "Edit another User's password";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
@@ -95,6 +101,9 @@ public class UserUI implements UISection {
         entryPoints.add(seq.build(Node.build(), Permission.USER_OTHER_EDIT_PASSWORD));
     }
 
+    /**
+     * Creates a "Delete your User Account" node.
+     */
     private void generateDeleteSelfAccountNodes(){
         String seqTitle = "Delete your User Account :(";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
@@ -102,6 +111,10 @@ public class UserUI implements UISection {
         MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, userController::deleteAccount);
         entryPoints.add(seq.build(Node.build(), Permission.USER_SELF_DELETE_ACCOUNT));
     }
+
+    /**
+     * Creates a "Delete someone else's User Account" node.
+     */
     private void generateDeleteOtherAccountNodes(){
         String seqTitle = "Delete someone else's User Account :(";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, userController.getInputMap());
@@ -111,6 +124,9 @@ public class UserUI implements UISection {
         entryPoints.add(seq.build(Node.build(), Permission.USER_OTHER_DELETE_ACCOUNT));
     }
 
+    /**
+     * Creates a "Create a new Special Request" node.
+     */
     private void generateCreateSpecialRequestNodes(){
         String seqTitle = "Create a new Special Request";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
@@ -121,6 +137,9 @@ public class UserUI implements UISection {
         entryPoints.add(seq.build(Node.build(), Permission.USER_CREATE_REQUEST));
     }
 
+    /**
+     * Creates an "Edit an existing Special Requests" node.
+     */
     private void generateAddressSpecialRequestNodes(){
         String seqTitle = "Edit an existing Special Requests";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
@@ -129,14 +148,20 @@ public class UserUI implements UISection {
         entryPoints.add(seq.build(Node.build(), Permission.USER_OTHER_EDIT_REQUEST));
     }
 
+    /**
+     * Creates a "Remove an existing Special Request" node.
+     */
     private void generateDeleteSpecialRequestNodes(){
-        String seqTitle = "Remove an existing Special Requests";
+        String seqTitle = "Remove an existing Special Request";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
         seq.addStep("request_id", specialRequestPresenter::enterRequestID, specialRequestController::isValidID, specialRequestPresenter::invalidRequestID);
         MenuNode.MenuNodeBuilder Node = new MenuNode.MenuNodeBuilder(seqTitle, specialRequestController::removeRequest);
         entryPoints.add(seq.build(Node.build(), Permission.USER_SELF_EDIT_REQUEST));
     }
 
+    /**
+     * Creates a "View your existing Special Requests" node.
+     */
     private void generateViewSelfSpecialRequestNodes(){
         String seqTitle = "View your existing Special Requests";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
@@ -145,6 +170,9 @@ public class UserUI implements UISection {
         entryPoints.add(seq.build(Node.build(), Permission.VIEW_SELF_REQUESTS));
     }
 
+    /**
+     * Creates a "View all Special Requests flagged as Pending" node.
+     */
     private void generateViewPendingSpecialRequestNodes(){
         String seqTitle = "View all Special Requests flagged as Pending";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
@@ -153,6 +181,9 @@ public class UserUI implements UISection {
         entryPoints.add(seq.build(Node.build(), Permission.VIEW_OTHER_PENDING_REQUESTS));
     }
 
+    /**
+     * Creates a "View all Special Requests flagged as Addressed" node.
+     */
     private void generateViewAddressedSpecialRequestNodes(){
         String seqTitle = "View all Special Requests flagged as Addressed";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, specialRequestController.getInputMap());
