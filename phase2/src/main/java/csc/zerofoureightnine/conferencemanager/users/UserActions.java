@@ -1,6 +1,7 @@
 package csc.zerofoureightnine.conferencemanager.users;
 
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
+import csc.zerofoureightnine.conferencemanager.interaction.control.Action;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
@@ -10,17 +11,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Presenter-level class for holding methods that follow the {@link Action} interface, for modifying the model
+ * responsible for user-related data, in this case, users themselves, and permissions
+ */
 public class UserActions {
-    private String loggedInUser;
     private UserManager um;
     private PermissionManager pm;
     private Map<String, String> inputMap = new HashMap<>();
 
     /**
-     * A constructor takes in userManager and PermissionManager
+     * Create UserActions.
      *
-     * @param um UserManager
-     * @param pm PermissionManager
+     * @param um UserManager: the model for user management
+     * @param pm PermissionManager:  the model for permission management
      */
     public UserActions(UserManager um, PermissionManager pm) {
         this.um = um;
@@ -30,7 +34,7 @@ public class UserActions {
 
     /**
      * Calls {@link UserManager#setPassword(String, String)} to change password
-     * 
+     *
      * @param username user who is using the program.
      * @param input    Input specifically in to this node. In this case, it is not
      *                 relevant.
@@ -46,7 +50,7 @@ public class UserActions {
     /**
      * Calls {@link UserManager#setPassword(String, String)} to change password
      * (administrator only)
-     * 
+     *
      * @param username user who is using the program.
      * @param input    Input specifically in to this node. In this case, it is not
      *                 relevant.
@@ -63,7 +67,7 @@ public class UserActions {
     /**
      * Calls {@link UserManager#createUser(String, String, List)} to create a new
      * account
-     * 
+     *
      * @param username user who is using the program.
      * @param input    Input specifically in to this node. In this case, it is not
      *                 relevant.
@@ -80,7 +84,7 @@ public class UserActions {
     /**
      * Calls {@link UserManager#createUser(String, String, List)} to create a new
      * speaker account
-     * 
+     *
      * @param username user who is using the program.
      * @param input    Input specifically in to this node. In this case, it is not
      *                 relevant.
@@ -96,7 +100,7 @@ public class UserActions {
     /**
      * Calls {@link UserManager#removeUser(String)} to remove the user's account
      * specified in inputMap, with tag "name".
-     * 
+     *
      * @param username user who is using the program.
      * @param input    Input specifically in to this node. In this case, it is not
      *                 relevant.
@@ -109,10 +113,10 @@ public class UserActions {
         return 0;
     }
 
-        /**
+    /**
      * Calls {@link UserManager#removeUser(String)} to remove the user's account
      * specified by the user input.
-     * 
+     *
      * @param username user who is using the program.
      * @param input    Input specifically in to this node.
      * @param options  Options available at this node. In this case, it is not
@@ -141,8 +145,9 @@ public class UserActions {
     }
 
     /**
+     * To get the inputMap, representing what the user has entered related to user actions.
      *
-     * @return the inputMap.
+     * @return inputMap.
      */
     public Map<String, String> getInputMap() {
         return inputMap;
