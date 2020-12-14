@@ -9,7 +9,7 @@ import csc.zerofoureightnine.conferencemanager.interaction.MenuBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode.MenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.utils.ExitAction;
-import csc.zerofoureightnine.conferencemanager.messaging.MessageController;
+import csc.zerofoureightnine.conferencemanager.messaging.MessageActions;
 import csc.zerofoureightnine.conferencemanager.messaging.MessagePresenter;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageUI;
 import csc.zerofoureightnine.conferencemanager.users.UserUI;
@@ -63,12 +63,12 @@ public class MainUI {
      */
     private void addSectionUIs() {
         EventActionHolder eventActionHolder = masterController.getEventActionHolder();
-        MessageController messageController = masterController.getMessageController();
+        MessageActions messageActions = masterController.getMessageActions();
         SessionController sessionController = masterController.getSessionController();
         MessagePresenter messagePresenter = masterController.getMessagePresenter();
         EventPresenter eventPresenter = masterController.getEventPresenter();
         SessionPresenter sessionPresenter = masterController.getSessionPresenter();
-        menuBuilder.addSectionUI(new MessageUI(messageController, messagePresenter),
+        menuBuilder.addSectionUI(new MessageUI(messageActions, messagePresenter, masterController.getMessageInputValidator()),
                 new SessionUI(sessionController, sessionPresenter), new EventUI(eventActionHolder, eventPresenter, masterController.getEventInputValidator()),
                 new UserUI(masterController.getUserActions(), masterController.getUserPresenter(),
                         masterController.getSpecialRequestActions(), masterController.getSpecialRequestPresenter(), masterController.getUserInputValidator(), masterController.getSpecialRequestInputValidator()),

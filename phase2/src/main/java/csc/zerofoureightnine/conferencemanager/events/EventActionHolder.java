@@ -16,7 +16,7 @@ public class EventActionHolder {
     private Map<String, String> inputMap;
 
     /**
-     * Initiates EventController
+     * Initiates EventActions
      *
      * @param eventManager      associated {@link EventManager}
      * @param userManager       associated {@link UserManager}

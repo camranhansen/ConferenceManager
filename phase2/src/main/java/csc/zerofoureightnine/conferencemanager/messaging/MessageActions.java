@@ -1,20 +1,20 @@
 package csc.zerofoureightnine.conferencemanager.messaging;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
+import csc.zerofoureightnine.conferencemanager.interaction.control.Action;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 
-public class MessageController {
+import java.util.*;
+
+/**
+ * Presenter-level (in MVP) class for holding methods that follow the {@link Action} interface, for modifying the model
+ * responsible for sending messages
+ */
+public class MessageActions {
     private MessageManager messageManager;
     private Map<String, String> inputMap;
     private UserManager userManager;
@@ -22,7 +22,7 @@ public class MessageController {
     private MessageMover messageMover;
     private EventManager eventManager;
     private final List<String> selectedMessageIDs = new ArrayList<>();
-    
+
     /**
      * Creates a new MessageController
      *
@@ -31,8 +31,8 @@ public class MessageController {
      * @param eventManager      associated event manager
      * @param permissionManager associated permission manager
      */
-    public MessageController(MessageManager messageManager, UserManager userManager, EventManager eventManager,
-                             PermissionManager permissionManager) {
+    public MessageActions(MessageManager messageManager, UserManager userManager, EventManager eventManager,
+                          PermissionManager permissionManager) {
         this.messageManager = messageManager;
         this.userManager = userManager;
         this.permissionManager = permissionManager;
@@ -195,41 +195,7 @@ public class MessageController {
         return 1;
     }
 
-    /**
-     * Returns true if the inputted recipient for a message is an existing user.
-     *
-     * @param input the current user's input
-     * @param options the options available to user, may be null
-     * @return A boolean stating whether or not the inputted recipient is valid
-     */
-    public boolean isValidMessageRecipient(String input, List<TopicPresentable> options) {
-        return userManager.userExists(input);
-    }
 
-
-    /**
-     * Returns true if the inputted content for a message is valid,
-     * in other words, not empty.
-     *
-     * @param input the current user's input
-     * @param options the options available to user, may be null
-     * @return A boolean stating whether or not the inputted content is valid
-     */
-    public boolean isValidContent(String input, List<TopicPresentable> options){
-        return !input.isEmpty();
-    }
-
-
-    /**
-     * Returns true if the inputted event id is valid.
-     *
-     * @param input the current user's input
-     * @param options the options available to user, may be null
-     * @return A boolean stating whether or not the inputted event id is valid
-     */
-    public boolean isValidEventIdForSending(String input, List<TopicPresentable> options) {
-        return eventManager.eventExists(input);
-    }
 
     /**
      * Returns the input map of this MessageController.
@@ -252,10 +218,11 @@ public class MessageController {
     }
 
     /**
-     * Similar to {@link MessageController#confirmationAction(String, String, List)}, with the only difference of setting the selected messages to read.
+     * Similar to {@link MessageActions#confirmationAction(String, String, List)}, with the only difference of setting the selected messages to read.
+     *
      * @param username the current users username.
-     * @param input the users input for this {@link MenuNode}.
-     * @param topics the variety of children this {@link MenuNode} has.
+     * @param input    the users input for this {@link MenuNode}.
+     * @param topics   the variety of children this {@link MenuNode} has.
      * @return a numerical value representing the option from topics selected.
      */
     public int confirmationReadAction(String username, String input, List<TopicPresentable> topics) {
@@ -278,17 +245,6 @@ public class MessageController {
             users.addAll(eventManager.getParticipants(eventId));
         }
         return users;
-    }
-
-    /**
-     * Checks if a numerical selection from the group of messages being presented by {@link MessagePresenter}.
-     * @param input the current user's input
-     * @param opts the options available to user, may be null
-     * @return A boolean stating whether or not the input number is within bounds of selectable messages.
-     */
-    public boolean validateMessageSelectionFromGroup(String input, List<TopicPresentable> opts) {
-        return input.matches("^[0-9]+$") && 
-        Integer.parseInt(input) < selectedMessageIDs.size();
     }
 
     /**

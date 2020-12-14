@@ -12,19 +12,22 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MessageUI implements UISection {
-    List<MenuNode> entryPoints;
-    MessageController messageController;
+    private List<MenuNode> entryPoints;
+    private MessageActions messageActions;
     private MessagePresenter messagePresenter;
+    private MessageInputValidator messageInputValidator;
 
     /**
      * Creates the {@link MessageUI} to allow user to interact with messaging.
-     * @param messageController An {@link MessageController}
+     *
+     * @param messageActions   An {@link MessageActions}
      * @param messagePresenter An {@link MessagePresenter}
      */
-    public MessageUI(MessageController messageController, MessagePresenter messagePresenter) {
-        this.messageController = messageController;
+    public MessageUI(MessageActions messageActions, MessagePresenter messagePresenter, MessageInputValidator messageInputValidator) {
+        this.messageInputValidator = messageInputValidator;
+        this.messageActions = messageActions;
         this.messagePresenter = messagePresenter;
-        this.messagePresenter.setSelectedMessageIDs(messageController.getSelectedMessageIDs());
+        this.messagePresenter.setSelectedMessageIDs(messageActions.getSelectedMessageIDs());
     }
 
     @Override
@@ -49,10 +52,10 @@ public class MessageUI implements UISection {
      */
     private MenuNode generateMessageSingleUserNode() {
         String messageSeqTitle = "Message Single User";
-        LinkedMenuNodeBuilder sendMessageSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
-        sendMessageSeq.addStep("to", messagePresenter::getPromptForSendTo, messageController::isValidMessageRecipient, messagePresenter::invalidRecipient);
-        sendMessageSeq.addStep("content", messagePresenter::getPromptForMessageBody, messageController::isValidContent, messagePresenter::wrongInput);
-        MenuNodeBuilder sendMessageNode = new MenuNodeBuilder(messageSeqTitle, messageController::messageSingleUser);
+        LinkedMenuNodeBuilder sendMessageSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageActions.getInputMap());
+        sendMessageSeq.addStep("to", messagePresenter::getPromptForSendTo, messageInputValidator::isValidMessageRecipient, messagePresenter::invalidRecipient);
+        sendMessageSeq.addStep("content", messagePresenter::getPromptForMessageBody, messageInputValidator::isValidContent, messagePresenter::wrongInput);
+        MenuNodeBuilder sendMessageNode = new MenuNodeBuilder(messageSeqTitle, messageActions::messageSingleUser);
         sendMessageNode.setCompletable(messagePresenter::getMessageSentCompletion);
         sendMessageNode.backStepCount(3);
         return sendMessageSeq.build(sendMessageNode.build(), Permission.MESSAGE_SINGLE_USER);
@@ -66,12 +69,12 @@ public class MessageUI implements UISection {
      */
     private MenuNode generateMessageTemplateNodes() {
         String messageTemplateTitle = "Message Group of Users";
-        LinkedMenuNodeBuilder sendTemplateSeq = new LinkedMenuNodeBuilder(messageTemplateTitle, messageController.getInputMap());
+        LinkedMenuNodeBuilder sendTemplateSeq = new LinkedMenuNodeBuilder(messageTemplateTitle, messageActions.getInputMap());
         List<String> options = new ArrayList<>();
         Arrays.asList(Template.values()).forEach(t -> options.add(t.toString()));
         sendTemplateSeq.addMultipleOptions("selected_group", options, null);
-        sendTemplateSeq.addStep("content", messagePresenter::getPromptForMessageBody, messageController::isValidContent, messagePresenter::wrongInput);
-        MenuNodeBuilder end = new MenuNodeBuilder(messageTemplateTitle, messageController::messageGroup);
+        sendTemplateSeq.addStep("content", messagePresenter::getPromptForMessageBody, messageInputValidator::isValidContent, messagePresenter::wrongInput);
+        MenuNodeBuilder end = new MenuNodeBuilder(messageTemplateTitle, messageActions::messageGroup);
         end.setCompletable(messagePresenter::getMessageSentCompletion);
         end.backStepCount(3);
         return (sendTemplateSeq.build(end.build(), Permission.MESSAGE_ALL_USERS));
@@ -98,12 +101,12 @@ public class MessageUI implements UISection {
      *
      * @return a {@link MenuNode} of messaging single event
      */
-    private MenuNode getMessageSingleEventNode(){
+    private MenuNode getMessageSingleEventNode() {
         String messageSeqTitle = "Message Users From Single Event";
-        LinkedMenuNodeBuilder sendEventSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
-        sendEventSeq.addStep("event_id", messagePresenter::getPromptForEventId, messageController::isValidEventIdForSending, messagePresenter::invalidEventId);
-        sendEventSeq.addStep("content", messagePresenter::getPromptForMessageBody, messageController::isValidContent, messagePresenter::wrongInput);
-        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageController::messageSingleEvent);
+        LinkedMenuNodeBuilder sendEventSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageActions.getInputMap());
+        sendEventSeq.addStep("event_id", messagePresenter::getPromptForEventId, messageInputValidator::isValidEventIdForSending, messagePresenter::invalidEventId);
+        sendEventSeq.addStep("content", messagePresenter::getPromptForMessageBody, messageInputValidator::isValidContent, messagePresenter::wrongInput);
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageActions::messageSingleEvent);
         end.setCompletable(messagePresenter::getMessageSentCompletion);
         end.backStepCount(3);
         return (sendEventSeq.build(end.build()));
@@ -115,11 +118,11 @@ public class MessageUI implements UISection {
      * message event generation.
      * @return a {@link MenuNode} of messaging all events
      */
-    private MenuNode getMessageAllEventNode(){
+    private MenuNode getMessageAllEventNode() {
         String messageSeqTitle = "Message Users For All Your Events";
-        LinkedMenuNodeBuilder sendEventSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
-        sendEventSeq.addStep("content", messagePresenter::getPromptForMessageBody, messageController::isValidContent, messagePresenter::wrongInput);
-        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageController::messageAllEvents);
+        LinkedMenuNodeBuilder sendEventSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageActions.getInputMap());
+        sendEventSeq.addStep("content", messagePresenter::getPromptForMessageBody, messageInputValidator::isValidContent, messagePresenter::wrongInput);
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageActions::messageAllEvents);
         end.setCompletable(messagePresenter::getMessageSentCompletion);
         end.backStepCount(2);
         return (sendEventSeq.build(end.build()));
@@ -148,10 +151,10 @@ public class MessageUI implements UISection {
      */
     private MenuNode getMoveMessageUnreadNode(){
         String messageSeqTitle = "Move a Message To Unread";
-        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageController::moveMessageToUnread);
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageActions::moveMessageToUnread);
         end.setListable(messagePresenter::getUserInboxRead);
         end.setPromptable(messagePresenter::promptForMessageIndex);
-        end.setValidatable(messageController::validateMessageSelectionFromGroup);
+        end.setValidatable(messageInputValidator::isValidMessageSelectionFromGroup);
         end.setReattemptable(messagePresenter::wrongInput);
         end.setCompletable(messagePresenter::messageMoveConfirmation);
         return end.build();
@@ -165,10 +168,10 @@ public class MessageUI implements UISection {
      */
     private MenuNode getMoveMessageArchiveNode(){
         String messageSeqTitle = "Move a Message To Archive";
-        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageController::moveMessageToArchive);
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageActions::moveMessageToArchive);
         end.setListable(messagePresenter::getUserInbox);
         end.setPromptable(messagePresenter::promptForMessageIndex);
-        end.setValidatable(messageController::validateMessageSelectionFromGroup);
+        end.setValidatable(messageInputValidator::isValidMessageSelectionFromGroup);
         end.setReattemptable(messagePresenter::wrongInput);
         end.setCompletable(messagePresenter::messageMoveConfirmation);
         return end.build();
@@ -182,10 +185,10 @@ public class MessageUI implements UISection {
      */
     private MenuNode getRemoveMessageArchiveNode(){
         String messageSeqTitle = "Remove a Message From Archive";
-        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageController::removeMessageFromArchive);
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageActions::removeMessageFromArchive);
         end.setListable(messagePresenter::getUserArchived);
         end.setPromptable(messagePresenter::promptForMessageIndex);
-        end.setValidatable(messageController::validateMessageSelectionFromGroup);
+        end.setValidatable(messageInputValidator::isValidMessageSelectionFromGroup);
         end.setReattemptable(messagePresenter::wrongInput);
         end.setCompletable(messagePresenter::messageMoveConfirmation);
         return end.build();
@@ -199,10 +202,10 @@ public class MessageUI implements UISection {
      */
     private MenuNode deleteSingleSeq(){
         String messageSeqTitle = "Delete Single Message";
-        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageController::deleteSingleMessage);
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageActions::deleteSingleMessage);
         end.setListable(messagePresenter::getUserInbox);
         end.setPromptable(messagePresenter::promptForMessageIndex);
-        end.setValidatable(messageController::validateMessageSelectionFromGroup);
+        end.setValidatable(messageInputValidator::isValidMessageSelectionFromGroup);
         end.setReattemptable(messagePresenter::wrongInput);
         end.setCompletable(messagePresenter::messageDeletedConfirmation);
         return end.build();
@@ -216,9 +219,9 @@ public class MessageUI implements UISection {
      */
     private MenuNode deleteConvoSeq(){
         String messageSeqTitle = "Delete Conversation";
-        MenuNodeBuilder deleteConvoSeq = new MenuNodeBuilder(messageSeqTitle, messageController::deleteSingleConversation);
+        MenuNodeBuilder deleteConvoSeq = new MenuNodeBuilder(messageSeqTitle, messageActions::deleteSingleConversation);
         deleteConvoSeq.setPromptable(messagePresenter::getPromptForFrom);
-        deleteConvoSeq.setValidatable(messageController::isValidMessageRecipient);
+        deleteConvoSeq.setValidatable(messageInputValidator::isValidMessageRecipient);
         deleteConvoSeq.setCompletable(messagePresenter::messageDeletedConfirmation);
         return (deleteConvoSeq.build());
     }
@@ -231,7 +234,7 @@ public class MessageUI implements UISection {
      */
     private MenuNode deleteInboxSeq(){
         String messageSeqTitle = "Clear Inboxes";
-        MenuNodeBuilder deleteInboxSeq = new MenuNodeBuilder(messageSeqTitle, messageController::deleteAllInboxes);
+        MenuNodeBuilder deleteInboxSeq = new MenuNodeBuilder(messageSeqTitle, messageActions::deleteAllInboxes);
         deleteInboxSeq.setCompletable(messagePresenter::messageDeletedConfirmation);
         return deleteInboxSeq.build();
     }
@@ -259,7 +262,7 @@ public class MessageUI implements UISection {
      */
     private MenuNode getUnreadInbox(){
         String messageSeqTitle = "View Unread Inbox";
-        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageController::confirmationReadAction);
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageActions::confirmationReadAction);
         end.setPromptable(messagePresenter::promptForConfirmation);
         end.setListable(messagePresenter::getUserUnread);
         return end.build();
@@ -273,7 +276,7 @@ public class MessageUI implements UISection {
      */
     private MenuNode getEntireInbox(){
         String messageSeqTitle = "View Entire Inbox";
-        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageController::confirmationReadAction);
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageActions::confirmationReadAction);
         end.setPromptable(messagePresenter::promptForConfirmation);
         end.setListable(messagePresenter::getUserInbox);
         return end.build();
@@ -285,11 +288,11 @@ public class MessageUI implements UISection {
      *
      * @return a {@link MenuNode} of getting inbox from another username
      */
-    private MenuNode getInboxFrom(){
+    private MenuNode getInboxFrom() {
         String messageSeqTitle = "View Messages From Username";
-        LinkedMenuNodeBuilder viewInboxSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
-        viewInboxSeq.addStep("from", messagePresenter::getPromptForFrom, messageController::isValidMessageRecipient, messagePresenter::invalidUsername);
-        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageController::confirmationReadAction);
+        LinkedMenuNodeBuilder viewInboxSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageActions.getInputMap());
+        viewInboxSeq.addStep("from", messagePresenter::getPromptForFrom, messageInputValidator::isValidMessageRecipient, messagePresenter::invalidUsername);
+        MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageActions::confirmationReadAction);
         end.backStepCount(2);
         end.setListable(messagePresenter::getUserInboxFrom);
         end.setPromptable(messagePresenter::promptForConfirmation);
@@ -305,7 +308,7 @@ public class MessageUI implements UISection {
      */
     private MenuNode getArchivedInbox(){
         String messageSeqTitle = "View Archived Messages";
-        MenuNodeBuilder node = new MenuNodeBuilder(messageSeqTitle, messageController::confirmationAction);
+        MenuNodeBuilder node = new MenuNodeBuilder(messageSeqTitle, messageActions::confirmationAction);
         node.setPromptable(messagePresenter::promptForConfirmation);
         node.setListable(messagePresenter::getUserArchived);
         return (node.build());
