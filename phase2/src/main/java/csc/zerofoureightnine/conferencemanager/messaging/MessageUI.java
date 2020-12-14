@@ -72,6 +72,7 @@ public class MessageUI implements UISection {
         sendTemplateSeq.addMultipleOptions("selected_group", options, null);
         sendTemplateSeq.addStep("content", messagePresenter::getPromptForMessageBody, messageController::isValidContent, messagePresenter::wrongInput);
         MenuNodeBuilder end = new MenuNodeBuilder(messageTemplateTitle, messageController::messageGroup);
+        end.setCompletable(messagePresenter::getMessageSentCompletion);
         end.backStepCount(3);
         return (sendTemplateSeq.build(end.build(), Permission.MESSAGE_ALL_USERS));
     }
@@ -103,6 +104,7 @@ public class MessageUI implements UISection {
         sendEventSeq.addStep("event_id", messagePresenter::getPromptForEventId, messageController::isValidEventIdForSending, messagePresenter::invalidEventId);
         sendEventSeq.addStep("content", messagePresenter::getPromptForMessageBody, messageController::isValidContent, messagePresenter::wrongInput);
         MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageController::messageSingleEvent);
+        end.setCompletable(messagePresenter::getMessageSentCompletion);
         end.backStepCount(3);
         return (sendEventSeq.build(end.build()));
     }
@@ -118,6 +120,7 @@ public class MessageUI implements UISection {
         LinkedMenuNodeBuilder sendEventSeq = new LinkedMenuNodeBuilder(messageSeqTitle, messageController.getInputMap());
         sendEventSeq.addStep("content", messagePresenter::getPromptForMessageBody, messageController::isValidContent, messagePresenter::wrongInput);
         MenuNodeBuilder end = new MenuNodeBuilder(messageSeqTitle, messageController::messageAllEvents);
+        end.setCompletable(messagePresenter::getMessageSentCompletion);
         end.backStepCount(2);
         return (sendEventSeq.build(end.build()));
     }
@@ -150,6 +153,7 @@ public class MessageUI implements UISection {
         end.setPromptable(messagePresenter::promptForMessageIndex);
         end.setValidatable(messageController::validateMessageSelectionFromGroup);
         end.setReattemptable(messagePresenter::wrongInput);
+        end.setCompletable(messagePresenter::messageMoveConfirmation);
         return end.build();
     }
 
@@ -166,6 +170,7 @@ public class MessageUI implements UISection {
         end.setPromptable(messagePresenter::promptForMessageIndex);
         end.setValidatable(messageController::validateMessageSelectionFromGroup);
         end.setReattemptable(messagePresenter::wrongInput);
+        end.setCompletable(messagePresenter::messageMoveConfirmation);
         return end.build();
     }
 
@@ -182,6 +187,7 @@ public class MessageUI implements UISection {
         end.setPromptable(messagePresenter::promptForMessageIndex);
         end.setValidatable(messageController::validateMessageSelectionFromGroup);
         end.setReattemptable(messagePresenter::wrongInput);
+        end.setCompletable(messagePresenter::messageMoveConfirmation);
         return end.build();
     }
 
@@ -198,6 +204,7 @@ public class MessageUI implements UISection {
         end.setPromptable(messagePresenter::promptForMessageIndex);
         end.setValidatable(messageController::validateMessageSelectionFromGroup);
         end.setReattemptable(messagePresenter::wrongInput);
+        end.setCompletable(messagePresenter::messageDeletedConfirmation);
         return end.build();
     }
 
@@ -212,6 +219,7 @@ public class MessageUI implements UISection {
         MenuNodeBuilder deleteConvoSeq = new MenuNodeBuilder(messageSeqTitle, messageController::deleteSingleConversation);
         deleteConvoSeq.setPromptable(messagePresenter::getPromptForFrom);
         deleteConvoSeq.setValidatable(messageController::isValidMessageRecipient);
+        deleteConvoSeq.setCompletable(messagePresenter::messageDeletedConfirmation);
         return (deleteConvoSeq.build());
     }
 
@@ -224,6 +232,7 @@ public class MessageUI implements UISection {
     private MenuNode deleteInboxSeq(){
         String messageSeqTitle = "Clear Inboxes";
         MenuNodeBuilder deleteInboxSeq = new MenuNodeBuilder(messageSeqTitle, messageController::deleteAllInboxes);
+        deleteInboxSeq.setCompletable(messagePresenter::messageDeletedConfirmation);
         return deleteInboxSeq.build();
     }
 
