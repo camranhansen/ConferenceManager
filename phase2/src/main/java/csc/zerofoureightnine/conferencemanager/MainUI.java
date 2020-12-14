@@ -1,7 +1,7 @@
 package csc.zerofoureightnine.conferencemanager;
 
 import csc.zerofoureightnine.conferencemanager.datacollection.DataUI;
-import csc.zerofoureightnine.conferencemanager.events.EventController;
+import csc.zerofoureightnine.conferencemanager.events.EventActionHolder;
 import csc.zerofoureightnine.conferencemanager.events.EventPresenter;
 import csc.zerofoureightnine.conferencemanager.events.EventUI;
 import csc.zerofoureightnine.conferencemanager.interaction.ConsoleUserInterface;
@@ -62,16 +62,16 @@ public class MainUI {
      * Instantiate and add section UIs to the MainUI.
      */
     private void addSectionUIs() {
-        EventController eventController = masterController.getEventController();
+        EventActionHolder eventActionHolder = masterController.getEventActionHolder();
         MessageController messageController = masterController.getMessageController();
         SessionController sessionController = masterController.getSessionController();
         MessagePresenter messagePresenter = masterController.getMessagePresenter();
         EventPresenter eventPresenter = masterController.getEventPresenter();
         SessionPresenter sessionPresenter = masterController.getSessionPresenter();
         menuBuilder.addSectionUI(new MessageUI(messageController, messagePresenter),
-                new SessionUI(sessionController, sessionPresenter), new EventUI(eventController, eventPresenter),
+                new SessionUI(sessionController, sessionPresenter), new EventUI(eventActionHolder, eventPresenter, masterController.getEventInputValidator()),
                 new UserUI(masterController.getUserActions(), masterController.getUserPresenter(),
-                        masterController.getSpecialRequestController(), masterController.getSpecialRequestPresenter(), masterController.getUserInputValidator(), masterController.getSpecialRequestInputValidator()),
+                        masterController.getSpecialRequestActions(), masterController.getSpecialRequestPresenter(), masterController.getUserInputValidator(), masterController.getSpecialRequestInputValidator()),
                 new DataUI(masterController.getDataPresenter(), masterController.getDataController()));
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Responsible for input validation for special request actions and prompts.
+ * Responsible for input validation for special request {@link csc.zerofoureightnine.conferencemanager.interaction.control.Action} and {@link csc.zerofoureightnine.conferencemanager.interaction.presentation.PromptPresentable}
  * Methods here must implement the {@link csc.zerofoureightnine.conferencemanager.interaction.control.Validatable} interface.
  * Part of the presenter layer in Model-View-Presenter, and is a controller in clean architecture
  */

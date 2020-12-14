@@ -4,7 +4,8 @@ import csc.zerofoureightnine.conferencemanager.datacollection.DataController;
 import csc.zerofoureightnine.conferencemanager.datacollection.DataPresenter;
 import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeDataHolder;
 import csc.zerofoureightnine.conferencemanager.datacollection.StoredDataGetter;
-import csc.zerofoureightnine.conferencemanager.events.EventController;
+import csc.zerofoureightnine.conferencemanager.events.EventActionHolder;
+import csc.zerofoureightnine.conferencemanager.events.EventInputValidator;
 import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.events.EventPresenter;
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
@@ -50,12 +51,12 @@ public class MasterController {
 
     private UserInputValidator userInputValidator;
     private SpecialRequestInputValidator specialRequestInputValidator;
-
+    private EventInputValidator eventInputValidator;
 
     private SessionController sessionController;
     private UserActions userActions;
     private MessageController messageController;
-    private EventController eventController;
+    private EventActionHolder eventActionHolder;
     private SpecialRequestActions specialRequestActions;
 
     /**
@@ -80,7 +81,7 @@ public class MasterController {
         this.dataController = new DataController();
         this.sessionController = new SessionController(userManager, permissionManager);
         this.messageController = new MessageController(messageManager, userManager, eventManager, permissionManager);
-        this.eventController = new EventController(eventManager, userManager, permissionManager);
+        this.eventActionHolder = new EventActionHolder(eventManager, userManager, permissionManager);
         this.specialRequestActions = new SpecialRequestActions(specialRequestManager);
         this.userActions = new UserActions(userManager, permissionManager);
     }
@@ -88,6 +89,8 @@ public class MasterController {
     private void createInputValidators() {
         this.userInputValidator = new UserInputValidator(userManager);
         this.specialRequestInputValidator = new SpecialRequestInputValidator(specialRequestManager);
+        this.eventInputValidator = new EventInputValidator(eventManager, userManager, permissionManager, eventActionHolder.getInputMap());
+
 
     }
 
@@ -135,8 +138,8 @@ public class MasterController {
         return messageController;
     }
 
-    public EventController getEventController() {
-        return eventController;
+    public EventActionHolder getEventActionHolder() {
+        return eventActionHolder;
     }
 
     public RuntimeDataHolder getRuntimeDataHolder() {
@@ -147,7 +150,7 @@ public class MasterController {
         return specialRequestPresenter;
     }
 
-    public SpecialRequestActions getSpecialRequestController() {
+    public SpecialRequestActions getSpecialRequestActions() {
         return specialRequestActions;
     }
 
@@ -157,6 +160,10 @@ public class MasterController {
 
     public UserInputValidator getUserInputValidator() {
         return userInputValidator;
+    }
+
+    public EventInputValidator getEventInputValidator() {
+        return eventInputValidator;
     }
 
     public UserActions getUserActions() {
@@ -178,4 +185,6 @@ public class MasterController {
     public DataController getDataController() {
         return dataController;
     }
+
+
 }
