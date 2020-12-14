@@ -21,6 +21,14 @@ public class UserPresenter {
     }
 
     /**
+     * Asks the user to enter in a new password for corresponding to a User account
+     * @return a {@link String} containing the question to be asked
+     */
+    public String newPassword(String username){
+        return "Please enter new password";
+    }
+
+    /**
      * Informs the User that the username already exists
      * @return a String telling the user of the issue
      */
