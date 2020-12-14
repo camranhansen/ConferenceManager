@@ -92,7 +92,7 @@ public class UserController implements SessionObserver {
      * @return the node to return to. See {@link MenuNode} for clarification
      */
     public int editOtherPassword(String username, String input, List<TopicPresentable> options) {
-        String name = inputMap.get("target");
+        String name = inputMap.get("username");
         um.setPassword(name, inputMap.get("password"));
         return 1;
     }
