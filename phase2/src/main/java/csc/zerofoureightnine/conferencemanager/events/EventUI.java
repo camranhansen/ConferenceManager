@@ -4,6 +4,7 @@ package csc.zerofoureightnine.conferencemanager.events;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.control.UISection;
 import csc.zerofoureightnine.conferencemanager.interaction.utils.LinkedMenuNodeBuilder;
+import csc.zerofoureightnine.conferencemanager.messaging.MessageUI;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
 import java.util.ArrayList;
@@ -15,6 +16,12 @@ public class EventUI implements UISection {
     private EventPresenter eventPresenter;
     private EventInputValidator eventInputValidator;
 
+    /**
+     * Creates the {@link MessageUI} to allow user to interact with events.
+     * @param eventActionHolder An {@link EventActionHolder}
+     * @param eventPresenter An {@link EventPresenter}
+     * @param eventInputValidator An {@link EventInputValidator}
+     */
     public EventUI(EventActionHolder eventActionHolder, EventPresenter eventPresenter, EventInputValidator eventInputValidator) {
         this.eventActionHolder = eventActionHolder;
         this.eventPresenter = eventPresenter;
@@ -56,6 +63,9 @@ public class EventUI implements UISection {
         entryPoints.add(eventEditSeq.build(editEventNode.build(), Permission.EVENT_EDIT));
     }
 
+    /**
+     * Generate the necessary steps to view all events that is hosting by the user who is interacting with the program.
+     */
     private void generateViewHostingEventsNodes() {
         String seqTitle = "View All Hosting Events";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventActionHolder.getInputMap());
@@ -64,6 +74,9 @@ public class EventUI implements UISection {
         entryPoints.add(seq.build(showAllEventNode.build(), Permission.VIEW_HOSTING_EVENTS));
     }
 
+    /**
+     * Generate all events that the user is attending.
+     */
     private void generateViewAttendingEventNodes(){
         String seqTitle = "View Attending Events";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventActionHolder.getInputMap());
@@ -72,6 +85,9 @@ public class EventUI implements UISection {
         entryPoints.add(seq.build(showAllEventNode.build(), Permission.VIEW_ATTENDING_EVENTS));
     }
 
+    /**
+     * Generate all necessary steps that allow user to drop another user from an event.
+     */
     private void generateEventOtherDropNodes() {
         String seqTitle = "Un-enroll other user from an event";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventActionHolder.getInputMap());
@@ -82,6 +98,9 @@ public class EventUI implements UISection {
         entryPoints.add(seq.build(dropEventNode.build(), Permission.EVENT_OTHER_DROP));
     }
 
+    /**
+     * Generate all necessary steps that allow users to drop themselves from an event.
+     */
     private void generateEventSelfDropNodes() {
         String seqTitle = "Un-enroll yourself from an event";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventActionHolder.getInputMap());
@@ -91,6 +110,9 @@ public class EventUI implements UISection {
         entryPoints.add(seq.build(dropEventNode.build(), Permission.EVENT_SELF_DROP));
     }
 
+    /**
+     * Generate all events information to users.
+     */
     private void generateViewAllEventNodes() {
         String seqTitle = "View All Events";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventActionHolder.getInputMap());
@@ -100,6 +122,9 @@ public class EventUI implements UISection {
 
     }
 
+    /**
+     * Generate necessary steps to show all available events to the user.
+     */
     private void generateViewAvailableEventNodes(){
         String seqTitle = "View Available Events";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventActionHolder.getInputMap());
@@ -109,7 +134,9 @@ public class EventUI implements UISection {
 
     }
 
-
+    /**
+     * Generate necessary steps to create a not existed event into the system.
+     */
     private void generateEventCreateNodes() {
         String seqTitle = "Create An Event";
         LinkedMenuNodeBuilder eventCreateSeq = new LinkedMenuNodeBuilder(seqTitle, eventActionHolder.getInputMap());
@@ -124,6 +151,9 @@ public class EventUI implements UISection {
         entryPoints.add(eventCreateSeq.build(createEventNode.build(), Permission.EVENT_CREATE));
     }
 
+    /**
+     * Generate necessary steps to delete a existed event.
+     */
     private void generateEventDeleteNodes() {
         String seqTitle = "Delete an Event";
         LinkedMenuNodeBuilder eventDeleteSeq = new LinkedMenuNodeBuilder(seqTitle, eventActionHolder.getInputMap());
@@ -133,6 +163,9 @@ public class EventUI implements UISection {
         entryPoints.add(eventDeleteSeq.build(deleteEventNode.build(), Permission.EVENT_DELETE));
     }
 
+    /**
+     * Generate necessary steps for users to enroll themselves.
+     */
     public void generateEventSelfEnrollNodes() {
         String seqTitle = "Enroll in an Event";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventActionHolder.getInputMap());
@@ -142,6 +175,9 @@ public class EventUI implements UISection {
         entryPoints.add(seq.build(enrollNode.build(), Permission.EVENT_SELF_ENROLL));
     }
 
+    /**
+     * Generate necessary steps for users to enroll other user into a event.
+     */
     public void generateEventOtherEnrollNodes() {
         String seqTitle = "Enroll other user in an event";
         LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, eventActionHolder.getInputMap());
