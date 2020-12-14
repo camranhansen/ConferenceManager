@@ -6,6 +6,8 @@ import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.MessageData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.SpecialRequestData;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
+import csc.zerofoureightnine.conferencemanager.main.MainUI;
+import csc.zerofoureightnine.conferencemanager.main.MasterController;
 
 
 public class EntryPoint {

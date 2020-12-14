@@ -150,7 +150,7 @@ public class StoredDataGetter {
     /**
      * Returns the most common {@link EventType} which events are registered as.
      *
-     * @return The most commonly-occuring {@link EventType}.
+     * @return The most commonly-occurring {@link EventType}.
      */
     public EventType getMostPopularEventType() {
         return eventManager.mostPopularEventType();

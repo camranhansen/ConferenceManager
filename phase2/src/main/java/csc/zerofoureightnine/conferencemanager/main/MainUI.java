@@ -1,4 +1,4 @@
-package csc.zerofoureightnine.conferencemanager;
+package csc.zerofoureightnine.conferencemanager.main;
 
 import csc.zerofoureightnine.conferencemanager.datacollection.DataUI;
 import csc.zerofoureightnine.conferencemanager.events.EventActionHolder;

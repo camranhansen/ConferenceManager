@@ -1,4 +1,4 @@
-package csc.zerofoureightnine.conferencemanager;
+package csc.zerofoureightnine.conferencemanager.main;
 
 import csc.zerofoureightnine.conferencemanager.datacollection.DataController;
 import csc.zerofoureightnine.conferencemanager.datacollection.DataPresenter;
@@ -6,7 +6,6 @@ import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeDataHolder;
 import csc.zerofoureightnine.conferencemanager.datacollection.StoredDataGetter;
 import csc.zerofoureightnine.conferencemanager.events.EventActionHolder;
 import csc.zerofoureightnine.conferencemanager.events.EventInputValidator;
-import csc.zerofoureightnine.conferencemanager.events.EventManager;
 import csc.zerofoureightnine.conferencemanager.events.EventPresenter;
 import csc.zerofoureightnine.conferencemanager.gateway.PersistentMap;
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.EventData;
@@ -15,18 +14,14 @@ import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.SpecialReque
 import csc.zerofoureightnine.conferencemanager.gateway.sql.entities.UserData;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageActions;
 import csc.zerofoureightnine.conferencemanager.messaging.MessageInputValidator;
-import csc.zerofoureightnine.conferencemanager.messaging.MessageManager;
 import csc.zerofoureightnine.conferencemanager.messaging.MessagePresenter;
 import csc.zerofoureightnine.conferencemanager.users.UserActions;
 import csc.zerofoureightnine.conferencemanager.users.UserInputValidator;
-import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import csc.zerofoureightnine.conferencemanager.users.UserPresenter;
-import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
 import csc.zerofoureightnine.conferencemanager.users.session.SessionController;
 import csc.zerofoureightnine.conferencemanager.users.session.SessionPresenter;
 import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestActions;
 import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestInputValidator;
-import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestManager;
 import csc.zerofoureightnine.conferencemanager.users.specialrequest.SpecialRequestPresenter;
 
 import java.util.UUID;
@@ -35,11 +30,9 @@ import java.util.UUID;
  * Master controller.
  */
 public class MasterController {
-    private MessageManager messageManager;
-    private PermissionManager permissionManager;
-    private SpecialRequestManager specialRequestManager;
-    private UserManager userManager;
-    private EventManager eventManager;
+
+
+    private MasterModel model;
     private RuntimeDataHolder runtimeDataHolder;
     private StoredDataGetter storedDataGetter;
     private DataPresenter dataPresenter;
@@ -72,54 +65,64 @@ public class MasterController {
      */
     public MasterController(PersistentMap<String, UserData> userMap, PersistentMap<String, EventData> eventMap,
                             PersistentMap<UUID, MessageData> messageMap, PersistentMap<UUID, SpecialRequestData> specialRequestMap) {
-
-        createUseCases(userMap, eventMap, messageMap, specialRequestMap);
+        this.model = new MasterModel(userMap, eventMap, messageMap, specialRequestMap);
         createDataCollectors();
         createActionHolders();
         createInputValidators();
         createPresenters();
     }
 
+    /**
+     * Create the action holders for the Section Menus. See {@link csc.zerofoureightnine.conferencemanager.interaction.control.Action}
+     */
     private void createActionHolders() {
         this.dataController = new DataController();
-        this.sessionController = new SessionController(userManager, permissionManager);
-        this.messageActions = new MessageActions(messageManager, userManager, eventManager, permissionManager);
-        this.eventActionHolder = new EventActionHolder(eventManager, userManager, permissionManager);
-        this.specialRequestActions = new SpecialRequestActions(specialRequestManager);
-        this.userActions = new UserActions(userManager, permissionManager);
+        this.sessionController = new SessionController(model.getUserManager(), model.getPermissionManager());
+        this.messageActions = new MessageActions(model.getMessageManager(), model.getUserManager(), model.getEventManager(), model.getPermissionManager());
+        this.eventActionHolder = new EventActionHolder(model.getEventManager(), model.getUserManager(), model.getPermissionManager());
+        this.specialRequestActions = new SpecialRequestActions(model.getSpecialRequestManager());
+        this.userActions = new UserActions(model.getUserManager(), model.getPermissionManager());
     }
 
+    /**
+     * Create the input validators for the Section Menus. See {@link csc.zerofoureightnine.conferencemanager.interaction.control.Validatable}
+     */
     private void createInputValidators() {
-        this.userInputValidator = new UserInputValidator(userManager);
-        this.specialRequestInputValidator = new SpecialRequestInputValidator(specialRequestManager);
-        this.eventInputValidator = new EventInputValidator(eventManager, userManager, permissionManager, eventActionHolder.getInputMap());
-        this.messageInputValidator = new MessageInputValidator(messageManager, messageActions.getInputMap(), userManager, permissionManager, eventManager, messageActions.getSelectedMessageIDs());
+        this.userInputValidator = new UserInputValidator(model.getUserManager());
+        this.specialRequestInputValidator = new SpecialRequestInputValidator(model.getSpecialRequestManager());
+        this.eventInputValidator = new EventInputValidator(model.getEventManager(), model.getUserManager(), model.getPermissionManager(), eventActionHolder.getInputMap());
+        this.messageInputValidator = new MessageInputValidator(model.getMessageManager(), messageActions.getInputMap(), model.getUserManager(), model.getPermissionManager(), model.getEventManager(), messageActions.getSelectedMessageIDs());
 
     }
 
+    /**
+     * Create the presenters for the Section Menus.
+     */
     private void createPresenters() {
-        this.eventPresenter = new EventPresenter(eventManager);
+        this.eventPresenter = new EventPresenter(model.getEventManager());
         this.sessionPresenter = new SessionPresenter();
-        this.messagePresenter = new MessagePresenter(messageManager, messageActions.getInputMap());
-        this.specialRequestPresenter = new SpecialRequestPresenter(specialRequestManager, specialRequestActions.getInputMap());
+        this.messagePresenter = new MessagePresenter(model.getMessageManager(), messageActions.getInputMap());
+        this.specialRequestPresenter = new SpecialRequestPresenter(model.getSpecialRequestManager(), specialRequestActions.getInputMap());
         this.userPresenter = new UserPresenter();
         this.dataPresenter = new DataPresenter(runtimeDataHolder, storedDataGetter);
     }
 
+    /**
+     * Create the data collectors, {@link RuntimeDataHolder}, and {@link StoredDataGetter}
+     */
     private void createDataCollectors() {
         this.runtimeDataHolder = new RuntimeDataHolder();
-        this.storedDataGetter = new StoredDataGetter(messageManager, eventManager, specialRequestManager, userManager);
+        this.storedDataGetter = new StoredDataGetter(model.getMessageManager(), model.getEventManager(), model.getSpecialRequestManager(), model.getUserManager());
     }
 
-    private void createUseCases(PersistentMap<String, UserData> userMap, PersistentMap<String, EventData> eventMap, PersistentMap<UUID, MessageData> messageMap, PersistentMap<UUID, SpecialRequestData> specialRequestMap) {
-        this.messageManager = new MessageManager(messageMap);
-        this.permissionManager = new PermissionManager(userMap);
-        this.userManager = new UserManager(userMap);
-        this.eventManager = new EventManager(eventMap);
-        this.userManager = new UserManager(userMap);
-        this.specialRequestManager = new SpecialRequestManager(specialRequestMap);
-    }
 
+
+    /*
+    NOTE:
+    WE HAVE NOT DONE JAVADOC FOR THE METHODS BELOW,
+    BECAUSE THEY ARE GETTERS AND SETTERS,
+    AND INHERENTLY EXCEPTIONALLY SELF-DESCRIPTIVE.
+     */
 
     public EventPresenter getEventPresenter() {
         return eventPresenter;
