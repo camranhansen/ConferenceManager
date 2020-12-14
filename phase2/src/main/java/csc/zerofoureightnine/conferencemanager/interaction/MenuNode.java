@@ -132,7 +132,8 @@ public class MenuNode { // UI
                 }
             }
         }
-        children.sort((a, b) -> a.sequence - b.sequence);
+
+        children.sort((a, b) -> a.toString().charAt(0) - b.toString().charAt(0));
         menu.addAll(children);
         mainMenu.getTracker().incrementStat(RuntimeStat.MENUS_VISITED);
         return menu;

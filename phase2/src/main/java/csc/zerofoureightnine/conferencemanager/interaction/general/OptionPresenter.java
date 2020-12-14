@@ -1,15 +1,16 @@
 package csc.zerofoureightnine.conferencemanager.interaction.general;
 
-import java.util.List;
-
+import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.InfoPresentable;
-import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.PromptPresentable;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.RetryPromptPresentable;
+import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
+
+import java.util.List;
 
 /**
- * A general {@link Presentable} that lists the children of the
- * {@link GeneralMenuNode}. Prompts user for an integer to select one of the
+ * A general Presentable that lists the children of the
+ * {@link MenuNode}. Prompts user for an integer to select one of the
  * listed children options. Does not have a completion message.
  */
 public class OptionPresenter implements TopicPresentable, PromptPresentable, InfoPresentable, RetryPromptPresentable {
@@ -40,7 +41,12 @@ public class OptionPresenter implements TopicPresentable, PromptPresentable, Inf
             if (presentable == null) {
                 sb.append("[Unavailable]");
             } else if (i == 1) {
-                sb.append("(" + presentable.getIdentifier() + ")");
+                if (presentable.getIdentifier().equals("Exit")) {
+                    sb.append("(" + presentable.getIdentifier() + ")");
+                } else {
+                    sb.append("Back to (" + presentable.getIdentifier() + ")");
+
+                }
             } else {
                 sb.append(presentable.getIdentifier());
             }
