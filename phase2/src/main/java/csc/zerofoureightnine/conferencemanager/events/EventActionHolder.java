@@ -1,5 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.events;
 
+import csc.zerofoureightnine.conferencemanager.interaction.control.Action;
 import csc.zerofoureightnine.conferencemanager.interaction.presentation.TopicPresentable;
 import csc.zerofoureightnine.conferencemanager.users.UserManager;
 import csc.zerofoureightnine.conferencemanager.users.permission.PermissionManager;
@@ -9,6 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Presenter-level (in MVP) class for holding methods that follow the {@link Action} interface, for modifying the model
+ * responsible for events.
+ */
 public class EventActionHolder {
     private EventManager eventManager;
     private UserManager userManager;

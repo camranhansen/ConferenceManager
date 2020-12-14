@@ -10,6 +10,7 @@ import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class EventUI implements UISection {
     List<MenuNode> entryPoints;
     private EventActionHolder eventActionHolder;
