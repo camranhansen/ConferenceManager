@@ -61,7 +61,7 @@ public class UserPresenter {
     }
 
     public String accountDeleted(String username, TopicPresentable next) {
-        return "Account deleted. Returning to " + next;
+        return "Account deleted. Returning to " + next.getIdentifier();
     }
 
     public String usernameInvalid() {

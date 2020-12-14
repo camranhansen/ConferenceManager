@@ -114,7 +114,7 @@ public class UserUI implements UISection {
         node.setPromptable(userPresenter::enterUsername);
         node.setValidatable(userController::isUserNotCurrentUser);
         node.setReattemptable(userPresenter::usernameInvalid);
-        node.setCompletable(userPresenter::passwordChangedSuccess);
+        node.setCompletable(userPresenter::accountDeleted);
         node.setPermission(Permission.USER_OTHER_DELETE_ACCOUNT);
         entryPoints.add(node.build());
     }
