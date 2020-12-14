@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Responsible for input validation for user-related actions and prompts.
+ * Methods here must implement the {@link csc.zerofoureightnine.conferencemanager.interaction.control.Validatable} interface.
  * Part of the presenter layer in Model-View-Presenter, and is a controller in clean architecture
  */
 public class UserInputValidator implements SessionObserver {

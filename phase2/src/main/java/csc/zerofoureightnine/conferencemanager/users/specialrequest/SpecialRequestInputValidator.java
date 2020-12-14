@@ -7,6 +7,7 @@ import java.util.UUID;
 
 /**
  * Responsible for input validation for special request actions and prompts.
+ * Methods here must implement the {@link csc.zerofoureightnine.conferencemanager.interaction.control.Validatable} interface.
  * Part of the presenter layer in Model-View-Presenter, and is a controller in clean architecture
  */
 public class SpecialRequestInputValidator {
