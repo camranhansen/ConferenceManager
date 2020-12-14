@@ -46,7 +46,7 @@ public class EventController {
      * In this case, return 0, representing the main menu.
      */
     public int editCapacity(String username, String input, List<TopicPresentable> selectableOptions) {
-        eventManager.editCapacity(inputMap.get("event_id)"), Integer.parseInt(inputMap.get("capacity")));
+        eventManager.editCapacity(inputMap.get("event_id"), Integer.parseInt(inputMap.get("capacity")));
         return 0;
     }
 
@@ -211,7 +211,7 @@ public class EventController {
      * @return true if {@code capacity} is valid, false otherwise.
      */
     public boolean isValidEditCapacity(String capacity, List<TopicPresentable> options){
-        return capacity.matches("[0-9]+")&&eventManager.getParticipants(inputMap.get("event_id")).size() > Integer.parseInt(capacity);
+        return capacity.matches("[0-9]+")&&eventManager.getParticipants(inputMap.get("event_id")).size() < Integer.parseInt(capacity);
     }
 
     /**

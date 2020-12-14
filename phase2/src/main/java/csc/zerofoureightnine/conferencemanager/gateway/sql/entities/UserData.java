@@ -54,19 +54,35 @@ public class UserData implements Identifiable<String>{
      */
     public void setId(String id){ this.userName = id;}
 
+    /**
+     * Returns user's password.
+     * @return a {@link String} representing the user's password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Sets user's password.
+     * @param password {@link String} user's password
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Returns all permissions that the user has.
+     * @return a {@link List} of {@link Permission} of the user
+     */
     public List<Permission> getPermissions() {
         return permissions;
     }
 
-
+    /**
+     * Compares this user with the given user. Returns true if they are exactly the same, false otherwise.
+     * @param o {@link Object} a user
+     * @return true if the two users are exactly the same, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,6 +91,10 @@ public class UserData implements Identifiable<String>{
         return userName.equals(userData.userName);
     }
 
+    /**
+     * Returns the hash code of the user.
+     * @return int representing user's hash code
+     */
     @Override
     public int hashCode() {
         return Objects.hash(userName);
