@@ -47,7 +47,7 @@ public class EventUI implements UISection {
     private void generateEditEventNodes() {
         String seqTitle = "Edit Event capacity";
         LinkedMenuNodeBuilder eventEditSeq = new LinkedMenuNodeBuilder(seqTitle, eventController.getInputMap());
-        eventEditSeq.addStep("capacity", eventPresenter::enterCapacity, eventController::isValidCapacity, eventPresenter::wrongInput);
+        eventEditSeq.addStep("event_id", eventPresenter::enterId, eventController::isValidID, eventPresenter::wrongInput);
         eventEditSeq.addStep("capacity", eventPresenter::enterCapacity, eventController::isValidEditCapacity, eventPresenter::wrongInput);
         MenuNode.MenuNodeBuilder createEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::editCapacity);
         entryPoints.add(eventEditSeq.build(createEventNode.build(), Permission.EVENT_EDIT));
@@ -69,7 +69,6 @@ public class EventUI implements UISection {
         seq.addStep(null, eventPresenter::renderAttendingEventsToUser, null, null);
         MenuNode.MenuNodeBuilder showAllEventNode = new MenuNode.MenuNodeBuilder(seqTitle, eventController::viewMethod);
         entryPoints.add(seq.build(showAllEventNode.build(), Permission.VIEW_ATTENDING_EVENTS));
-
     }
 
     private void generateEventOtherDropNodes(){
