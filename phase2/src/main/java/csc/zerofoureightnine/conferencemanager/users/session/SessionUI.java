@@ -1,14 +1,17 @@
 package csc.zerofoureightnine.conferencemanager.users.session;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode;
 import csc.zerofoureightnine.conferencemanager.interaction.MenuNode.MenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.interaction.control.UISection;
 import csc.zerofoureightnine.conferencemanager.interaction.utils.LinkedMenuNodeBuilder;
 import csc.zerofoureightnine.conferencemanager.users.permission.Permission;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * User interface for session.
+ */
 public class SessionUI implements UISection, SessionObserver {
     private SessionController sessionController;
     private SessionPresenter sessionPresenter;
@@ -50,6 +53,11 @@ public class SessionUI implements UISection, SessionObserver {
         return entryNodes;
     }
 
+    /**
+     * Build the authentication node
+     *
+     * @return {@link MenuNode} representing the authentication node
+     */
     private MenuNode buildAuthenticationNode() {
         LinkedMenuNodeBuilder authenticationSeq = new LinkedMenuNodeBuilder("Login", sessionController.getInputMap());
         authenticationSeq.addStep("user", sessionPresenter::requestUsername, null, null);
@@ -60,7 +68,11 @@ public class SessionUI implements UISection, SessionObserver {
         return authenticationSeq.build(authEnd.build());
     }
 
-
+    /**
+     * Build the {@link csc.zerofoureightnine.conferencemanager.users.permission.Template#ATTENDEE} creation node
+     *
+     * @return {@link MenuNode} representing the {@link csc.zerofoureightnine.conferencemanager.users.permission.Template#ATTENDEE} creation node
+     */
     private MenuNode buildUserCreationNode() {
         String userCreation = "Create Attendee Account";
         LinkedMenuNodeBuilder userCreationSeq = new LinkedMenuNodeBuilder(userCreation, sessionController.getInputMap());
@@ -72,12 +84,22 @@ public class SessionUI implements UISection, SessionObserver {
         return userCreationSeq.build(createUserEnd.build());
     }
 
+    /**
+     * Build the logout node
+     *
+     * @return {@link MenuNode} representing the logout node
+     */
     private MenuNode buildLogoutNode() {
         MenuNodeBuilder logoutNode = new MenuNodeBuilder("Logout", sessionController::logOutUser);
         logoutNode.setCompletable(sessionPresenter::loggedOut);
         return logoutNode.build();
     }
 
+    /**
+     * Build the change password node
+     *
+     * @return {@link MenuNode} representing the password change node.
+     */
     private MenuNode buildChangePersonalPasswordNode() {
         MenuNodeBuilder changeNode = new MenuNodeBuilder("Change your password", sessionController::changePassword);
         changeNode.setPromptable(sessionPresenter::requestPassword);
@@ -119,5 +141,5 @@ public class SessionUI implements UISection, SessionObserver {
         }
     }
 
-    
+
 }
