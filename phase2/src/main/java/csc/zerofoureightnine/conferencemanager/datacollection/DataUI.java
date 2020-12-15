@@ -15,18 +15,18 @@ import java.util.List;
 public class DataUI implements UISection {
 
     private DataPresenter dataPresenter;
-    private DataController dataController;
+    private DataActions dataActions;
     private List<MenuNode> entryPoints;
 
     /**
      * Create a new DataUI
      *
-     * @param dataPresenter  the {@link DataPresenter}. Primarily responsible for all features in this UI section
-     * @param dataController the {@link DataController}.
+     * @param dataPresenter the {@link DataPresenter}. Primarily responsible for all features in this UI section
+     * @param dataActions   the {@link DataActions}.
      */
-    public DataUI(DataPresenter dataPresenter, DataController dataController) {
+    public DataUI(DataPresenter dataPresenter, DataActions dataActions) {
         this.dataPresenter = dataPresenter;
-        this.dataController = dataController;
+        this.dataActions = dataActions;
     }
 
     /**
@@ -59,17 +59,17 @@ public class DataUI implements UISection {
     //Helper methods to generate nodes...
     private void generateSeeRuntimeStatsNodes() {
         String seqTitle = "View Runtime Stats";
-        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, dataController.getInputMap());
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, dataActions.getInputMap());
         seq.addStep(null, dataPresenter::getRuntimeStats, null, null);
-        MenuNode.MenuNodeBuilder showRuntimeDataNode = new MenuNode.MenuNodeBuilder(seqTitle, dataController::viewMethod);
+        MenuNode.MenuNodeBuilder showRuntimeDataNode = new MenuNode.MenuNodeBuilder(seqTitle, dataActions::viewMethod);
         entryPoints.add(seq.build(showRuntimeDataNode.build(), Permission.VIEW_SELF_STATISTICS));
     }
 
     private void generateSeeStoredDataStatsNodes() {
         String seqTitle = "View Conference Stats";
-        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, dataController.getInputMap());
+        LinkedMenuNodeBuilder seq = new LinkedMenuNodeBuilder(seqTitle, dataActions.getInputMap());
         seq.addStep(null, dataPresenter::getStoredData, null, null);
-        MenuNode.MenuNodeBuilder showRuntimeDataNode = new MenuNode.MenuNodeBuilder(seqTitle, dataController::viewMethod);
+        MenuNode.MenuNodeBuilder showRuntimeDataNode = new MenuNode.MenuNodeBuilder(seqTitle, dataActions::viewMethod);
         entryPoints.add(seq.build(showRuntimeDataNode.build(), Permission.VIEW_ALL_STATISTICS));
     }
 

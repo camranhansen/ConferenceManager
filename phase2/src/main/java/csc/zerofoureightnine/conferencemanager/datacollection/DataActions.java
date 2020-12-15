@@ -10,13 +10,13 @@ import java.util.Map;
  * Currently does not do much, but can be extended to do different things in the future.
  * For example - set data collection type.
  */
-public class DataController {
+public class DataActions {
     private HashMap<String, String> inputMap;
 
     /**
      * Instantiate a new DataController
      */
-    public DataController() {
+    public DataActions() {
         this.inputMap = new HashMap<>();
     }
 

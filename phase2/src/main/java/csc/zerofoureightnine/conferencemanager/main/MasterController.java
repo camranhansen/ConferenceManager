@@ -1,6 +1,6 @@
 package csc.zerofoureightnine.conferencemanager.main;
 
-import csc.zerofoureightnine.conferencemanager.datacollection.DataController;
+import csc.zerofoureightnine.conferencemanager.datacollection.DataActions;
 import csc.zerofoureightnine.conferencemanager.datacollection.DataPresenter;
 import csc.zerofoureightnine.conferencemanager.datacollection.RuntimeDataHolder;
 import csc.zerofoureightnine.conferencemanager.datacollection.StoredDataGetter;
@@ -36,7 +36,7 @@ public class MasterController {
     private RuntimeDataHolder runtimeDataHolder;
     private StoredDataGetter storedDataGetter;
     private DataPresenter dataPresenter;
-    private DataController dataController;
+    private DataActions dataActions;
     private EventPresenter eventPresenter;
     private UserPresenter userPresenter;
     private SessionPresenter sessionPresenter;
@@ -76,7 +76,7 @@ public class MasterController {
      * Create the action holders for the Section Menus. See {@link csc.zerofoureightnine.conferencemanager.interaction.control.Action}
      */
     private void createActionHolders() {
-        this.dataController = new DataController();
+        this.dataActions = new DataActions();
         this.sessionController = new SessionController(model.getUserManager(), model.getPermissionManager());
         this.messageActions = new MessageActions(model.getMessageManager(), model.getUserManager(), model.getEventManager(), model.getPermissionManager());
         this.eventActionHolder = new EventActionHolder(model.getEventManager(), model.getUserManager(), model.getPermissionManager());
@@ -188,8 +188,8 @@ public class MasterController {
         return dataPresenter;
     }
 
-    public DataController getDataController() {
-        return dataController;
+    public DataActions getDataController() {
+        return dataActions;
     }
 
     public MessageInputValidator getMessageInputValidator() {

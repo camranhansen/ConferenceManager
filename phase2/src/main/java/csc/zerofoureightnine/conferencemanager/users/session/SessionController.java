@@ -7,6 +7,11 @@ import csc.zerofoureightnine.conferencemanager.users.permission.Template;
 
 import java.util.*;
 
+/**
+ * Responsible for controlling user login, and related functionality.
+ * Did not split into "action" and "validation" parts, since this class will certainly never increase in size.
+ * As this is merely the login page.
+ */
 public class SessionController {
     private Set<SessionObserver> observers = new HashSet<>();
     private Map<String, String> inputMap = new HashMap<>();
